@@ -16,8 +16,10 @@ flake:
 	-flake8 $(project)/$(app)/migrations/*.py
 update:
 	git commit -a -m "Update"
-push:
+push: origin
+push-origin:
 	git push
+push-heroku:
 	git push heroku
 yapf:
 	-yapf -i $(project)/*.py
