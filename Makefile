@@ -40,3 +40,6 @@ su:
 wc:
 	wc -l $(project)/*.py
 	wc -l $(project)/$(app)/*.py
+install:
+	virtualenv .
+	bin/pip install -r requirements.txt
