@@ -22,7 +22,7 @@ push-origin:
 push-heroku:
 	git push heroku
 yapf:
-	-yapf --exclude=urls.py -i $(project)/*.py
+	-yapf -i $(project)/*.py --exclude=urls.py 
 	-yapf -i $(project)/$(app)/*.py
 	-yapf -i $(project)/$(app)/migrations/*.py
 migrate:
