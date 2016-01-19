@@ -3,8 +3,8 @@ db: clean migrate su
 lint: yapf flake wc
 push: push-origin
 
-app = app
 project = project
+app = app
 
 clean:
 	-rm -f db.sqlite3
