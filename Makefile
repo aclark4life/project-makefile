@@ -12,7 +12,7 @@ clean:
 	-dropdb $(project)
 	-createdb $(project)
 commit:
-	git commit -a
+	git commit -a -m "Update"
 flake:
 	-flake8 $(project)/*.py
 	-flake8 $(project)/$(app)/*.py
