@@ -1,4 +1,4 @@
-all: lint commit push
+all: lint commit-update push
 db: migrate
 lint: yapf flake wc
 push: push-origin
@@ -16,6 +16,8 @@ clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
 commit:
+	git commit -a
+commit-update:
 	git commit -a -m "Update"
 flake:
 	-flake8 $(project)/*.py
@@ -41,6 +43,8 @@ start:
 	-django-admin startapp $(app) $(project)/$(app)
 su:
 	python manage.py createsuperuser
+test:
+	python manage.py test
 wc:
 	wc -l $(project)/*.py
 	wc -l $(project)/$(app)/*.py
