@@ -16,7 +16,7 @@ clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
 commit:
-	git commit -a
+	git commit -a -m "Update"
 flake:
 	-flake8 $(project)/*.py
 	-flake8 $(project)/$(app)/*.py
