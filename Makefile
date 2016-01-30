@@ -1,16 +1,20 @@
 all: lint commit push
-db: clean migrate su
+db: migrate
 lint: yapf flake wc
 push: push-origin
 
 project = project
 app = app
 
-clean:
-	-rm -f db.sqlite3
-	-git add db.sqlite3
+clean: clean-sqlite
+clean-migrations:
+	rm -rf $(project)/$(app)/migrations
+clean-postgres:
 	-dropdb $(project)
 	-createdb $(project)
+clean-sqlite:
+	-rm -f db.sqlite3
+	-git add db.sqlite3
 commit:
 	git commit -a
 flake:
@@ -20,9 +24,9 @@ install:
 	virtualenv .
 	bin/pip install -r requirements.txt
 migrate:
-	rm -rf $(project)/$(app)/migrations
-	python manage.py makemigrations $(app)
 	python manage.py migrate
+migrations:
+	python manage.py makemigrations $(app)
 push-heroku:
 	git push heroku
 push-origin:
