@@ -26,10 +26,7 @@ project = project
 app = app
 
 all: help
-branches:
-	-for i in $(REMOTES) ; do \
-        git checkout -t $$i ; \
-    done
+branches=`git branch -a | grep remote | grep -v HEAD | grep -v master`
 clean:
 	find . -name \*.pyc | xargs rm -v
 clean-migrations:
@@ -40,7 +37,10 @@ clean-postgres:
 clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
-co: branches
+co:
+	-for i in $(branches) ; do \
+        git checkout -t $$i ; \
+    done
 commit:
 	git commit -a
 commit-update:
