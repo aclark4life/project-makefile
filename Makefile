@@ -2,7 +2,8 @@ project = project
 app = app
 
 all: help
-clean: clean-sqlite
+clean:
+	find . -name \*.pyc | xargs rm -v
 clean-migrations:
 	rm -rf $(project)/$(app)/migrations
 clean-postgres:
