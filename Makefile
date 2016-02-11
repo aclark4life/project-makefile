@@ -84,6 +84,8 @@ su:
 	python manage.py createsuperuser
 test:
 	python manage.py test
+test-readme:
+	rst2html.py README.rst > readme.html; open readme.html
 update: commit-update
 up: commit-update push
 wc:
