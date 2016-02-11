@@ -26,6 +26,10 @@ project = project
 app = app
 
 all: help
+branches:
+	-for i in $(REMOTES) ; do \
+        git checkout -t $$i ; \
+    done
 clean:
 	find . -name \*.pyc | xargs rm -v
 clean-migrations:
@@ -36,6 +40,7 @@ clean-postgres:
 clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
+co: branches
 commit:
 	git commit -a
 commit-update:
