@@ -64,7 +64,7 @@ test:
 	python manage.py test
 
 update: commit-update
-up: commit-update
+up: commit-update push
 
 wc:
 	wc -l $(project)/*.py
