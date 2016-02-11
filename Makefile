@@ -25,7 +25,7 @@
 project = project
 app = app
 
-all: help
+all: up
 branches=`git branch -a | grep remote | grep -v HEAD | grep -v master`
 clean:
 	find . -name \*.pyc | xargs rm -v
