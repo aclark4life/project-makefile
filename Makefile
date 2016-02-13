@@ -1,4 +1,4 @@
-# https://github.com/aclark4life/django-project
+# https://github.com/aclark4life/python-project
 #
 # The MIT License (MIT)
 #
@@ -92,6 +92,10 @@ test-readme:
 	rst2html.py README.rst > readme.html; open readme.html
 update: commit-update
 up: commit-update push
+upload-test:
+	python setup.py sdist --format=gztar,zip upload -r test
+upload:
+	python setup.py sdist --format=gztar,zip upload
 wc:
 	wc -l $(project)/*.py
 	wc -l $(project)/$(app)/*.py
