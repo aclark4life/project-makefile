@@ -71,6 +71,9 @@ migrate:
 	python manage.py migrate
 migrations:
 	python manage.py makemigrations $(app)
+package-test:
+	check-manifest
+	pyroma .
 push: push-origin
 push-heroku:
 	git push heroku
