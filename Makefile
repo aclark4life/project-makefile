@@ -27,7 +27,7 @@ project = project
 app = app
 
 # Python
-package = package
+package = $(project)
 
 all: up
 branches=`git branch -a | grep remote | grep -v HEAD | grep -v master`
@@ -51,6 +51,7 @@ commit-update:
 	git commit -a -m "Update"
 db: migrate su
 flake:
+	-flake8 *.py
 	-flake8 $(project)/*.py
 	-flake8 $(project)/$(app)/*.py
 # http://stackoverflow.com/a/26339924
@@ -101,8 +102,10 @@ upload-test:
 upload:
 	python setup.py sdist --format=gztar,zip upload
 wc:
+	wc -l *.py
 	wc -l $(project)/*.py
 	wc -l $(project)/$(app)/*.py
 yapf:
+	-yapf -i *.py
 	-yapf -i -e $(project)/urls.py $(project)/*.py
 	-yapf -i $(project)/$(app)/*.py
