@@ -22,8 +22,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Django
 project = project
 app = app
+
+# Python
+package = package
 
 all: up
 branches=`git branch -a | grep remote | grep -v HEAD | grep -v master`
