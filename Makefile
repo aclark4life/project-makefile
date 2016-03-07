@@ -93,6 +93,8 @@ start:
 	-mkdir -p $(project)/$(app)
 	-django-admin startproject $(project) .
 	-django-admin startapp $(app) $(project)/$(app)
+static:
+	python manage.py collectstatic --noinput
 su:
 	python manage.py createsuperuser
 test:
