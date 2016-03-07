@@ -41,6 +41,7 @@ clean-postgres:
 clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
+clean-db: clean-postgres
 co:
 	-for i in $(branches) ; do \
         git checkout -t $$i ; \
