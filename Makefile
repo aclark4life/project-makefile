@@ -50,6 +50,10 @@ commit:
 commit-update:
 	git commit -a -m "Update"
 db: migrate su
+debug-heroku-on:
+	heroku config:set DEBUG=1
+debug-heroku-off:
+	heroku config:unset DEBUG
 flake:
 	-flake8 *.py
 	-flake8 $(project)/*.py
