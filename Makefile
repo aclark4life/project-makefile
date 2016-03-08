@@ -41,6 +41,7 @@ clean-postgres:
 clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
+clean-db: clean-postgres
 co:
 	-for i in $(branches) ; do \
         git checkout -t $$i ; \
@@ -96,6 +97,8 @@ start:
 	-mkdir -p $(project)/$(app)
 	-django-admin startproject $(project) .
 	-django-admin startapp $(app) $(project)/$(app)
+static:
+	python manage.py collectstatic --noinput
 su:
 	python manage.py createsuperuser
 test:
