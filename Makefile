@@ -52,7 +52,7 @@ commit-update:
 	git commit -a -m "Update"
 db: migrate su
 debug-on:
-	export DEBUG=on
+	export DEBUG=1
 debug-off:
 	unset DEBUG
 debug-on-heroku:
