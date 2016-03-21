@@ -33,6 +33,7 @@ all: up
 branches=`git branch -a | grep remote | grep -v HEAD | grep -v master`
 clean:
 	find . -name \*.pyc | xargs rm -v
+clean-db: clean-postgres
 clean-migrations:
 	rm -rf $(project)/$(app)/migrations
 clean-postgres:
@@ -41,7 +42,6 @@ clean-postgres:
 clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
-clean-db: clean-postgres
 co:
 	-for i in $(branches) ; do \
         git checkout -t $$i ; \
