@@ -90,10 +90,12 @@ shell:
 	python manage.py shell
 shell-heroku:
 	heroku run bash
-start:
+start-django:
 	-mkdir -p $(project)/$(app)
 	-django-admin startproject $(project) .
 	-django-admin startapp $(app) $(project)/$(app)
+start-doc:
+	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
 	python manage.py collectstatic --noinput
 su:
