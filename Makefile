@@ -26,9 +26,6 @@
 project = project
 app = app
 
-# Python
-package = $(project)
-
 all: up
 branches=`git branch -a | grep remote | grep -v HEAD | grep -v master`
 clean:
