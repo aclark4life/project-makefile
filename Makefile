@@ -22,27 +22,31 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# Git
+BRANCHES=`git branch -a | grep remote | grep -v HEAD | grep -v master`
+
 # Django
-project = project
-app = app
+PROJECT = project
+APP = app
 
 all: up
-branches=`git branch -a | grep remote | grep -v HEAD | grep -v master`
 clean:
 	find . -name \*.pyc | xargs rm -v
 clean-db: clean-postgres
 clean-django-migration:
-	rm -rf $(project)/$(app)/migrations
+	rm -rf $(PROJECT)/$(APP)/migrations
 clean-postgres:
-	-dropdb $(project)-$(app)
-	-createdb $(project)-$(app)
+	-dropdb $(PROJECT)-$(APP)
+	-createdb $(PROJECT)-$(APP)
 clean-sqlite:
 	-rm -f db.sqlite3
 	-git add db.sqlite3
+
 co:
 	-for i in $(branches) ; do \
         git checkout -t $$i ; \
     done
+
 commit:
 	git commit -a
 commit-update:
@@ -54,8 +58,8 @@ debug-off-heroku:
 	heroku config:unset DEBUG
 flake:
 	-flake8 *.py
-	-flake8 $(project)/*.py
-	-flake8 $(project)/$(app)/*.py
+	-flake8 $(PROJECT)/*.py
+	-flake8 $(PROJECT)/$(APP)/*.py
 # http://stackoverflow.com/a/26339924
 .PHONY: h
 h:
@@ -72,7 +76,7 @@ lint: yapf flake wc
 migrate:
 	python manage.py migrate
 migrations:
-	python manage.py makemigrations $(app)
+	python manage.py makemigrations $(APP)
 package-test:
 	check-manifest
 	pyroma .
@@ -82,8 +86,8 @@ push-heroku:
 push-origin:
 	git push
 review:
-	open -a "Sublime Text 2" `find $(project) -name \*.py | grep -v __init__.py`\
-        `find $(project) -name \*.html`
+	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
+        `find $(PROJECT) -name \*.html`
 serve:
 	python manage.py runserver
 shell:
@@ -91,9 +95,9 @@ shell:
 shell-heroku:
 	heroku run bash
 start-django:
-	-mkdir -p $(project)/$(app)
-	-django-admin startproject $(project) .
-	-django-admin startapp $(app) $(project)/$(app)
+	-mkdir -p $(PROJECT)/$(APP)
+	-django-admin startproject $(PROJECT) .
+	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 start-doc:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
@@ -112,9 +116,9 @@ upload:
 	python setup.py sdist --format=gztar,zip upload
 wc:
 	wc -l *.py
-	wc -l $(project)/*.py
-	wc -l $(project)/$(app)/*.py
+	wc -l $(PROJECT)/*.py
+	wc -l $(PROJECT)/$(APP)/*.py
 yapf:
 	-yapf -i *.py
-	-yapf -i -e $(project)/urls.py $(project)/*.py
-	-yapf -i $(project)/$(app)/*.py
+	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
+	-yapf -i $(PROJECT)/$(APP)/*.py
