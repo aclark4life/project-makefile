@@ -30,8 +30,10 @@ PROJECT = project
 APP = app
 
 all: up
-clean:
+
+clean-pyc:
 	find . -name \*.pyc | xargs rm -v
+
 clean-db: clean-postgres
 clean-django-migration:
 	rm -rf $(PROJECT)/$(APP)/migrations
@@ -51,19 +53,23 @@ commit:
 	git commit -a
 commit-update:
 	git commit -a -m "Update"
+
 db: migrate su
+
 debug-on-heroku:
 	heroku config:set DEBUG=1
 debug-off-heroku:
 	heroku config:unset DEBUG
+
 flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
+
 # http://stackoverflow.com/a/26339924
 .PHONY: h
 h:
-	@echo "\nPlease call with one of these targets:\n"
+	@echo "\nPlease run make with one of the following targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
