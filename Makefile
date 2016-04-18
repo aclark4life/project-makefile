@@ -68,7 +68,7 @@ flake:
 
 # http://stackoverflow.com/a/26339924
 .PHONY: h
-h:
+help:
 	@echo "\nPlease run make with one of the following targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
