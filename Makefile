@@ -91,6 +91,10 @@ push-heroku:
 	git push heroku
 push-origin:
 	git push
+release:
+	python setup.py sdist --format=zip upload
+releasetest:
+	python setup.py sdist --format=zip upload -r test
 review:
 	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
         `find $(PROJECT) -name \*.html`
