@@ -45,7 +45,10 @@
 #uninstall
 
 .DEFAULT_GOAL := commit
-.PHONY := commit commit-auto-push commit-edit-push
+.PHONY := \
+	git-commit \
+	git-commit-auto-push \
+	git-commit-edit-push
 
 # Git
 REMOTE_BRANCHES=`git branch -a |\
@@ -54,7 +57,7 @@ REMOTE_BRANCHES=`git branch -a |\
 				 grep -v master`
 COMMIT_MESSAGE="Update"
 # Alias for default commit style: commit-push or commit-edit-push.
-commit: commit-auto-push
+commit: git-commit-auto-push
 
 # Django
 PROJECT = project
@@ -79,12 +82,12 @@ co:
     done
 
 # Commit with default commit message.
-commit-auto-push:
+git-commit-auto-push:
 	git commit -a -m $(COMMIT_MESSAGE)
 	$(MAKE) push
 
 # Commit with manual edit.
-commit-edit-push:
+git-commit-edit-push:
 	git commit -a
 	$(MAKE) push
 
