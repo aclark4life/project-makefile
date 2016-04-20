@@ -50,7 +50,7 @@ commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
 db-clean: django-db-clean-postgres
-lint: python-flake python-yapf wc
+lint: python-flake python-yapf python-wc
 
 # Variables to configure defaults 
 COMMIT_MESSAGE="Update"
@@ -126,6 +126,14 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
+python-yapf:
+	-yapf -i *.py
+	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
+	-yapf -i $(PROJECT)/$(APP)/*.py
+python-wc:
+	wc -l *.py
+	wc -l $(PROJECT)/*.py
+	wc -l $(PROJECT)/$(APP)/*.py
 
 install:
 	virtualenv .
@@ -160,14 +168,6 @@ upload-test:
 	python setup.py sdist --format=gztar,zip upload -r test
 upload:
 	python setup.py sdist --format=gztar,zip upload
-wc:
-	wc -l *.py
-	wc -l $(PROJECT)/*.py
-	wc -l $(PROJECT)/$(APP)/*.py
-yapf:
-	-yapf -i *.py
-	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
-	-yapf -i $(PROJECT)/$(APP)/*.py
 
 virtualenv-create:
 	virtualenv .
