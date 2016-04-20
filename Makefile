@@ -83,8 +83,7 @@ REMOTE_BRANCHES=`git branch -a |\
 	grep -v master`
 git-checkout-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
-        git checkout -t $$i ; \
-    done
+        git checkout -t $$i ; done
 
 # Make
 .DEFAULT_GOAL := commit
