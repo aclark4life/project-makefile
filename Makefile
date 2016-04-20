@@ -47,20 +47,6 @@
 # Short target name to execute default commit style
 commit: git-commit-auto-push
 
-# Make
-.DEFAULT_GOAL := commit
-.PHONY := \
-	git-commit \
-	git-commit-auto-push \
-	git-commit-edit-push
-
-# Git
-COMMIT_MESSAGE="Update"
-REMOTE_BRANCHES=`git branch -a |\
-	grep remote |\
-	grep -v HEAD |\
-	grep -v master`
-
 # Django
 PROJECT="project"
 APP="app"
@@ -69,7 +55,22 @@ django-start:
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 
-clean-pyc:
+# Git
+COMMIT_MESSAGE="Update"
+REMOTE_BRANCHES=`git branch -a |\
+	grep remote |\
+	grep -v HEAD |\
+	grep -v master`
+
+# Make
+.DEFAULT_GOAL := commit
+.PHONY := \
+	git-commit \
+	git-commit-auto-push \
+	git-commit-edit-push
+
+# Python
+python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
 
 clean-db: clean-postgres
