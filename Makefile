@@ -44,14 +44,14 @@
 #ps
 #uninstall
 
+.DEFAULT_GOAL := commit
+
 # Git
 BRANCHES=`git branch -a | grep remote | grep -v HEAD | grep -v master`
 
 # Django
 PROJECT = project
 APP = app
-
-all: up
 
 clean-pyc:
 	find . -name \*.pyc | xargs rm -v
@@ -73,9 +73,10 @@ co:
 
 commit:
 	git commit -a
-commit-update:
+	$(MAKE) push
+commit-push:
 	git commit -a -m "Update"
-
+	$(MAKE) push
 db: migrate su
 
 debug-on-heroku:
@@ -89,9 +90,9 @@ flake:
 	-flake8 $(PROJECT)/$(APP)/*.py
 
 # http://stackoverflow.com/a/26339924
-.PHONY: h
+.PHONY: help
 help:
-	@echo "\nPlease run make with one of the following targets:\n"
+	@echo "\nPlease run make with one of these targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
@@ -140,7 +141,7 @@ test:
 	python manage.py test
 test-readme:
 	rst2html.py README.rst > readme.html; open readme.html
-update: commit-update
+update: 
 up: commit-update push
 upload-test:
 	python setup.py sdist --format=gztar,zip upload -r test
