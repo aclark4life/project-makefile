@@ -50,6 +50,7 @@ commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
 db-clean: django-db-clean-postgres
+lint: python-flake python-yapf wc
 
 # Variables to configure defaults 
 COMMIT_MESSAGE="Update"
@@ -91,6 +92,16 @@ git-commit-edit-push:
 	git commit -a
 	$(MAKE) push
 
+# Help
+#	Print all targets (via http://stackoverflow.com/a/26339924)
+help:
+	@echo "\nPlease run make with one of these targets:\n"
+	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
+        '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
+        | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
+        '{print "    - "$$0}'
+	@echo "\n"
+
 # Heroku
 heroku-debug-on:
 	heroku config:set DEBUG=1
@@ -108,23 +119,11 @@ heroku-debug-off:
 # Python
 python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
-
-
-
-
-flake:
+python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
 
-# Print all targets (via http://stackoverflow.com/a/26339924)
-help:
-	@echo "\nPlease run make with one of these targets:\n"
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
-        '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
-        | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
-        '{print "    - "$$0}'
-	@echo "\n"
 install:
 	virtualenv .
 	bin/pip install -r requirements.txt
