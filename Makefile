@@ -132,11 +132,7 @@ heroku-shell:
 
 # Make
 .DEFAULT_GOAL := commit
-.PHONY := \
-	git-commit \
-	git-commit-auto-push \
-	git-commit-edit-push \
-	help
+.PHONY := install
 
 # Python
 python-clean-pyc:
