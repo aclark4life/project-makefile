@@ -45,6 +45,9 @@
 #ps
 #uninstall
 
+.DEFAULT_GOAL := commit
+.PHONY := install
+
 # Short target names to execute default targets
 commit: git-commit-auto-push
 co: git-checkout-branches
@@ -129,10 +132,6 @@ heroku-push:
 	git push heroku
 heroku-shell:
 	heroku run bash
-
-# Make
-.DEFAULT_GOAL := commit
-.PHONY := install
 
 # Python
 python-clean-pyc:
