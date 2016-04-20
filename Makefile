@@ -102,7 +102,8 @@ git-commit-edit-push:
 git-push:
 	git push
 
-# Help (Print all targets, via http://stackoverflow.com/a/26339924)
+# Misc
+#  Print all targets (via http://stackoverflow.com/a/26339924)
 help:
 	@echo "\nPlease run \`make\` with one of these targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
@@ -110,6 +111,9 @@ help:
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "    - "$$0}'
 	@echo "\n"
+review:
+	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
+        `find $(PROJECT) -name \*.html`
 
 # Heroku
 heroku-debug-on:
@@ -156,9 +160,6 @@ python-wc:
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
 
-review:
-	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
-        `find $(PROJECT) -name \*.html`
 start-doc:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
