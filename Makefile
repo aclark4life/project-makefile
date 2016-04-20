@@ -90,10 +90,12 @@ git-checkout-branches:
         git checkout -t $$i ; done
 git-commit-auto-push:
 	git commit -a -m $(COMMIT_MESSAGE)
-	$(MAKE) push
+	$(MAKE) git-push
 git-commit-edit-push:
 	git commit -a
 	$(MAKE) push
+git-push:
+	git push
 
 # Help (Print all targets, via http://stackoverflow.com/a/26339924)
 help:
