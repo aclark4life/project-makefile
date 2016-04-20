@@ -47,6 +47,9 @@
 
 # Git
 BRANCHES=`git branch -a | grep remote | grep -v HEAD | grep -v master`
+COMMIT_MESSAGE="Update"
+# Alias for default commit style: commit-push or commit-edit-push.
+commit: commit-push
 
 # Django
 PROJECT = project
@@ -70,12 +73,17 @@ co:
         git checkout -t $$i ; \
     done
 
-commit:
+# Commit with manual edit.
+commit-edit-push:
 	git commit -a
 	$(MAKE) push
+
+# Commit with default commit message.
 commit-push:
-	git commit -a -m "Update"
+	git commit -a -m $(COMMIT_MESSAGE)
 	$(MAKE) push
+	
+
 db: migrate su
 
 debug-on-heroku:
@@ -140,8 +148,6 @@ test:
 	python manage.py test
 test-readme:
 	rst2html.py README.rst > readme.html; open readme.html
-update: 
-up: commit-update push
 upload-test:
 	python setup.py sdist --format=gztar,zip upload -r test
 upload:
