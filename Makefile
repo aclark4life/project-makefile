@@ -131,9 +131,9 @@ python-yapf:
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
 python-wc:
-	wc -l *.py
-	wc -l $(PROJECT)/*.py
-	wc -l $(PROJECT)/$(APP)/*.py
+	-wc -l *.py
+	-wc -l $(PROJECT)/*.py
+	-wc -l $(PROJECT)/$(APP)/*.py
 
 install:
 	virtualenv .
