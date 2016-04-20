@@ -51,7 +51,7 @@ commit: git-commit-auto-push
 # Short target name to execute default django database clean target
 db-clean: django-db-clean-postgres
 
-# Variables to configure django project and app name
+# Variables to configure default django project and app name
 PROJECT=project
 APP=app
 
