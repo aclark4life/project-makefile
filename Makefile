@@ -49,6 +49,7 @@
 # and checkout all branches
 commit: git-commit-auto-push
 co: git-checkout-branches
+db: django-migrate django-su
 
 # Short target name to execute default django database clean target
 db-clean: django-db-clean-postgres
@@ -66,6 +67,8 @@ django-db-clean-postgres:
 	-createdb $(PROJECT)-$(APP)
 django-db-clean-sqlite:
 	-rm -f $(PROJECT)-$(APP).sqlite3
+django-migrate:
+	python manage.py migrate
 django-migrations:
 	python manage.py makemigrations $(APP)
 django-migrations-clean:
@@ -75,6 +78,8 @@ django-start:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
+django-su:
+	python manage.py createsuperuser
 
 # Git
 REMOTE_BRANCHES=`git branch -a |\
@@ -90,7 +95,8 @@ git-checkout-branches:
 .PHONY := \
 	git-commit \
 	git-commit-auto-push \
-	git-commit-edit-push
+	git-commit-edit-push \
+	help
 
 # Python
 python-clean-pyc:
@@ -107,8 +113,6 @@ git-commit-edit-push:
 	git commit -a
 	$(MAKE) push
 
-db: migrate su
-
 debug-on-heroku:
 	heroku config:set DEBUG=1
 debug-off-heroku:
@@ -119,8 +123,7 @@ flake:
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
 
-# http://stackoverflow.com/a/26339924
-.PHONY: help
+# Print all targets (via http://stackoverflow.com/a/26339924)
 help:
 	@echo "\nPlease run make with one of these targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
@@ -132,8 +135,6 @@ install:
 	virtualenv .
 	bin/pip install -r requirements.txt
 lint: yapf flake wc
-migrate:
-	python manage.py migrate
 package-test:
 	check-manifest
 	pyroma .
@@ -159,8 +160,6 @@ start-doc:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
 	python manage.py collectstatic --noinput
-su:
-	python manage.py createsuperuser
 test:
 	python manage.py test
 test-readme:
@@ -177,3 +176,6 @@ yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
+
+virtualenv-create:
+	virtualenv .
