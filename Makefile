@@ -109,7 +109,6 @@ git-push:
 	git push
 
 # Misc
-#  Print all targets (via http://stackoverflow.com/a/26339924)
 help:
 	@echo "\nPlease run \`make\` with one of these targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
