@@ -55,6 +55,8 @@ lint: python-flake python-yapf python-wc
 release: python-package-release
 releasetest: python-package-release-test
 serve: django-serve
+static: django-static
+test: django-test
 
 # Variables to configure defaults 
 COMMIT_MESSAGE="Update"
@@ -76,12 +78,16 @@ django-migrations-clean:
 	$(MAKE) django-migrations
 django-serve:
 	python manage.py runserver
+django-test:
+	python manage.py test
 django-shell:
 	python manage.py shell
 django-start:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
+django-static:
+	python manage.py collectstatic --noinput
 django-su:
 	python manage.py createsuperuser
 
@@ -143,10 +149,6 @@ python-flake:
 python-package-check:
 	check-manifest
 	pyroma .
-python-package-release:
-	python setup.py sdist --format=zip upload
-python-package-release-test:
-	python setup.py sdist --format=zip upload -r test
 python-pip-install:
 	bin/pip install -r requirements.txt
 python-virtualenv-create:
@@ -160,16 +162,14 @@ python-wc:
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
 
-start-doc:
-	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
-static:
-	python manage.py collectstatic --noinput
-test:
-	python manage.py test
-test-readme:
+# Python Package
+python-package-readme-test:
 	rst2html.py README.rst > readme.html; open readme.html
-upload-test:
-	python setup.py sdist --format=gztar,zip upload -r test
-upload:
+python-package-release:
 	python setup.py sdist --format=gztar,zip upload
+python-package-release-test:
+	python setup.py sdist --format=gztar,zip upload -r test
 
+# Sphinx
+sphinx-start:
+	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
