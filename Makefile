@@ -54,6 +54,7 @@ install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
 release: python-package-release
 releasetest: python-package-release-test
+serve: django-serve
 
 # Variables to configure defaults 
 COMMIT_MESSAGE="Update"
@@ -73,6 +74,8 @@ django-migrations:
 django-migrations-clean:
 	rm -rf $(PROJECT)/$(APP)/migrations
 	$(MAKE) django-migrations
+django-serve:
+	python manage.py runserver
 django-shell:
 	python manage.py shell
 django-start:
@@ -156,8 +159,6 @@ python-wc:
 review:
 	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
         `find $(PROJECT) -name \*.html`
-serve:
-	python manage.py runserver
 start-doc:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
