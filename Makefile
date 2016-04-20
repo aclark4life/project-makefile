@@ -104,7 +104,7 @@ git-commit-auto-push:
 	$(MAKE) git-push
 git-commit-edit-push:
 	git commit -a
-	$(MAKE) push
+	$(MAKE) git-push
 git-push:
 	git push
 
