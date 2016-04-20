@@ -51,12 +51,12 @@
 	git-commit-edit-push
 
 # Git
+COMMIT_MESSAGE="Update"
 REMOTE_BRANCHES=`git branch -a |\
 	grep remote |\
 	grep -v HEAD |\
 	grep -v master`
-COMMIT_MESSAGE="Update"
-# Alias for default commit style: commit-push or commit-edit-push.
+## Short target name to execute default git commit style
 commit: git-commit-auto-push
 
 # Django
