@@ -45,15 +45,20 @@
 #ps
 #uninstall
 
-# Short target name to execute default commit style
+# Short target name to execute default git commit style target
 commit: git-commit-auto-push
 
-# Short target name to execute default database clean
+# Short target name to execute default django database clean target
 db-clean: django-db-clean-postgres
 
+# Variables to configure django project and app name
+PROJECT=project
+APP=app
+
+# Variable to configure default git commit message
+COMMIT_MESSAGE="Update"
+
 # Django
-PROJECT="project"
-APP="app"
 django-db-clean-postgres:
 	-dropdb $(PROJECT)-$(APP)
 	-createdb $(PROJECT)-$(APP)
@@ -65,7 +70,6 @@ django-start:
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 
 # Git
-COMMIT_MESSAGE="Update"
 REMOTE_BRANCHES=`git branch -a |\
 	grep remote |\
 	grep -v HEAD |\
