@@ -73,6 +73,8 @@ django-migrations:
 django-migrations-clean:
 	rm -rf $(PROJECT)/$(APP)/migrations
 	$(MAKE) django-migrations
+django-shell:
+	python manage.py shell
 django-start:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
@@ -156,8 +158,6 @@ review:
         `find $(PROJECT) -name \*.html`
 serve:
 	python manage.py runserver
-shell:
-	python manage.py shell
 start-doc:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
