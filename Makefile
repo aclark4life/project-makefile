@@ -140,7 +140,6 @@ python-wc:
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
 
-lint: yapf flake wc
 package-test:
 	check-manifest
 	pyroma .
