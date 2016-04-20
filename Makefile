@@ -45,21 +45,16 @@
 #ps
 #uninstall
 
-# Short target names to execute default git commit style
-# and checkout all branches
+# Short target names to execute default targets
 commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
-
-# Short target name to execute default django database clean target
 db-clean: django-db-clean-postgres
 
-# Variables to configure default django project and app name
+# Variables to configure defaults 
+COMMIT_MESSAGE="Update"
 PROJECT=project
 APP=app
-
-# Variable to configure default git commit message
-COMMIT_MESSAGE="Update"
 
 # Django
 django-db-clean-postgres:
