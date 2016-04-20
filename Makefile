@@ -48,9 +48,17 @@
 # Short target name to execute default commit style
 commit: git-commit-auto-push
 
+# Short target name to execute default database clean
+db-clean: django-clean-db-postgres
+
 # Django
 PROJECT="project"
 APP="app"
+django-clean-db-postgres:
+	-dropdb $(PROJECT)-$(APP)
+	-createdb $(PROJECT)-$(APP)
+django-clean-db-sqlite:
+	-rm -f $(PROJECT)-$(APP).sqlite3
 django-start:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
@@ -74,15 +82,8 @@ REMOTE_BRANCHES=`git branch -a |\
 python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
 
-clean-db: clean-postgres
 clean-django-migration:
 	rm -rf $(PROJECT)/$(APP)/migrations
-clean-postgres:
-	-dropdb $(PROJECT)-$(APP)
-	-createdb $(PROJECT)-$(APP)
-clean-sqlite:
-	-rm -f db.sqlite3
-	-git add db.sqlite3
 
 co:
 	-for i in $(REMOTE_BRANCHES) ; do \
