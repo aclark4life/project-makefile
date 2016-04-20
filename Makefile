@@ -22,6 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# GNU software standard targets... for inspiration.
 # https://www.gnu.org/prep/standards/html_node/Standard-Targets.html
 #TAGS
 #all
