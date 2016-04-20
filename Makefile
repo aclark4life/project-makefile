@@ -50,6 +50,7 @@ commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
 db-clean: django-db-clean-postgres
+install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
 
 # Variables to configure defaults 
@@ -126,6 +127,10 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
+python-pip-install:
+	bin/pip install -r requirements.txt
+python-virtualenv-create:
+	virtualenv .
 python-yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
@@ -135,9 +140,6 @@ python-wc:
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
 
-install:
-	virtualenv .
-	bin/pip install -r requirements.txt
 lint: yapf flake wc
 package-test:
 	check-manifest
@@ -169,5 +171,3 @@ upload-test:
 upload:
 	python setup.py sdist --format=gztar,zip upload
 
-virtualenv-create:
-	virtualenv .
