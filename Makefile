@@ -45,8 +45,10 @@
 #ps
 #uninstall
 
-# Short target name to execute default git commit style target
+# Short target names to execute default git commit style
+# and checkout all branches
 commit: git-commit-auto-push
+co: git-checkout-branches
 
 # Short target name to execute default django database clean target
 db-clean: django-db-clean-postgres
@@ -64,6 +66,11 @@ django-db-clean-postgres:
 	-createdb $(PROJECT)-$(APP)
 django-db-clean-sqlite:
 	-rm -f $(PROJECT)-$(APP).sqlite3
+django-migrations:
+	python manage.py makemigrations $(APP)
+django-migrations-clean:
+	rm -rf $(PROJECT)/$(APP)/migrations
+	$(MAKE) django-migrations
 django-start:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
@@ -74,6 +81,10 @@ REMOTE_BRANCHES=`git branch -a |\
 	grep remote |\
 	grep -v HEAD |\
 	grep -v master`
+git-checkout-branches:
+	-for i in $(REMOTE_BRANCHES) ; do \
+        git checkout -t $$i ; \
+    done
 
 # Make
 .DEFAULT_GOAL := commit
@@ -86,13 +97,6 @@ REMOTE_BRANCHES=`git branch -a |\
 python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
 
-clean-django-migration:
-	rm -rf $(PROJECT)/$(APP)/migrations
-
-co:
-	-for i in $(REMOTE_BRANCHES) ; do \
-        git checkout -t $$i ; \
-    done
 
 # Commit with default commit message.
 git-commit-auto-push:
@@ -131,8 +135,6 @@ install:
 lint: yapf flake wc
 migrate:
 	python manage.py migrate
-migrations:
-	python manage.py makemigrations $(APP)
 package-test:
 	check-manifest
 	pyroma .
