@@ -44,6 +44,9 @@
 #ps
 #uninstall
 
+.DEFAULT_GOAL := commit
+.PHONY := commit commit-edit-push commit-push
+
 # Git
 REMOTE_BRANCHES=`git branch -a |\
 				 grep remote |\
@@ -162,4 +165,3 @@ yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
-.DEFAULT_GOAL := commit
