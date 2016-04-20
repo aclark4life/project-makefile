@@ -107,6 +107,10 @@ heroku-debug-on:
 	heroku config:set DEBUG=1
 heroku-debug-off:
 	heroku config:unset DEBUG
+heroku-push:
+	git push heroku
+heroku-shell:
+	heroku run bash
 
 # Make
 .DEFAULT_GOAL := commit
@@ -132,8 +136,6 @@ package-test:
 	check-manifest
 	pyroma .
 push: push-origin
-push-heroku:
-	git push heroku
 push-origin:
 	git push
 release:
@@ -147,8 +149,6 @@ serve:
 	python manage.py runserver
 shell:
 	python manage.py shell
-shell-heroku:
-	heroku run bash
 start-doc:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
