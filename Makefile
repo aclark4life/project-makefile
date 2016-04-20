@@ -44,7 +44,6 @@
 #ps
 #uninstall
 
-.DEFAULT_GOAL := commit
 
 # Git
 BRANCHES=`git branch -a | grep remote | grep -v HEAD | grep -v master`
@@ -155,3 +154,4 @@ yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
+.DEFAULT_GOAL := commit
