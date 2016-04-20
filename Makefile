@@ -82,6 +82,7 @@ co:
 commit-auto-push:
 	git commit -a -m $(COMMIT_MESSAGE)
 	$(MAKE) push
+
 # Commit with manual edit.
 commit-edit-push:
 	git commit -a
