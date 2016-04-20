@@ -91,6 +91,12 @@ git-commit-edit-push:
 	git commit -a
 	$(MAKE) push
 
+# Heroku
+heroku-debug-on:
+	heroku config:set DEBUG=1
+heroku-debug-off:
+	heroku config:unset DEBUG
+
 # Make
 .DEFAULT_GOAL := commit
 .PHONY := \
@@ -105,10 +111,6 @@ python-clean-pyc:
 
 
 
-debug-on-heroku:
-	heroku config:set DEBUG=1
-debug-off-heroku:
-	heroku config:unset DEBUG
 
 flake:
 	-flake8 *.py
