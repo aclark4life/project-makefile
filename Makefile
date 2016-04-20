@@ -64,6 +64,10 @@ REMOTE_BRANCHES=`git branch -a |\
 # Django
 PROJECT="project"
 APP="app"
+django-start:
+	-mkdir -p $(PROJECT)/$(APP)
+	-django-admin startproject $(PROJECT) .
+	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 
 clean-pyc:
 	find . -name \*.pyc | xargs rm -v
@@ -143,10 +147,6 @@ shell:
 	python manage.py shell
 shell-heroku:
 	heroku run bash
-start-django:
-	-mkdir -p $(PROJECT)/$(APP)
-	-django-admin startproject $(PROJECT) .
-	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 start-doc:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 static:
