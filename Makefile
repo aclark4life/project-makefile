@@ -52,9 +52,9 @@
 
 # Git
 REMOTE_BRANCHES=`git branch -a |\
-				 grep remote |\
-				 grep -v HEAD |\
-				 grep -v master`
+	grep remote |\
+	grep -v HEAD |\
+	grep -v master`
 COMMIT_MESSAGE="Update"
 # Alias for default commit style: commit-push or commit-edit-push.
 commit: git-commit-auto-push
