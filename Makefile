@@ -52,6 +52,8 @@ db: django-migrate django-su
 db-clean: django-db-clean-postgres
 install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
+release: python-package-release
+releasetest: python-package-release-test
 
 # Variables to configure defaults 
 COMMIT_MESSAGE="Update"
@@ -127,6 +129,13 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
+python-package-check:
+	check-manifest
+	pyroma .
+python-package-release:
+	python setup.py sdist --format=zip upload
+python-package-release-test:
+	python setup.py sdist --format=zip upload -r test
 python-pip-install:
 	bin/pip install -r requirements.txt
 python-virtualenv-create:
@@ -140,16 +149,6 @@ python-wc:
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
 
-package-test:
-	check-manifest
-	pyroma .
-push: push-origin
-push-origin:
-	git push
-release:
-	python setup.py sdist --format=zip upload
-releasetest:
-	python setup.py sdist --format=zip upload -r test
 review:
 	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
         `find $(PROJECT) -name \*.html`
