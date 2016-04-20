@@ -44,9 +44,11 @@
 #ps
 #uninstall
 
-
 # Git
-BRANCHES=`git branch -a | grep remote | grep -v HEAD | grep -v master`
+REMOTE_BRANCHES=`git branch -a |\
+				 grep remote |\
+				 grep -v HEAD |\
+				 grep -v master`
 COMMIT_MESSAGE="Update"
 # Alias for default commit style: commit-push or commit-edit-push.
 commit: commit-push
@@ -69,7 +71,7 @@ clean-sqlite:
 	-git add db.sqlite3
 
 co:
-	-for i in $(branches) ; do \
+	-for i in $(REMOTE_BRANCHES) ; do \
         git checkout -t $$i ; \
     done
 
