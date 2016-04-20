@@ -44,6 +44,10 @@
 #ps
 #uninstall
 
+# Short target name to execute default commit style
+commit: git-commit-auto-push
+
+# Make
 .DEFAULT_GOAL := commit
 .PHONY := \
 	git-commit \
@@ -56,12 +60,10 @@ REMOTE_BRANCHES=`git branch -a |\
 	grep remote |\
 	grep -v HEAD |\
 	grep -v master`
-## Short target name to execute default git commit style
-commit: git-commit-auto-push
 
 # Django
-PROJECT = project
-APP = app
+PROJECT="project"
+APP="app"
 
 clean-pyc:
 	find . -name \*.pyc | xargs rm -v
