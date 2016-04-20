@@ -89,6 +89,12 @@ REMOTE_BRANCHES=`git branch -a |\
 git-checkout-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
         git checkout -t $$i ; done
+git-commit-auto-push:
+	git commit -a -m $(COMMIT_MESSAGE)
+	$(MAKE) push
+git-commit-edit-push:
+	git commit -a
+	$(MAKE) push
 
 # Make
 .DEFAULT_GOAL := commit
@@ -103,15 +109,6 @@ python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
 
 
-# Commit with default commit message.
-git-commit-auto-push:
-	git commit -a -m $(COMMIT_MESSAGE)
-	$(MAKE) push
-
-# Commit with manual edit.
-git-commit-edit-push:
-	git commit -a
-	$(MAKE) push
 
 debug-on-heroku:
 	heroku config:set DEBUG=1
