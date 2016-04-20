@@ -49,15 +49,15 @@
 commit: git-commit-auto-push
 
 # Short target name to execute default database clean
-db-clean: django-clean-db-postgres
+db-clean: django-db-clean-postgres
 
 # Django
 PROJECT="project"
 APP="app"
-django-clean-db-postgres:
+django-db-clean-postgres:
 	-dropdb $(PROJECT)-$(APP)
 	-createdb $(PROJECT)-$(APP)
-django-clean-db-sqlite:
+django-db-clean-sqlite:
 	-rm -f $(PROJECT)-$(APP).sqlite3
 django-start:
 	-mkdir -p $(PROJECT)/$(APP)
