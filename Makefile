@@ -143,7 +143,7 @@ npm-install:
 
 # Plone
 plone-install:
-	plock --no-cache .
+	plock --force --no-cache .
 plone-serve:
 	bin/plone fg
 
