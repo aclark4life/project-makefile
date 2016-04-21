@@ -48,7 +48,7 @@
 .DEFAULT_GOAL := git-commit-auto-push
 .PHONY := install
 
-# Short target names to execute default targets
+# Short target names to execute default, multiple and preferred targets
 commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
