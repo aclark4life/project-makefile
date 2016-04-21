@@ -112,6 +112,19 @@ git-commit-edit-push:
 git-push:
 	git push
 
+# Heroku
+heroku-debug-on:
+	heroku config:set DEBUG=1
+heroku-debug-off:
+	heroku config:unset DEBUG
+heroku-push:
+	git push heroku
+heroku-shell:
+	heroku run bash
+
+# Include
+-include Makefile.*
+
 # Misc
 help:
 	@echo "\nPlease run \`make\` with one of these targets:\n"
@@ -123,16 +136,6 @@ help:
 review:
 	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
         `find $(PROJECT) -name \*.html`
-
-# Heroku
-heroku-debug-on:
-	heroku config:set DEBUG=1
-heroku-debug-off:
-	heroku config:unset DEBUG
-heroku-push:
-	git push heroku
-heroku-shell:
-	heroku run bash
 
 # Python
 python-clean-pyc:
