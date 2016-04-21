@@ -135,6 +135,10 @@ review:
 	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
         `find $(PROJECT) -name \*.html`
 
+# Node
+npm-init:
+	npm init
+
 # Python
 python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
