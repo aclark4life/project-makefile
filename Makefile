@@ -141,6 +141,12 @@ npm-init:
 npm-install:
 	npm install
 
+# Plone
+plone-install:
+	plock --no-cache .
+plone-serve:
+	bin/plone fg
+
 # Python
 python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
