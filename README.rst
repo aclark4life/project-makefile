@@ -1,5 +1,5 @@
-Python Project
-==============
+Project Makefile
+================
 
 **DO NOT USE THIS**
 
