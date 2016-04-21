@@ -61,6 +61,7 @@ serve: django-serve
 static: django-static
 test: django-test
 vm: vagrant-up
+vm-down: vagrant-suspend
 
 # Variables to configure defaults 
 COMMIT_MESSAGE="Update"
