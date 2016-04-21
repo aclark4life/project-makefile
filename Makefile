@@ -143,7 +143,9 @@ npm-install:
 
 # Plone
 plone-heroku:
-	bin/buildout -c heroku.cfg
+	-createuser -s plone
+	-createdb -U plone plone
+	export PORT=8080 && export USERNAME=admin && export PASSWORD=admin && bin/buildout -c heroku.cfg
 plone-install:
 	plock --force --no-cache .
 plone-serve:
