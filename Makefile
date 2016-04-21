@@ -60,7 +60,7 @@ releasetest: python-package-release-test
 serve: django-serve
 static: django-static
 test: django-test
-vm: vm-up
+vm: vagrant-up
 
 # Variables to configure defaults 
 COMMIT_MESSAGE="Update"
@@ -170,13 +170,13 @@ sphinx-start:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 
 # Vagrant
-vm-box-update:
+vagrant-box-update:
 	vagrant box update
-vm-clean:
+vagrant-clean:
 	vagrant destroy
-vm-down:
+vagrant-down:
 	vagrant suspend
-vm-init:
+vagrant-init:
 	vagrant init ubuntu/trusty64; vagrant up --provider virtualbox
-vm-up:
+vagrant-up:
 	vagrant up --provision
