@@ -122,9 +122,6 @@ heroku-push:
 heroku-shell:
 	heroku run bash
 
-# Include
--include Makefile.*
-
 # Misc
 help:
 	@echo "\nPlease run \`make\` with one of these targets:\n"
