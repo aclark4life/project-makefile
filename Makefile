@@ -138,6 +138,8 @@ review:
 # Node
 npm-init:
 	npm init
+npm-install:
+	npm install
 
 # Python
 python-clean-pyc:
