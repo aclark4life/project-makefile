@@ -167,3 +167,9 @@ python-package-release-test:
 # Sphinx
 sphinx-start:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
+
+# Vagrant
+vm-start:
+	vagrant init
+vm:
+	vagrant up
