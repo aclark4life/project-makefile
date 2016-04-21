@@ -145,7 +145,8 @@ npm-install:
 plone-install:
 	plock --force --no-cache .
 plone-serve:
-	bin/plone fg
+	@echo "Zope about to handle requests here:\n\n\thttp://localhost:8080\n"
+	@bin/plone fg
 
 # Python
 python-clean-pyc:
