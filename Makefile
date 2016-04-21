@@ -142,6 +142,8 @@ npm-install:
 	npm install
 
 # Plone
+plone-heroku:
+	bin/buildout -c heroku.cfg
 plone-install:
 	plock --force --no-cache .
 plone-serve:
