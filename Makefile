@@ -53,6 +53,7 @@ commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
 db-clean: django-db-clean-postgres
+heroku: heroku-push
 install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
 release: python-package-release
