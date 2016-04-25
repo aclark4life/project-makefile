@@ -45,7 +45,7 @@
 #ps
 #uninstall
 
-.DEFAULT_GOAL := git-commit-edit-push
+.DEFAULT_GOAL := git-commit-auto-push
 .PHONY := install
 
 # Short target names to execute default, multiple and preferred targets
