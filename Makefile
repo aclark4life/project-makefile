@@ -196,7 +196,8 @@ sphinx-start:
 
 # Static
 static-serve:
-	python -m SimpleHTTPServer .
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	python -m SimpleHTTPServer
 
 # Vagrant
 vagrant-box-update:
