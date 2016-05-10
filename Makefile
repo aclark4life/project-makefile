@@ -56,6 +56,8 @@ commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
 db-clean: django-db-clean-postgres
+fe-init: npm-init npm-install grunt-init grunt-serve
+fe: npm-install grunt-serve
 heroku: heroku-push
 install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
@@ -144,6 +146,10 @@ npm-init:
 	npm init
 npm-install:
 	npm install
+grunt-init:
+	grunt-init `pwd`
+grunt-serve:
+	grunt serve
 
 # Plone
 plone-heroku:
