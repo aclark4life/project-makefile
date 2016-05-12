@@ -195,6 +195,8 @@ python-package-release:
 	python setup.py sdist --format=gztar,zip upload
 python-package-release-test:
 	python setup.py sdist --format=gztar,zip upload -r test
+python-package-test:
+	python setup.py test
 
 # Sphinx
 sphinx-start:
