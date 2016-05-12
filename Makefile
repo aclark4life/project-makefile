@@ -61,6 +61,7 @@ fe: npm-install grunt-serve
 heroku: heroku-push
 install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
+readme: python-package-readme-test
 release: python-package-release
 releasetest: python-package-release-test
 serve: django-serve
