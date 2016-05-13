@@ -58,6 +58,7 @@ db: django-migrate django-su
 db-clean: django-db-clean-postgres
 fe-init: npm-init npm-install grunt-init grunt-serve
 fe: npm-install grunt-serve
+freeze: python-pip-freeze
 heroku: heroku-push
 install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
