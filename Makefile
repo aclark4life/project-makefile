@@ -74,6 +74,7 @@ vm-down: vagrant-suspend
 COMMIT_MESSAGE="Update"
 PROJECT=project
 APP=app
+DIR := $(shell echo `tmp`)
 
 # Django
 django-db-clean-postgres:
@@ -176,6 +177,9 @@ python-flake:
 python-package-check:
 	check-manifest
 	pyroma .
+python-pip-freeze:
+	bin/pip freeze | sort > $(DIR)/requirements.txt
+	mv -f $(DIR)/requirements.txt .
 python-pip-install:
 	bin/pip install -r requirements.txt
 python-virtualenv-create:
