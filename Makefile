@@ -151,7 +151,7 @@ npm-install:
 	npm install
 grunt-init:
 	npm install grunt
-	grunt-init `pwd`
+	grunt-init Gruntfile
 grunt-serve:
 	grunt serve
 
