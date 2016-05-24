@@ -55,6 +55,10 @@ django-db-clean-postgres:
 	-createdb $(PROJECT)-$(APP)
 django-db-clean-sqlite:
 	-rm -f $(PROJECT)-$(APP).sqlite3
+django-init:
+	-mkdir -p $(PROJECT)/$(APP)
+	-django-admin startproject $(PROJECT) .
+	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -68,10 +72,6 @@ django-test:
 	python manage.py test
 django-shell:
 	python manage.py shell
-django-start:
-	-mkdir -p $(PROJECT)/$(APP)
-	-django-admin startproject $(PROJECT) .
-	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 django-static:
 	python manage.py collectstatic --noinput
 django-su:
