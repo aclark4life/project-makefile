@@ -24,10 +24,10 @@
 
 .DEFAULT_GOAL=git-commit-auto-push
 
-APP="app"
+APP=app
 COMMITMESSAGE="Update"
 DIR:=$(shell echo `tmp`)
-PROJECT="project"
+PROJECT=project
 
 commit: git-commit-auto-push
 co: git-checkout-branches
