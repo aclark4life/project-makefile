@@ -22,36 +22,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# GNU software standard targets... for inspiration.
-# https://www.gnu.org/prep/standards/html_node/Standard-Targets.html
-#TAGS
-#all
-#check
-#clean
-#distclean
-#dist
-#dvi
-#html
-#info
-#install-dvi
-#install-html
-#install-pdf
-#install-ps
-#install-strip
-#install
-#maintainer-clean
-#mostlyclean
-#pdf
-#ps
-#uninstall
+.DEFAULT_GOAL=git-commit-auto-push
 
-# https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
-.DEFAULT_GOAL = git-commit-auto-push
+COMMIT_MESSAGE="Update"
+PROJECT=project
+APP=app
+DIR := $(shell echo `tmp`)
 
-# https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
-.PHONY : install
-
-# Short target names to execute default, multiple and preferred targets
 commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
@@ -71,11 +48,6 @@ test: django-test
 vm: vagrant-up
 vm-down: vagrant-suspend
 
-# Variables to configure defaults 
-COMMIT_MESSAGE="Update"
-PROJECT=project
-APP=app
-DIR := $(shell echo `tmp`)
 
 # Django
 django-db-clean-postgres:
