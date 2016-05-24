@@ -194,6 +194,7 @@ vagrant-clean:
 vagrant-down:
 	vagrant suspend
 vagrant-init:
-	vagrant init ubuntu/trusty64; vagrant up --provider virtualbox
+	vagrant init ubuntu/trusty64
+	vagrant up --provider virtualbox
 vagrant-up:
 	vagrant up --provision
