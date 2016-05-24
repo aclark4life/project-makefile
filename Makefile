@@ -24,10 +24,10 @@
 
 .DEFAULT_GOAL=git-commit-auto-push
 
-COMMIT_MESSAGE="Update"
-PROJECT=project
-APP=app
-DIR := $(shell echo `tmp`)
+APP="app"
+COMMITMESSAGE="Update"
+DIR:=$(shell echo `tmp`)
+PROJECT="project"
 
 commit: git-commit-auto-push
 co: git-checkout-branches
@@ -86,7 +86,7 @@ git-checkout-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
         git checkout -t $$i ; done
 git-commit-auto-push:
-	git commit -a -m $(COMMIT_MESSAGE)
+	git commit -a -m $(COMMITMESSAGE)
 	$(MAKE) git-push
 git-commit-edit-push:
 	git commit -a
