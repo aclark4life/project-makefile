@@ -180,6 +180,9 @@ python-package-test:
 # Sphinx
 sphinx-start:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
+sphinx-serve:
+	@echo "\nServing HTTP on http://0.0.0.0:8085 ...\n"
+	pushd _build/html; python -m SimpleHTTPServer 8085; popd
 
 # Static
 static-serve:
