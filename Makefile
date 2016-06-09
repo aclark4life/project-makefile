@@ -45,7 +45,7 @@ plone-start: plone-init
 readme: python-package-readme-test
 release: python-package-release
 releasetest: python-package-release-test
-serve: django-serve
+serve: python-serve
 sphinx-start: sphinx-init
 static: django-static
 test: django-test
