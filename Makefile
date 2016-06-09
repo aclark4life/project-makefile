@@ -45,6 +45,7 @@ readme: python-package-readme-test
 release: python-package-release
 releasetest: python-package-release-test
 serve: django-serve
+sphinx-start: sphinx-init
 static: django-static
 test: django-test
 vm: vagrant-up
@@ -181,7 +182,7 @@ python-wc:
 	-wc -l $(PROJECT)/$(APP)/*.py
 
 # Sphinx
-sphinx-start:
+sphinx-init:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 sphinx-serve:
 	@echo "\nServing HTTP on http://0.0.0.0:8085 ...\n"
