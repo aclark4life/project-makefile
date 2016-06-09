@@ -39,6 +39,7 @@ freeze: python-pip-freeze
 heroku: heroku-push
 install: python-virtualenv-create python-pip-install
 lint: python-flake python-yapf python-wc
+push: git-push
 readme: python-package-readme-test
 release: python-package-release
 releasetest: python-package-release-test
