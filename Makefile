@@ -176,6 +176,9 @@ python-pip-freeze:
 	mv -f $(TMP)/requirements.txt .
 python-pip-install:
 	bin/pip install -r requirements.txt
+python-serve:
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	python -m SimpleHTTPServer
 python-virtualenv:
 	virtualenv .
 python-yapf:
@@ -193,11 +196,6 @@ sphinx-init:
 sphinx-serve:
 	@echo "\nServing HTTP on http://0.0.0.0:8085 ...\n"
 	pushd _build/html; python -m SimpleHTTPServer 8085; popd
-
-# Static
-static-serve:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m SimpleHTTPServer
 
 # Vagrant
 vagrant-box-update:
