@@ -41,6 +41,7 @@ heroku: heroku-push
 install: python-virtualenv python-pip-install
 lint: python-flake python-yapf python-wc
 push: git-push
+plone-start: plone-init
 readme: python-package-readme-test
 release: python-package-release
 releasetest: python-package-release-test
@@ -141,8 +142,12 @@ plone-heroku:
 		export USERNAME=admin && \
 		export PASSWORD=admin && \
 		bin/buildout -c heroku.cfg
+plone-init:
+	plock --force --no-cache --no-virtualenv .
 plone-install:
-	plock --force --no-cache .
+	$(MAKE) install
+	bin/buildout
+
 plone-serve:
 	@echo "Zope about to handle requests here:\n\n\thttp://localhost:8080\n"
 	@bin/plone fg
