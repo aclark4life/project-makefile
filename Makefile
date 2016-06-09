@@ -33,6 +33,7 @@ commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
 db-clean: django-db-clean-postgres
+django-start: django-init
 fe-init: npm-init npm-install grunt-init grunt-serve
 fe: npm-install grunt-serve
 freeze: python-pip-freeze
