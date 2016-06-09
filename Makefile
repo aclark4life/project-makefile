@@ -147,7 +147,8 @@ plone-init:
 plone-install:
 	$(MAKE) install
 	bin/buildout
-
+plone-sync:
+	bin/buildout -c database.cfg
 plone-serve:
 	@echo "Zope about to handle requests here:\n\n\thttp://localhost:8080\n"
 	@bin/plone fg
