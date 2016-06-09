@@ -153,6 +153,17 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
+python-package-check:
+	check-manifest
+	pyroma .
+python-package-readme-test:
+	rst2html.py README.rst > readme.html; open readme.html
+python-package-release:
+	python setup.py sdist --format=gztar,zip upload
+python-package-release-test:
+	python setup.py sdist --format=gztar,zip upload -r test
+python-package-test:
+	python setup.py test
 python-pip-freeze:
 	bin/pip freeze | sort > $(TMP)/requirements.txt
 	mv -f $(TMP)/requirements.txt .
@@ -168,19 +179,6 @@ python-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
-
-# Python Package
-python-package-check:
-	check-manifest
-	pyroma .
-python-package-readme-test:
-	rst2html.py README.rst > readme.html; open readme.html
-python-package-release:
-	python setup.py sdist --format=gztar,zip upload
-python-package-release-test:
-	python setup.py sdist --format=gztar,zip upload -r test
-python-package-test:
-	python setup.py test
 
 # Sphinx
 sphinx-start:
