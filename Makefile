@@ -26,7 +26,7 @@
 
 APP=app
 COMMITMESSAGE="Update"
-DIR:=$(shell echo `tmp`)
+TMP:=$(shell echo `tmp`)
 PROJECT=project
 
 commit: git-commit-auto-push
@@ -157,8 +157,8 @@ python-package-check:
 	check-manifest
 	pyroma .
 python-pip-freeze:
-	bin/pip freeze | sort > $(DIR)/requirements.txt
-	mv -f $(DIR)/requirements.txt .
+	bin/pip freeze | sort > $(TMP)/requirements.txt
+	mv -f $(TMP)/requirements.txt .
 python-pip-install:
 	bin/pip install -r requirements.txt
 python-virtualenv:
