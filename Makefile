@@ -37,7 +37,7 @@ fe-init: npm-init npm-install grunt-init grunt-serve
 fe: npm-install grunt-serve
 freeze: python-pip-freeze
 heroku: heroku-push
-install: python-virtualenv-create python-pip-install
+install: python-virtualenv python-pip-install
 lint: python-flake python-yapf python-wc
 push: git-push
 readme: python-package-readme-test
@@ -60,6 +60,9 @@ django-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
+django-install:
+	$(MAKE) python-virtualenv
+	bin/pip install Django
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -157,7 +160,7 @@ python-pip-freeze:
 	mv -f $(DIR)/requirements.txt .
 python-pip-install:
 	bin/pip install -r requirements.txt
-python-virtualenv-create:
+python-virtualenv:
 	virtualenv .
 python-yapf:
 	-yapf -i *.py
