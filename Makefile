@@ -153,9 +153,6 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
-python-package-check:
-	check-manifest
-	pyroma .
 python-pip-freeze:
 	bin/pip freeze | sort > $(TMP)/requirements.txt
 	mv -f $(TMP)/requirements.txt .
@@ -173,6 +170,9 @@ python-wc:
 	-wc -l $(PROJECT)/$(APP)/*.py
 
 # Python Package
+python-package-check:
+	check-manifest
+	pyroma .
 python-package-readme-test:
 	rst2html.py README.rst > readme.html; open readme.html
 python-package-release:
