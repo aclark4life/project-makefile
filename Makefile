@@ -25,25 +25,29 @@
 .DEFAULT_GOAL=git-commit-auto-push
 
 APP=app
-COMMITMESSAGE="Update"
-DIR:=$(shell echo `tmp`)
+MESSAGE="Update"
 PROJECT=project
+TMP:=$(shell echo `tmp`)
 
 commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
 db-clean: django-db-clean-postgres
+django-start: django-init
 fe-init: npm-init npm-install grunt-init grunt-serve
 fe: npm-install grunt-serve
 freeze: python-pip-freeze
 heroku: heroku-push
-install: python-virtualenv-create python-pip-install
+install: python-virtualenv python-pip-install
 lint: python-flake python-yapf python-wc
 migrate: django-migrate
+push: git-push
+plone-start: plone-init
 readme: python-package-readme-test
 release: python-package-release
 releasetest: python-package-release-test
-serve: django-serve
+serve: python-serve
+sphinx-start: sphinx-init
 static: django-static
 test: django-test
 vm: vagrant-up
@@ -60,6 +64,9 @@ django-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
+django-install:
+	$(MAKE) python-virtualenv
+	bin/pip install Django
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -87,7 +94,7 @@ git-checkout-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
         git checkout -t $$i ; done
 git-commit-auto-push:
-	git commit -a -m $(COMMITMESSAGE)
+	git commit -a -m $(MESSAGE)
 	$(MAKE) git-push
 git-commit-edit-push:
 	git commit -a
@@ -136,8 +143,13 @@ plone-heroku:
 		export USERNAME=admin && \
 		export PASSWORD=admin && \
 		bin/buildout -c heroku.cfg
+plone-init:
+	plock --force --no-cache --no-virtualenv .
 plone-install:
-	plock --force --no-cache .
+	$(MAKE) install
+	bin/buildout
+plone-db-sync:
+	bin/buildout -c database.cfg
 plone-serve:
 	@echo "Zope about to handle requests here:\n\n\thttp://localhost:8080\n"
 	@bin/plone fg
@@ -152,12 +164,23 @@ python-flake:
 python-package-check:
 	check-manifest
 	pyroma .
+python-package-readme-test:
+	rst2html.py README.rst > readme.html; open readme.html
+python-package-release:
+	python setup.py sdist --format=gztar,zip upload
+python-package-release-test:
+	python setup.py sdist --format=gztar,zip upload -r test
+python-package-test:
+	python setup.py test
 python-pip-freeze:
-	bin/pip freeze | sort > $(DIR)/requirements.txt
-	mv -f $(DIR)/requirements.txt .
+	bin/pip freeze | sort > $(TMP)/requirements.txt
+	mv -f $(TMP)/requirements.txt .
 python-pip-install:
 	bin/pip install -r requirements.txt
-python-virtualenv-create:
+python-serve:
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	python -m SimpleHTTPServer
+python-virtualenv:
 	virtualenv .
 python-yapf:
 	-yapf -i *.py
@@ -168,27 +191,12 @@ python-wc:
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
 
-# Python Package
-python-package-readme-test:
-	rst2html.py README.rst > readme.html; open readme.html
-python-package-release:
-	python setup.py sdist --format=gztar,zip upload
-python-package-release-test:
-	python setup.py sdist --format=gztar,zip upload -r test
-python-package-test:
-	python setup.py test
-
 # Sphinx
-sphinx-start:
+sphinx-init:
 	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
 sphinx-serve:
 	@echo "\nServing HTTP on http://0.0.0.0:8085 ...\n"
 	pushd _build/html; python -m SimpleHTTPServer 8085; popd
-
-# Static
-static-serve:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m SimpleHTTPServer
 
 # Vagrant
 vagrant-box-update:
