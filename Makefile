@@ -45,12 +45,13 @@ push: git-push
 plone-start: plone-init
 python-test: python-package-test
 readme: python-package-readme-test
+readme-test: python-package-readme-test
 release: python-package-release
-releasetest: python-package-release-test
+release-test: python-package-release-test
 serve: python-serve
 sphinx-start: sphinx-init
 static: django-static
-test: django-test
+test: python-test
 vm: vagrant-up
 vm-down: vagrant-suspend
 
