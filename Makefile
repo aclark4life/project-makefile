@@ -43,6 +43,7 @@ lint: python-flake python-yapf python-wc
 migrate: django-migrate
 push: git-push
 plone-start: plone-init
+python-test: python-package-test
 readme: python-package-readme-test
 release: python-package-release
 releasetest: python-package-release-test
