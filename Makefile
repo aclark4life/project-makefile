@@ -42,6 +42,7 @@ install: python-virtualenv python-pip-install
 lint: python-flake python-yapf python-wc
 migrate: django-migrate
 push: git-push
+package-init: python-package-init
 plone-start: plone-init
 python-test: python-package-test
 readme: python-package-readme-test
@@ -166,6 +167,10 @@ python-flake:
 python-package-check:
 	check-manifest
 	pyroma .
+python-package-init:
+	mkdir -p $(PROJECT)/$(APP)
+	touch $(PROJECT)/$(APP)/__init__.py
+	touch $(PROJECT)/__init__.py
 python-package-readme-test:
 	rst2html.py README.rst > readme.html; open readme.html
 python-package-release:
