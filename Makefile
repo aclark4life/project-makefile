@@ -32,7 +32,7 @@ TMP:=$(shell echo `tmp`)
 commit: git-commit-auto-push
 co: git-checkout-branches
 db: django-migrate django-su
-db-clean: django-db-clean-postgres
+db-init: django-db-init-postgres
 django-start: django-init
 fe-init: npm-init npm-install grunt-init grunt-serve
 fe: npm-install grunt-serve
@@ -58,10 +58,10 @@ vm-down: vagrant-suspend
 
 
 # Django
-django-db-clean-postgres:
+django-db-init-postgres:
 	-dropdb $(PROJECT)-$(APP)
 	-createdb $(PROJECT)-$(APP)
-django-db-clean-sqlite:
+django-db-init-sqlite:
 	-rm -f $(PROJECT)-$(APP).sqlite3
 django-init:
 	-mkdir -p $(PROJECT)/$(APP)
@@ -74,7 +74,7 @@ django-migrate:
 	python manage.py migrate
 django-migrations:
 	python manage.py makemigrations $(APP)
-django-migrations-clean:
+django-migrations-init:
 	rm -rf $(PROJECT)/$(APP)/migrations
 	$(MAKE) django-migrations
 django-serve:
@@ -208,11 +208,10 @@ sphinx-serve:
 # Vagrant
 vagrant-box-update:
 	vagrant box update
-vagrant-clean:
-	vagrant destroy
 vagrant-down:
 	vagrant suspend
 vagrant-init:
+	vagrant destroy
 	vagrant init ubuntu/trusty64
 	vagrant up --provider virtualbox
 vagrant-up:
