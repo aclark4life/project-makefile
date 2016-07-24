@@ -56,6 +56,13 @@ test: python-test
 vm: vagrant-up
 vm-down: vagrant-suspend
 
+# ABlog
+ablog-init:
+	ablog start
+ablog-build:
+	ablog build
+ablog-serve:
+	ablog serve
 
 # Django
 django-db-init-postgres:
