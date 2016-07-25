@@ -45,7 +45,6 @@ push: git-push
 package-init: python-package-init
 plone-start: plone-init
 python-test: python-package-test
-readme: python-package-readme-test
 readme-test: python-package-readme-test
 release: python-package-release
 release-test: python-package-release-test
