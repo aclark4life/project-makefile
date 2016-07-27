@@ -43,6 +43,8 @@ lint: python-flake python-yapf python-wc
 migrate: django-migrate
 push: git-push
 package-init: python-package-init
+package-lint: python-package-lint
+package-test: python-package-test
 plone-start: plone-init
 python-test: python-package-test
 readme-test: python-package-readme-test
@@ -170,13 +172,13 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
-python-package-check:
-	check-manifest
-	pyroma .
 python-package-init:
 	mkdir -p $(PROJECT)/$(APP)
 	touch $(PROJECT)/$(APP)/__init__.py
 	touch $(PROJECT)/__init__.py
+python-package-lint:
+	check-manifest
+	pyroma .
 python-package-readme-test:
 	rst2html.py README.rst > readme.html; open readme.html
 python-package-release:
