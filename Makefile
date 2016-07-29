@@ -27,6 +27,7 @@
 APP=app
 MESSAGE="Update"
 PROJECT=project
+PROJECT_EDITOR="Sublime Text"
 TMP:=$(shell echo `tmp`)
 
 commit: git-commit-auto-push
@@ -131,9 +132,16 @@ help:
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "    - "$$0}'
 	@echo "\n"
+
+uname := $(shell uname)
 review:
-	open -a "Sublime Text 2" `find $(PROJECT) -name \*.py | grep -v __init__.py`\
-        `find $(PROJECT) -name \*.html`
+
+ifeq ($(uname), Darwin)
+	open -a $(PROJECT_EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
+		`find $(PROJECT) -name \*.html`
+else
+	@echo "Unsupported"
+endif
 
 # Node
 npm-init:
