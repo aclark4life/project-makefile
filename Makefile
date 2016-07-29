@@ -137,7 +137,7 @@ uname := $(shell uname)
 review:
 
 ifeq ($(uname), Darwin)
-	open -a $(PROJECT_EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
+	@open -a $(PROJECT_EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
 		`find $(PROJECT) -name \*.html`
 else
 	@echo "Unsupported"
