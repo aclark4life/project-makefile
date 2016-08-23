@@ -30,8 +30,10 @@ PROJECT=project
 PROJECT_EDITOR="Sublime Text"
 TMP:=$(shell echo `tmp`)
 
-commit: git-commit-auto-push
 co: git-checkout-branches
+commit: git-commit-auto-push
+commit-auto: git-commit-auto-push
+commit-edit: git-commit-edit-push
 db: django-migrate django-su
 db-init: django-db-init-postgres
 django-start: django-init
