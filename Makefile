@@ -53,6 +53,7 @@ python-test: python-package-test
 readme-test: python-package-readme-test
 release: python-package-release
 release-test: python-package-release-test
+remote: heroku-remote
 serve: python-serve
 sphinx-start: sphinx-init
 static: django-static
@@ -125,6 +126,8 @@ heroku-push:
 	git push heroku
 heroku-shell:
 	heroku run bash
+heroku-remote:
+	git remote add heroku
 
 # Misc
 help:
