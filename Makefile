@@ -122,6 +122,10 @@ heroku-debug-on:
 	heroku config:set DEBUG=1
 heroku-debug-off:
 	heroku config:unset DEBUG
+heroku-web-on:
+	heroku ps:scale web=1
+heroku-web-off:
+	heroku ps:scale web=0
 heroku-push:
 	git push heroku
 heroku-shell:
