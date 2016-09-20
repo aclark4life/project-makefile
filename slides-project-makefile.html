@@ -222,10 +222,10 @@
 	</li>
 	<li>https://www.gnu.org/software/make/manual/make.html#Rule-Introduction</li>
 </ul>
-</div></div></section><section data-id="d02ed834eb439c916f7b75dedec825c6"><div data-block-id="c13812d9c24fcfa76d86eab4a54c204d" class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
-<h2>Example #1</h2>
+</div></div></section><section data-id="d02ed834eb439c916f7b75dedec825c6"><div data-block-id="c13812d9c24fcfa76d86eab4a54c204d" class="sl-block" data-block-type="text" style="width: 271px; left: 49px; top: 106px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+<h2>Example#1</h2>
 </div></div>
-<div data-block-id="8009f52fe33c2bfcb3bc9641833c64da" class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<div data-block-id="8009f52fe33c2bfcb3bc9641833c64da" class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 332px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
 <p>$ make</p>
 
 <p> </p>
@@ -237,8 +237,69 @@
 <div data-block-id="8448f9ea9b509fcff9ff8985991dfe37" class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
-<div data-block-id="22876b03ea131baeff3e8c31252e86f4" class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<pre>git commit -a -m "Update"</pre>
+<div data-block-id="22876b03ea131baeff3e8c31252e86f4" class="sl-block" data-block-type="text" style="width: 564px; left: 345px; top: 332px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<p>.DEFAULT_GOAL=git-commit-auto-push</p>
+
+<p> </p>
+
+<pre>git-commit-auto-push:
+    git commit -a -m "Update"</pre>
+</div></div></section><section data-id="0d2350f6386a6340e42b93d6597f052c"><div data-block-id="4bc5a5f7fc4e3188437428068058f76c" class="sl-block" data-block-type="text" style="width: 271px; left: 49px; top: 106px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+<h2>Example#2</h2>
+</div></div>
+<div data-block-id="fc60ed3928e7d6b54cb9c7d7b90759d1" class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 352px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<p>$ make help</p>
+
+<p> </p>
+
+<pre> </pre>
+
+<p> </p>
+</div></div>
+<div data-block-id="aab0ec7f73ecf89657b5e6547ede6799" class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+<h2>Target</h2>
+</div></div>
+<div data-block-id="7d0611a7a08ecb9ced6ddf62420c307e" class="sl-block" data-block-type="text" style="width: 555px; left: 354px; top: 352px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<p># Misc (http://stackoverflow.com/a/26339924)<br>
+help:<br>
+    @echo "Usage: make [TARGET]\nAvailable targets:\n" …</p>
+</div></div></section><section data-id="2a8ee10d3a69b2b6ebd916b375d886f4"><div data-block-id="a23cc463eed4c7194abd503b0db092c5" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 41px;" data-block-type="text" class="sl-block"><div style="z-index: 11;" data-placeholder-text="Text" data-placeholder-tag="p" class="sl-block-content">
+<pre>Usage: make [TARGET]
+Available targets:
+
+    - ablog-build
+    - ablog-init
+    - ablog-serve
+    - co
+    - commit
+    - commit-auto
+    - commit-edit
+    - db
+    - db-init
+    - django-db-init-postgres
+    - django-db-init-sqlite
+    - django-init
+    - django-install
+…</pre>
+
+<p style="text-align:left"> </p>
+</div></div></section><section data-id="774da2684275b26d22de8c0cac156369"><div data-block-id="0096f0a4c375e331b7041cceddc6823a" class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+<h2>Example #3</h2>
+</div></div>
+<div data-block-id="f2198e5e688a38633bff18a945ccab27" class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<pre>$ make ablog-init</pre>
+</div></div>
+<div data-block-id="d10416fc03924c9276b7b108411ee0a8" class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+<h2>Target</h2>
+</div></div>
+<div data-block-id="f5a10e38277fffb2ee941540d92847f2" class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<pre>ablog-init:</pre>
+
+<pre>    ablog start</pre>
+</div></div></section><section data-id="9aab078a8ce7f8113bce4d88546ca6ec"><div data-block-id="48ba359e048ea929e7cf543908a9b0d3" class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;"><div data-placeholder-text="Text" class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left;">
+<h1>But<br>
+First…<br>
+Python</h1>
 </div></div></section><section data-id="042d6bc372952bfabe301231e2f11e95"><div data-block-id="ed780aa0dc63e108299b3a9b7d07d4df" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
 <h2>Credits</h2>
 </div></div>
@@ -253,7 +314,7 @@
 
 		
 <script>
-	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":3,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1474376329670,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{}}};
+	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":3,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1474379245192,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{}}};
 </script>
 
 		<script>
