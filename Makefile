@@ -133,7 +133,7 @@ heroku-shell:
 heroku-remote:
 	git remote add heroku
 
-# Misc
+# Misc (http://stackoverflow.com/a/26339924)
 help:
 	@echo "Usage: make [TARGET]\nAvailable targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
