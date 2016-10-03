@@ -41,7 +41,7 @@ fe-init: npm-init npm-install grunt-init grunt-serve
 fe: npm-install grunt-serve
 freeze: python-pip-freeze
 heroku: heroku-push
-install: python-virtualenv python-pip-install
+install: python-virtualenv python-install
 lint: python-flake python-yapf python-wc
 migrate: django-migrate
 push: git-push
@@ -79,9 +79,6 @@ django-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-install:
-	$(MAKE) python-virtualenv
-	bin/pip install Django
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -173,9 +170,6 @@ plone-heroku:
 		bin/buildout -c heroku.cfg
 plone-init:
 	plock --force --no-cache --no-virtualenv .
-plone-install:
-	$(MAKE) install
-	bin/buildout
 plone-db-sync:
 	bin/buildout -c database.cfg
 plone-serve:
@@ -207,7 +201,7 @@ python-package-test:
 python-pip-freeze:
 	bin/pip freeze | sort > $(TMP)/requirements.txt
 	mv -f $(TMP)/requirements.txt .
-python-pip-install:
+python-install:
 	bin/pip install -r requirements.txt
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
