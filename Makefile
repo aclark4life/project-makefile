@@ -27,39 +27,39 @@
 APP=app
 MESSAGE="Update"
 PROJECT=project
-PROJECT_EDITOR="Sublime Text"
+EDITOR="Sublime Text"
 TMP:=$(shell echo `tmp`)
 
-co: git-checkout-branches
-commit: git-commit-auto-push
-commit-auto: git-commit-auto-push
-commit-edit: git-commit-edit-push
-db: django-migrate django-su
-db-init: django-db-init-postgres
-django-start: django-init
-fe-init: npm-init npm-install grunt-init grunt-serve
-fe: npm-install grunt-serve
-freeze: python-pip-freeze
-heroku: heroku-push
-install: python-virtualenv python-install
-lint: python-flake python-yapf python-wc
-migrate: django-migrate
-push: git-push
-package-init: python-package-init
-package-lint: python-package-lint
-package-test: python-package-test
-plone-start: plone-init
-python-test: python-package-test
-readme-test: python-package-readme-test
-release: python-package-release
-release-test: python-package-release-test
-remote: heroku-remote
-serve: python-serve
-sphinx-start: sphinx-init
-static: django-static
-test: python-test
-vm: vagrant-up
-vm-down: vagrant-suspend
+#co: git-checkout-branches
+#commit: git-commit-auto-push
+#commit-auto: git-commit-auto-push
+#commit-edit: git-commit-edit-push
+#db: django-migrate django-su
+#db-init: django-db-init-postgres
+#django-start: django-init
+#fe-init: npm-init npm-install grunt-init grunt-serve
+#fe: npm-install grunt-serve
+#freeze: python-pip-freeze
+#heroku: heroku-push
+#install: python-virtualenv python-install
+#lint: python-flake python-yapf python-wc
+#migrate: django-migrate
+#push: git-push
+#package-init: python-package-init
+#package-lint: python-package-lint
+#package-test: python-package-test
+#plone-start: plone-init
+#python-test: python-package-test
+#readme-test: python-package-readme-test
+#release: python-package-release
+#release-test: python-package-release-test
+#remote: heroku-remote
+#serve: python-serve
+#sphinx-start: sphinx-init
+#static: django-static
+#test: python-test
+#vm: vagrant-up
+#vm-down: vagrant-suspend
 
 # ABlog
 ablog-init:
@@ -143,7 +143,7 @@ uname := $(shell uname)
 review:
 
 ifeq ($(uname), Darwin)
-	@open -a $(PROJECT_EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
+	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
 		`find $(PROJECT) -name \*.html`
 else
 	@echo "Unsupported"
