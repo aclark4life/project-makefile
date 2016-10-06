@@ -205,7 +205,7 @@ python-install:
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m SimpleHTTPServer
-python-virtualenv:
+python-venv:
 	virtualenv .
 python-yapf:
 	-yapf -i *.py
