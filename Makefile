@@ -22,17 +22,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# https://www.gnu.org/software/make/manual/html_node/Goals.html, https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
+# By default, the goal is the first target in the makefile (not counting targets that start with a period). Therefore, makefiles are usually written so that the first target is for compiling the entire program or programs they describe. If the first rule in the makefile has several targets, only the first target in the rule becomes the default goal, not the whole list. You can manage the selection of the default goal from within your makefile using the .DEFAULT_GOAL variable (see Other Special Variables). 
 .DEFAULT_GOAL=git-commit-auto-push
 
 APP=app
-MESSAGE="Update"
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 
-#co: git-checkout-branches
-#commit: git-commit-auto-push
-#commit-auto: git-commit-auto-push
-#commit-edit: git-commit-edit-push
 #db: django-migrate django-su
 #db-init: django-db-init-postgres
 #django-start: django-init
@@ -41,11 +38,9 @@ TMP:=$(shell echo `tmp`)
 #freeze: python-pip-freeze
 #heroku: heroku-push
 #install: python-virtualenv python-install
-#lint: python-flake python-yapf python-wc
 #migrate: django-migrate
 #push: git-push
 #package-init: python-package-init
-#package-lint: python-package-lint
 #package-test: python-package-test
 #plone-start: plone-init
 #python-test: python-package-test
@@ -97,12 +92,15 @@ django-su:
 	python manage.py createsuperuser
 
 # Git
+MESSAGE="Update"
 REMOTES=`\
 	git branch -a |\
 	grep remote |\
 	grep -v HEAD |\
 	grep -v master`
+co: git-checkout
 commit: git-commit
+commit-edit: git-commit-edit
 git-checkout:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
@@ -178,6 +176,7 @@ plone-serve:
 	@bin/plone fg
 
 # Python
+lint: python-flake python-yapf python-wc
 python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
