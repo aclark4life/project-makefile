@@ -137,8 +137,9 @@ heroku-remote:
 
 # Init
 init: 
-	@echo "Django" > requirements.txt
+	@echo "Django\nablog\n" > requirements.txt
 	@$(MAKE) python-virtualenv
+	@$(MAKE) python-install
 
 # Install
 install: python-install
