@@ -45,7 +45,6 @@ TMP:=$(shell echo `tmp`)
 #heroku: heroku-push
 #install: python-virtualenv python-install
 #migrate: django-migrate
-#push: git-push
 #package-init: python-package-init
 #package-test: python-package-test
 #plone-start: plone-init
@@ -62,6 +61,7 @@ TMP:=$(shell echo `tmp`)
 #vm-down: vagrant-suspend
 
 # ABlog
+ablog: ablog-init ablog-build ablog-serve
 ablog-init:
 	ablog start
 ablog-build:
