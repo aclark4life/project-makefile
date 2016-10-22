@@ -136,7 +136,9 @@ heroku-remote:
 	git remote add heroku
 
 # Init
-init: python-virtualenv
+init: 
+	@echo "Django" > requirements.txt
+	@$(MAKE) python-virtualenv
 
 # Install
 install: python-install
