@@ -138,6 +138,9 @@ heroku-remote:
 # Init
 init: python-virtualenv
 
+# Install
+install: python-install
+
 # Misc (http://stackoverflow.com/a/26339924)
 help:
 	@echo "Usage: make [TARGET]\nAvailable targets:\n"
