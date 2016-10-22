@@ -135,6 +135,9 @@ heroku-shell:
 heroku-remote:
 	git remote add heroku
 
+# Init
+init: python-virtualenv
+
 # Misc (http://stackoverflow.com/a/26339924)
 help:
 	@echo "Usage: make [TARGET]\nAvailable targets:\n"
