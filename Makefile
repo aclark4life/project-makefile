@@ -61,7 +61,7 @@ TMP:=$(shell echo `tmp`)
 #vm-down: vagrant-suspend
 
 # ABlog
-ablog: ablog-init ablog-build ablog-serve
+ablog: ablog-clean ablog-init ablog-build ablog-serve
 ablog-clean:
 	rm conf.py index.rst
 ablog-init:
