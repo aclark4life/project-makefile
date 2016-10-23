@@ -24,8 +24,8 @@
 
 # Default Goal
 # 
-# - https://www.gnu.org/software/make/manual/html_node/Goals.html
-# - https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
+# https://www.gnu.org/software/make/manual/html_node/Goals.html
+# https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
 # 
 # By default, the goal is the first target in the makefile (not counting targets
 # that start with a period). Therefore, makefiles are usually written so that the
