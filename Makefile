@@ -52,11 +52,15 @@ TMP:=$(shell echo `tmp`)
 #vm-down: vagrant-suspend
 
 # ABlog
-ablog: ablog-clean ablog-init ablog-build ablog-serve
+ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve
 ablog-clean:
 	rm conf.py index.rst
 ablog-init:
 	bin/ablog start
+ablog-install:
+	@echo "ablog\n" > requirements.txt
+	@$(MAKE) python-virtualenv
+	@$(MAKE) python-install
 ablog-build:
 	bin/ablog build
 ablog-serve:
@@ -148,17 +152,13 @@ heroku-web-on:
 heroku-web-off:
 	heroku ps:scale web=0
 
-# Init
-init: 
-	@echo "Django\nablog\n" > requirements.txt
-	@$(MAKE) python-virtualenv
-	@$(MAKE) python-install
 
 # Install
 install: python-install
 
 # Misc
 h: help  # Alias
+he: help  # Alias
 help:
 	@echo "Usage: make [TARGET]\nAvailable targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
