@@ -173,7 +173,7 @@ heroku-web-on:
 heroku-web-off:
 	heroku ps:scale web=0
 
-# NPM
+# Node Package Manager
 npm: npm-init npm-install
 npm-init:
 	npm init
@@ -181,6 +181,7 @@ npm-install:
 	npm install
 
 # Plone
+plone: plone-install plone-init
 plone-heroku:
 	-@createuser -s plone > /dev/null 2>&1
 	-@createdb -U plone plone > /dev/null 2>&1
@@ -188,6 +189,10 @@ plone-heroku:
 		export USERNAME=admin && \
 		export PASSWORD=admin && \
 		bin/buildout -c heroku.cfg
+plone-install:
+	@echo plock > requirements.txt
+	@$(MAKE) python-virtualenv
+	@$(MAKE) python-install
 plone-init:
 	plock --force --no-cache --no-virtualenv .
 plone-db-sync:
