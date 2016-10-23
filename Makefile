@@ -249,6 +249,7 @@ else
 endif
 
 # Sphinx
+sphinx: sphinx-init sphinx-serve
 sphinx-init:
 	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 doc
 sphinx-serve:
