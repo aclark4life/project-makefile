@@ -101,12 +101,11 @@ django-su:
 
 # Git
 MESSAGE="Update"
-
-REMOTES=`\
-	git branch -a |\
-	grep remote   |\
-	grep -v HEAD  |\
-	grep -v master` # http://unix.stackexchange.com/a/37316
+REMOTES=             `\
+	git branch -a    |\
+	grep remote      |\
+	grep -v HEAD     |\
+	grep -v master   `  # http://unix.stackexchange.com/a/37316
 co: git-checkout-remotes
 commit: git-commit
 commit-edit: git-commit-edit
