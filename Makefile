@@ -43,14 +43,12 @@ TMP:=$(shell echo `tmp`)
 #install: python-virtualenv python-install
 #package-init: python-package-init
 #package-test: python-package-test
-#plone-start: plone-init
 #python-test: python-package-test
 #readme-test: python-package-readme-test
 #release: python-package-release
 #release-test: python-package-release-test
 #remote: heroku-remote
 #serve: python-serve
-#sphinx-start: sphinx-init
 #test: python-test
 #vm: vagrant-up
 #vm-down: vagrant-suspend
