@@ -118,12 +118,15 @@ git-push:
 
 # Grunt
 grunt: grunt-init grunt-serve
-grunt-init:
-	echo "{}" > package.json
+grunt-init: grunt-install grunt-file
+grunt-install:
 	npm install grunt-init grunt-serve
+grunt-file:
 	curl -O https://raw.githubusercontent.com/gruntjs/grunt-init-gruntfile/master/template.js
 	node_modules/grunt-init/bin/grunt-init --force gruntfile
-grunt-serve:
+	@echo "***Add to GruntFile:***\n\n\tgrunt.loadNpmTasks('grunt-serve');\n\n"
+grunt-serve:  
+	@echo "Now serving: http://0.0.0.0:9000"
 	grunt serve
 
 # Heroku
