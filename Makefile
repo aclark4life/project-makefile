@@ -40,6 +40,7 @@
 APP=app
 PROJECT=project
 TMP:=$(shell echo `tmp`)
+UNAME := $(shell uname)
 
 #fe-init: npm-init npm-install grunt-init grunt-serve
 #fe: npm-install grunt-serve
@@ -172,10 +173,9 @@ help:
         '{print "    - "$$0}' | less
 	@echo "\n"  # http://stackoverflow.com/a/26339924
 
-uname := $(shell uname)
+# Review
 review:
-
-ifeq ($(uname), Darwin)
+ifeq ($(UNAME), Darwin)
 	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
 		`find $(PROJECT) -name \*.html`
 else
