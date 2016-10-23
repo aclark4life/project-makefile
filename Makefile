@@ -54,7 +54,7 @@ TMP:=$(shell echo `tmp`)
 # ABlog
 ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve
 ablog-clean:
-	rm conf.py index.rst
+	-rm conf.py index.rst
 ablog-init:
 	bin/ablog start
 ablog-install:
