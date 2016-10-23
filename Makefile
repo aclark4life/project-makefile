@@ -102,7 +102,7 @@ django-su:
 
 # Git
 MESSAGE="Update"
-REMOTES=             `\
+REMOTES=`\
 	git branch -a    |\
 	grep remote      |\
 	grep -v HEAD     |\
