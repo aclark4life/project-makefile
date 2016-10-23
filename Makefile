@@ -103,10 +103,10 @@ django-su:
 # Git
 MESSAGE="Update"
 REMOTES=`\
-	git branch -a    |\
-	grep remote      |\
-	grep -v HEAD     |\
-	grep -v master   `  # http://unix.stackexchange.com/a/37316
+	git branch -a |\
+	grep remote   |\
+	grep -v HEAD  |\
+	grep -v master`  # http://unix.stackexchange.com/a/37316
 co: git-checkout-remotes  # Alias
 commit: git-commit  # Alias
 commit-auto: git-commit-auto  # Alias
