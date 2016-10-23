@@ -253,7 +253,7 @@ sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build sphinx-serve  # Cha
 sphinx-clean:
 	rm -rf project
 sphinx-build:
-	@$(MAKE) $(PROJECT) html
+	bin/sphinx-build -b html -d $(PROJECT)/_build/doctrees $(PROJECT) $(PROJECT)/_build/html
 sphinx-install:
 	@echo "ablog\n" > requirements.txt
 	@$(MAKE) python-install
