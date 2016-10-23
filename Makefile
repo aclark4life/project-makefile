@@ -143,6 +143,17 @@ grunt-serve:
 	@echo "Now serving: http://0.0.0.0:9000"
 	grunt serve
 
+# Help
+h: help  # Alias
+he: help  # Alias
+help:
+	@echo "Usage: make [TARGET]\nAvailable targets:\n"
+	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
+        '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
+        | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
+        '{print "    - "$$0}' | less
+	@echo "\n"  # http://stackoverflow.com/a/26339924
+
 # Heroku
 heroku: heroku-init
 heroku-debug-on:
@@ -161,26 +172,6 @@ heroku-web-on:
 	heroku ps:scale web=1
 heroku-web-off:
 	heroku ps:scale web=0
-
-# Misc
-h: help  # Alias
-he: help  # Alias
-help:
-	@echo "Usage: make [TARGET]\nAvailable targets:\n"
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
-        '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
-        | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
-        '{print "    - "$$0}' | less
-	@echo "\n"  # http://stackoverflow.com/a/26339924
-
-# Review
-review:
-ifeq ($(UNAME), Darwin)
-	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
-		`find $(PROJECT) -name \*.html`
-else
-	@echo "Unsupported"
-endif
 
 # Node
 npm-init:
@@ -246,6 +237,15 @@ python-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
+
+# Review
+review:
+ifeq ($(UNAME), Darwin)
+	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
+		`find $(PROJECT) -name \*.html`
+else
+	@echo "Unsupported"
+endif
 
 # Sphinx
 sphinx-init:
