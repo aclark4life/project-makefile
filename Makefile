@@ -101,11 +101,12 @@ django-su:
 
 # Git
 MESSAGE="Update"
+
 REMOTES=`\
 	git branch -a |\
 	grep remote   |\
 	grep -v HEAD  |\
-	grep -v master`
+	grep -v master` # http://unix.stackexchange.com/a/37316
 co: git-checkout-remotes
 commit: git-commit
 commit-edit: git-commit-edit
@@ -146,14 +147,14 @@ init:
 # Install
 install: python-install
 
-# Misc (http://stackoverflow.com/a/26339924)
+# Misc
 help:
 	@echo "Usage: make [TARGET]\nAvailable targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "    - "$$0}'
-	@echo "\n"
+	@echo "\n"  # http://stackoverflow.com/a/26339924
 
 uname := $(shell uname)
 review:
