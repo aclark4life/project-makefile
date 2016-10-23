@@ -264,13 +264,15 @@ sphinx-serve:
 	pushd $(PROJECT)/_build/html; python -m SimpleHTTPServer; popd
 
 # Vagrant
-vagrant-box-update:
-	vagrant box update
+vagrant: vagrant-init vagrant-up  # Chain
+vm: vagrant  # Alias
+vagrant-clean:
+	vagrant destroy
 vagrant-down:
 	vagrant suspend
 vagrant-init:
-	vagrant destroy
 	vagrant init ubuntu/trusty64
-	vagrant up --provider virtualbox
 vagrant-up:
-	vagrant up --provision
+	vagrant up --provider virtualbox
+vagrant-update:
+	vagrant box update
