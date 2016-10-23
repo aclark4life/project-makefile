@@ -181,7 +181,7 @@ npm-install:
 	npm install
 
 # Plone
-plone: plone-install plone-init
+plone: plone-install plone-init plone-serve
 plone-heroku:
 	-@createuser -s plone > /dev/null 2>&1
 	-@createdb -U plone plone > /dev/null 2>&1
@@ -195,8 +195,6 @@ plone-install:
 	@$(MAKE) python-install
 plone-init:
 	plock --force --no-cache --no-virtualenv .
-plone-db-sync:
-	bin/buildout -c database.cfg
 plone-serve:
 	@echo "Zope about to handle requests here:\n\n\thttp://localhost:8080\n"
 	@bin/plone fg
