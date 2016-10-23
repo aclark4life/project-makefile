@@ -38,6 +38,7 @@
 .DEFAULT_GOAL=git-commit-auto-push
 
 APP=app
+NAME=Alex Clark
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 UNAME:=$(shell uname)
@@ -188,6 +189,7 @@ plone-serve:
 install: python-install  # Alias
 lint: python-lint  # Alias
 serve: python-serve  # Alias
+test: python-test  # Alias
 python-clean:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
@@ -203,6 +205,8 @@ python-lint: python-flake python-yapf python-wc  # Chain
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m SimpleHTTPServer
+package-test:
+	python setup.py test
 python-virtualenv:
 	virtualenv .
 python-yapf:
@@ -215,6 +219,7 @@ python-wc:
 	-wc -l $(PROJECT)/$(APP)/*.py
 
 # Python Package
+package: package-init  # Alias
 release: package-release  # Alias
 release-test: package-release-test  # Alias
 package-check-manifest:
@@ -232,8 +237,6 @@ package-release:
 	python setup.py sdist --format=gztar,zip upload
 package-release-test:
 	python setup.py sdist --format=gztar,zip upload -r test
-package-test:
-	python setup.py test
 
 # Review
 review:
@@ -246,10 +249,10 @@ endif
 
 # Sphinx
 sphinx-init:
-	sphinx-quickstart -q -p "Python Project" -a "Alex Clark" -v 0.0.1 doc
+	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 doc
 sphinx-serve:
-	@echo "\nServing HTTP on http://0.0.0.0:8085 ...\n"
-	pushd _build/html; python -m SimpleHTTPServer 8085; popd
+	@echo "\nServing HTTP on http://0.0.0.0:8000 ...\n"
+	pushd _build/html; python -m SimpleHTTPServer; popd
 
 # Vagrant
 vagrant-box-update:
