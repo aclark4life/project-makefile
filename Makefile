@@ -251,7 +251,7 @@ endif
 # Sphinx
 sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build sphinx-serve  # Chain
 sphinx-clean:
-	rm -rf project
+	@rm -rvf $(PROJECT)
 sphinx-build:
 	bin/sphinx-build -b html -d $(PROJECT)/_build/doctrees $(PROJECT) $(PROJECT)/_build/html
 sphinx-install:
