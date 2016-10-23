@@ -39,7 +39,6 @@ TMP:=$(shell echo `tmp`)
 #fe-init: npm-init npm-install grunt-init grunt-serve
 #fe: npm-install grunt-serve
 #freeze: python-pip-freeze
-#heroku: heroku-push
 #install: python-virtualenv python-install
 #package-init: python-package-init
 #package-test: python-package-test
@@ -47,7 +46,6 @@ TMP:=$(shell echo `tmp`)
 #readme-test: python-package-readme-test
 #release: python-package-release
 #release-test: python-package-release-test
-#remote: heroku-remote
 #serve: python-serve
 #test: python-test
 #vm: vagrant-up
@@ -121,6 +119,8 @@ git-push:
 # Grunt
 grunt: grunt-init grunt-serve
 grunt-init:
+	echo "{}" > package.json
+	npm install grunt-init
 	grunt-init Gruntfile
 grunt-serve:
 	grunt serve
@@ -154,6 +154,7 @@ init:
 install: python-install
 
 # Misc
+h: help  # Alias
 help:
 	@echo "Usage: make [TARGET]\nAvailable targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
