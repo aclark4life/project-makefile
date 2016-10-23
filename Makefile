@@ -173,7 +173,8 @@ heroku-web-on:
 heroku-web-off:
 	heroku ps:scale web=0
 
-# Node
+# NPM
+npm: npm-init npm-install
 npm-init:
 	npm init
 npm-install:
