@@ -78,19 +78,19 @@ django-install:
 	@$(MAKE) python-virtualenv
 	@$(MAKE) python-install
 django-migrate:
-	python manage.py migrate
+	bin/python manage.py migrate
 django-migrations:
-	python manage.py makemigrations $(APP)
+	bin/python manage.py makemigrations $(APP)
 django-serve:
-	python manage.py runserver
+	bin/python manage.py runserver
 django-test:
-	python manage.py test
+	bin/python manage.py test
 django-shell:
-	python manage.py shell
+	bin/python manage.py shell
 django-static:
-	python manage.py collectstatic --noinput
+	bin/python manage.py collectstatic --noinput
 django-su:
-	python manage.py createsuperuser
+	bin/python manage.py createsuperuser
 
 # Git
 MESSAGE="Update"
@@ -204,9 +204,9 @@ python-install:
 python-lint: python-flake python-yapf python-wc  # Chain
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m SimpleHTTPServer
+	bin/python -m SimpleHTTPServer
 package-test:
-	python setup.py test
+	bin/python setup.py test
 python-virtualenv:
 	virtualenv .
 python-yapf:
@@ -235,9 +235,9 @@ package-pyroma:
 package-readme:
 	rst2html.py README.rst > readme.html; open readme.html
 package-release:
-	python setup.py sdist --format=gztar,zip upload
+	bin/python setup.py sdist --format=gztar,zip upload
 package-release-test:
-	python setup.py sdist --format=gztar,zip upload -r test
+	bin/python setup.py sdist --format=gztar,zip upload -r test
 
 # Review
 review:
@@ -261,7 +261,9 @@ sphinx-init:
 	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(PROJECT)
 sphinx-serve:
 	@echo "\nServing HTTP on http://0.0.0.0:8000 ...\n"
-	pushd $(PROJECT)/_build/html; python -m SimpleHTTPServer; popd
+	pushd $(PROJECT)/_build/html
+	bin/python -m SimpleHTTPServer
+	popd
 
 # Vagrant
 vagrant: vagrant-clean vagrant-init vagrant-up  # Chain
