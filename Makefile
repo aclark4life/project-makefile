@@ -249,15 +249,19 @@ else
 endif
 
 # Sphinx
-sphinx: sphinx-install sphinx-init sphinx-serve
+sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build sphinx-serve  # Chain
+sphinx-clean:
+	rm -rf project
+sphinx-build:
+	@$(MAKE) $(PROJECT) html
 sphinx-install:
 	@echo "ablog\n" > requirements.txt
 	@$(MAKE) python-install
 sphinx-init:
-	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 doc
+	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(PROJECT)
 sphinx-serve:
 	@echo "\nServing HTTP on http://0.0.0.0:8000 ...\n"
-	pushd _build/html; python -m SimpleHTTPServer; popd
+	pushd $(PROJECT)/_build/html; python -m SimpleHTTPServer; popd
 
 # Vagrant
 vagrant-box-update:
