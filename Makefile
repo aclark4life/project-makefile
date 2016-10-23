@@ -42,20 +42,6 @@ PROJECT=project
 TMP:=$(shell echo `tmp`)
 UNAME:=$(shell uname)
 
-#fe-init: npm-init npm-install grunt-init grunt-serve
-#fe: npm-install grunt-serve
-#freeze: python-pip-freeze
-#install: python-virtualenv python-install
-#package-init: python-package-init
-#package-test: python-package-test
-#python-test: python-package-test
-#readme-test: python-package-readme-test
-#release: python-package-release
-#release-test: python-package-release-test
-#test: python-test
-#vm: vagrant-up
-#vm-down: vagrant-suspend
-
 # ABlog
 ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve
 ablog-clean:
