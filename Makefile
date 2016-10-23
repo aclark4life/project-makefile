@@ -119,20 +119,23 @@ git-push:
 	git push
 
 # Heroku
+heroku: heroku-init
 heroku-debug-on:
 	heroku config:set DEBUG=1
 heroku-debug-off:
 	heroku config:unset DEBUG
+heroku-init:
+	heroku apps:create $(PROJECT)-$(APP)	
+heroku-push:
+	git push heroku
+heroku-remote:
+	git remote add heroku
+heroku-shell:
+	heroku run bash
 heroku-web-on:
 	heroku ps:scale web=1
 heroku-web-off:
 	heroku ps:scale web=0
-heroku-push:
-	git push heroku
-heroku-shell:
-	heroku run bash
-heroku-remote:
-	git remote add heroku
 
 # Init
 init: 
