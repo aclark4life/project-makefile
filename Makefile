@@ -40,7 +40,7 @@
 APP=app
 PROJECT=project
 TMP:=$(shell echo `tmp`)
-UNAME := $(shell uname)
+UNAME:=$(shell uname)
 
 #fe-init: npm-init npm-install grunt-init grunt-serve
 #fe: npm-install grunt-serve
