@@ -29,7 +29,7 @@
 # 
 # By default, the goal is the first target in the makefile (not counting targets that start with a period). Therefore, makefiles are usually written so that the first target is for compiling the entire program or programs they describe. If the first rule in the makefile has several targets, only the first target in the rule becomes the default goal, not the whole list. You can manage the selection of the default goal from within your makefile using the .DEFAULT_GOAL variable (see Other Special Variables). 
 #
-.DEFAULT_GOAL=git-commit-auto-push
+.DEFAULT_GOAL=git-commit-push
 
 
 APP=app
@@ -107,8 +107,9 @@ commit-edit: git-commit-edit
 git-checkout-remotes:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
-git-commit-auto-push: git-commit git-push
-git-commit:
+git-commit: git-commit-auto
+git-commit-push: git-commit git-push
+git-commit-auto:
 	git commit -a -m $(MESSAGE)
 git-commit-edit:
 	git commit -a
