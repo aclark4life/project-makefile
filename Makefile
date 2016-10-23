@@ -72,11 +72,12 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-django-db-init-postgres:
+django: django-clean django-init django-migrate django-su django-serve
+django-clean:
+	-rm -rf $(PROJECT)
+	-rm manage.py
 	-dropdb $(PROJECT)-$(APP)
 	-createdb $(PROJECT)-$(APP)
-django-db-init-sqlite:
-	-rm -f $(PROJECT)-$(APP).sqlite3
 django-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
