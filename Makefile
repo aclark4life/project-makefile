@@ -118,6 +118,13 @@ git-commit-edit:
 git-push:
 	git push
 
+# Grunt
+grunt: grunt-init grunt-serve
+grunt-init:
+	grunt-init Gruntfile
+grunt-serve:
+	grunt serve
+
 # Heroku
 heroku: heroku-init
 heroku-debug-on:
@@ -170,11 +177,6 @@ npm-init:
 	npm init
 npm-install:
 	npm install
-grunt-init:
-	npm install grunt
-	grunt-init Gruntfile
-grunt-serve:
-	grunt serve
 
 # Plone
 plone-heroku:
