@@ -112,7 +112,7 @@ commit: git-commit  # Alias
 commit-auto: git-commit-auto  # Alias
 commit-edit: git-commit-edit  # Alias
 git-commit: git-commit-auto  # Alias
-git-commit-auto-push: git-commit-auto git-push
+git-commit-auto-push: git-commit-auto git-push  # Chain
 push: git-push
 git-checkout-remotes:
 	-for i in $(REMOTES) ; do \
@@ -127,12 +127,12 @@ git-push:
 # Grunt
 grunt: grunt-init grunt-serve
 grunt-init: grunt-install grunt-file
-grunt-install:
-	npm install grunt-init grunt-serve
 grunt-file:
 	curl -O https://raw.githubusercontent.com/gruntjs/grunt-init-gruntfile/master/template.js
 	node_modules/grunt-init/bin/grunt-init --force gruntfile
 	@echo "***Add to GruntFile:***\n\n\tgrunt.loadNpmTasks('grunt-serve');\n\n"
+grunt-install:
+	npm install grunt-init grunt-serve
 grunt-serve:  
 	@echo "Now serving: http://0.0.0.0:9000"
 	grunt serve
@@ -155,10 +155,6 @@ heroku-web-on:
 	heroku ps:scale web=1
 heroku-web-off:
 	heroku ps:scale web=0
-
-
-# Install
-install: python-install
 
 # Misc
 h: help  # Alias
@@ -204,7 +200,8 @@ plone-serve:
 	@bin/plone fg
 
 # Python
-lint: python-flake python-yapf python-wc
+install: python-install  # Alias
+lint: python-flake python-yapf python-wc  # Chain
 python-clean-pyc:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
