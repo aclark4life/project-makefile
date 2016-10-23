@@ -78,6 +78,7 @@ django-clean:
 	-rm manage.py
 	-dropdb $(PROJECT)-$(APP)
 	-createdb $(PROJECT)-$(APP)
+	-rm db.sqlite3
 django-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
