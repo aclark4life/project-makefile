@@ -52,7 +52,6 @@ UNAME:=$(shell uname)
 #readme-test: python-package-readme-test
 #release: python-package-release
 #release-test: python-package-release-test
-#serve: python-serve
 #test: python-test
 #vm: vagrant-up
 #vm-down: vagrant-suspend
@@ -201,18 +200,20 @@ plone-serve:
 
 # Python
 install: python-install  # Alias
-lint: python-flake python-yapf python-wc  # Chain
+lint: python-lint  # Alias
+serve: python-serve  # Alias
 python-clean:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
-python-pip-freeze:
+python-freeze:
 	bin/pip freeze | sort > $(TMP)/requirements.txt
 	mv -f $(TMP)/requirements.txt .
 python-install:
 	bin/pip install -r requirements.txt
+python-lint: python-flake python-yapf python-wc  # Chain
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m SimpleHTTPServer
@@ -228,20 +229,24 @@ python-wc:
 	-wc -l $(PROJECT)/$(APP)/*.py
 
 # Python Package
-python-package-init:
+release: package-release  # Alias
+release-test: package-release-test  # Alias
+package-check-manifest:
+	check-manifest
+package-init:
 	mkdir -p $(PROJECT)/$(APP)
 	touch $(PROJECT)/$(APP)/__init__.py
 	touch $(PROJECT)/__init__.py
-python-package-lint:
-	check-manifest
+package-lint: package-check-manifest package-pyroma  # Chain
+package-pyroma:
 	pyroma .
-python-package-readme-test:
+package-readme:
 	rst2html.py README.rst > readme.html; open readme.html
-python-package-release:
+package-release:
 	python setup.py sdist --format=gztar,zip upload
-python-package-release-test:
+package-release-test:
 	python setup.py sdist --format=gztar,zip upload -r test
-python-package-test:
+package-test:
 	python setup.py test
 
 # Review
