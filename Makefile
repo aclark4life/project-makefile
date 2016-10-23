@@ -126,7 +126,7 @@ grunt-file:
 grunt-install:
 	npm install grunt-init grunt-serve
 grunt-serve:  
-	@echo "Now serving: http://0.0.0.0:9000"
+	@echo "\nServing HTTP on http://0.0.0.0:9000 ...\n"
 	grunt serve
 
 # Help
