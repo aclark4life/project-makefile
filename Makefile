@@ -120,8 +120,9 @@ git-push:
 grunt: grunt-init grunt-serve
 grunt-init:
 	echo "{}" > package.json
-	npm install grunt-init
-	grunt-init Gruntfile
+	npm install grunt-init grunt-serve
+	curl -O https://raw.githubusercontent.com/gruntjs/grunt-init-gruntfile/master/template.js
+	node_modules/grunt-init/bin/grunt-init --force gruntfile
 grunt-serve:
 	grunt serve
 
