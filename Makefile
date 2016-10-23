@@ -264,10 +264,11 @@ sphinx-serve:
 	pushd $(PROJECT)/_build/html; python -m SimpleHTTPServer; popd
 
 # Vagrant
-vagrant: vagrant-init vagrant-up  # Chain
+vagrant: vagrant-clean vagrant-init vagrant-up  # Chain
 vm: vagrant  # Alias
 vagrant-clean:
-	vagrant destroy
+	-rm Vagrantfile
+	-vagrant destroy
 vagrant-down:
 	vagrant suspend
 vagrant-init:
