@@ -103,13 +103,13 @@ django-su:
 MESSAGE="Update"
 REMOTES=`\
 	git branch -a |\
-	grep remote |\
-	grep -v HEAD |\
+	grep remote   |\
+	grep -v HEAD  |\
 	grep -v master`
-co: git-checkout
+co: git-checkout-remotes
 commit: git-commit
 commit-edit: git-commit-edit
-git-checkout:
+git-checkout-remotes:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
 git-commit-auto-push: git-commit git-push
