@@ -228,6 +228,7 @@ package-init:
 	mkdir -p $(PROJECT)/$(APP)
 	touch $(PROJECT)/$(APP)/__init__.py
 	touch $(PROJECT)/__init__.py
+	@echo "setup(){}" > setup.py
 package-lint: package-check-manifest package-pyroma  # Chain
 package-pyroma:
 	pyroma .
