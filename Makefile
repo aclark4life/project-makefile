@@ -251,7 +251,7 @@ endif
 # Sphinx
 sphinx: sphinx-init sphinx-serve
 sphinx-init:
-	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 doc
+	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 doc
 sphinx-serve:
 	@echo "\nServing HTTP on http://0.0.0.0:8000 ...\n"
 	pushd _build/html; python -m SimpleHTTPServer; popd
