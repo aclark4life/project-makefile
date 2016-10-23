@@ -38,7 +38,7 @@
 .DEFAULT_GOAL=git-commit-auto-push
 
 APP=app
-NAME=Alex Clark
+NAME="Alex Clark"
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 UNAME:=$(shell uname)
