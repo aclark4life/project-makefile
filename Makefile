@@ -249,7 +249,10 @@ else
 endif
 
 # Sphinx
-sphinx: sphinx-init sphinx-serve
+sphinx: sphinx-install sphinx-init sphinx-serve
+sphinx-install:
+	@echo "ablog\n" > requirements.txt
+	@$(MAKE) python-install
 sphinx-init:
 	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 doc
 sphinx-serve:
