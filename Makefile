@@ -81,6 +81,10 @@ django-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
+django-install:
+	@echo "Django\n" > requirements.txt
+	@$(MAKE) python-virtualenv
+	@$(MAKE) python-install
 django-migrate:
 	python manage.py migrate
 django-migrations:
