@@ -36,15 +36,11 @@ APP=app
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 
-#db: django-migrate django-su
-#db-init: django-db-init-postgres
-#django-start: django-init
 #fe-init: npm-init npm-install grunt-init grunt-serve
 #fe: npm-install grunt-serve
 #freeze: python-pip-freeze
 #heroku: heroku-push
 #install: python-virtualenv python-install
-#migrate: django-migrate
 #package-init: python-package-init
 #package-test: python-package-test
 #plone-start: plone-init
@@ -55,7 +51,6 @@ TMP:=$(shell echo `tmp`)
 #remote: heroku-remote
 #serve: python-serve
 #sphinx-start: sphinx-init
-#static: django-static
 #test: python-test
 #vm: vagrant-up
 #vm-down: vagrant-suspend
@@ -79,6 +74,9 @@ django-clean:
 	-dropdb $(PROJECT)-$(APP)
 	-createdb $(PROJECT)-$(APP)
 	-rm db.sqlite3
+django-clean-migrations:
+	rm -rf $(PROJECT)/$(APP)/migrations
+	$(MAKE) django-migrations
 django-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
@@ -87,9 +85,6 @@ django-migrate:
 	python manage.py migrate
 django-migrations:
 	python manage.py makemigrations $(APP)
-django-migrations-init:
-	rm -rf $(PROJECT)/$(APP)/migrations
-	$(MAKE) django-migrations
 django-serve:
 	python manage.py runserver
 django-test:
