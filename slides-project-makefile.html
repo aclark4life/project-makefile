@@ -91,31 +91,35 @@
 	<li>https://github.com/aclark4life/project-makefile/commit/01a85c746d4a06058fcb4749e85186325449f34b</li>
 	<li>Originally conceived as "django-project"</li>
 </ul>
-</div></div></section><section data-id="28940d8f3153a9050e3aa7a9619b30b7"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="64ed039933f2f2f82393131ad8d067de"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+</div></div></section><section data-id="28940d8f3153a9050e3aa7a9619b30b7"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 103px; height: auto;" data-block-id="64ed039933f2f2f82393131ad8d067de"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
 <h2>Why</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="7c2abe775718cdcf458926cc52712513"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 210px; height: auto;" data-block-id="7c2abe775718cdcf458926cc52712513"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
 <ul>
 	<li>
-	<p><strong>Laziness</strong> e.g.</p>
+	<pre><strong>Laziness</strong> e.g.</pre>
 
 	<ul>
 		<li>
-		<pre>$ make world</pre>
+		<pre>$ make world (one command runs many commands)</pre>
 		</li>
 	</ul>
 	</li>
-	<li>Familiarity e.g.
+	<li>
+	<pre>Familiarity e.g. (already used to compile C programs)</pre>
+
 	<ul>
 		<li>
 		<pre>$ ./configure; make; make install</pre>
 		</li>
 	</ul>
 	</li>
-	<li>Simplicity e.g.
+	<li>
+	<pre>Simplicity e.g. (copy to start new project)</pre>
+
 	<ul>
 		<li>
-		<pre>$ cp ~/Developer/project-makefile/Makefile &lt;DIR&gt;</pre>
+		<pre>$ cp ~/Developer/project-makefile &lt;DIR&gt;</pre>
 		</li>
 	</ul>
 	</li>
@@ -163,68 +167,101 @@
 
 <p> </p>
 </div></div>
-<div data-block-id="0bdf5cf3b08ce5854b177d872f349b4e" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 228px; height: auto;"><div data-placeholder-text="Text" data-placeholder-tag="p" class="sl-block-content">
+<div data-block-id="0bdf5cf3b08ce5854b177d872f349b4e" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 189px; height: auto;"><div data-placeholder-text="Text" data-placeholder-tag="p" class="sl-block-content">
 <ul>
-	<li><strong>Ansible, Chef, Puppet</strong></li>
-	<li>Buildout
+	<li>
+<strong>Ansible, Chef, Puppet </strong>(production deployments &amp; automation)</li>
+	<li>Buildout (Plone CMS websites)
 	<ul>
 		<li>
 		<pre>[buildout] extends = http://your-project</pre>
 		</li>
 	</ul>
 	</li>
-	<li>Shell
+	<li>Shell (user account customization)
 	<ul>
 		<li>
 		<pre>alias do="echo do stuff"</pre>
 		</li>
 	</ul>
 	</li>
-	<li>Fabric
+	<li>Fabric (Python-based software automation)
 	<ul>
 		<li>
 		<pre>def do_stuff(): print("do stuff")</pre>
 		</li>
 	</ul>
 	</li>
-	<li>Grunt</li>
-	<li>Rake</li>
+	<li>Grunt (JavaScript)</li>
+	<li>Rake (Ruby)</li>
 </ul>
 </div></div></section><section data-id="326a6d71e065b52e6f29a1b18c28fe58"><div data-block-id="e9f536a31611a0ea2da2d6368a9294f7" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
 <h1>Questions</h1>
 </div></div>
 <div data-block-id="c32442da8461187a51890b2a6c67a964" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 288px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Subtitle">
-<h2>Ask-away</h2>
+<h2>Ask-away anytime</h2>
 </div></div></section><section data-id="484b4bd09d8c3fd03ede73f5289c991f"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 103px; height: auto;" data-block-id="a9cd582d430a7501fe23d31ba683c9cd"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
 <h2>Overview of GNU Make</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 177px; height: auto;" data-block-id="d6a4947e95a64609efc5ffc786d58d2b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
 <ul>
 	<li>
-<strong>Compile C Programs</strong>, full stop.
+<strong>Compile C Programs</strong>
 	<ul>
-		<li>E.g. https://github.com/aclark4life/CS/blob/master/262/Makefile
-		<ul>
-			<li>
-<strong>Let make deduce the recipe</strong> to compile average.c</li>
-			<li>
-			<p>"Certain standard ways of remaking target files are used very often. For example, one customary way to make an object file is from a C source file using the C compiler, cc." –https://www.gnu.org/software/make/manual/html_node/Implicit-Rules.html#Implicit-Rules</p>
-			</li>
-		</ul>
+		<li>
+		<p>"Certain standard ways of remaking target files are used very often. For example, one customary way to make an object file is from a C source file using the C compiler, cc." –https://www.gnu.org/software/make/manual/html_node/Implicit-Rules.html#Implicit-Rules</p>
 		</li>
+		<li>E.g. https://github.com/aclark4life/CS/blob/master/262/Makefile</li>
 	</ul>
 	</li>
 </ul>
-</div></div></section><section data-id="169e1be2aad3b9ff049de7b3f8ee1c53"><div data-block-id="a5be1ecc365b9ffb3eea3413fec7de00" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+</div></div></section><section data-id="b2fe1e77927360a396ccf55f099cdc7f"><div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 888px; left: 24px; top: 116px;" data-block-id="1af164bea0391ebc9e7bd123ea8b8de8"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+<pre>all: average counter list roach
+average:
+	gcc average.c -o average
+counter:
+	gcc counter.c -o counter
+list:
+	gcc list.c -o list
+roach:
+	gcc roach.c -o roach
+trapezoid:
+	gcc trapezoid.c -o trapezoid
+clean:
+	rm average counter list roach
+</pre>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 168px; top: 70px;" data-block-id="ae4dabb8e67c4969d53dd8787c09389a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;">
+<h3>Without Implicit Rule Usage</h3>
+</div></div></section><section data-id="3ad1ec98fcab31d2b3926d04c05b04cd"><div class="sl-block" data-block-type="text" style="height: auto; width: 888px; left: 24px; top: 116px;" data-block-id="a1b6f95c6370ea445f4fef46a44afa4f"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+<pre>objects = average.o
+all: average counter list roach
+average: $(objects)
+	gcc -o average $(objects)
+counter:
+	gcc counter.c -o counter
+list:
+	gcc list.c -o list
+roach:
+	gcc roach.c -o roach
+trapezoid:
+	gcc trapezoid.c -o trapezoid
+clean:
+	rm average counter list roach
+</pre>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 168px; top: 70px;" data-block-id="4d3348d8b5508842850d0971138b85d6"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;">
+<h3>With Implicit Rule Usage</h3>
+</div></div></section><section data-id="169e1be2aad3b9ff049de7b3f8ee1c53"><div data-block-id="a5be1ecc365b9ffb3eea3413fec7de00" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 66px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
 <h2>Installation</h2>
 </div></div>
-<div data-block-id="527dcec298b697b9adda0f60da2181dc" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;"><div data-placeholder-text="Text" data-placeholder-tag="p" class="sl-block-content">
+<div data-block-id="527dcec298b697b9adda0f60da2181dc" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 140px; height: auto;"><div data-placeholder-text="Text" data-placeholder-tag="p" class="sl-block-content">
 <ul>
 	<li>
-	<pre>mkdir your-project</pre>
+	<pre>mkdir &lt;YOUR-PROJECT&gt;</pre>
 	</li>
 	<li>
-	<pre>cd your-project</pre>
+	<pre>cd &lt;YOUR-PROJECT&gt;</pre>
 	</li>
 	<li>
 	<pre>curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile</pre>
@@ -322,8 +359,8 @@ git-push:<br>
 
 <pre>    ablog start</pre>
 </div></div></section><section data-id="9aab078a8ce7f8113bce4d88546ca6ec"><div data-block-id="48ba359e048ea929e7cf543908a9b0d3" class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;"><div data-placeholder-text="Text" class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left;">
-<h1>But<br>
-First…<br>
+<h1>Interlude<br>
+#1…<br>
 Python</h1>
 </div></div></section><section data-id="4e0b393e67b38385835c1007f6bbf09e"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="e88b2462123d1cf0ab52965708a9d82e"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
 <h2>Python</h2>
@@ -372,13 +409,17 @@ Python</h1>
 
 <p> </p>
 </div></div></section><section data-id="531ebce08f565daefcbc135094d8492c"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 136px; height: auto;" data-block-id="74063c814d74634ba00334ad5fa7f080"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
-<h2>Syntax AKA "Makefile Moment #3"</h2>
+<h2>Terminology AKA "Makefile Moment #3"</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 303px; height: auto;" data-block-id="564153585d8109eef188a106c2e0ceea"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
 <ul>
-	<li>-ls one</li>
-	<li>-ls two</li>
-	<li>ls three</li>
+	<li>Ignore errors in a recipe with "-"
+	<ul>
+		<li>-ls one</li>
+		<li>-ls two</li>
+		<li>ls three</li>
+	</ul>
+	</li>
 </ul>
 </div></div></section><section data-id="aff978b208fb2d96b9a1f87f52b24424"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="8109da69b9169f812a9afadb794751ab"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #6</h2>
@@ -391,8 +432,11 @@ Python</h1>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="088b552c5c01354227ae2eda64e5f83a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
 <p><strong>heroku:</strong> heroku-init</p>
-</div></div></section><section data-id="0e6ac739b3695f6e2f7b44ff4c2308cb"><div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;" data-block-id="b860a8469490a1d824b02a5af4f66efd"><div class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left;" data-placeholder-text="Text" dir="ui"><h1>But<br>Second…<br>JavaScript<br>
-</h1></div></div></section><section data-id="499f23de661580df33d0f3d88f97c5d4"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="7fb07e30c243a4e292602b73906081ec"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+</div></div></section><section data-id="0e6ac739b3695f6e2f7b44ff4c2308cb"><div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;" data-block-id="b860a8469490a1d824b02a5af4f66efd"><div class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left;" data-placeholder-text="Text" dir="ui">
+<h1>Interlude<br>
+#2…<br>
+JavaScript</h1>
+</div></div></section><section data-id="499f23de661580df33d0f3d88f97c5d4"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="7fb07e30c243a4e292602b73906081ec"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #7</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="12c5011acfb4817856dd9162821fc210"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
@@ -415,9 +459,9 @@ Python</h1>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="29497e4a6b451b30ffcd013748909dec"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
 <p>npm: npm-init npm-install</p>
 </div></div></section><section data-id="fd19ee935370244645c5d2dc57992c6e"><div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;" data-block-id="ed5402a695984649de1c7524e8f29c95"><div class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left;" data-placeholder-text="Text">
-<h1>But<br>
-Third…<br>
-Misc Utils</h1>
+<h1>Interlude<br>
+#3…<br>
+Apps/Utils</h1>
 </div></div></section><section data-id="3a4267bfa25665ef60f7c693e472deef"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="48ff76e01343019be36b7033e90dc011"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #9</h2>
 </div></div>
@@ -451,50 +495,61 @@ Misc Utils</h1>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="90627bdae4c65016386aacdb93f81bdc"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
 <p><strong>vagrant</strong>: vagrant-init</p>
-</div></div></section><section data-id="e19225fd2fba3f1952216f2260fba052"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="65075c9025a1a496b33b03f733e555d6"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 11;">
+</div></div></section><section data-id="9030b0d0846eee31f335b31f8fd375ab"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="c53399c0dad7f3512475dd725436427a"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #12</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 357px; left: 0px; top: 200px; height: auto;" data-block-id="19d70aebba58a9df2e4484bc24beb93c"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left; z-index: 12;" data-fragment-index="0">
-<pre>$ make django-init</pre>
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="b68ebc65fe98821b1c7c8c311a8fdce4"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;" data-fragment-index="0">
+<p>$ make django</p>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="4f6e0f718cc465d31945f8d685d4a4bf"><div class="sl-block-content fragment" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 13;" data-fragment-index="1">
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="5c21ffe4dfb7e6daa2508dd5264525bd"><div class="sl-block-content fragment" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;" data-fragment-index="1">
 <h2>Target</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 603px; left: 357px; top: 194px; height: auto;" data-block-id="85d9c7a6ed3c1e3511833e8fc90adbf6"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left; z-index: 14;" data-fragment-index="2">
-<pre><strong>django-init:</strong>
-    -mkdir -p $(PROJECT)/$(APP)
-    -django-admin startproject $(PROJECT) .
-    -django-admin startapp $(APP) $(PROJECT)/$(APP)
-
-</pre>
-</div></div>
-<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 357px; left: 0px; top: 451px;" data-block-id="b925358fa7ed96d04012300cc7822805"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;" data-fragment-index="3">
-<pre style="text-align: left;">$ make lint</pre>
-</div></div>
-<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 603px; left: 357px; top: 451px;" data-block-id="2573ed368f63b34527ad850579a01361"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 16;" data-fragment-index="4">
-<pre style="text-align: left;"><span class="pl-en">python-lint</span>: python-flake python-yapf python-wc <span class="pl-c"># Chain</span></pre>
-</div></div></section><section data-id="4472019f0ff8b5c979e2dfc8a7a90098"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="b853118296faa59a32239194cb45b4c2"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="9ab8db2e928e8f6f8f7b93093d7a3ac6"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;" data-fragment-index="2">
+<p><strong>django</strong>: django-init</p>
+</div></div></section><section data-id="4472019f0ff8b5c979e2dfc8a7a90098"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 66px; height: auto;" data-block-id="b853118296faa59a32239194cb45b4c2"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11;">
 <h2>Recap</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="e4f42e04c643d99acd41e05b94d69703"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 188px; height: auto;" data-block-id="e4f42e04c643d99acd41e05b94d69703"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;">
 <ul>
-	<li>GNU Make</li>
-	<li>Python</li>
-	<li>JavaScript</li>
-	<li>Misc Utils</li>
+	<li>GNU Make
+	<ul>
+		<li>Targets, Recipes, Rules</li>
+	</ul>
+	</li>
+	<li>Python
+	<ul>
+		<li>pip, virtualenv, requirements.txt</li>
+	</ul>
+	</li>
+	<li>JavaScript
+	<ul>
+		<li>Grunt, Node Package Manager (NPM)</li>
+	</ul>
+	</li>
+	<li>Apps &amp; Utils
+	<ul>
+		<li>ABlog, Plone, Sphinx</li>
+	</ul>
+	</li>
 </ul>
-</div></div></section><section data-id="72e8fa1437d9360fcb2a83292f236005"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 270px; height: auto;" data-block-id="8ee6243e974acb01c91ee345cb905759"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
+</div></div></section><section data-id="72e8fa1437d9360fcb2a83292f236005"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 273px; height: auto;" data-block-id="8ee6243e974acb01c91ee345cb905759"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
 <h1>The End</h1>
 
 <ul>
+	<li>https://github.com/aclark4life/project-makefile</li>
 	<li>http://slides.com/aclark/project-makefile</li>
 </ul>
-</div></div></section><section data-id="042d6bc372952bfabe301231e2f11e95"><div data-block-id="ed780aa0dc63e108299b3a9b7d07d4df" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
-<h2>Credits</h2>
+</div></div></section><section data-id="042d6bc372952bfabe301231e2f11e95"><div data-block-id="ed780aa0dc63e108299b3a9b7d07d4df" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 84px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+<h2>Credits &amp; Thanks</h2>
 </div></div>
-<div data-block-id="093359496e5f7fb4651f7986da0ba333" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;"><div data-placeholder-text="Text" data-placeholder-tag="p" class="sl-block-content">
+<div data-block-id="093359496e5f7fb4651f7986da0ba333" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 195px; height: auto;"><div data-placeholder-text="Text" data-placeholder-tag="p" class="sl-block-content">
 <ul>
-	<li>https://github.com/hakimel/reveal.js</li>
+	<li>Jeff @ CMWG, attendees, reviewers</li>
+	<li>https://github.com/hakimel/reveal.js
+	<ul>
+		<li>https://slides.com</li>
+	</ul>
+	</li>
 	<li>http://www.ascii-code.com/ascii-art/vehicles/cars.php</li>
 </ul>
 </div></div></section>
@@ -504,7 +559,7 @@ Misc Utils</h1>
 
 		
 <script>
-	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":4,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1477332666113,"font_typekit":null,"font_google":null,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{"ac63a967065d49f25f64729bbb6d09da":"I'm not going to use Ansible to run Django management commands on my laptop… or am I?\n\nBenefit to project-based approach.","638e18d3318d2b3930f388c141f31d96":"If Ansible, Chef and Puppet are the sports cars of the configuration management world, then this Makefile is…","76ab8d9a9c857e09c9711594ebb1de68":"… the Volkswagen Beetle of the configuration management world.","4e0b393e67b38385835c1007f6bbf09e":"Walk through Python installation, virtualenv, pip install -r requirements.txt, source bin/active.","6c80429a70400747696633a4fb841adb":"A target comprised of targets.","79c706110ee7d2bea74f658b0d436b44":"Prefer init to start","774da2684275b26d22de8c0cac156369":"A target of targets","531ebce08f565daefcbc135094d8492c":"\"-\" before rule commands continues on error\n\n","484b4bd09d8c3fd03ede73f5289c991f":"Nothing we do in project-makefile will be as interesting as letting Make deduce recipes.","28940d8f3153a9050e3aa7a9619b30b7":"UNIX philosophy"}}};
+	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":4,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1477342884091,"font_typekit":null,"font_google":null,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{"ac63a967065d49f25f64729bbb6d09da":"I'm not going to use Ansible to run Django management commands on my laptop… or am I?\n\nBenefit to project-based approach.","638e18d3318d2b3930f388c141f31d96":"If Ansible, Chef and Puppet are the sports cars of the configuration management world, then this Makefile is…","76ab8d9a9c857e09c9711594ebb1de68":"… the Volkswagen Beetle of the configuration management world.","4e0b393e67b38385835c1007f6bbf09e":"Walk through Python installation, virtualenv, pip install -r requirements.txt, source bin/active.","6c80429a70400747696633a4fb841adb":"A target comprised of targets.","79c706110ee7d2bea74f658b0d436b44":"Prefer init to start","774da2684275b26d22de8c0cac156369":"A target of targets","531ebce08f565daefcbc135094d8492c":"\"-\" before rule commands continues on error\n\n","484b4bd09d8c3fd03ede73f5289c991f":"Nothing we do in project-makefile will be as interesting as letting Make deduce recipes.","28940d8f3153a9050e3aa7a9619b30b7":"git commit -a -m \"Update\"\n\nUNIX philosophy"}}};
 </script>
 
 		<script>
