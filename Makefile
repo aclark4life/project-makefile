@@ -159,6 +159,11 @@ heroku-web-on:
 heroku-web-off:
 	heroku ps:scale web=0
 
+# Misc
+
+pdf:
+	rst2pdf README.rst
+
 # Node Package Manager
 npm: npm-init npm-install
 npm-init:
