@@ -163,6 +163,11 @@ heroku-web-on:
 heroku-web-off:
 	heroku ps:scale web=0
 
+# Misc
+
+pdf:
+	rst2pdf README.rst
+
 # Node Package Manager
 npm: npm-init npm-install
 npm-init:
@@ -186,7 +191,7 @@ plone-install:
 plone-init:
 	plock --force --no-cache --no-virtualenv .
 plone-serve:
-	@echo "Zope about to handle requests here:\n\n\thttp://localhost:8080\n"
+	@echo "\n\tServing HTTP on http://0.0.0.0:8080\n"
 	@bin/plone fg
 
 # Python
