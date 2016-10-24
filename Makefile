@@ -59,7 +59,7 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-django: django-clean django-init django-migrate django-su django-serve
+django: django-clean django-install django-init django-migrate django-su django-serve
 django-clean:
 	-rm -rf $(PROJECT)
 	-rm manage.py
