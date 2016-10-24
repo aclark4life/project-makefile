@@ -182,7 +182,7 @@ plone-install:
 plone-init:
 	plock --force --no-cache --no-virtualenv .
 plone-serve:
-	@echo "Zope about to handle requests here:\n\n\thttp://localhost:8080\n"
+	@echo "\n\tServing HTTP on http://0.0.0.0:8080\n"
 	@bin/plone fg
 
 # Python
