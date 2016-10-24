@@ -91,6 +91,10 @@ django-static:
 	bin/python manage.py collectstatic --noinput
 django-su:
 	bin/python manage.py createsuperuser
+django-yapf:
+	-yapf -i *.py
+	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
+	-yapf -i $(PROJECT)/$(APP)/*.py
 
 # Git
 MESSAGE="Update"
@@ -211,7 +215,7 @@ python-virtualenv:
 	virtualenv .
 python-yapf:
 	-yapf -i *.py
-	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py
+	-yapf -i $(PROJECT)/*.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
 python-wc:
 	-wc -l *.py
