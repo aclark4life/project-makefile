@@ -35,10 +35,10 @@
 </div></div></section><section data-id="b511cffc8555c34824696c72b7dc7da3"><div data-block-id="350f91f6d725783225439effd974b7aa" class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 204px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text">
 <h1>
 <em>Makefile</em> for Python Web Development &amp; Related Projects</h1>
-</div></div></section><section data-id="9bf90ede605b3789ec0817462ca74175"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="206591077792b9d065b5cf5480ca8d70"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+</div></div></section><section data-id="9bf90ede605b3789ec0817462ca74175"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="206591077792b9d065b5cf5480ca8d70"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10;">
 <h2>Who</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="5a65c8a8cdda4166548315b7d575a235"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="5a65c8a8cdda4166548315b7d575a235"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
 <ul>
 	<li>
 <strong>Alex Clark</strong>
@@ -53,6 +53,9 @@
 	</ul>
 	</li>
 </ul>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 140px; top: 630px;" data-block-id="350480c43100e30aacce327dde6f71a4"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;" data-fragment-index="0">
+<p>(Not a GNU Make expert)</p>
 </div></div></section><section data-id="ccd3689734ab759d1fd25f1e222e24e7"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="95b6f33aa93b49bab3d2a577be82f6a3"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
 <h2>What</h2>
 </div></div>
@@ -296,7 +299,7 @@ clean:
 <h1>See what I did there?</h1>
 </div></div>
 <div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 202px;" data-block-id="6820960a14445beb5aa75a915180c01e"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 13;" data-fragment-index="0">
-<h2>Replaced explicit .c compilation with implicit object (.o) compilation.</h2>
+<h2>Replaced explicit file (.c) compilation with implicit object (.o) compilation.</h2>
 </div></div></section><section data-id="a7d3c2f41e3133386fb8ce984639593f"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 113px; height: auto;" data-block-id="ee7ff41e104e65389e55c99de8eec931"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 10;">
 <h1>Implicit Behavior is Awesome!</h1>
 </div></div>
@@ -382,6 +385,13 @@ Available targets:
 	<li>"The <strong><em>goals</em> are the targets</strong> that make should strive ultimately to update. Other targets are updated as well if they appear as prerequisites of goals, or prerequisites of prerequisites of goals, etc.<br>
 	By default, the goal is the first target in the makefile (not counting targets that start with a period). Therefore, makefiles are usually written so that the first target is for compiling the entire program or programs they describe… You can manage the selection of the default goal from within your makefile using the .DEFAULT_GOAL variable " (https://www.gnu.org/software/make/manual/html_node/Goals.html)</li>
 </ul>
+</div></div></section><section data-id="89108733cea7b372fe956a7864219175"><div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 171px;" data-block-id="10fe5c49184a503ff525b37ccb1a52aa"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+<pre>targets : prerequisites
+        recipe
+        …
+</pre>
+
+<p>https://www.gnu.org/software/make/manual/html_node/Rule-Syntax.html#Rule-Syntax</p>
 </div></div></section><section data-id="e0e260def4b207075a8e0786f717943b"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="10b353f8bcbf489c9f3f7de8f167f653"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #2</h2>
 </div></div>
@@ -501,6 +511,15 @@ git-push:
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 393px; height: auto;" data-block-id="57c2ac84a5924a231a234460ea4fd39a"><div class="sl-block-content fragment" data-placeholder-tag="h1" style="font-size: 200%; text-align: left; z-index: 13;" data-placeholder-text="Text" data-fragment-index="0">
 <h1>JavaScript</h1>
+</div></div></section><section data-id="1465218a0e83308fbc592dcee9424f68"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="381ae3c626347a4a49a4ee887819cbd0"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+<h2>JavaScript</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="a795f8abdefad7a482d14ef0b3308bc7"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
+<ul>
+	<li>NPM</li>
+	<li>webpack</li>
+	<li>Grunt</li>
+</ul>
 </div></div></section><section data-id="499f23de661580df33d0f3d88f97c5d4"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="7fb07e30c243a4e292602b73906081ec"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #7</h2>
 </div></div>
@@ -547,6 +566,16 @@ git-push:
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 393px; height: auto;" data-block-id="d6818d2d1dc3e18030054e83ac575fcf"><div class="sl-block-content fragment" data-placeholder-tag="h1" style="font-size: 200%; text-align: left; z-index: 13;" data-placeholder-text="Text" data-fragment-index="0">
 <h1>Apps/Utils</h1>
+</div></div></section><section data-id="3836915dc00e0e8e4f9f9e4e82ebcc9c"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="fdd955eca71669a052b70f8ab3d5545d"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+<h2>Apps/Utils</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="42bfe97014a475c91294f20941808d69"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
+<ul>
+	<li>ABlog</li>
+	<li>Plone</li>
+	<li>Sphinx</li>
+	<li>Vagrant</li>
+</ul>
 </div></div></section><section data-id="3a4267bfa25665ef60f7c693e472deef"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="48ff76e01343019be36b7033e90dc011"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #9</h2>
 </div></div>
@@ -580,7 +609,14 @@ git-push:
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="9ab8db2e928e8f6f8f7b93093d7a3ac6"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;" data-fragment-index="2">
 <p><strong>django</strong>: django-init</p>
-</div></div></section><section data-id="4472019f0ff8b5c979e2dfc8a7a90098"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 66px; height: auto;" data-block-id="b853118296faa59a32239194cb45b4c2"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11;">
+</div></div></section><section data-id="87641fbbb790b1119db15d2921dc9f06"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="c51fc04ebd015621ffddbb4e3bcaaf10"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
+<h2>Todo</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 264px; height: auto;" data-block-id="d56ae105a9da98a3a8d8525944049982"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text"><ul>
+<li>Bullet One</li>
+<li>Bullet Two</li>
+<li>Bullet Three</li>
+</ul></div></div></section><section data-id="4472019f0ff8b5c979e2dfc8a7a90098"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 66px; height: auto;" data-block-id="b853118296faa59a32239194cb45b4c2"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 11;">
 <h2>Recap</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 188px; height: auto;" data-block-id="e4f42e04c643d99acd41e05b94d69703"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;">
@@ -602,7 +638,7 @@ git-push:
 	</li>
 	<li>Apps &amp; Utils
 	<ul>
-		<li>ABlog, Plone, Sphinx</li>
+		<li>ABlog, Plone, Sphinx, Vagrant</li>
 	</ul>
 	</li>
 </ul>
@@ -633,7 +669,7 @@ git-push:
 
 		
 <script>
-	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":4,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1477393551476,"font_typekit":null,"font_google":null,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{"ac63a967065d49f25f64729bbb6d09da":"Production deployments, Plone websites, shell user customization, Python-based automation, JavaScript, Ruby.","638e18d3318d2b3930f388c141f31d96":"If Ansible, Chef and Puppet are the sports cars of the configuration management world, then this Makefile is…","76ab8d9a9c857e09c9711594ebb1de68":"… the Volkswagen Beetle of the configuration management world.","4e0b393e67b38385835c1007f6bbf09e":"Walk through Python installation, virtualenv, pip install -r requirements.txt, source bin/active.","6c80429a70400747696633a4fb841adb":"A target comprised of targets.","79c706110ee7d2bea74f658b0d436b44":"Prefer init to start","774da2684275b26d22de8c0cac156369":"A target of targets","531ebce08f565daefcbc135094d8492c":"\n\n","484b4bd09d8c3fd03ede73f5289c991f":"Development and maintenance of large programs, typically C but not required to be, automatically determine actions. \n\nNot compiling or updating files, but we are describing and executing tasks.","28940d8f3153a9050e3aa7a9619b30b7":"git commit -a -m \"Update\" vs. shell aliases, project-based.","b511cffc8555c34824696c72b7dc7da3":"A single file","e703442720316eec90f312f754e92ffc":"Hopefully interesting to configuration management types","9bf90ede605b3789ec0817462ca74175":"Looking for PT remote, most \"internet famous\" for Pillow, run two businesses, day job, invented internet, love PhD title, jack of all trades master of none.","ccd3689734ab759d1fd25f1e222e24e7":"Automate tasks","443134fa31470d2972515eb4ad03726b":"Favorite, Fork, etc.","997369f05b5e341a0e7bfbadfcbf7582":"Formally started early 2016, check out first commit, I like to rename things.","e196fd6f659becd6d59113f74568da3f":"Not the new ones with water cooled engines.","45caae3c77fa91f7288f78279487e1e1":"Demonstrate implicit rules.","104435fc750669465c8e6f4453b8ed69":"My favorite feature.","3709dcbdf5d81c053a7a928051b7829f":"Make looks for these files, run with -d to verify.","b2fe1e77927360a396ccf55f099cdc7f":"A directory full of .c files.","bbfbca2840d90fc0ff4f1f9307f9ddcd":"No implicit rule usage here.","3ad1ec98fcab31d2b3926d04c05b04cd":"Variable definition!","75be2bd13a0ab15215d0c367e63c0c7e":"Depending on the syntax, values are assigned to variables either when the variables are defined, or the rules are executed. E.g. TMP=`tmp`.","f95f3a72310818038ff358bbe7b285a2":"Goal vs. target?"}}};
+	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":4,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1477394534390,"font_typekit":null,"font_google":null,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{"ac63a967065d49f25f64729bbb6d09da":"Production deployments, Plone websites, shell user customization, Python-based automation, JavaScript, Ruby.","638e18d3318d2b3930f388c141f31d96":"If Ansible, Chef and Puppet are the sports cars of the configuration management world, then this Makefile is…","76ab8d9a9c857e09c9711594ebb1de68":"… the Volkswagen Beetle of the configuration management world.","4e0b393e67b38385835c1007f6bbf09e":"Walk through Python installation, virtualenv, pip install -r requirements.txt, source bin/active.","6c80429a70400747696633a4fb841adb":"A target comprised of targets.","79c706110ee7d2bea74f658b0d436b44":"Prefer init to start","774da2684275b26d22de8c0cac156369":"A target of targets","531ebce08f565daefcbc135094d8492c":"\n\n","484b4bd09d8c3fd03ede73f5289c991f":"Development and maintenance of large programs, typically C but not required to be, automatically determine actions. \n\nNot compiling or updating files, but we are describing and executing tasks.","28940d8f3153a9050e3aa7a9619b30b7":"git commit -a -m \"Update\" vs. shell aliases, project-based.","b511cffc8555c34824696c72b7dc7da3":"A single file","e703442720316eec90f312f754e92ffc":"Hopefully interesting to configuration management types","9bf90ede605b3789ec0817462ca74175":"Looking for PT remote, most \"internet famous\" for Pillow, run two businesses, day job, invented internet, love PhD title, jack of all trades master of none.","ccd3689734ab759d1fd25f1e222e24e7":"Automate tasks","443134fa31470d2972515eb4ad03726b":"Favorite, Fork, etc.","997369f05b5e341a0e7bfbadfcbf7582":"Formally started early 2016, check out first commit, I like to rename things.","e196fd6f659becd6d59113f74568da3f":"Not the new ones with water cooled engines.","45caae3c77fa91f7288f78279487e1e1":"Demonstrate implicit rules.","104435fc750669465c8e6f4453b8ed69":"My favorite feature.","3709dcbdf5d81c053a7a928051b7829f":"Make looks for these files, run with -d to verify.","b2fe1e77927360a396ccf55f099cdc7f":"A directory full of .c files.","bbfbca2840d90fc0ff4f1f9307f9ddcd":"No implicit rule usage here.","3ad1ec98fcab31d2b3926d04c05b04cd":"Variable definition!","75be2bd13a0ab15215d0c367e63c0c7e":"Depending on the syntax, values are assigned to variables either when the variables are defined, or the rules are executed. E.g. TMP=`tmp`.","f95f3a72310818038ff358bbe7b285a2":"Goal vs. target?"}}};
 </script>
 
 		<script>
