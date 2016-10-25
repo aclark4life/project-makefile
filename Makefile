@@ -54,7 +54,7 @@ UNAME:=$(shell uname)
 # Rules
 #
 # A rule appears in the makefile and says when and how to remake certain files,
-# called the rule’s targets (most often only one per rule). It lists the other
+# called the rule's targets (most often only one per rule). It lists the other
 # files that are the prerequisites of the target, and the recipe to use to
 # create or update the target. 
 #
