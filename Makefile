@@ -37,6 +37,13 @@
 
 .DEFAULT_GOAL=git-commit-auto-push
 
+# Alias and Chain
+#
+# Note "Alias" and "Chain" in comments below are my terms, not Make's. In particular,
+# I'm not referring to Make's Implicit Chaining feature. Rather, a "Chain" as I've
+# defined it is a series of prerequisites required to satisfy the target. And an
+# "Alias" is a target that only exists to define a shorter name for its prerequisite.
+
 APP=app
 NAME="Alex Clark"
 PROJECT=project
