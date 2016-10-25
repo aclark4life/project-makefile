@@ -37,14 +37,38 @@
 
 .DEFAULT_GOAL=git-commit-auto-push
 
+# Variables
+
+# A variable is a name defined in a makefile to represent a string of text, called
+# the variable's value. These values are substituted by explicit request into targets,
+# prerequisites, recipes, and other parts of the makefile.
+#
+# https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
+
 APP=app
 NAME="Alex Clark"
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 UNAME:=$(shell uname)
 
+# Rules
+#
+# A rule appears in the makefile and says when and how to remake certain files,
+# called the rule's targets (most often only one per rule). It lists the other
+# files that are the prerequisites of the target, and the recipe to use to
+# create or update the target. 
+#
+# https://www.gnu.org/software/make/manual/html_node/Rules.html
+#
+# (Note I am not using Make's implicit rules to remake files, because there are no
+# files to manage, just tasks to perform. Also note the terms "Alias" and "Chain"
+# in the comments below are mine, not Make's. In particular, I'm not referring to
+# Make's Implicit Chaining feature. Rather, a "Chain" as I've defined it is a series
+# of prerequisites required to satisfy the target. And an "Alias" is a target that
+# only exists to define a shorter name for its prerequisite.)
+
 # ABlog
-ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve
+ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Chain
 ablog-clean:
 	-rm conf.py index.rst
 ablog-init:
@@ -59,7 +83,7 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-django: django-clean django-install django-init django-migrate django-su django-serve
+django: django-clean django-install django-init django-migrate django-su django-serve  # Chain
 django-clean:
 	-rm -rf $(PROJECT)
 	-rm manage.py
@@ -176,7 +200,7 @@ npm-install:
 	npm install
 
 # Plone
-plone: plone-install plone-init plone-serve
+plone: plone-install plone-init plone-serve  # Chain
 plone-heroku:
 	-@createuser -s plone > /dev/null 2>&1
 	-@createdb -U plone plone > /dev/null 2>&1
