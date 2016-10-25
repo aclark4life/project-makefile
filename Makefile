@@ -60,13 +60,12 @@ UNAME:=$(shell uname)
 #
 # https://www.gnu.org/software/make/manual/html_node/Rules.html
 #
-# (Note we are not using Make's implicit rules here to remake files, because
+# (Note I am not using Make's implicit rules to remake files, because
 # there are no files to manage, just tasks to perform. Also note the terms
-# "Alias" and "Chain" in the comments below are mine, not Make's.
-# In particular, I'm not referring to Make's Implicit Chaining feature. Rather, a
-# "Chain" as I've defined it is a series of prerequisites required to satisfy the
-# target. And an "Alias" is a target that only exists to define a shorter name for
-# its prerequisite.)
+# "Alias" and "Chain" in the comments below are mine, not Make's. In particular,
+# I'm not referring to Make's Implicit Chaining feature. Rather, a "Chain" as I've
+# defined it is a series of prerequisites required to satisfy the target. And an
+# "Alias" is a target that only exists to define a shorter name for its prerequisite.)
 
 # ABlog
 ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Chain
