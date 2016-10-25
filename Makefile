@@ -37,18 +37,34 @@
 
 .DEFAULT_GOAL=git-commit-auto-push
 
-# Alias and Chain
+# Variables
+
+# A variable is a name defined in a makefile to represent a string of text, called
+# the variable’s value. These values are substituted by explicit request into targets,
+# prerequisites, recipes, and other parts of the makefile.
 #
-# Note "Alias" and "Chain" in comments below are my terms, not Make's. In particular,
-# I'm not referring to Make's Implicit Chaining feature. Rather, a "Chain" as I've
-# defined it is a series of prerequisites required to satisfy the target. And an
-# "Alias" is a target that only exists to define a shorter name for its prerequisite.
+# https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
 APP=app
 NAME="Alex Clark"
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 UNAME:=$(shell uname)
+
+# Rules
+#
+# A rule appears in the makefile and says when and how to remake certain files,
+# called the rule’s targets (most often only one per rule). It lists the other
+# files that are the prerequisites of the target, and the recipe to use to
+# create or update the target. 
+#
+# https://www.gnu.org/software/make/manual/html_node/Rules.html
+#
+# (Note the terms "Alias" and "Chain" in the comments below are mine, not Make's.
+# In particular, I'm not referring to Make's Implicit Chaining feature. Rather, a
+# "Chain" as I've defined it is a series of prerequisites required to satisfy the
+# target. And an "Alias" is a target that only exists to define a shorter name for
+# its prerequisite.)
 
 # ABlog
 ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve
