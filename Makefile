@@ -67,7 +67,7 @@ UNAME:=$(shell uname)
 # its prerequisite.)
 
 # ABlog
-ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve
+ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Chain
 ablog-clean:
 	-rm conf.py index.rst
 ablog-init:
@@ -82,7 +82,7 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-django: django-clean django-install django-init django-migrate django-su django-serve
+django: django-clean django-install django-init django-migrate django-su django-serve  # Chain
 django-clean:
 	-rm -rf $(PROJECT)
 	-rm manage.py
@@ -199,7 +199,7 @@ npm-install:
 	npm install
 
 # Plone
-plone: plone-install plone-init plone-serve
+plone: plone-install plone-init plone-serve  # Chain
 plone-heroku:
 	-@createuser -s plone > /dev/null 2>&1
 	-@createdb -U plone plone > /dev/null 2>&1
