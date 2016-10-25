@@ -371,21 +371,18 @@ Available targets:
     @$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2&gt;/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
-        '{print "    - "$$0}' | less
-    @echo "\n"  # http://stackoverflow.com/a/26339924</pre>
+        '{print "    - "$$0}' | less  # http://stackoverflow.com/a/26339924
+    @echo "\n"</pre>
 
 <pre> </pre>
 </div></div></section><section data-id="f95f3a72310818038ff358bbe7b285a2"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 136px; height: auto;" data-block-id="35dbc71de59c08798bbf11bb0f2112a2"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
 <h2>Terminology</h2>
 
-<h2>AKA "Makefile Moment #2"</h2>
+<h2>"Makefile Moment #2"</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 303px; height: auto;" data-block-id="fff278aab4a4b472c3f98fac2cc2fd6d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
 <ul>
-	<li>
-<strong>Default Goal </strong>AKA Target</li>
-	<li>Rules</li>
-	<li>Recipes</li>
+	<li>Default Goal</li>
 </ul>
 </div></div></section><section data-id="e0e260def4b207075a8e0786f717943b"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="10b353f8bcbf489c9f3f7de8f167f653"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #2</h2>
@@ -397,41 +394,40 @@ Available targets:
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="fdbf5c22c5d6c434bacece0373a904e4"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis.</p>
-</div></div></section><section data-id="774da2684275b26d22de8c0cac156369"><div data-block-id="0096f0a4c375e331b7041cceddc6823a" class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 112px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
-<h2>Example #2</h2>
-</div></div>
-<div data-block-id="f2198e5e688a38633bff18a945ccab27" class="sl-block" data-block-type="text" style="width: 191px; left: 49px; top: 216px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<pre>$ make</pre>
-</div></div>
-<div data-block-id="d10416fc03924c9276b7b108411ee0a8" class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 112px; height: auto;"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
-<h2>Target</h2>
-</div></div>
-<div data-block-id="f5a10e38277fffb2ee941540d92847f2" class="sl-block" data-block-type="text" style="width: 709px; left: 251px; top: 216px; height: auto;"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<pre><strong>.DEFAULT_GOAL</strong>=git-commit-auto-push
+<p>.DEFAULT_GOAL=git-commit-auto-push</p>
 
-git-commit-auto-push:  \
-       git-commit-auto \
-       git-push
+<p> </p>
+</div></div></section><section data-id="d765eb27872c522fc9c33c96bb21f4e3"><div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 995px; left: 0px; top: 70px;" data-block-id="400491d555b6881c6c77c70601ef4df4"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11;">
+<pre># Git
+MESSAGE="Update"
+…
+commit: git-commit  # Alias
+commit-auto: git-commit-auto  # Alias
+commit-edit: git-commit-edit  # Alias
+git-commit: git-commit-auto  # Alias
+git-commit-auto-push: git-commit-auto git-push  # Chain
+push: git-push
+…
+git-commit-auto:
+    git commit -a -m $(MESSAGE)
+git-commit-edit:
+    git commit -a
+git-push:
+    git push
+
 </pre>
-
-<p>git-commit-auto:<br>
-    git commit -a -m $(MESSAGE)<br>
-git-push:<br>
-    git push</p>
-</div></div></section><section data-id="79c706110ee7d2bea74f658b0d436b44"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="bb39c4fdb9499eed9a2deb10b495b0d0"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+</div></div></section><section data-id="0a8439543b55a7ffe25ca1130183acf6"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="58ecc966a7b5b77222e1fb5b7a7efa97"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #3</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 332px; height: auto;" data-block-id="9bd6211f215a2467518b3c424cc3e47d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="b79945d1f490da61e035e5bad832484d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
 <pre>$ make ablog-init</pre>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="116067d1a9d4eed01380c2fe499b5492"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="99dc3f64a38fc217477b36c3d6d4b89b"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 328px; height: auto;" data-block-id="411293171af9f9056e951c1b209e6e96"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<pre><strong>ablog-init:</strong></pre>
-
-<pre>    ablog start</pre>
+<div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="4bf71a1ec0f24ab30057dd246b62c5c8"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
+<p>ablog-init:<br>
+    bin/ablog start</p>
 </div></div></section><section data-id="e7691f3b0ee844289ea383f0ea382fab"><div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;" data-block-id="a5998a7a6a253d24df8a9390ff9d2bdb"><div class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left; z-index: 10;" data-placeholder-text="Text">
 <h1>A Note</h1>
 </div></div>
@@ -455,13 +451,13 @@ git-push:<br>
 <h2>Example #4</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="8051eb2842743a10e66009a1b9852ce6"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make ablog</p>
+<pre>$ make ablog</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="1ab941c6d8b4d21ddae64a6caa003057"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 429px; left: 480px; top: 200px; height: auto;" data-block-id="fb35fd91c530fadd5a5144a68cbfa838"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<pre><strong>ablog:</strong> ablog-clean \
+<pre>ablog: ablog-clean \
        ablog-init  \
        ablog-build \
        ablog-serve</pre>
@@ -469,47 +465,39 @@ git-push:<br>
 <h2>Example #5</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="ff2e5a4d2338dd7e270f2ed5fce6b805"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make django</p>
+<pre>$ make django</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="b76dbfe254c8fc02324d8eb8d42ca3f9"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 450px; left: 459px; top: 200px; height: auto;" data-block-id="1700a20120e7f5eeb7e8593d26331baa"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p><strong>django:</strong> django-clean \</p>
+<pre>django: django-clean \
+        django-init \
+        django-migrate \
+        django-su \
+        django-serve
 
-<p>               django-init \</p>
+</pre>
+</div></div></section><section data-id="531ebce08f565daefcbc135094d8492c"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 136px; height: auto;" data-block-id="74063c814d74634ba00334ad5fa7f080"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="z-index: 10;">
+<h2>Terminology</h2>
 
-<p>               django-migrate \</p>
-
-<p>               django-su \</p>
-
-<p>               django-serve</p>
-
-<p> </p>
-</div></div></section><section data-id="531ebce08f565daefcbc135094d8492c"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 136px; height: auto;" data-block-id="74063c814d74634ba00334ad5fa7f080"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text">
-<h2>Terminology AKA "Makefile Moment #3"</h2>
+<h2>"Makefile Moment #3"</h2>
 </div></div>
-<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 303px; height: auto;" data-block-id="564153585d8109eef188a106c2e0ceea"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text">
+<div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 600px; left: 180px; top: 331px;" data-block-id="042ee677d5dc35fd6700f398de7de8ff"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 12;">
 <ul>
-	<li>Ignore errors in a recipe with "-"
-	<ul>
-		<li>-ls one</li>
-		<li>-ls two</li>
-		<li>ls three</li>
-	</ul>
-	</li>
+	<li>Chained targets</li>
 </ul>
 </div></div></section><section data-id="aff978b208fb2d96b9a1f87f52b24424"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="8109da69b9169f812a9afadb794751ab"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #6</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="30977cbb45bc09a0cafc4845ddce4fb3"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make heroku</p>
+<pre>$ make heroku</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="94a74a9e419229deadcc152941047854"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="088b552c5c01354227ae2eda64e5f83a"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p><strong>heroku:</strong> heroku-init</p>
+<pre>heroku: heroku-init</pre>
 </div></div></section><section data-id="fcb643218821f0e9e687515b52f3fc89"><div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;" data-block-id="0299cac188db162905e3dd3e2b27b6e4"><div class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left; z-index: 10;" data-placeholder-text="Text">
 <h1>A Note</h1>
 </div></div>
@@ -522,24 +510,40 @@ git-push:<br>
 <h2>Example #7</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="12c5011acfb4817856dd9162821fc210"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make grunt</p>
+<pre>$ make grunt</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="35e06a38376011535bcd46cf7f2f00e7"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="1c494f8105ce0e29a3e4141dc491fa2b"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>grunt: grunt-init grunt-serve</p>
+<pre>grunt: grunt-init grunt-serve</pre>
+</div></div></section><section data-id="7cad604aa11ef3dcb10e4343d27392a4"><div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 190px; height: auto;" data-block-id="da074aecedc3b3ab223c80cd1db76082"><div class="sl-block-content" data-placeholder-tag="h1" data-placeholder-text="Title Text" style="z-index: 11;">
+<h1>Terminology</h1>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 288px; height: auto;" data-block-id="5cde4d4efc8742692f0dad9b45bda14b"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Subtitle" style="z-index: 12;">
+<h2>"Makefile Moment #4"</h2>
+</div></div>
+<div class="sl-block" data-block-type="text" style="width: 800px; left: 80px; top: 362px; height: auto;" data-block-id="cbe3200ca41f6dcb39bd3a297f544e3e"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 14;">
+<ul>
+	<li>Ignore errors in a recipe with "-"
+	<ul>
+		<li>-ls one</li>
+		<li>-ls two</li>
+		<li>ls three</li>
+	</ul>
+	</li>
+</ul>
 </div></div></section><section data-id="3c284c7555d31eb1b54ae731c982f208"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="ef17f2a9e6084360a5f8f121b86135ae"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #8</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="51d2bb01ff822de4315e3b9367df8048"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make npm</p>
+<pre>$ make npm</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="e29d6ed588333142ba35a17de7474120"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="29497e4a6b451b30ffcd013748909dec"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>npm: npm-init npm-install</p>
+<pre>npm: npm-init npm-install</pre>
 </div></div></section><section data-id="63628543b77aa1d20bedcb9e8354cab5"><div class="sl-block" data-block-type="text" style="width: 900px; left: 30px; top: 58px; height: auto;" data-block-id="11cd18d6123d0d7adeaba7a315a88528"><div class="sl-block-content" data-placeholder-tag="h1" style="font-size: 200%; text-align: left; z-index: 10;" data-placeholder-text="Text">
 <h1>A Note</h1>
 </div></div>
@@ -552,35 +556,35 @@ git-push:<br>
 <h2>Example #9</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="3a09c0f1cbba0bbff1cd82100df6f936"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make plone</p>
+<pre>$ make plone</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="575e952902d3b4b5d74092b98399e864"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="4aad4d229814ee1905114536091be713"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p><strong>plone</strong>: plone-install plone-init plone-serve</p>
+<pre>plone: plone-install plone-init plone-serve</pre>
 </div></div></section><section data-id="4158194ac18a14666fc72a5b6a21f250"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="9296ba621631bcd10495ab45765d7107"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #10</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="a67220d0ccdc12bd90c804b72ff9bf78"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make sphinx</p>
+<pre>$ make sphinx</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="232697101d049bf8f378331fca81b0c0"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="79685b07e96d5f63f3c1a08a94851928"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p><strong>sphinx</strong>: sphinx-install sphinx-init sphinx-serve</p>
+<pre>sphinx: sphinx-install sphinx-init sphinx-serve</pre>
 </div></div></section><section data-id="c8255c723e3e3e1fce53fe7373ec03e7"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="83d4e385e8eed82524ea158a4fabd7b1"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #11</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 200px; height: auto;" data-block-id="cc084576d31b3802a202b4cd06f33654"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p>$ make vagrant</p>
+<pre>$ make vagrant</pre>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 106px; height: auto;" data-block-id="b759c303a1bba516e4bcd173e488fa5c"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Target</h2>
 </div></div>
 <div class="sl-block" data-block-type="text" style="width: 410px; left: 499px; top: 200px; height: auto;" data-block-id="90627bdae4c65016386aacdb93f81bdc"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin urna odio, aliquam vulputate faucibus id, elementum lobortis felis. Mauris urna dolor, placerat ac sagittis quis." style="text-align: left;">
-<p><strong>vagrant</strong>: vagrant-init</p>
+<pre>vagrant: vagrant-init</pre>
 </div></div></section><section data-id="9030b0d0846eee31f335b31f8fd375ab"><div class="sl-block" data-block-type="text" style="width: 410px; left: 49px; top: 106px; height: auto;" data-block-id="c53399c0dad7f3512475dd725436427a"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left;">
 <h2>Example #12</h2>
 </div></div>
@@ -645,7 +649,7 @@ git-push:<br>
 
 		
 <script>
-	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":4,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1477354656980,"font_typekit":null,"font_google":null,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{"ac63a967065d49f25f64729bbb6d09da":"I'm not going to use Ansible to run Django management commands on my laptop… or am I?\n\nBenefit to project-based approach.","638e18d3318d2b3930f388c141f31d96":"If Ansible, Chef and Puppet are the sports cars of the configuration management world, then this Makefile is…","76ab8d9a9c857e09c9711594ebb1de68":"… the Volkswagen Beetle of the configuration management world.","4e0b393e67b38385835c1007f6bbf09e":"Walk through Python installation, virtualenv, pip install -r requirements.txt, source bin/active.","6c80429a70400747696633a4fb841adb":"A target comprised of targets.","79c706110ee7d2bea74f658b0d436b44":"Prefer init to start","774da2684275b26d22de8c0cac156369":"A target of targets","531ebce08f565daefcbc135094d8492c":"\"-\" before rule commands continues on error\n\n","484b4bd09d8c3fd03ede73f5289c991f":"Nothing we do in project-makefile will be as interesting as letting Make deduce recipes.","28940d8f3153a9050e3aa7a9619b30b7":"git commit -a -m \"Update\"\n\nUNIX philosophy"}}};
+	var SLConfig = {"current_user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true,"editor_grid":true,"editor_snap":true,"developer_mode":false,"speaker_layout":null},"email":"aclark@aclark.net","notify_on_receipt":true,"billing_address":null,"editor_tutorial_completed":true,"manually_upgraded":false,"deck_user_editor_limit":1},"deck":{"id":801477,"slug":"project-makefile","title":"Project Makefile","description":"","visibility":"all","published_at":"2016-09-18T10:00:07.480Z","sanitize_messages":null,"thumbnail_url":"https://s3.amazonaws.com/media-p.slid.es/thumbnails/b611b08b8555c43bb2cff4d10448bb5d/thumb.jpg","view_count":4,"user":{"id":368384,"username":"aclark","name":"","description":"","thumbnail_url":"https://www.gravatar.com/avatar/6170000a01c67c6ba1e2d4bd87701bae?s=140\u0026d=https%3A%2F%2Fs3.amazonaws.com%2Fstatic.slid.es%2Fimages%2Fdefault-profile-picture.png","pro":false,"team_id":null,"settings":{"id":203548,"present_controls":true,"present_upsizing":true,"present_notes":true}},"background_transition":"slide","transition":"slide","theme_id":null,"theme_font":"montserrat","theme_color":"white-blue","auto_slide_interval":0,"comments_enabled":true,"forking_enabled":true,"rolling_links":false,"center":false,"should_loop":false,"share_notes":false,"slide_number":false,"rtl":false,"version":2,"collaborative":null,"deck_user_editor_limit":1,"data_updated_at":1477355601577,"font_typekit":null,"font_google":null,"access_token":"HxYFhJhNEkxza1BFqEECyWfbmugr","notes":{"ac63a967065d49f25f64729bbb6d09da":"I'm not going to use Ansible to run Django management commands on my laptop… or am I?\n\nBenefit to project-based approach.","638e18d3318d2b3930f388c141f31d96":"If Ansible, Chef and Puppet are the sports cars of the configuration management world, then this Makefile is…","76ab8d9a9c857e09c9711594ebb1de68":"… the Volkswagen Beetle of the configuration management world.","4e0b393e67b38385835c1007f6bbf09e":"Walk through Python installation, virtualenv, pip install -r requirements.txt, source bin/active.","6c80429a70400747696633a4fb841adb":"A target comprised of targets.","79c706110ee7d2bea74f658b0d436b44":"Prefer init to start","774da2684275b26d22de8c0cac156369":"A target of targets","531ebce08f565daefcbc135094d8492c":"\"-\" before rule commands continues on error\n\n","484b4bd09d8c3fd03ede73f5289c991f":"Nothing we do in project-makefile will be as interesting as letting Make deduce recipes.","28940d8f3153a9050e3aa7a9619b30b7":"git commit -a -m \"Update\"\n\nUNIX philosophy"}}};
 </script>
 
 		<script>
