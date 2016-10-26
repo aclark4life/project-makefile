@@ -111,3 +111,4 @@ Usage
         - vagrant-update
         - vm
 
+- Check out the `slides <slides-project-makefile.pdf>`_ for more information.
