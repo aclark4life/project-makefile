@@ -111,4 +111,4 @@ Usage
         - vagrant-update
         - vm
 
-- Check out the `slides <slides-project-makefile.pdf>`_ for more information.
+- Check out the `slides <http://slides.com/aclark/project-makefile>`_ for more information.
