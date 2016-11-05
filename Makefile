@@ -84,26 +84,24 @@ ablog-serve:
 
 # Django
 django: django-clean django-install django-init django-migrate django-su django-serve  # Chain
+django-clean: django-clean-db django-clean-proj  # Chain
 django-clean-db: django-clean-sql  # Alias
-django-clean:
-	@$(MAKE) django-clean-db
-	@$(MAKE) django-clean-proj
+django-init: django-init-proj django-init-sql  # Chain
+django-clean-pg:  # PostgreSQL
+	-dropdb $(PROJECT)
 django-clean-proj:
 	@-rm -rvf $(PROJECT)
 	@-rm -v manage.py
-django-clean-pg:  # PostgreSQL
-	-dropdb $(PROJECT)
 django-clean-sql:  # SQLite
 	-rm db.sqlite3
-django-init-proj:
-	-mkdir -p $(PROJECT)/$(APP)
 django-init-pg:  # PostgreSQL
 	-createdb $(PROJECT)
-django-init-sql:  # SQLite
-	-touch db.sqlite3
-django-init:
+django-init-proj:
+	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
+django-init-sql:  # SQLite
+	-touch db.sqlite3
 django-install:
 	@echo "Django\n" > requirements.txt
 	@$(MAKE) python-virtualenv
