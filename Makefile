@@ -89,8 +89,8 @@ django-clean:
 	@$(MAKE) django-clean-db
 	@$(MAKE) django-clean-proj
 django-clean-proj:
-	-rm -rf $(PROJECT)
-	-rm manage.py
+	@-rm -rvf $(PROJECT)
+	@-rm -v manage.py
 django-clean-pg:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-clean-sql:  # SQLite
