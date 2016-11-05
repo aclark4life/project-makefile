@@ -83,10 +83,12 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
+db: django-clean-db django-init-db
 django: django-clean django-install django-init django-migrate django-su django-serve  # Chain
 django-clean: django-clean-db django-clean-proj  # Chain
 django-clean-db: django-clean-sql  # Alias
-django-init: django-init-proj django-init-sql  # Chain
+django-init: django-init-db django-init-proj  # Chain
+django-init-db: django-init-sql  # Alias
 django-clean-pg:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-clean-proj:
