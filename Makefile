@@ -210,6 +210,12 @@ npm-init:
 npm-install:
 	npm install
 
+# Pip
+freeze: pip-freeze
+pip-freeze:
+	bin/pip freeze | sort > $(TMP)/requirements.txt
+	mv -f $(TMP)/requirements.txt .
+
 # Plone
 plone: plone-install plone-init plone-serve  # Chain
 plone-heroku:
@@ -240,9 +246,6 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
-python-freeze:
-	bin/pip freeze | sort > $(TMP)/requirements.txt
-	mv -f $(TMP)/requirements.txt .
 python-install:
 	bin/pip install -r requirements.txt
 python-lint: python-flake python-yapf python-wc  # Chain
