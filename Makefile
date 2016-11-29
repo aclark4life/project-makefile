@@ -68,8 +68,8 @@ UNAME:=$(shell uname)
 # only exists to define a shorter name for its prerequisite.)
 
 # ABlog
-ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Chain
-ablog-clean:
+ablog: ablog-wipe ablog-install ablog-init ablog-build ablog-serve  # Chain
+ablog-wipe:
 	-rm conf.py index.rst
 ablog-init:
 	bin/ablog start
@@ -83,18 +83,18 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-db: django-clean-db django-init-db
-django: django-clean django-install django-init django-migrate django-su django-serve  # Chain
-django-clean: django-clean-db django-clean-proj  # Chain
-django-clean-db: django-clean-sql  # Alias
+db: django-wipe-db django-init-db
+django: django-wipe django-install django-init django-migrate django-su django-serve  # Chain
+django-wipe: django-wipe-db django-wipe-proj  # Chain
+django-wipe-db: django-wipe-sql  # Alias
 django-init: django-init-db django-init-proj  # Chain
 django-init-db: django-init-sql  # Alias
-django-clean-pg:  # PostgreSQL
+django-wipe-pg:  # PostgreSQL
 	-dropdb $(PROJECT)
-django-clean-proj:
+django-wipe-proj:
 	@-rm -rvf $(PROJECT)
 	@-rm -v manage.py
-django-clean-sql:  # SQLite
+django-wipe-sql:  # SQLite
 	-rm db.sqlite3
 django-init-pg:  # PostgreSQL
 	-createdb $(PROJECT)
@@ -240,7 +240,7 @@ install: python-virtualenv python-install  # Alias
 lint: python-lint  # Alias
 serve: python-serve  # Alias
 test: python-test  # Alias
-python-clean:
+python-wipe:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
 	-flake8 *.py
@@ -296,8 +296,8 @@ else
 endif
 
 # Sphinx
-sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build sphinx-serve  # Chain
-sphinx-clean:
+sphinx: sphinx-wipe sphinx-install sphinx-init sphinx-build sphinx-serve  # Chain
+sphinx-wipe:
 	@rm -rvf $(PROJECT)
 sphinx-build:
 	bin/sphinx-build -b html -d $(PROJECT)/_build/doctrees $(PROJECT) $(PROJECT)/_build/html
@@ -313,9 +313,9 @@ sphinx-serve:
 	popd
 
 # Vagrant
-vagrant: vagrant-clean vagrant-init vagrant-up  # Chain
+vagrant: vagrant-wipe vagrant-init vagrant-up  # Chain
 vm: vagrant  # Alias
-vagrant-clean:
+vagrant-wipe:
 	-rm Vagrantfile
 	-vagrant destroy
 vagrant-down:
