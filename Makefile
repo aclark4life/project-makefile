@@ -83,26 +83,25 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-db: django-wipe-db django-init-db
-django: django-wipe django-install django-init django-migrate django-su django-serve  # Chain
-django-wipe: django-wipe-db django-wipe-proj  # Chain
-django-wipe-db: django-wipe-sql  # Alias
-django-init: django-init-db django-init-proj  # Chain
-django-init-db: django-init-sql  # Alias
-django-wipe-pg:  # PostgreSQL
+db: django-db-wipe django-db-wipe
+django: django-dp-wipe django-proj-wipe django-install django-init django-migrate django-su django-serve  # Chain
+django-db-wipe: django-sql-wipe  # Alias
+django-init: django-db-init django-proj-init  # Chain
+django-db-init: django-sql-init  # Alias
+django-pg-wipe:  # PostgreSQL
 	-dropdb $(PROJECT)
-django-wipe-proj:
+django-proj-wipe:
 	@-rm -rvf $(PROJECT)
 	@-rm -v manage.py
-django-wipe-sql:  # SQLite
+django-sql-wipe:  # SQLite
 	-rm db.sqlite3
-django-init-pg:  # PostgreSQL
+django-pg-init:  # PostgreSQL
 	-createdb $(PROJECT)
-django-init-proj:
+django-proj-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-init-sql:  # SQLite
+django-sql-init:  # SQLite
 	-touch db.sqlite3
 django-install:
 	@echo "Django\n" > requirements.txt
