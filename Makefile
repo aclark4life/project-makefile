@@ -180,6 +180,8 @@ heroku-debug-on:
 	heroku config:set DEBUG=1
 heroku-debug-off:
 	heroku config:unset DEBUG
+heroku-django-migrate:
+	heroku run python manage.py migrate
 heroku-init:
 	heroku apps:create $(PROJECT)-$(APP)	
 heroku-maint-on:
