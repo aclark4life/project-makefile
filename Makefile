@@ -249,7 +249,7 @@ python-flake:
 	-flake8 $(PROJECT)/$(APP)/*.py
 python-install:
 	bin/pip install -r requirements.txt
-python-lint: python-flake python-yapf python-wc  # Chain
+python-lint: python-yapf python-flake python-wc  # Chain
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	bin/python -m SimpleHTTPServer
