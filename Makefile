@@ -135,10 +135,11 @@ REMOTES=`\
 	grep -v master`  # http://unix.stackexchange.com/a/37316
 co: git-checkout-remotes  # Alias
 commit: git-commit  # Alias
-commit-auto: git-commit-auto  # Alias
-commit-edit: git-commit-edit  # Alias
+commit-auto: git-commit-auto-push  # Alias
+commit-edit: git-commit-edit-push  # Alias
 git-commit: git-commit-auto  # Alias
 git-commit-auto-push: git-commit-auto git-push  # Chain
+git-commit-edit-push: git-commit-edit git-push  # Chain
 push: git-push
 git-checkout-remotes:
 	-for i in $(REMOTES) ; do \
