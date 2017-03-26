@@ -85,6 +85,7 @@ ablog-serve:
 # Django
 db: django-db-wipe django-db-wipe
 django: django-dp-wipe django-proj-wipe django-install django-init django-migrate django-su django-serve  # Chain
+django-debug: django-shell  # Alias
 django-db-wipe: django-sql-wipe  # Alias
 django-init: django-db-init django-proj-init  # Chain
 django-db-init: django-sql-init  # Alias
@@ -121,6 +122,7 @@ django-static:
 	bin/python manage.py collectstatic --noinput
 django-su:
 	bin/python manage.py createsuperuser
+django-user: django-su  # Alias
 django-yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
