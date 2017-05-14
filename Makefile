@@ -113,7 +113,7 @@ django-migrate:
 django-migrations:
 	bin/python manage.py makemigrations $(APP)
 django-serve:
-	bin/python manage.py runserver
+	bin/python manage.py runserver 0.0.0.0:8000
 django-test:
 	bin/python manage.py test
 django-shell:
