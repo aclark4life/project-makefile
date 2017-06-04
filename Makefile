@@ -68,8 +68,8 @@ UNAME:=$(shell uname)
 # only exists to define a shorter name for its prerequisite.)
 
 # ABlog
-ablog: ablog-wipe ablog-install ablog-init ablog-build ablog-serve  # Chain
-ablog-wipe:
+ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Chain
+ablog-clean:
 	-rm conf.py index.rst
 ablog-init:
 	bin/ablog start
@@ -83,18 +83,18 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-db: django-db-wipe django-db-wipe
-django: django-dp-wipe django-proj-wipe django-install django-init django-migrate django-su django-serve  # Chain
+db: django-db-clean django-db-clean
+django: django-dp-clean django-proj-clean django-install django-init django-migrate django-su django-serve  # Chain
 django-debug: django-shell  # Alias
-django-db-wipe: django-sql-wipe  # Alias
+django-db-clean: django-sql-clean  # Alias
 django-init: django-db-init django-proj-init  # Chain
 django-db-init: django-sql-init  # Alias
-django-pg-wipe:  # PostgreSQL
+django-pg-clean:  # PostgreSQL
 	-dropdb $(PROJECT)
-django-proj-wipe:
+django-proj-clean:
 	@-rm -rvf $(PROJECT)
 	@-rm -v manage.py
-django-sql-wipe:  # SQLite
+django-sql-clean:  # SQLite
 	-rm db.sqlite3
 django-pg-init:  # PostgreSQL
 	-createdb $(PROJECT)
@@ -244,7 +244,7 @@ install: python-virtualenv python-install  # Alias
 lint: python-lint  # Alias
 serve: python-serve  # Alias
 test: python-test  # Alias
-python-wipe:
+python-clean:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
 	-flake8 *.py
@@ -300,8 +300,8 @@ else
 endif
 
 # Sphinx
-sphinx: sphinx-wipe sphinx-install sphinx-init sphinx-build sphinx-serve  # Chain
-sphinx-wipe:
+sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build sphinx-serve  # Chain
+sphinx-clean:
 	@rm -rvf $(PROJECT)
 sphinx-build:
 	bin/sphinx-build -b html -d $(PROJECT)/_build/doctrees $(PROJECT) $(PROJECT)/_build/html
@@ -317,9 +317,9 @@ sphinx-serve:
 	popd
 
 # Vagrant
-vagrant: vagrant-wipe vagrant-init vagrant-up  # Chain
+vagrant: vagrant-clean vagrant-init vagrant-up  # Chain
 vm: vagrant  # Alias
-vagrant-wipe:
+vagrant-clean:
 	-rm Vagrantfile
 	-vagrant destroy
 vagrant-down:
