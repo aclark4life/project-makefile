@@ -83,18 +83,15 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-db: django-db-clean django-db-clean
 django: django-dp-clean django-proj-clean django-install django-init django-migrate django-su django-serve  # Chain
 django-debug: django-shell  # Alias
-django-db-clean: django-sql-clean  # Alias
-django-init: django-db-init django-proj-init  # Chain
-django-db-init: django-sql-init  # Alias
+django-init: django-sq-init django-proj-init  # Chain
 django-pg-clean:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-proj-clean:
 	@-rm -rvf $(PROJECT)
 	@-rm -v manage.py
-django-sql-clean:  # SQLite
+django-sq-clean:  # SQLite
 	-rm db.sqlite3
 django-pg-init:  # PostgreSQL
 	-createdb $(PROJECT)
@@ -102,7 +99,7 @@ django-proj-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-sql-init:  # SQLite
+django-sq-init:  # SQLite
 	-touch db.sqlite3
 django-install:
 	@echo "Django\n" > requirements.txt
