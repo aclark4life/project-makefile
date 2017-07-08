@@ -50,6 +50,7 @@ NAME="Alex Clark"
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 UNAME:=$(shell uname)
+REMOTE=remotehost
 
 # Rules
 #
@@ -190,7 +191,7 @@ heroku-maint-off:
 	heroku maintenance:off
 heroku-push:
 	git push heroku
-heroku-remote:
+heroku-remote-add:
 	git remote add heroku
 heroku-shell:
 	heroku run bash
