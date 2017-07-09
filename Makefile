@@ -110,6 +110,7 @@ django-migrate:
 	bin/python manage.py migrate
 django-migrations:
 	bin/python manage.py makemigrations $(APP)
+	git add $(PROJECT)/$(APP)/migrations/*.py
 django-serve:
 	bin/python manage.py runserver 0.0.0.0:8000
 django-test:
