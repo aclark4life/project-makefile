@@ -95,7 +95,7 @@ django-proj-clean:
 django-sq-clean:  # SQLite
 	-rm db.sqlite3
 django-pg-init:  # PostgreSQL
-	-createdb $(PROJECT)
+	-createdb $(PROJECT)_$(APP)
 django-proj-init:
 	-mkdir -p $(PROJECT)/$(APP)
 	-django-admin startproject $(PROJECT) .
