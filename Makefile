@@ -86,7 +86,7 @@ ablog-serve:
 # Django
 django: django-dp-clean django-proj-clean django-install django-init django-migrate django-su django-serve  # Chain
 django-debug: django-shell  # Alias
-django-init: django-sq-init django-proj-init  # Chain
+django-init: django-pg-init django-proj-init  # Chain
 django-pg-clean:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-proj-clean:
