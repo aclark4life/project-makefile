@@ -238,7 +238,7 @@ plone-serve:
 	@bin/plone fg
 
 # Python
-install: python-virtualenv python-install  # Alias
+install: python-install  # Alias
 lint: python-lint  # Alias
 serve: python-serve  # Alias
 test: python-test  # Alias
