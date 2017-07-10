@@ -104,7 +104,6 @@ django-sq-init:  # SQLite
 	-touch db.sqlite3
 django-install:
 	@echo "Django\n" > requirements.txt
-	@$(MAKE) python-virtualenv
 	@$(MAKE) python-install
 django-migrate:
 	bin/python manage.py migrate
