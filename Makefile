@@ -125,6 +125,8 @@ django-yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
+migrate: django-migrate  # Alias
+migrations: django-migrations  # Alias
 
 # Git
 MESSAGE="Update"
