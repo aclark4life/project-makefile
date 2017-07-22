@@ -330,3 +330,8 @@ vagrant-up:
 	vagrant up --provider virtualbox
 vagrant-update:
 	vagrant box update
+
+# Webpack
+# Requires npm i -g create-webpack-config
+webpack-init:
+	webpack-config
