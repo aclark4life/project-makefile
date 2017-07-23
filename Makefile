@@ -86,7 +86,7 @@ ablog-serve:
 # Django
 django: django-dp-clean django-proj-clean django-install django-init django-migrate django-su django-serve  # Chain
 django-debug: django-shell  # Alias
-django-init: django-pg-init django-proj-init  # Chain
+django-init: django-pg-init django-proj-init django-settings  # Chain
 django-pg-clean:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-proj-clean:
@@ -114,6 +114,9 @@ django-serve:
 	bin/python manage.py runserver 0.0.0.0:8000
 django-test:
 	bin/python manage.py test
+django-settings:
+	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT)/settings.py
+	echo "AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', }, { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]" >> $(PROJECT)/settings.py
 django-shell:
 	bin/python manage.py shell
 django-static:
