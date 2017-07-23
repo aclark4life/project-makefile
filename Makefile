@@ -84,27 +84,24 @@ ablog-serve:
 	bin/ablog serve
 
 # Django
-django: django-dp-clean django-proj-clean django-install django-init django-migrate django-su django-serve  # Chain
-django-debug: django-shell  # Alias
-django-init: django-pg-init django-proj-init django-settings  # Chain
-django-pg-clean:  # PostgreSQL
-	-dropdb $(PROJECT)
-django-proj-clean:
+django-app-clean:
 	@-rm -rvf $(PROJECT)
 	@-rm -v manage.py
-django-sq-clean:  # SQLite
-	-rm db.sqlite3
-django-pg-init:  # PostgreSQL
-	-createdb $(PROJECT)_$(APP)
-django-proj-init:
-	-mkdir -p $(PROJECT)/$(APP)
+django-app-init:
+	-mkdir -p $(PROJECT)/$(APP)/templates
+	-touch $(PROJECT)/$(APP)/templates/base.html
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-sq-init:  # SQLite
-	-touch db.sqlite3
+django-db-clean:  # PostgreSQL
+	-dropdb $(PROJECT)
+django-db-init:  # PostgreSQL
+	-createdb $(PROJECT)_$(APP)
+django-debug: django-shell  # Alias
+django-init: django-db-init django-app-init django-settings  # Chain
 django-install:
-	@echo "Django\n" > requirements.txt
+	@echo "Django\ndj-database-url\n" > requirements.txt
 	@$(MAKE) python-install
+django-lint: django-yapf  # Alias
 django-migrate:
 	bin/python manage.py migrate
 django-migrations:
@@ -117,6 +114,7 @@ django-test:
 django-settings:
 	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT)/settings.py
 	echo "AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', }, { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]" >> $(PROJECT)/settings.py
+	echo "DATABASES = { 'default': dj_database_url.config(default=os.environ.get( 'DATABASE_URL', 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('DB_USER', ''), os.environ.get('DB_PASS', ''), os.environ.get('DB_HOST', 'localhost'), os.environ.get('DB_PORT', '5432'), os.environ.get('DB_NAME', 'project_app'))))}"
 django-shell:
 	bin/python manage.py shell
 django-static:
