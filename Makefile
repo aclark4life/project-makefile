@@ -291,6 +291,11 @@ package-release:
 package-release-test:
 	bin/python setup.py sdist --format=gztar,zip upload -r test
 
+# Redhat
+redhat-update:
+	sudo yum update
+	sudo yum upgrade -y
+
 # Review
 review:
 ifeq ($(UNAME), Darwin)
@@ -316,6 +321,11 @@ sphinx-serve:
 	pushd $(PROJECT)/_build/html
 	bin/python -m SimpleHTTPServer
 	popd
+
+# Ubuntu
+ubuntu-update:
+	sudo aptitude update
+	sudo aptitude upgrade -y
 
 # Vagrant
 vagrant: vagrant-clean vagrant-init vagrant-up  # Chain
