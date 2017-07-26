@@ -203,6 +203,11 @@ heroku-web-on:
 heroku-web-off:
 	heroku ps:scale web=0
 
+# Makefile
+make:
+	git add Makefile
+	@$(MAKE) git-commit-auto-push
+
 # Misc
 
 pdf:
