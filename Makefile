@@ -266,6 +266,8 @@ package-test:
 	bin/python setup.py test
 python-virtualenv:
 	virtualenv .
+python-virtualenv-3:
+	virtualenv --python=python3 .
 python-yapf:
 	-yapf -i *.py
 	-yapf -i $(PROJECT)/*.py
