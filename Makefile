@@ -98,7 +98,7 @@ django-db-init:  # PostgreSQL
 	-createdb $(PROJECT)_$(APP)
 django-debug: django-shell  # Alias
 django-graph:
-	bin/python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png 
+	bin/python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: django-db-init django-app-init django-settings  # Chain
 django-install:
 	@echo "Django\ndj-database-url\n" > requirements.txt
