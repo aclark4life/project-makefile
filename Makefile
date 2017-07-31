@@ -97,6 +97,8 @@ django-db-clean:  # PostgreSQL
 django-db-init:  # PostgreSQL
 	-createdb $(PROJECT)_$(APP)
 django-debug: django-shell  # Alias
+django-graph:
+	bin/python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png 
 django-init: django-db-init django-app-init django-settings  # Chain
 django-install:
 	@echo "Django\ndj-database-url\n" > requirements.txt
@@ -126,6 +128,7 @@ django-yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
+graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
 
