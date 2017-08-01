@@ -180,6 +180,8 @@ help:
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "    - "$$0}' | less  # http://stackoverflow.com/a/26339924
 	@echo "\n"
+upstream:
+	git push --set-upstream origin master
 
 # Heroku
 heroku: heroku-init
