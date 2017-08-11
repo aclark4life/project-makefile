@@ -329,7 +329,7 @@ sphinx-build:
 	bin/sphinx-build -b html -d _build/doctrees . _build/html
 sphinx-init:
 	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(PROJECT)
-	mv $(PROJECT)/* .
+	rsync -av --partial --progress --exclude=Makefile $(PROJECT)/ .	
 sphinx-install:
 	@echo "Sphinx\n" > requirements.txt
 	@$(MAKE) python-install
