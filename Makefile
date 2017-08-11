@@ -308,6 +308,13 @@ redhat-update:
 	sudo yum update
 	sudo yum upgrade -y
 
+# Readme
+readme:
+	echo "Creating README.rst"
+	@echo $(PROJECT)-$(APP) > README.rst
+	@echo ================================================================================ >> README.rst
+	echo "Done."
+
 # Review
 review:
 ifeq ($(UNAME), Darwin)
