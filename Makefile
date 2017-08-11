@@ -325,7 +325,6 @@ else
 endif
 
 # Sphinx
-sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build  # Chain
 sphinx-clean:
 	@rm -rvf $(PROJECT)
 sphinx-build:
