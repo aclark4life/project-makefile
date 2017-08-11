@@ -318,7 +318,7 @@ else
 endif
 
 # Sphinx
-sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build sphinx-serve  # Chain
+sphinx: sphinx-clean sphinx-install sphinx-init sphinx-build  # Chain
 sphinx-clean:
 	@rm -rvf $(PROJECT)
 sphinx-build:
@@ -328,11 +328,6 @@ sphinx-install:
 	@$(MAKE) python-install
 sphinx-init:
 	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(PROJECT)
-sphinx-serve:
-	@echo "\nServing HTTP on http://0.0.0.0:8000 ...\n"
-	pushd $(PROJECT)/_build/html
-	bin/python -m SimpleHTTPServer
-	popd
 
 # Ubuntu
 ubuntu-update:
