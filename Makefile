@@ -318,7 +318,7 @@ readme:
 # Review
 review:
 ifeq ($(UNAME), Darwin)
-	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
+	@open -a $(CODE_REVIEW_EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py`\
 		`find $(PROJECT) -name \*.html`
 else
 	@echo "Unsupported"
