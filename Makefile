@@ -333,6 +333,9 @@ sphinx-init:
 sphinx-install:
 	@echo "Sphinx\n" > requirements.txt
 	@$(MAKE) python-install
+sphinx-serve:
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	pushd _build/html; ../../bin/python -m http.server
 
 # Ubuntu
 ubuntu-update:
