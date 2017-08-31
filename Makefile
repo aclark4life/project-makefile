@@ -123,7 +123,6 @@ django-static:
 	bin/python manage.py collectstatic --noinput
 django-su:
 	bin/python manage.py createsuperuser
-django-user: django-su  # Alias
 django-yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
@@ -131,6 +130,7 @@ django-yapf:
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
+su: django-su  # Alias
 
 # Git
 MESSAGE="Update"
