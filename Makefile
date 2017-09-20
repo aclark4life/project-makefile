@@ -46,6 +46,7 @@
 # https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
 APP=app
+DOC=doc
 NAME="Alex Clark"
 PROJECT=project
 TMP:=$(shell echo `tmp`)
@@ -328,8 +329,7 @@ endif
 sphinx-build:
 	bin/sphinx-build -b html -d _build/doctrees . _build/html
 sphinx-init:
-	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(PROJECT)
-	rsync -av --partial --progress --exclude=Makefile $(PROJECT)/ .	
+	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(DOC)
 sphinx-install:
 	@echo "Sphinx\n" > requirements.txt
 	@$(MAKE) python-install
