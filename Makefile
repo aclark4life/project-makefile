@@ -327,7 +327,7 @@ endif
 
 # Sphinx
 sphinx-build:
-	bin/sphinx-build -b html -d _build/doctrees . _build/html
+	bin/sphinx-build -b html -d $(DOC)/_build/doctrees $(DOC) $(DOC)/_build/html
 sphinx-init:
 	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(DOC)
 sphinx-install:
@@ -336,7 +336,7 @@ sphinx-install:
 # https://stackoverflow.com/a/32302366/185820
 sphinx-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	pushd _build/html; ../../bin/python -m http.server
+	pushd $(DOC)/_build/html; python3 -m http.server
 
 # Ubuntu
 ubuntu-update:
