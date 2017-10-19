@@ -359,6 +359,7 @@ vagrant-update:
 	vagrant box update
 
 # Webpack
-# Requires npm i -g create-webpack-config
 webpack-init:
-	webpack-config
+	touch entry.js
+	echo "module.exports = { entry: './entry.js', output: { filename: 'bundle.js' } }" > webpack.config.js
+	webpack
