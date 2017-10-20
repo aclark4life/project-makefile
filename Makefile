@@ -363,3 +363,5 @@ webpack-init:
 	touch entry.js
 	echo "module.exports = { entry: './entry.js', output: { filename: 'bundle.js' } }" > webpack.config.js
 	webpack
+webpack:
+	./node_modules/.bin/webpack --config webpack.config.js
