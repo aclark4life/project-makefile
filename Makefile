@@ -222,7 +222,7 @@ pdf:
 # Node Package Manager
 npm: npm-init npm-install
 npm-init:
-	npm init
+	npm init -y
 npm-install:
 	npm install
 
