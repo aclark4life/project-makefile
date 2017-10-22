@@ -102,7 +102,7 @@ django-graph:
 	bin/python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: django-db-init django-app-init django-settings  # Chain
 django-install:
-	@echo "Django\ndj-database-url\n" > requirements.txt
+	@echo "Django\ndj-database-url\n\psycopg2\n" > requirements.txt
 	@$(MAKE) python-install
 django-lint: django-yapf  # Alias
 django-migrate:
@@ -117,7 +117,7 @@ django-test:
 django-settings:
 	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT)/settings.py
 	echo "AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', }, { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]" >> $(PROJECT)/settings.py
-	echo "DATABASES = { 'default': dj_database_url.config(default=os.environ.get( 'DATABASE_URL', 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('DB_USER', ''), os.environ.get('DB_PASS', ''), os.environ.get('DB_HOST', 'localhost'), os.environ.get('DB_PORT', '5432'), os.environ.get('DB_NAME', 'project_app'))))}" >> $(PROJECT)/settings.py
+	echo "import dj_database_url; DATABASES = { 'default': dj_database_url.config(default=os.environ.get( 'DATABASE_URL', 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('DB_USER', ''), os.environ.get('DB_PASS', ''), os.environ.get('DB_HOST', 'localhost'), os.environ.get('DB_PORT', '5432'), os.environ.get('DB_NAME', 'project_app'))))}" >> $(PROJECT)/settings.py
 django-shell:
 	bin/python manage.py shell
 django-static:
