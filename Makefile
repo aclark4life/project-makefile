@@ -131,6 +131,7 @@ django-yapf:
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
+static: django-static  # Alias
 su: django-su  # Alias
 
 # Git
@@ -271,9 +272,9 @@ python-serve:
 package-test:
 	bin/python setup.py test
 python-virtualenv:
-	virtualenv .
+	virtualenv --python=python2.7 .
 python-virtualenv-3:
-	virtualenv --python=python3 .
+	virtualenv --python=python3.6 .
 python-yapf:
 	-yapf -i *.py
 	-yapf -i $(PROJECT)/*.py
@@ -282,6 +283,8 @@ python-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
+virtualenv: python-virtualenv  # Alias
+virtualenv-3: python-virtualenv-3  # Alias
 
 # Python Package
 package: package-init  # Alias
