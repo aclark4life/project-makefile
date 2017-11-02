@@ -102,7 +102,7 @@ django-graph:
 	bin/python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: django-db-init django-app-init django-settings  # Chain
 django-install:
-	@echo "Django\ndj-database-url\n\psycopg2\n" > requirements.txt
+	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
 	@$(MAKE) python-install
 django-lint: django-yapf  # Alias
 django-migrate:
