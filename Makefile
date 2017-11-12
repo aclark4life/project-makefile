@@ -318,6 +318,8 @@ readme:
 	@echo $(PROJECT)-$(APP) > README.rst
 	@echo ================================================================================ >> README.rst
 	echo "Done."
+	git add README.rst
+	@$(MAKE) git-commit-auto-push
 
 # Review
 review:
