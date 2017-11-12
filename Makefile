@@ -97,10 +97,17 @@ django-db-clean:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-db-init:  # PostgreSQL
 	-createdb $(PROJECT)_$(APP)
+db-init: django-db-init  # Alias
 django-debug: django-shell  # Alias
 django-graph:
 	bin/python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
-django-init: django-db-init django-app-init django-settings  # Chain
+django-init: 
+	@$(MAKE) django-db-init
+	@$(MAKE) django-app-init
+	@$(MAKE) django-settings
+	git add $(PROJECT)
+	git add manage.py
+	@$(MAKE) git-commit-auto-push
 django-install:
 	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
 	git add requirements.txt
