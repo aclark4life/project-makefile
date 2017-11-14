@@ -110,10 +110,10 @@ django-init:
 	@$(MAKE) git-commit-auto-push
 django-install:
 	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
-	git add requirements.txt
 	@$(MAKE) python-install
 	@$(MAKE) freeze
-	@$(MAKE) git-commit-auto-push
+	-git add requirements.txt
+	-@$(MAKE) git-commit-auto-push
 django-lint: django-yapf  # Alias
 django-migrate:
 	bin/python manage.py migrate
