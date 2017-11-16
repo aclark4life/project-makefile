@@ -342,9 +342,9 @@ endif
 
 # Sphinx
 sphinx-build:
-	bin/sphinx-build -b html -d $(DOC)/_build/doctrees $(DOC) $(DOC)/_build/html
+	sphinx-build -b html -d $(DOC)/_build/doctrees $(DOC) $(DOC)/_build/html
 sphinx-init:
-	bin/sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(DOC)
+	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(DOC)
 sphinx-install:
 	@echo "Sphinx\n" > requirements.txt
 	@$(MAKE) python-install
