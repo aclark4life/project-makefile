@@ -139,4 +139,4 @@ Usage
 Slides
 ------
 
-Check out these `slides <http://slides.com/aclark/project-makefile>`_ for more information.
+Review `this presentation <http://slides.com/aclark/project-makefile>`_ for more info.
