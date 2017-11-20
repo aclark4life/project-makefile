@@ -144,6 +144,12 @@ migrations: django-migrations  # Alias
 static: django-static  # Alias
 su: django-su  # Alias
 
+# Elastic Beanstalk
+eb-init: 
+	eb init -i
+eb-create:
+	eb create
+
 # Git
 MESSAGE="Update"
 REMOTES=`\
