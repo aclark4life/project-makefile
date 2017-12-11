@@ -288,9 +288,9 @@ python-serve:
 	bin/python -m SimpleHTTPServer
 package-test:
 	bin/python setup.py test
-python-virtualenv:
+python-virtualenv-2-7:
 	virtualenv --python=python2.7 .
-python-virtualenv-3:
+python-virtualenv-3-6:
 	virtualenv --python=python3.6 .
 python-yapf:
 	-yapf -i *.py
@@ -300,8 +300,8 @@ python-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
-virtualenv: python-virtualenv  # Alias
-virtualenv-3: python-virtualenv-3  # Alias
+virtualenv: python-virtualenv-3-6  # Alias
+virtualenv-2: python-virtualenv-2-7  # Alias
 
 # Python Package
 package: package-init  # Alias
