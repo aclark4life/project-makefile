@@ -283,7 +283,7 @@ python-flake:
 python-install:
 	bin/pip install -r requirements.txt
 python-install-test:
-	bin/pip install -r $(PROJECT)/$(APP)/tests/requirements.txt
+	pushd $(PROJECT)/$(APP)/tests; ../../../bin/pip install -r requirements.txt
 python-lint: python-yapf python-flake python-wc  # Chain
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
