@@ -144,6 +144,7 @@ migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
 static: django-static  # Alias
 su: django-su  # Alias
+test: django-test  # Alias
 
 # Elastic Beanstalk
 eb-init: 
@@ -273,7 +274,6 @@ plone-serve:
 install: python-install  # Alias
 lint: python-lint  # Alias
 serve: python-serve  # Alias
-test: python-test  # Alias
 python-clean:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
