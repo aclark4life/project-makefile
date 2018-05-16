@@ -385,5 +385,5 @@ webpack-init:
 	touch app.js
 	echo "module.exports = { entry: './app.js', output: { filename: 'bundle.js' } }" > webpack.config.js
 webpack:
-	webpack
+	./node_modules/.bin/webpack
 pack: webpack  # Alias
