@@ -292,6 +292,8 @@ python-virtualenv-2-7:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-6:
 	virtualenv --python=python3.6 .
+python-virtualenv-3-7:
+	virtualenv --python=python3.7 .
 python-yapf:
 	-yapf -i *.py
 	-yapf -i $(PROJECT)/*.py
@@ -300,7 +302,7 @@ python-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
-virtualenv: python-virtualenv-3-6  # Alias
+virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
 
 # Python Package
