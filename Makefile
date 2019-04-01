@@ -304,6 +304,9 @@ python-wc:
 	-wc -l $(PROJECT)/$(APP)/*.py
 python-pipenv:
 	pipenv install
+	git add Pipfile
+	git add Pipfile.lock
+	git commit -a -m "Add pipenv"; git push
 virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
 pipenv: python-pipenv # Alias
