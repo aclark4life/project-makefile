@@ -303,9 +303,10 @@ python-wc:
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
 python-pipenv:
-	pipenv .
+	pipenv install .
 virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
+pipenv: python-pipenv # Alias
 
 # Python Package
 package: package-init  # Alias
