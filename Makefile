@@ -116,7 +116,7 @@ django-install:
 	-@$(MAKE) git-commit-auto-push
 django-lint: django-yapf  # Alias
 django-migrate:
-	bin/python manage.py migrate
+	python manage.py migrate
 django-migrations:
 	bin/python manage.py makemigrations $(APP)
 	git add $(PROJECT)/$(APP)/migrations/*.py
