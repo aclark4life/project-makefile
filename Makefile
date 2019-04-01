@@ -91,8 +91,8 @@ django-app-clean:
 django-app-init:
 	-mkdir -p $(PROJECT)/$(APP)/templates
 	-touch $(PROJECT)/$(APP)/templates/base.html
-	-bin/django-admin startproject $(PROJECT) .
-	-bin/django-admin startapp $(APP) $(PROJECT)/$(APP)
+	-django-admin startproject $(PROJECT) .
+	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 django-db-clean:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-db-init:  # PostgreSQL
