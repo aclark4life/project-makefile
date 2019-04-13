@@ -74,15 +74,15 @@ ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Chain
 ablog-clean:
 	-rm conf.py index.rst
 ablog-init:
-	bin/ablog start
+	ablog start
 ablog-install:
 	@echo "ablog\n" > requirements.txt
 	@$(MAKE) python-virtualenv
 	@$(MAKE) python-install
 ablog-build:
-	bin/ablog build
+	ablog build
 ablog-serve:
-	bin/ablog serve
+	ablog serve
 
 # Django
 django-app-clean:
@@ -100,7 +100,7 @@ django-db-init:  # PostgreSQL
 db-init: django-db-init  # Alias
 django-debug: django-shell  # Alias
 django-graph:
-	bin/python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
+	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
 	@$(MAKE) django-db-init
 	@$(MAKE) django-app-init
@@ -118,23 +118,23 @@ django-lint: django-yapf  # Alias
 django-migrate:
 	python manage.py migrate
 django-migrations:
-	bin/python manage.py makemigrations $(APP)
+	python manage.py makemigrations $(APP)
 	git add $(PROJECT)/$(APP)/migrations/*.py
 django-serve:
 	python manage.py runserver 0.0.0.0:8000
 django-test:
-	bin/python manage.py test
+	python manage.py test
 django-settings:
 	echo "STATIC_ROOT = 'static'" >> $(PROJECT)/settings.py
 	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT)/settings.py
 	echo "AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', }, { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]" >> $(PROJECT)/settings.py
 	echo "import dj_database_url; DATABASES = { 'default': dj_database_url.config(default=os.environ.get( 'DATABASE_URL', 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('DB_USER', ''), os.environ.get('DB_PASS', ''), os.environ.get('DB_HOST', 'localhost'), os.environ.get('DB_PORT', '5432'), os.environ.get('DB_NAME', 'project_app'))))}" >> $(PROJECT)/settings.py
 django-shell:
-	bin/python manage.py shell
+	python manage.py shell
 django-static:
-	bin/python manage.py collectstatic --noinput
+	python manage.py collectstatic --noinput
 django-su:
-	bin/python manage.py createsuperuser
+	python manage.py createsuperuser
 django-yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
@@ -248,7 +248,7 @@ npm-install:
 # Pip
 freeze: pip-freeze
 pip-freeze:
-	bin/pip freeze | sort > $(TMP)/requirements.txt
+	pip freeze | sort > $(TMP)/requirements.txt
 	mv -f $(TMP)/requirements.txt .
 
 # Plone
@@ -259,7 +259,7 @@ plone-heroku:
 	@export PORT=8080 && \
 		export USERNAME=admin && \
 		export PASSWORD=admin && \
-		bin/buildout -c heroku.cfg
+		buildout -c heroku.cfg
 plone-install:
 	@echo plock > requirements.txt
 	@$(MAKE) python-virtualenv
@@ -268,7 +268,7 @@ plone-init:
 	plock --force --no-cache --no-virtualenv .
 plone-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8080\n"
-	@bin/plone fg
+	@plone fg
 
 # Python
 install: python-install  # Alias
@@ -281,13 +281,13 @@ python-flake:
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
 python-install:
-	bin/pip install -r requirements.txt
+	pip install -r requirements.txt
 python-lint: python-yapf python-flake python-wc  # Chain
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	bin/python -m SimpleHTTPServer
+	python -m SimpleHTTPServer
 package-test:
-	bin/python setup.py test
+	python setup.py test
 python-virtualenv-2-7:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-6:
@@ -328,9 +328,9 @@ package-pyroma:
 package-readme:
 	rst2html.py README.rst > readme.html; open readme.html
 package-release:
-	bin/python setup.py sdist --format=gztar,zip upload
+	python setup.py sdist --format=gztar,zip upload
 package-release-test:
-	bin/python setup.py sdist --format=gztar,zip upload -r test
+	python setup.py sdist --format=gztar,zip upload -r test
 
 # Redhat
 redhat-update:
