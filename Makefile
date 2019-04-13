@@ -84,6 +84,10 @@ ablog-build:
 ablog-serve:
 	ablog serve
 
+# Buildout
+b:
+	buildout
+
 # Django
 django-app-clean:
 	@-rm -rvf $(PROJECT)
