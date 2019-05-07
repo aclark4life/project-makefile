@@ -197,12 +197,10 @@ grunt-serve:
 h: help  # Alias
 he: help  # Alias
 help:
-	@echo "Usage: make [TARGET]\nAvailable targets:\n"
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "    - "$$0}' | less  # http://stackoverflow.com/a/26339924
-	@echo "\n"
 upstream:
 	git push --set-upstream origin master
 
