@@ -51,7 +51,6 @@ NAME="Alex Clark"
 PROJECT=project
 TMP:=$(shell echo `tmp`)
 UNAME:=$(shell uname)
-REMOTE=remotehost
 
 # Rules
 #
