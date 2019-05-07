@@ -17,8 +17,8 @@ Usage
     Usage: make <target>
 
 
-Targets (via `make h`)
-~~~~~~~~~~~~~~~~~~~~~~
+Targets (via ``make h``)
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
