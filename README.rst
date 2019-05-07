@@ -23,6 +23,7 @@ Usage
         - ablog-init
         - ablog-install
         - ablog-serve
+        - b
         - co
         - commit
         - commit-auto
@@ -46,6 +47,8 @@ Usage
         - django-su
         - django-test
         - django-yapf
+        - eb-create
+        - eb-init
         - freeze
         - git-checkout-remotes
         - git-commit
@@ -82,6 +85,7 @@ Usage
         - npm
         - npm-init
         - npm-install
+        - pack
         - package
         - package-check-manifest
         - package-init
@@ -93,6 +97,7 @@ Usage
         - package-test
         - pdf
         - pip-freeze
+        - pipenv
         - plone
         - plone-heroku
         - plone-init
@@ -103,9 +108,11 @@ Usage
         - python-flake
         - python-install
         - python-lint
+        - python-pipenv
         - python-serve
-        - python-virtualenv
-        - python-virtualenv-3
+        - python-virtualenv-2-7
+        - python-virtualenv-3-6
+        - python-virtualenv-3-7
         - python-wc
         - python-yapf
         - readme
@@ -130,11 +137,10 @@ Usage
         - vagrant-up
         - vagrant-update
         - virtualenv
-        - virtualenv-3
+        - virtualenv-2
         - vm
         - webpack
         - webpack-init
-
 
 Slides
 ------
