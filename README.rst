@@ -14,8 +14,11 @@ Usage
 
 ::
 
-    Usage: make [TARGET]
-    Available targets:
+    Usage: make <TARGET>
+
+
+Available targets (via ``make h``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
         - ablog
         - ablog-build
