@@ -142,12 +142,15 @@ django-yapf:
 	-yapf -i *.py
 	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
+django-loaddata:
+	python manage.py loaddata
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
 static: django-static  # Alias
 su: django-su  # Alias
 test: django-test  # Alias
+loaddata: django-loaddata  # Alias
 
 # Elastic Beanstalk
 eb-init: 
