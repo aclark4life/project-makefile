@@ -251,6 +251,11 @@ freeze: pip-freeze
 pip-freeze:
 	pip freeze | sort > $(TMP)/requirements.txt
 	mv -f $(TMP)/requirements.txt .
+pip-upgrade:
+	cat requirements.txt | awk -F \= '{print $1}' > $(TMP)/requirements.txt
+	mv -f $(TMP)/requirements.txt .
+	pip install -U -r requirements.txt
+	$(MAKE) pip-freeze
 
 # Plone
 plone: plone-install plone-init plone-serve  # Chain
