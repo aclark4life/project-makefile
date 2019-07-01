@@ -117,7 +117,6 @@ django-install:
 	@$(MAKE) freeze
 	-git add requirements.txt
 	-@$(MAKE) git-commit-auto-push
-django-lint: django-yapf  # Alias
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -138,10 +137,6 @@ django-static:
 	python manage.py collectstatic --noinput
 django-su:
 	python manage.py createsuperuser
-django-yapf:
-	-yapf -i *.py
-	-yapf -i -e $(PROJECT)/urls.py $(PROJECT)/*.py  # Don't format urls.py
-	-yapf -i $(PROJECT)/$(APP)/*.py
 django-loaddata:
 	python manage.py loaddata
 graph: django-graph
