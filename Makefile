@@ -286,7 +286,7 @@ python-flake:
 	-flake8 $(PROJECT)/$(APP)/*.py
 python-install:
 	pip install -r requirements.txt
-python-lint: python-yapf python-flake python-wc  # Chain
+python-lint: python-black python-flake python-wc  # Chain
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m SimpleHTTPServer
@@ -302,6 +302,8 @@ python-yapf:
 	-yapf -i *.py
 	-yapf -i $(PROJECT)/*.py
 	-yapf -i $(PROJECT)/$(APP)/*.py
+python-black:
+	black $(PROJECT)
 python-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
