@@ -6,7 +6,7 @@ Installation
 
 ::
 
-    curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile
+    curl -O https://raw.githubusercontent.com/aclark4life/universal-project-makefile/master/Makefile
 
 
 Usage
