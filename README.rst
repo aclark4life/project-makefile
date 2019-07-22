@@ -1,5 +1,5 @@
-Project Makefile
-================
+Universal Project Makefile
+==========================
 
 Installation
 ------------
