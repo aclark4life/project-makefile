@@ -1,6 +1,13 @@
 Universal Project Makefile
 ==========================
 
+Why?
+----
+
+Check out the slides:
+
+- https://slides.com/aclark/project-makefile#/
+
 Installation
 ------------
 
