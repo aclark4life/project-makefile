@@ -184,6 +184,8 @@ git-push:
 git-commit-push: git-commit git-push  # Multi-target Alias
 git-commit-auto-push: git-commit-push  # BBB
 cp: git-commit-push  # Alias 
+git-push-up:
+	git push --set-upstream origin master
 
 # Grunt
 grunt: grunt-init grunt-serve
@@ -206,9 +208,6 @@ list-examples:
         '{print "make "$$0}'  # http://stackoverflow.com/a/26339924
 help: list-examples  # Alias
 h: list-examples  # Alias
-
-upstream:
-	git push --set-upstream origin master
 
 # Heroku
 heroku: heroku-init
