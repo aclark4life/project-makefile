@@ -83,6 +83,7 @@ REMOTES=`\
 #
 # "Multi-target Alias" - Like an "Alias", but with multiple targets.
 #
+# "BBB" - For backwards compatibility.
 
 #-------------------------------------------------------------------------------
 
@@ -185,8 +186,12 @@ git-push:
 	git push
 git-push-up:
 	git push --set-upstream origin master
+commit: git-commit  # Alias
+c: commit  # Alias
+cp: commit-push  # Alias
+push: git-push  # Alias
+p: push  # Alias
 commit-push: git-commit git-push  # Multi-target Alias
-c: commit-push
 git-commit-auto-push: commit-push  # BBB
 
 # Grunt
