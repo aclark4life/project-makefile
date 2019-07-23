@@ -412,11 +412,13 @@ vagrant-update:
 
 # Webpack
 webpack-init:
-	touch app.js
-	echo "module.exports = { entry: './app.js', output: { filename: 'bundle.js' } }" > webpack.config.js
-webpack:
-	./node_modules/.bin/webpack
-pack: webpack  # Alias
+	touch index.js
+	echo "module.exports = { entry: './index.js', output: { filename: 'bundle.js' } }" > webpack.config.js
+webpack-install:
+	npm install --save-dev webpack
+webpack-run:
+	npm run bundle  # Requires bundle script in package.json to call webpack
+pack: webpack-run
 
 #-------------------------------------------------------------------------------
 
