@@ -37,7 +37,7 @@
 # of the default goal from within your makefile using the .DEFAULT_GOAL variable
 # (see Other Special Variables). 
 
-.DEFAULT_GOAL=help
+.DEFAULT_GOAL=usage
 
 #-------------------------------------------------------------------------------
 
@@ -126,13 +126,13 @@ django-init:
 	@$(MAKE) django-settings
 	git add $(PROJECT)
 	git add manage.py
-	@$(MAKE) git-commit-message-push
+	@$(MAKE) git-commit-push
 django-install:
 	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
 	@$(MAKE) python-install
 	@$(MAKE) freeze
 	-git add requirements.txt
-	-@$(MAKE) git-commit-message-push
+	-@$(MAKE) git-commit-push
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -170,17 +170,18 @@ eb-create:
 	eb create
 
 # Git
-git-checkout-remotes:
+git-checkout:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
-git-commit-message:
-	git commit -a -m $(COMMIT_MESSAGE)
 git-commit:
+	git commit -a -m $(COMMIT_MESSAGE)
+git-commit-edit:
 	git commit -a
 git-push:
 	git push
-git-commit-message-push: git-commit-message git-push  # Multi-target Alias
-cp: git-commit-message-push  # Alias 
+git-commit-push: git-commit git-push  # Multi-target Alias
+git-commit-auto-push: git-commit-push  # BBB
+cp: git-commit-push  # Alias 
 
 # Grunt
 grunt: grunt-init grunt-serve
@@ -202,7 +203,7 @@ help:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
-        '{print "    - "$$0}' | less  # http://stackoverflow.com/a/26339924
+        '{print "    make "$$0}' | less  # http://stackoverflow.com/a/26339924
 upstream:
 	git push --set-upstream origin master
 
@@ -231,10 +232,18 @@ heroku-web-on:
 heroku-web-off:
 	heroku ps:scale web=0
 
+# Usage
+usage:
+	@echo "Welcome to Universal Project Makefile!"
+	@echo "Usage:\n"
+	@echo "\tmake <target>\n"
+	@echo "Example:\n"
+	@echo "\tmake help"
+
 # Makefile
 make:
 	git add Makefile
-	@$(MAKE) git-commit-message-push
+	@$(MAKE) git-commit-push
 
 # Misc
 
@@ -354,7 +363,7 @@ readme:
 	@echo ================================================================================ >> README.rst
 	echo "Done."
 	git add README.rst
-	@$(MAKE) git-commit-message-push
+	@$(MAKE) git-commit-push
 
 # Review
 review:
