@@ -74,7 +74,9 @@ REMOTES=`\
 #
 # https://www.gnu.org/software/make/manual/html_node/Rules.html
 
-# Concepts
+#-------------------------------------------------------------------------------
+
+# Universal Project Makefile Concepts
 #
 # "Alias" - A new target definition that only exists to create a shorter target 
 # name for another target that already exists.
