@@ -162,6 +162,7 @@ REMOTES=`\
 	grep -v master`  # http://unix.stackexchange.com/a/37316
 co: git-checkout-remotes  # Alias
 commit: git-commit  # Alias
+c: git-commit  # Alias
 commit-auto: git-commit-auto-push  # Alias
 commit-edit: git-commit-edit-push  # Alias
 git-commit: git-commit-auto  # Alias
