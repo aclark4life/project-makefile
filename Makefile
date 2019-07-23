@@ -258,6 +258,8 @@ npm-init:
 	npm init -y
 npm-install:
 	npm install
+npm-run:
+	npm install
 
 # Pip
 freeze: pip-freeze
