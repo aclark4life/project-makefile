@@ -98,7 +98,7 @@ ablog-init:
 ablog-install:
 	@echo "ablog\n" > requirements.txt
 	@$(MAKE) python-virtualenv
-	@$(MAKE) python-install
+	@$(MAKE) pip-install
 ablog-build:
 	ablog build
 ablog-serve:
@@ -134,7 +134,7 @@ django-init:
 	@$(MAKE) git-commit-push
 django-install:
 	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
-	@$(MAKE) python-install
+	@$(MAKE) pip-install
 	@$(MAKE) freeze
 	-git add requirements.txt
 	-@$(MAKE) git-commit-push
@@ -289,7 +289,7 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
-python-install:
+pip-install:
 	pip install -r requirements.txt
 python-lint: python-black python-flake python-wc  # Multi-target Alias
 python-serve:
@@ -374,7 +374,7 @@ sphinx-init:
 	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(USER) -v 0.0.1 $(DOC)
 sphinx-install:
 	@echo "Sphinx\n" > requirements.txt
-	@$(MAKE) python-install
+	@$(MAKE) pip-install
 # https://stackoverflow.com/a/32302366/185820
 sphinx-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
