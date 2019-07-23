@@ -188,6 +188,7 @@ git-push-up:
 git-commit-push: git-commit git-push  # Multi-target Alias
 git-commit-auto-push: git-commit-push  # BBB
 cp: git-commit-push  # Alias 
+commit-edit: git-commit-edit git-push  # Alias
 commit-push: git-commit-push  # Alias
 
 # Grunt
@@ -273,25 +274,6 @@ pip-upgrade:
 	mv -f $(TMPDIR)/requirements.txt .
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
-
-# Plone
-plone: plone-install plone-init plone-serve  # Multi-target Alias
-plone-heroku:
-	-@createuser -s plone > /dev/null 2>&1
-	-@createdb -U plone plone > /dev/null 2>&1
-	@export PORT=8080 && \
-		export USERNAME=admin && \
-		export PASSWORD=admin && \
-		buildout -c heroku.cfg
-plone-install:
-	@echo plock > requirements.txt
-	@$(MAKE) python-virtualenv
-	@$(MAKE) python-install
-plone-init:
-	plock --force --no-cache --no-virtualenv .
-plone-serve:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8080\n"
-	@plone fg
 
 # Python
 lint: python-lint  # Alias
