@@ -55,6 +55,13 @@ UNAME:=$(shell uname)
 APP=app  # Django
 DOC=doc  # Sphinx
 PROJECT=project  # Django
+# Git
+COMMIT_MESSAGE="Update"
+REMOTES=`\
+	git branch -a |\
+	grep remote   |\
+	grep -v HEAD  |\
+	grep -v master`  # http://unix.stackexchange.com/a/37316
 
 #-------------------------------------------------------------------------------
 
@@ -119,13 +126,13 @@ django-init:
 	@$(MAKE) django-settings
 	git add $(PROJECT)
 	git add manage.py
-	@$(MAKE) git-commit-message
+	@$(MAKE) git-commit-message-push
 django-install:
 	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
 	@$(MAKE) python-install
 	@$(MAKE) freeze
 	-git add requirements.txt
-	-@$(MAKE) git-commit-message
+	-@$(MAKE) git-commit-message-push
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -163,31 +170,17 @@ eb-create:
 	eb create
 
 # Git
-commit_message="Update"
-REMOTES=`\
-	git branch -a |\
-	grep remote   |\
-	grep -v HEAD  |\
-	grep -v master`  # http://unix.stackexchange.com/a/37316
-co: git-checkout-remotes  # Alias
-commit: git-commit  # Alias
-c: git-commit  # Alias
-commit-message: git-commit-message  # Alias
-commit-edit: git-commit-edit-push  # Alias
-git-commit: git-commit-message  # Alias
-git-commit-auto-push: git-commit-auto git-push  # Multi-target Alias
-git-commit-edit-push: git-commit-edit git-push  # Multi-target Alias
-push: git-push  # Alias
-p: git-push
 git-checkout-remotes:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
 git-commit-message:
-	git commit -a -m $(commit_message)
+	git commit -a -m $(COMMIT_MESSAGE)
 git-commit:
 	git commit -a
 git-push:
 	git push
+git-commit-message-push: git-commit-message git-push  # Multi-target Alias
+cp: git-commit-message-push  # Alias 
 
 # Grunt
 grunt: grunt-init grunt-serve
@@ -241,7 +234,7 @@ heroku-web-off:
 # Makefile
 make:
 	git add Makefile
-	@$(MAKE) git-commit-auto-push
+	@$(MAKE) git-commit-message-push
 
 # Misc
 
@@ -361,7 +354,7 @@ readme:
 	@echo ================================================================================ >> README.rst
 	echo "Done."
 	git add README.rst
-	@$(MAKE) git-commit-auto-push
+	@$(MAKE) git-commit-message-push
 
 # Review
 review:
