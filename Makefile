@@ -187,7 +187,7 @@ git-push:
 git-push-up:
 	git push --set-upstream origin master
 commit: git-commit  # Alias
-c: commit  # Alias
+c: commit-push  # Alias
 cp: commit-push  # Alias
 push: git-push  # Alias
 p: push  # Alias
