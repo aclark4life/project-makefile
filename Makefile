@@ -421,5 +421,6 @@ pack: webpack  # Alias
 #-------------------------------------------------------------------------------
 
 # Custom
-# .DEFAULT_GOAL=npm-install
+# 
+# .DEFAULT_GOAL=commit-push
 # install: npm-install
