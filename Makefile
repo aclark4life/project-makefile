@@ -185,11 +185,9 @@ git-push:
 	git push
 git-push-up:
 	git push --set-upstream origin master
-git-commit-push: git-commit git-push  # Multi-target Alias
-git-commit-auto-push: git-commit-push  # BBB
-cp: git-commit-push  # Alias 
-commit-edit: git-commit-edit git-push  # Alias
-commit-push: git-commit-push  # Alias
+commit-push: git-commit git-push  # Multi-target Alias
+c: commit-push
+git-commit-auto-push: commit-push  # BBB
 
 # Grunt
 grunt: grunt-init grunt-serve
