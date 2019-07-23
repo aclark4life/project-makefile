@@ -45,12 +45,12 @@
 #
 # https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
-APP=app
-DOC=doc
-NAME="Alex Clark"
-PROJECT=project
-TMP:=$(shell echo `tmp`)
+TMPDIR := $(shell mktemp -d)  # https://stackoverflow.com/a/589260/185820
 UNAME:=$(shell uname)
+
+APP=app  # Django
+DOC=doc  # Sphinx
+PROJECT=project  # Django
 
 # Rules
 #
@@ -60,16 +60,17 @@ UNAME:=$(shell uname)
 # create or update the target. 
 #
 # https://www.gnu.org/software/make/manual/html_node/Rules.html
+
+# Concepts
 #
-# (Note I am not using Make's implicit rules to remake files, because there are no
-# files to manage, just tasks to perform. Also note the terms "Alias" and "Chain"
-# in the comments below are mine, not Make's. In particular, I'm not referring to
-# Make's Implicit Chaining feature. Rather, a "Chain" as I've defined it is a series
-# of prerequisites required to satisfy the target. And an "Alias" is a target that
-# only exists to define a shorter name for its prerequisite.)
+# "Alias" - A new target definition that only exists to create a shorter target 
+# name for another target that already exists.
+#
+# "Multi-target Alias" - Like an "Alias", but with multiple targets.
+#
 
 # ABlog
-ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Chain
+ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Multi-target Alias
 ablog-clean:
 	-rm conf.py index.rst
 ablog-init:
@@ -110,13 +111,13 @@ django-init:
 	@$(MAKE) django-settings
 	git add $(PROJECT)
 	git add manage.py
-	@$(MAKE) git-commit-auto-push
+	@$(MAKE) git-commit-message
 django-install:
 	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
 	@$(MAKE) python-install
 	@$(MAKE) freeze
 	-git add requirements.txt
-	-@$(MAKE) git-commit-auto-push
+	-@$(MAKE) git-commit-message
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -154,7 +155,7 @@ eb-create:
 	eb create
 
 # Git
-MESSAGE="Update"
+commit_message="Update"
 REMOTES=`\
 	git branch -a |\
 	grep remote   |\
@@ -163,19 +164,19 @@ REMOTES=`\
 co: git-checkout-remotes  # Alias
 commit: git-commit  # Alias
 c: git-commit  # Alias
-commit-auto: git-commit-auto-push  # Alias
+commit-message: git-commit-message  # Alias
 commit-edit: git-commit-edit-push  # Alias
-git-commit: git-commit-auto  # Alias
-git-commit-auto-push: git-commit-auto git-push  # Chain
-git-commit-edit-push: git-commit-edit git-push  # Chain
+git-commit: git-commit-message  # Alias
+git-commit-auto-push: git-commit-auto git-push  # Multi-target Alias
+git-commit-edit-push: git-commit-edit git-push  # Multi-target Alias
 push: git-push  # Alias
 p: git-push
 git-checkout-remotes:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
-git-commit-auto:
-	git commit -a -m $(MESSAGE)
-git-commit-edit:
+git-commit-message:
+	git commit -a -m $(commit_message)
+git-commit:
 	git commit -a
 git-push:
 	git push
@@ -249,16 +250,16 @@ npm-install:
 # Pip
 freeze: pip-freeze
 pip-freeze:
-	pip freeze | sort > $(TMP)/requirements.txt
-	mv -f $(TMP)/requirements.txt .
+	pip freeze | sort > $(TMPDIR)/requirements.txt
+	mv -f $(TMPDIR)/requirements.txt .
 pip-upgrade:
-	cat requirements.txt | awk -F \= '{print $1}' > $(TMP)/requirements.txt
-	mv -f $(TMP)/requirements.txt .
+	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
+	mv -f $(TMPDIR)/requirements.txt .
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
 
 # Plone
-plone: plone-install plone-init plone-serve  # Chain
+plone: plone-install plone-init plone-serve  # Multi-target Alias
 plone-heroku:
 	-@createuser -s plone > /dev/null 2>&1
 	-@createdb -U plone plone > /dev/null 2>&1
@@ -288,7 +289,7 @@ python-flake:
 	-flake8 $(PROJECT)/$(APP)/*.py
 python-install:
 	pip install -r requirements.txt
-python-lint: python-black python-flake python-wc  # Chain
+python-lint: python-black python-flake python-wc  # Multi-target Alias
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m SimpleHTTPServer
@@ -330,7 +331,7 @@ package-init:
 	touch $(PROJECT)/$(APP)/__init__.py
 	touch $(PROJECT)/__init__.py
 	@echo "setup(){}" > setup.py
-package-lint: package-check-manifest package-pyroma  # Chain
+package-lint: package-check-manifest package-pyroma  # Multi-target Alias
 package-pyroma:
 	pyroma .
 package-readme:
@@ -367,7 +368,7 @@ endif
 sphinx-build:
 	sphinx-build -b html -d $(DOC)/_build/doctrees $(DOC) $(DOC)/_build/html
 sphinx-init:
-	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(NAME) -v 0.0.1 $(DOC)
+	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(USER) -v 0.0.1 $(DOC)
 sphinx-install:
 	@echo "Sphinx\n" > requirements.txt
 	@$(MAKE) python-install
@@ -382,7 +383,7 @@ ubuntu-update:
 	sudo aptitude upgrade -y
 
 # Vagrant
-vagrant: vagrant-clean vagrant-init vagrant-up  # Chain
+vagrant: vagrant-clean vagrant-init vagrant-up  # Multi-target Alias
 vm: vagrant  # Alias
 vagrant-clean:
 	-rm Vagrantfile
