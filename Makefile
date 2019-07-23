@@ -1,8 +1,8 @@
-# https://github.com/aclark4life/project-makefile
+# https://github.com/aclark4life/universal-project-makefile
 #
 # The MIT License (MIT)
 #
-# Copyright (c) 2016 Alex Clark
+# Copyright (c) 2019 Alex Clark
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@
 # of the default goal from within your makefile using the .DEFAULT_GOAL variable
 # (see Other Special Variables). 
 
-.DEFAULT_GOAL=git-commit-auto-push
+.DEFAULT_GOAL=help
 
 # Variables
 
