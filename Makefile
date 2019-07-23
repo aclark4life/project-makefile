@@ -303,6 +303,7 @@ python-virtualenv-3-6:
 	virtualenv --python=python3.6 .
 python-virtualenv-3-7:
 	virtualenv --python=python3.7 .
+python-virtualenv: python-virtualenv-3-7  # Alias
 python-yapf:
 	-yapf -i *.py
 	-yapf -i $(PROJECT)/*.py
