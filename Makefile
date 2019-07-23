@@ -290,7 +290,6 @@ plone-serve:
 	@plone fg
 
 # Python
-install: python-install  # Alias
 lint: python-lint  # Alias
 serve: python-serve  # Alias
 python-clean:
@@ -420,4 +419,5 @@ pack: webpack  # Alias
 #-------------------------------------------------------------------------------
 
 # Custom
-# .DEFAULT_GOAL=usage
+# .DEFAULT_GOAL=npm-install
+# install: npm-install
