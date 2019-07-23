@@ -22,6 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+#-------------------------------------------------------------------------------
+
 # Default Goal
 # 
 # https://www.gnu.org/software/make/manual/html_node/Goals.html
@@ -37,6 +39,8 @@
 
 .DEFAULT_GOAL=help
 
+#-------------------------------------------------------------------------------
+
 # Variables
 
 # A variable is a name defined in a makefile to represent a string of text, called
@@ -51,6 +55,8 @@ UNAME:=$(shell uname)
 APP=app  # Django
 DOC=doc  # Sphinx
 PROJECT=project  # Django
+
+#-------------------------------------------------------------------------------
 
 # Rules
 #
@@ -68,6 +74,8 @@ PROJECT=project  # Django
 #
 # "Multi-target Alias" - Like an "Alias", but with multiple targets.
 #
+
+#-------------------------------------------------------------------------------
 
 # ABlog
 ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Multi-target Alias
@@ -404,3 +412,7 @@ webpack-init:
 webpack:
 	./node_modules/.bin/webpack
 pack: webpack  # Alias
+
+#-------------------------------------------------------------------------------
+
+# Custom
