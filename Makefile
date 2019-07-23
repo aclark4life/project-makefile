@@ -254,7 +254,6 @@ pdf:
 	rst2pdf README.rst
 
 # Node Package Manager
-npm: npm-init npm-install
 npm-init:
 	npm init -y
 npm-install:
@@ -425,3 +424,4 @@ pack: webpack  # Alias
 # 
 # .DEFAULT_GOAL=commit-push
 # install: npm-install
+# run: npm-run
