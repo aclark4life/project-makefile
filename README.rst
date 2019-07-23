@@ -45,6 +45,8 @@ Usage
     make ablog-install
     make ablog-serve
     make b
+    make commit-edit
+    make commit-push
     make cp
     make db-init
     make django-app-clean
@@ -73,6 +75,7 @@ Usage
     make git-commit-edit
     make git-commit-push
     make git-push
+    make git-push-up
     make graph
     make grunt
     make grunt-file
@@ -93,15 +96,14 @@ Usage
     make heroku-shell
     make heroku-web-off
     make heroku-web-on
-    make install
     make lint
     make loaddata
     make make
     make migrate
     make migrations
-    make npm
     make npm-init
     make npm-install
+    make npm-run
     make pack
     make package
     make package-check-manifest
@@ -116,11 +118,6 @@ Usage
     make pip-freeze
     make pip-upgrade
     make pipenv
-    make plone
-    make plone-heroku
-    make plone-init
-    make plone-install
-    make plone-serve
     make python-black
     make python-clean
     make python-flake
@@ -147,7 +144,6 @@ Usage
     make su
     make test
     make ubuntu-update
-    make upstream
     make usage
     make vagrant
     make vagrant-clean
@@ -158,7 +154,6 @@ Usage
     make virtualenv
     make virtualenv-2
     make vm
-    make webpack
     make webpack-init
-
-
+    make webpack-install
+    make webpack-run
