@@ -4,7 +4,10 @@ Universal Project Makefile
 Why?
 ----
 
-Check out the slides:
+I like typing ``make <target>`` to perform every task.
+
+Slides
+------
 
 - https://slides.com/aclark/project-makefile#/
 
