@@ -235,10 +235,10 @@ heroku-web-off:
 
 # Usage
 usage:
-	@echo "Welcome to Universal Project Makefile!"
+	@echo "Universal Project Makefile"
 	@echo "Usage:\n"
 	@echo "\tmake <target>\n"
-	@echo "Example:\n"
+	@echo "Examples:\n"
 	@echo "\tmake list-examples"
 
 # Makefile
