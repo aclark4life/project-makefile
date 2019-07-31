@@ -131,13 +131,13 @@ django-init:
 	@$(MAKE) django-settings
 	git add $(PROJECT)
 	git add manage.py
-	@$(MAKE) git-commit-push
+	@$(MAKE) commit-push
 django-install:
 	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
 	@$(MAKE) pip-install
 	@$(MAKE) freeze
 	-git add requirements.txt
-	-@$(MAKE) git-commit-push
+	-@$(MAKE) commit-push
 django-migrate:
 	python manage.py migrate
 django-migrations:
@@ -254,7 +254,7 @@ usage:
 # Makefile
 make:
 	git add Makefile
-	@$(MAKE) git-commit-push
+	@$(MAKE) commit-push
 
 # Misc
 
@@ -356,7 +356,7 @@ readme:
 	@echo ================================================================================ >> README.rst
 	echo "Done."
 	git add README.rst
-	@$(MAKE) git-commit-push
+	@$(MAKE) commit-push
 
 # Review
 review:
