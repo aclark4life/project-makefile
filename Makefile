@@ -173,6 +173,9 @@ eb-init:
 	eb init -i
 eb-create:
 	eb create
+eb-deploy:
+	eb deploy
+d: eb-deploy
 
 # Git
 git-checkout:
