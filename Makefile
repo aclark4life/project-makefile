@@ -51,13 +51,12 @@
 
 TMPDIR := $(shell mktemp -d)  # https://stackoverflow.com/a/589260/185820
 UNAME := $(shell uname)
+PROJECT := project
+APP := app
 
-APP=app  # Django
-DOC=doc  # Sphinx
-PROJECT=project  # Django
 # Git
-COMMIT_MESSAGE="Update"
-REMOTES=`\
+COMMIT_MESSAGE = "Update"
+REMOTES = `\
 	git branch -a |\
 	grep remote   |\
 	grep -v HEAD  |\
@@ -117,9 +116,10 @@ django-app-init:
 	-touch $(PROJECT)/$(APP)/templates/base.html
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-db-clean:  # PostgreSQL
+django-db-drop:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-db-init:  # PostgreSQL
+	$(MAKE) django-db-drop
 	-createdb $(PROJECT)
 db-init: django-db-init  # Alias
 django-debug: django-shell  # Alias
