@@ -50,7 +50,7 @@
 # https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
 TMPDIR := $(shell mktemp -d)  # https://stackoverflow.com/a/589260/185820
-UNAME:=$(shell uname)
+UNAME := $(shell uname)
 
 APP=app  # Django
 DOC=doc  # Sphinx
