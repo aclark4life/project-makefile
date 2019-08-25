@@ -133,7 +133,7 @@ django-init:
 	git add manage.py
 	@$(MAKE) commit-push
 django-install:
-	@echo "Django\ndj-database-url\npsycopg2\n" > requirements.txt
+	@echo "Django\ndj-database-url\npsycopg2-binary\n" > requirements.txt
 	@$(MAKE) pip-install
 	@$(MAKE) freeze
 	-git add requirements.txt
