@@ -120,7 +120,7 @@ django-app-init:
 django-db-clean:  # PostgreSQL
 	-dropdb $(PROJECT)
 django-db-init:  # PostgreSQL
-	-createdb $(PROJECT)_$(APP)
+	-createdb $(PROJECT)
 db-init: django-db-init  # Alias
 django-debug: django-shell  # Alias
 django-graph:
