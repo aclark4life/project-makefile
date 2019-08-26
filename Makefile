@@ -140,7 +140,7 @@ django-install:
 	-@$(MAKE) commit-push
 django-migrate:
 	python manage.py migrate
-django-migrations:
+django-migrations-default:
 	python manage.py makemigrations $(APP)
 	git add $(PROJECT)/$(APP)/migrations/*.py
 django-serve:
@@ -274,7 +274,7 @@ npm-run:
 
 # Pip
 freeze: pip-freeze
-pip-freeze:
+pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 pip-upgrade:
@@ -413,9 +413,15 @@ webpack-run:
 	npm run bundle  # Requires bundle script in package.json to call webpack
 pack: webpack-run
 
+
 #-------------------------------------------------------------------------------
 
 # Custom
+
+# https://stackoverflow.com/a/49804748
+%: %-default
+	@ true
+
 # 
 #.DEFAULT_GOAL=commit-push
 #install: npm-install
