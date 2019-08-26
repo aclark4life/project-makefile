@@ -143,7 +143,7 @@ django-migrate:
 django-migrations-default:
 	python manage.py makemigrations $(APP)
 	git add $(PROJECT)/$(APP)/migrations/*.py
-django-serve:
+django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test:
 	python manage.py test
