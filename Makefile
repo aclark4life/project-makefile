@@ -158,7 +158,7 @@ django-static:
 	python manage.py collectstatic --noinput
 django-su:
 	python manage.py createsuperuser
-django-loaddata:
+django-loaddata-default:
 	python manage.py loaddata
 graph: django-graph
 migrate: django-migrate  # Alias
