@@ -294,6 +294,8 @@ python-flake:
 	-flake8 $(PROJECT)/$(APP)/*.py
 pip-install:
 	pip install -r requirements.txt
+pip-install-test:
+	pip install -r requirements-test.txt
 python-lint: python-black python-flake python-wc  # Multi-target Alias
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
