@@ -195,7 +195,7 @@ cp: commit-push  # Alias
 push: git-push  # Alias
 p: push  # Alias
 commit-push: git-commit git-push  # Multi-target Alias
-commit-edit-push: git-commit-edit git-push  # Multi-target Alias
+commit-edit: git-commit-edit git-push  # Multi-target Alias
 git-commit-auto-push: commit-push  # BBB
 git-commit-edit-push: commit-edit-push  # BBB
 
