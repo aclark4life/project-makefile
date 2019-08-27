@@ -181,6 +181,8 @@ d: eb-deploy
 git-checkout:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
+git-prune:
+	git remote update origin --prune
 git-commit:
 	git commit -a -m $(COMMIT_MESSAGE)
 git-commit-edit:
