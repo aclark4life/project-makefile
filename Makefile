@@ -104,7 +104,7 @@ ablog-serve:
 	ablog serve
 
 # Buildout
-b:
+bo:
 	buildout
 
 # Django
@@ -192,7 +192,7 @@ git-push:
 git-push-up:
 	git push --set-upstream origin master
 commit: git-commit  # Alias
-c: commit-push  # Alias
+ce: commit-edit  # Alias
 cp: commit-push  # Alias
 push: git-push  # Alias
 p: push  # Alias
