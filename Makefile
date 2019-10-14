@@ -178,7 +178,7 @@ eb-deploy:
 d: eb-deploy
 
 # Git
-git-checkout:
+git-branches:
 	-for i in $(REMOTES) ; do \
         git checkout -t $$i ; done
 git-prune:
