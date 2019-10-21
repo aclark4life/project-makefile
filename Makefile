@@ -263,6 +263,7 @@ make:
 # Misc
 deploy-default:
 	$(MAKE) eb-deploy
+d: deploy  # Alias
 pdf:
 	rst2pdf README.rst
 
