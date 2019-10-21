@@ -175,7 +175,6 @@ eb-create:
 	eb create
 eb-deploy:
 	eb deploy
-d: eb-deploy
 
 # Git
 git-branches:
@@ -262,7 +261,8 @@ make:
 	@$(MAKE) commit-push
 
 # Misc
-
+deploy-default:
+	$(MAKE) eb-deploy
 pdf:
 	rst2pdf README.rst
 
