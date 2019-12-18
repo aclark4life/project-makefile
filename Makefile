@@ -423,12 +423,9 @@ pack: webpack-run
 #-------------------------------------------------------------------------------
 
 # Custom
-
 # https://stackoverflow.com/a/49804748
 %: %-default
 	@ true
 
-# 
 #.DEFAULT_GOAL=commit-push
-#install: npm-install
-#run: npm-run
+#install: pip-install
