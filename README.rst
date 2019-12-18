@@ -4,7 +4,7 @@ Universal Project Makefile
 Why?
 ----
 
-I like typing ``make <target>`` to perform *every* task. **shrug**
+I like typing ``make <target>`` to perform every task.
 
 Slides
 ------
