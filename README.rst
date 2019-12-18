@@ -4,7 +4,8 @@ Universal Project Makefile
 Why?
 ----
 
-I like typing ``make <target>`` to perform every task.
+- I like typing ``make <target>`` to perform tasks.
+- I don't like creating shell aliases to perform tasks.
 
 Slides
 ------
