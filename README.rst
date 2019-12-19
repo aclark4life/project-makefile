@@ -1,8 +1,8 @@
 Project Makefile
 ================
 
-Why?
-----
+Why
+---
 
 - I like typing ``make <target>`` to perform tasks.
 - I don't like creating shell aliases to perform tasks.
