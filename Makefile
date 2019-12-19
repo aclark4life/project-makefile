@@ -197,14 +197,14 @@ make:
 	git add Makefile
 	@$(MAKE) commit-push
 
-# Misc
+# Beanstalk
 deploy-default:
-	$(MAKE) eb-deploy
+	eb deploy
 d: deploy  # Alias
 pdf:
 	rst2pdf README.rst
 
-# Node Package Manager
+# Node
 npm-init:
 	npm init -y
 npm-install:
