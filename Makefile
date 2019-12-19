@@ -153,14 +153,6 @@ su: django-su  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
 
-# Elastic Beanstalk
-eb-init: 
-	eb init -i
-eb-create:
-	eb create
-eb-deploy:
-	eb deploy
-
 # Git
 git-branches:
 	-for i in $(REMOTES) ; do \
