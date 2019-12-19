@@ -427,7 +427,7 @@ pack: webpack-run
 %: %-default
 	@ true
 
-#PROJECT := project
-#APP := app
+#PROJECT = project
+#APP = app
 #.DEFAULT_GOAL=commit-push
 #install: pip-install
