@@ -1,5 +1,5 @@
-Universal Project Makefile
-==========================
+Project Makefile
+================
 
 Why?
 ----
@@ -26,7 +26,7 @@ Usage
 ::
 
     $ make
-    Universal Project Makefile
+    Project Makefile
     Usage:
 
         make <target>
