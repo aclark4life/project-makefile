@@ -181,14 +181,14 @@ grunt-serve:
 	@echo "\nServing HTTP on http://0.0.0.0:9000 ...\n"
 	grunt serve
 
-# List examples
-list-examples:
+# List targets
+list-targets:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "make "$$0}'  # http://stackoverflow.com/a/26339924
-help: list-examples  # Alias
-h: list-examples  # Alias
+help: list-targets  # Alias
+h: list-targets  # Alias
 
 # Usage
 usage:
@@ -196,7 +196,7 @@ usage:
 	@echo "Usage:\n"
 	@echo "\tmake <target>\n"
 	@echo "Examples:\n"
-	@echo "\tmake list-examples"
+	@echo "\tmake list-targets"
 
 # Makefile
 make:
