@@ -223,31 +223,6 @@ list-examples:
 help: list-examples  # Alias
 h: list-examples  # Alias
 
-# Heroku
-heroku: heroku-init
-heroku-debug-on:
-	heroku config:set DEBUG=1
-heroku-debug-off:
-	heroku config:unset DEBUG
-heroku-django-migrate:
-	heroku run python manage.py migrate
-heroku-init:
-	heroku apps:create $(PROJECT)-$(APP)	
-heroku-maint-on:
-	heroku maintenance:on
-heroku-maint-off:
-	heroku maintenance:off
-heroku-push:
-	git push heroku
-heroku-remote-add:
-	git remote add heroku
-heroku-shell:
-	heroku run bash
-heroku-web-on:
-	heroku ps:scale web=1
-heroku-web-off:
-	heroku ps:scale web=0
-
 # Usage
 usage:
 	@echo "Project Makefile"
