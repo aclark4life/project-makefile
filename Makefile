@@ -93,9 +93,6 @@ REMOTES = `\
 
 # Django
 
-django-app-clean:
-	@-rm -rvf $(PROJECT)
-	@-rm -v manage.py
 django-app-init:
 	-mkdir -p $(PROJECT)/$(APP)/templates
 	-touch $(PROJECT)/$(APP)/templates/base.html
@@ -107,7 +104,6 @@ django-db-init:  # PostgreSQL
 	$(MAKE) django-db-drop
 	-createdb $(PROJECT)
 db-init: django-db-init  # Alias
-django-debug: django-shell  # Alias
 django-graph:
 	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
