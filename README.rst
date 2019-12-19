@@ -19,6 +19,10 @@ Installation
 
     curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile
 
+Slides
+------
+
+- https://slides.com/aclark/project-makefile#/
 
 Usage
 -----
@@ -39,42 +43,36 @@ Usage
 ::
 
     $ make list-examples
-    make ablog
-    make ablog-build
-    make ablog-clean
-    make ablog-init
-    make ablog-install
-    make ablog-serve
-    make b
+    make ce
+    make commit
     make commit-edit
     make commit-push
     make cp
+    make d
     make db-init
-    make django-app-clean
+    make deploy-default
     make django-app-init
-    make django-db-clean
+    make django-db-drop
     make django-db-init
-    make django-debug
     make django-graph
     make django-init
     make django-install
-    make django-loaddata
+    make django-loaddata-default
     make django-migrate
-    make django-migrations
-    make django-serve
+    make django-migrations-default
+    make django-serve-default
     make django-settings
     make django-shell
     make django-static
     make django-su
     make django-test
-    make eb-create
-    make eb-init
     make freeze
-    make git-checkout
+    make git-branches
     make git-commit
     make git-commit-auto-push
     make git-commit-edit
-    make git-commit-push
+    make git-commit-edit-push
+    make git-prune
     make git-push
     make git-push-up
     make graph
@@ -85,18 +83,6 @@ Usage
     make grunt-serve
     make h
     make help
-    make heroku
-    make heroku-debug-off
-    make heroku-debug-on
-    make heroku-django-migrate
-    make heroku-init
-    make heroku-maint-off
-    make heroku-maint-on
-    make heroku-push
-    make heroku-remote-add
-    make heroku-shell
-    make heroku-web-off
-    make heroku-web-on
     make lint
     make loaddata
     make make
@@ -105,6 +91,7 @@ Usage
     make npm-init
     make npm-install
     make npm-run
+    make p
     make pack
     make package
     make package-check-manifest
@@ -116,16 +103,19 @@ Usage
     make package-release-test
     make package-test
     make pdf
-    make pip-freeze
-    make pip-upgrade
+    make pip-freeze-default
+    make pip-install
+    make pip-install-test
+    make pip-upgrade-default
     make pipenv
+    make push
     make python-black
     make python-clean
     make python-flake
-    make python-install
     make python-lint
     make python-pipenv
     make python-serve
+    make python-virtualenv
     make python-virtualenv-2-7
     make python-virtualenv-3-6
     make python-virtualenv-3-7
