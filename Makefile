@@ -60,6 +60,26 @@ REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 
 #-------------------------------------------------------------------------------
 
+# Additional Concepts
+#
+# Unique to Project Makefile
+#
+# "Alias" - A new target definition that only exists to create a shorter target 
+# name for another target that already exists.
+#
+# "Multi-target Alias" - Like an "Alias", but with multiple targets.
+#
+# "BBB" - For backwards compatibility. Via
+# https://docs.plone.org/appendices/glossary.html
+
+#-------------------------------------------------------------------------------
+
+# Overrides
+#
+# https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
+
+#-------------------------------------------------------------------------------
+
 # Rules
 #
 # A rule appears in the makefile and says when and how to remake certain files,
@@ -68,25 +88,6 @@ REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 # create or update the target. 
 #
 # https://www.gnu.org/software/make/manual/html_node/Rules.html
-
-#-------------------------------------------------------------------------------
-
-# Concepts
-#
-# "Alias" - A new target definition that only exists to create a shorter target 
-# name for another target that already exists.
-#
-# "Multi-target Alias" - Like an "Alias", but with multiple targets.
-#
-# "BBB" - For backwards compatibility.
-
-#-------------------------------------------------------------------------------
- 
-# Targets
- 
-#-------------------------------------------------------------------------------
-
-# Django
 
 django-app-init:
 	-mkdir -p $(PROJECT)/$(APP)/templates
