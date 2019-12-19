@@ -4,7 +4,7 @@ Project Makefile
 Why
 ---
 
-- I like creating shell aliases to perform some tasks, but I like typing ``make <target>`` to perform more tasks.
+- I like typing ``make <target>`` to perform tasks.
 
 Installation
 ------------
