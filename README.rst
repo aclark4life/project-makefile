@@ -67,15 +67,11 @@ Usage
     make git-commit-auto-push
     make git-commit-edit
     make git-commit-edit-push
+    make git-init
     make git-prune
     make git-push
     make git-push-up
     make graph
-    make grunt
-    make grunt-file
-    make grunt-init
-    make grunt-install
-    make grunt-serve
     make h
     make help
     make lint
