@@ -145,6 +145,8 @@ test: django-test  # Alias
 loaddata: django-loaddata  # Alias
 
 # Git
+git-init:
+	git init
 git-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
         git checkout -t $$i ; done
