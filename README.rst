@@ -32,12 +32,12 @@ Usage
 
     Examples:
 
-        make list-examples
+        make list-targets
 
 
 ::
 
-    $ make list-examples
+    $ make list-targets
     make ce
     make commit
     make commit-edit
