@@ -7,11 +7,6 @@ Why?
 - I like typing ``make <target>`` to perform tasks.
 - I don't like creating shell aliases to perform tasks.
 
-Slides
-------
-
-- https://slides.com/aclark/project-makefile#/
-
 Installation
 ------------
 
