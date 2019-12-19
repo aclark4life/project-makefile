@@ -76,7 +76,7 @@ REMOTES = `\
 
 #-------------------------------------------------------------------------------
 
-# Universal Project Makefile Concepts
+# Project Makefile Concepts
 #
 # "Alias" - A new target definition that only exists to create a shorter target 
 # name for another target that already exists.
@@ -250,7 +250,7 @@ heroku-web-off:
 
 # Usage
 usage:
-	@echo "Universal Project Makefile"
+	@echo "Project Makefile"
 	@echo "Usage:\n"
 	@echo "\tmake <target>\n"
 	@echo "Examples:\n"
