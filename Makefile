@@ -52,8 +52,8 @@
 # https://stackoverflow.com/a/589260/185820
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
-PROJECT := project
-APP := app
+PROJECT = project
+APP = app
 
 # Git
 COMMIT_MESSAGE = "Update"
@@ -427,5 +427,7 @@ pack: webpack-run
 %: %-default
 	@ true
 
+#PROJECT := project
+#APP := app
 #.DEFAULT_GOAL=commit-push
 #install: pip-install
