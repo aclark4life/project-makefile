@@ -147,10 +147,10 @@ loaddata: django-loaddata  # Alias
 # Git
 git-init:
 	git init
-	git add Makefile
-	git commit -m $(COMMIT_MESSAGE)
 	hub create `openssl rand -base64 12`
 	git push --set-upstream origin master
+	$(MAKE) make
+	$(MAKE) readme
 	hub browse
 git-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
