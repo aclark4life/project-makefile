@@ -49,19 +49,14 @@
 #
 # https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
+COMMIT_MESSAGE = "Update"
+PROJECT = project
+APP = app
 # https://stackoverflow.com/a/589260/185820
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
-PROJECT = project
-APP = app
-
-# Git
-COMMIT_MESSAGE = "Update"
-REMOTES = `\
-	git branch -a |\
-	grep remote   |\
-	grep -v HEAD  |\
-	grep -v master`  # http://unix.stackexchange.com/a/37316
+# http://unix.stackexchange.com/a/37316
+REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 
 #-------------------------------------------------------------------------------
 
@@ -151,7 +146,7 @@ loaddata: django-loaddata  # Alias
 
 # Git
 git-branches:
-	-for i in $(REMOTES) ; do \
+	-for i in $(REMOTE_BRANCHES) ; do \
         git checkout -t $$i ; done
 git-prune:
 	git remote update origin --prune
