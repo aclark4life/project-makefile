@@ -150,7 +150,7 @@ git-init:
 	hub create `openssl rand -base64 12`
 	-$(MAKE) make
 	-$(MAKE) readme
-	git push --set-upstream origin master
+	$(MAKE) git-push-up
 	hub browse
 git-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
@@ -174,19 +174,6 @@ commit-push: git-commit git-push  # Multi-target Alias
 commit-edit: git-commit-edit git-push  # Multi-target Alias
 git-commit-auto-push: commit-push  # BBB
 git-commit-edit-push: commit-edit-push  # BBB
-
-# Grunt
-grunt: grunt-init grunt-serve
-grunt-init: grunt-install grunt-file
-grunt-file:
-	curl -O https://raw.githubusercontent.com/gruntjs/grunt-init-gruntfile/master/template.js
-	node_modules/grunt-init/bin/grunt-init --force gruntfile
-	@echo "***Add to GruntFile:***\n\n\tgrunt.loadNpmTasks('grunt-serve');\n\n"
-grunt-install:
-	npm install grunt-init grunt-serve
-grunt-serve:  
-	@echo "\nServing HTTP on http://0.0.0.0:9000 ...\n"
-	grunt serve
 
 # List targets
 list-targets:
