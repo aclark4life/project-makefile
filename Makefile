@@ -76,7 +76,7 @@ REMOTES = `\
 
 #-------------------------------------------------------------------------------
 
-# Project Makefile Concepts
+# Concepts
 #
 # "Alias" - A new target definition that only exists to create a shorter target 
 # name for another target that already exists.
@@ -86,29 +86,13 @@ REMOTES = `\
 # "BBB" - For backwards compatibility.
 
 #-------------------------------------------------------------------------------
-
+ 
 # Targets
-
-# ABlog
-ablog: ablog-clean ablog-install ablog-init ablog-build ablog-serve  # Multi-target Alias
-ablog-clean:
-	-rm conf.py index.rst
-ablog-init:
-	ablog start
-ablog-install:
-	@echo "ablog\n" > requirements.txt
-	@$(MAKE) python-virtualenv
-	@$(MAKE) pip-install
-ablog-build:
-	ablog build
-ablog-serve:
-	ablog serve
-
-# Buildout
-bo:
-	buildout
+ 
+#-------------------------------------------------------------------------------
 
 # Django
+
 django-app-clean:
 	@-rm -rvf $(PROJECT)
 	@-rm -v manage.py
