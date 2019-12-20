@@ -146,7 +146,9 @@ loaddata: django-loaddata  # Alias
 # Docksal #
 ###########
 
-fin-init:
+fin-init-d7:
+	git clone https://github.com/docksal/boilerplate-drupal7.git d7
+	cd drupal7
 	fin init
 
 #######
