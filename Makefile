@@ -150,6 +150,7 @@ fin-init-d7:
 	git clone https://github.com/docksal/boilerplate-drupal7.git d7
 	cd d7
 	fin init
+d7: fin-init-d7
 
 #######
 # Git #
