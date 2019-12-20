@@ -99,18 +99,13 @@ init-db: django-init-db  # Alias
 django-graph:
 	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
+	@$(MAKE) pip-install-django
 	@$(MAKE) django-init-db
 	@$(MAKE) django-init-app
 	@$(MAKE) django-up-settings
 	git add $(PROJECT)
 	git add manage.py
 	@$(MAKE) commit-push
-django-install:
-	@echo "Django\ndj-database-url\npsycopg2-binary\n" > requirements.txt
-	@$(MAKE) pip-install
-	@$(MAKE) freeze
-	-git add requirements.txt
-	-@$(MAKE) commit-push
 django-migrate:
 	python manage.py migrate
 django-migrations-default:
@@ -210,15 +205,25 @@ npm-run:
 	npm run
 
 # Pip
-freeze: pip-freeze
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
+pip-install:
+	pip install -r requirements.txt
+pip-install-test:
+	pip install -r requirements-test.txt
+pip-install-django:
+	@echo "Django\ndj-database-url\npsycopg2-binary\n" > requirements.txt
+	@$(MAKE) pip-install
+	@$(MAKE) freeze
+	-git add requirements.txt
+	-@$(MAKE) commit-push
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
+freeze: pip-freeze  # Alias
 
 # Python
 lint: python-lint  # Alias
@@ -229,10 +234,6 @@ python-flake:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
 	-flake8 $(PROJECT)/$(APP)/*.py
-pip-install:
-	pip install -r requirements.txt
-pip-install-test:
-	pip install -r requirements-test.txt
 python-lint: python-black python-flake python-wc  # Multi-target Alias
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
