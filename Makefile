@@ -198,14 +198,6 @@ deploy-default:
 	eb deploy
 d: deploy  # Alias
 
-# Node
-npm-init:
-	npm init -y
-npm-install:
-	npm install
-npm-run:
-	npm run
-
 # Pip
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt

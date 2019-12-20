@@ -80,9 +80,6 @@ Usage
     make make
     make migrate
     make migrations
-    make npm-init
-    make npm-install
-    make npm-run
     make p
     make pack
     make pip-freeze-default
