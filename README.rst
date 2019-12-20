@@ -91,7 +91,6 @@ Usage
     make pip-install-django
     make pip-install-test
     make pip-upgrade-default
-    make pipenv
     make push
     make python-clean
     make python-flake
