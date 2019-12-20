@@ -147,7 +147,6 @@ loaddata: django-loaddata  # Alias
 ###########
 
 fin-init:
-	fin config generate
 	fin init
 
 #######
