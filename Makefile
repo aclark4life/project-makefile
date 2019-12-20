@@ -60,9 +60,7 @@ REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 
 #-------------------------------------------------------------------------------
 
-# Additional Concepts
-#
-# Unique to Project Makefile
+# Additional Concepts for this Makefile
 #
 # "Alias" - A new target definition that only exists to create a shorter target 
 # name for another target that already exists.
