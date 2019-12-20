@@ -85,6 +85,7 @@ Usage
     make pip-freeze-default
     make pip-install
     make pip-install-django
+    make pip-install-sphinx
     make pip-install-test
     make pip-upgrade-default
     make push
@@ -101,7 +102,6 @@ Usage
     make serve
     make sphinx-build
     make sphinx-init
-    make sphinx-install
     make sphinx-serve
     make static
     make su
