@@ -41,31 +41,32 @@ Usage
     make commit
     make commit-edit
     make commit-push
+    make commit-push-up
     make cp
     make d
-    make db-init
     make deploy-default
-    make django-app-init
-    make django-db-drop
-    make django-db-init
     make django-graph
     make django-init
-    make django-install
+    make django-init-app
+    make django-init-db
     make django-loaddata-default
     make django-migrate
     make django-migrations-default
     make django-serve-default
-    make django-settings
     make django-shell
     make django-static
     make django-su
     make django-test
+    make django-up-settings
+    make django-wc
+    make django-yapf
     make freeze
     make git-branches
     make git-commit
     make git-commit-auto-push
     make git-commit-edit
     make git-commit-edit-push
+    make git-ignore
     make git-init
     make git-prune
     make git-push
@@ -73,6 +74,7 @@ Usage
     make graph
     make h
     make help
+    make init-db
     make lint
     make loaddata
     make make
@@ -83,38 +85,23 @@ Usage
     make npm-run
     make p
     make pack
-    make package
-    make package-check-manifest
-    make package-init
-    make package-lint
-    make package-pyroma
-    make package-readme
-    make package-release
-    make package-release-test
     make package-test
-    make pdf
     make pip-freeze-default
     make pip-install
+    make pip-install-django
     make pip-install-test
     make pip-upgrade-default
     make pipenv
     make push
-    make python-black
     make python-clean
     make python-flake
     make python-lint
-    make python-pipenv
     make python-serve
     make python-virtualenv
     make python-virtualenv-2-7
     make python-virtualenv-3-6
     make python-virtualenv-3-7
-    make python-wc
-    make python-yapf
     make readme
-    make redhat-update
-    make release
-    make release-test
     make review
     make serve
     make sphinx-build
@@ -124,14 +111,10 @@ Usage
     make static
     make su
     make test
-    make ubuntu-update
     make usage
     make vagrant
-    make vagrant-clean
-    make vagrant-down
     make vagrant-init
     make vagrant-up
-    make vagrant-update
     make virtualenv
     make virtualenv-2
     make vm
