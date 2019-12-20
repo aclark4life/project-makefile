@@ -202,8 +202,6 @@ make:
 deploy-default:
 	eb deploy
 d: deploy  # Alias
-pdf:
-	rst2pdf README.rst
 
 # Node
 npm-init:
