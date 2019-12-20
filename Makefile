@@ -259,32 +259,6 @@ virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
 pipenv: python-pipenv # Alias
 
-# Python Package
-package: package-init  # Alias
-release: package-release  # Alias
-release-test: package-release-test  # Alias
-package-check-manifest:
-	check-manifest
-package-init:
-	mkdir -p $(PROJECT)/$(APP)
-	touch $(PROJECT)/$(APP)/__init__.py
-	touch $(PROJECT)/__init__.py
-	@echo "setup(){}" > setup.py
-package-lint: package-check-manifest package-pyroma  # Multi-target Alias
-package-pyroma:
-	pyroma .
-package-readme:
-	rst2html.py README.rst > readme.html; open readme.html
-package-release:
-	python setup.py sdist --format=gztar,zip upload
-package-release-test:
-	python setup.py sdist --format=gztar,zip upload -r test
-
-# Redhat
-redhat-update:
-	sudo yum update
-	sudo yum upgrade -y
-
 # Readme
 readme:
 	echo "Creating README.rst"
