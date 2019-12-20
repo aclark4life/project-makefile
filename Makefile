@@ -189,7 +189,7 @@ usage:
 # Makefile
 make:
 	git add Makefile
-	@$(MAKE) commit-push
+	@$(MAKE) commit-push-up
 
 # Beanstalk
 deploy-default:
