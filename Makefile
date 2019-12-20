@@ -290,7 +290,7 @@ redhat-update:
 # Readme
 readme:
 	echo "Creating README.rst"
-	@echo $(PROJECT)-$(APP) > README.rst
+	@echo $(PROJECT) > README.rst
 	@echo ================================================================================ >> README.rst
 	echo "Done."
 	git add README.rst
