@@ -142,6 +142,14 @@ su: django-su  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
 
+###########
+# Docksal #
+###########
+
+fin-init:
+	fin config generate
+	fin init
+
 #######
 # Git #
 #######
