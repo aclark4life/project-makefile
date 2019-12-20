@@ -81,6 +81,10 @@ REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 #
 # https://www.gnu.org/software/make/manual/html_node/Rules.html
 
+##########
+# Django #
+##########
+
 django-init-app:
 	-mkdir -p $(PROJECT)/$(APP)/templates
 	-touch $(PROJECT)/$(APP)/templates/base.html
@@ -138,7 +142,10 @@ su: django-su  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
 
-# Git
+#######
+# Git #
+#######
+
 git-ignore:
 	echo ".Python\nbin/\ninclude/\nlib/\n.vagrant/\n" >> .gitignore
 	git add .gitignore
@@ -171,7 +178,26 @@ commit-edit: git-commit-edit git-push  # Multi-target Alias
 git-commit-auto-push: commit-push  # BBB
 git-commit-edit-push: commit-edit-push  # BBB
 
-# List targets
+########
+# Misc #
+########
+
+readme:
+	echo "Creating README.rst"
+	@echo $(PROJECT) > README.rst
+	@echo ================================================================================ >> README.rst
+	echo "Done."
+	git add README.rst
+	@$(MAKE) commit-push
+
+review:
+ifeq ($(UNAME), Darwin)
+	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py | grep -v migrations`\
+		`find $(PROJECT) -name \*.html` `find $(PROJECT) -name \*.js`
+else
+	@echo "Unsupported"
+endif
+
 list-targets:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
@@ -180,7 +206,6 @@ list-targets:
 help: list-targets  # Alias
 h: list-targets  # Alias
 
-# Usage
 usage:
 	@echo "Project Makefile"
 	@echo "Usage:\n"
@@ -188,17 +213,18 @@ usage:
 	@echo "Examples:\n"
 	@echo "\tmake help"
 
-# Makefile
 make:
 	git add Makefile
 	@$(MAKE) commit-push-up
 
-# Beanstalk
 deploy-default:
 	eb deploy
 d: deploy  # Alias
 
-# Pip
+#######
+# Pip #
+#######
+
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -225,9 +251,10 @@ pip-upgrade-default:
 	$(MAKE) pip-freeze
 freeze: pip-freeze  # Alias
 
-# Python
-lint: python-lint  # Alias
-serve: python-serve  # Alias
+##########
+# Python # 
+##########
+
 python-clean:
 	find . -name \*.pyc | xargs rm -v
 python-flake:
@@ -247,26 +274,13 @@ python-virtualenv-3-7:
 python-virtualenv: python-virtualenv-3-7  # Alias
 virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
+lint: python-lint  # Alias
+serve: python-serve  # Alias
 
-# Readme
-readme:
-	echo "Creating README.rst"
-	@echo $(PROJECT) > README.rst
-	@echo ================================================================================ >> README.rst
-	echo "Done."
-	git add README.rst
-	@$(MAKE) commit-push
+##########
+# Sphinx #
+##########
 
-# Review
-review:
-ifeq ($(UNAME), Darwin)
-	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py | grep -v migrations`\
-		`find $(PROJECT) -name \*.html` `find $(PROJECT) -name \*.js`
-else
-	@echo "Unsupported"
-endif
-
-# Sphinx
 sphinx-build:
 	sphinx-build -b html -d $(DOC)/_build/doctrees $(DOC) $(DOC)/_build/html
 sphinx-init:
@@ -276,7 +290,10 @@ sphinx-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	pushd $(DOC)/_build/html; python3 -m http.server
 
-# Vagrant
+###########
+# Vagrant #
+###########
+
 vagrant-init:
 	vagrant init ubuntu/trusty64
 	git add Vagrantfile
