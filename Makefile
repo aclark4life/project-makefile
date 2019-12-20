@@ -99,6 +99,7 @@ init-db: django-init-db  # Alias
 django-graph:
 	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
+	@$(MAKE) git-init
 	@$(MAKE) django-init-db
 	@$(MAKE) django-init-app
 	@$(MAKE) django-up-settings
