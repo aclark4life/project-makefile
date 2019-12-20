@@ -153,6 +153,7 @@ fin-init-d8:
 	git clone https://github.com/docksal/boilerplate-drupal8.git d8
 	cd d8; fin init
 d7: fin-init-d7
+d8: fin-init-d8
 
 #######
 # Git #
