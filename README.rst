@@ -31,7 +31,7 @@ Usage
 
     Examples:
 
-        make list-targets
+        make help
 
 
 ::
