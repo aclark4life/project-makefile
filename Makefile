@@ -296,9 +296,7 @@ ubuntu-update:
 	sudo aptitude upgrade -y
 
 # Vagrant
-vagrant: vagrant-clean vagrant-init vagrant-up  # Multi-target Alias
-vm: vagrant  # Alias
-vagrant-clean:
+vagrant-rm:
 	-rm Vagrantfile
 	-vagrant destroy
 vagrant-down:
@@ -307,8 +305,9 @@ vagrant-init:
 	vagrant init ubuntu/trusty64
 vagrant-up:
 	vagrant up --provider virtualbox
-vagrant-update:
+vagrant-box-up:
 	vagrant box update
+vm: vagrant  # Alias
 
 # Webpack
 webpack-init:
