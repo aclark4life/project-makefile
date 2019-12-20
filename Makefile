@@ -299,7 +299,7 @@ ubuntu-update:
 vagrant-init:
 	vagrant init ubuntu/trusty64
 	git add Vagrantfile
-	$(MAKE) git-commit-up
+	$(MAKE) git-push-up
 	$(MAKE) vagrant-up
 vagrant-up:
 	vagrant box update
