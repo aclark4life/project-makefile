@@ -304,7 +304,7 @@ vagrant-init:
 vagrant-up:
 	vagrant box update
 	vagrant up --provider virtualbox
-vm: vagrant  # Alias
+vm: vagrant-init  # Alias
 
 # Webpack
 webpack-init:
