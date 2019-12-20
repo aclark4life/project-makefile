@@ -191,7 +191,7 @@ usage:
 	@echo "Usage:\n"
 	@echo "\tmake <target>\n"
 	@echo "Examples:\n"
-	@echo "\tmake list-targets"
+	@echo "\tmake help"
 
 # Makefile
 make:
