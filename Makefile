@@ -142,6 +142,10 @@ test: django-test  # Alias
 loaddata: django-loaddata  # Alias
 
 # Git
+git-ignore:
+	echo ".Python\nbin/\ninclude/\nlib/\n" >> .gitignore
+	git add .gitignore
+	$(MAKE) commit-push
 git-init:
 	git init
 	hub create `openssl rand -base64 12`
