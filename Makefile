@@ -87,23 +87,21 @@ REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 #
 # https://www.gnu.org/software/make/manual/html_node/Rules.html
 
-django-app-init:
+django-init-app:
 	-mkdir -p $(PROJECT)/$(APP)/templates
 	-touch $(PROJECT)/$(APP)/templates/base.html
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-db-drop:  # PostgreSQL
+django-init-db:  # PostgreSQL
 	-dropdb $(PROJECT)
-django-db-init:  # PostgreSQL
-	$(MAKE) django-db-drop
 	-createdb $(PROJECT)
-db-init: django-db-init  # Alias
+init-db: django-init-db  # Alias
 django-graph:
 	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
-	@$(MAKE) django-db-init
-	@$(MAKE) django-app-init
-	@$(MAKE) django-settings
+	@$(MAKE) django-init-db
+	@$(MAKE) django-init-app
+	@$(MAKE) django-up-settings
 	git add $(PROJECT)
 	git add manage.py
 	@$(MAKE) commit-push
@@ -122,7 +120,7 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test:
 	python manage.py test
-django-settings:
+django-up-settings:
 	echo "STATIC_ROOT = 'static'" >> $(PROJECT)/settings.py
 	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT)/settings.py
 	echo "AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', }, { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]" >> $(PROJECT)/settings.py
