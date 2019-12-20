@@ -296,17 +296,14 @@ ubuntu-update:
 	sudo aptitude upgrade -y
 
 # Vagrant
-vagrant-rm:
-	-rm Vagrantfile
-	-vagrant destroy
-vagrant-down:
-	vagrant suspend
 vagrant-init:
 	vagrant init ubuntu/trusty64
+	git add Vagrantfile
+	$(MAKE) git-commit-up
+	$(MAKE) vagrant-up
 vagrant-up:
-	vagrant up --provider virtualbox
-vagrant-box-up:
 	vagrant box update
+	vagrant up --provider virtualbox
 vm: vagrant  # Alias
 
 # Webpack
