@@ -85,7 +85,6 @@ Usage
     make npm-run
     make p
     make pack
-    make package-test
     make pip-freeze-default
     make pip-install
     make pip-install-django
