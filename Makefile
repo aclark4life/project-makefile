@@ -287,16 +287,6 @@ vagrant-up:
 vagrant: vagrant-init  # Alias
 vm: vagrant-init  # Alias
 
-# Webpack
-webpack-init:
-	touch index.js
-	echo "module.exports = { entry: './index.js', output: { filename: 'bundle.js' } }" > webpack.config.js
-webpack-install:
-	npm install --save-dev webpack
-webpack-run:
-	npm run bundle  # Requires bundle script in package.json to call webpack
-pack: webpack-run  # Alias
-
 #-------------------------------------------------------------------------------
 
 # Overrides

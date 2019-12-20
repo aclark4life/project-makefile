@@ -113,6 +113,3 @@ Usage
     make virtualenv
     make virtualenv-2
     make vm
-    make webpack-init
-    make webpack-install
-    make webpack-run
