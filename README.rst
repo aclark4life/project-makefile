@@ -36,7 +36,7 @@ Usage
 
 ::
 
-    $ make list-targets
+    $ make help
     make ce
     make commit
     make commit-edit
