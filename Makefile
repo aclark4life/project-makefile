@@ -251,7 +251,6 @@ python-virtualenv-3-7:
 python-virtualenv: python-virtualenv-3-7  # Alias
 virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
-pipenv: python-pipenv # Alias
 
 # Readme
 readme:
