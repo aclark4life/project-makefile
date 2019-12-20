@@ -212,6 +212,12 @@ pip-install-django:
 	@$(MAKE) freeze
 	-git add requirements.txt
 	-@$(MAKE) commit-push-up
+pip-install-sphinx:
+	@echo "Sphinx\n" > requirements.txt
+	@$(MAKE) pip-install
+	@$(MAKE) freeze
+	-git add requirements.txt
+	-@$(MAKE) commit-push-up
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -265,9 +271,6 @@ sphinx-build:
 	sphinx-build -b html -d $(DOC)/_build/doctrees $(DOC) $(DOC)/_build/html
 sphinx-init:
 	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(USER) -v 0.0.1 $(DOC)
-sphinx-install:
-	@echo "Sphinx\n" > requirements.txt
-	@$(MAKE) pip-install
 # https://stackoverflow.com/a/32302366/185820
 sphinx-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
