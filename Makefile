@@ -128,6 +128,14 @@ django-su:
 	python manage.py createsuperuser
 django-loaddata-default:
 	python manage.py loaddata
+django-yapf:
+	-yapf -i *.py
+	-yapf -i $(PROJECT)/*.py
+	-yapf -i $(PROJECT)/$(APP)/*.py
+django-wc:
+	-wc -l *.py
+	-wc -l $(PROJECT)/*.py
+	-wc -l $(PROJECT)/$(APP)/*.py
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
@@ -247,21 +255,6 @@ python-virtualenv-3-6:
 python-virtualenv-3-7:
 	virtualenv --python=python3.7 .
 python-virtualenv: python-virtualenv-3-7  # Alias
-python-yapf:
-	-yapf -i *.py
-	-yapf -i $(PROJECT)/*.py
-	-yapf -i $(PROJECT)/$(APP)/*.py
-python-black:
-	black $(PROJECT)
-python-wc:
-	-wc -l *.py
-	-wc -l $(PROJECT)/*.py
-	-wc -l $(PROJECT)/$(APP)/*.py
-python-pipenv:
-	pipenv install
-	git add Pipfile
-	git add Pipfile.lock
-	git commit -a -m "Add pipenv"; git push
 virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
 pipenv: python-pipenv # Alias
