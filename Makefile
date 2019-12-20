@@ -72,12 +72,6 @@ REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 
 #-------------------------------------------------------------------------------
 
-# Overrides
-#
-# https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
-
-#-------------------------------------------------------------------------------
-
 # Rules
 #
 # A rule appears in the makefile and says when and how to remake certain files,
@@ -290,11 +284,6 @@ sphinx-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	pushd $(DOC)/_build/html; python3 -m http.server
 
-# Ubuntu
-ubuntu-update:
-	sudo aptitude update
-	sudo aptitude upgrade -y
-
 # Vagrant
 vagrant-init:
 	vagrant init ubuntu/trusty64
@@ -302,8 +291,8 @@ vagrant-init:
 	$(MAKE) git-push-up
 	$(MAKE) vagrant-up
 vagrant-up:
-	vagrant box update
 	vagrant up --provider virtualbox
+vagrant: vagrant-init  # Alias
 vm: vagrant-init  # Alias
 
 # Webpack
@@ -314,12 +303,14 @@ webpack-install:
 	npm install --save-dev webpack
 webpack-run:
 	npm run bundle  # Requires bundle script in package.json to call webpack
-pack: webpack-run
-
+pack: webpack-run  # Alias
 
 #-------------------------------------------------------------------------------
 
-# Custom
+# Overrides
+#
+# https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
+#
 # https://stackoverflow.com/a/49804748
 %: %-default
 	@ true
