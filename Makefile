@@ -240,8 +240,6 @@ python-lint: python-black python-flake python-wc  # Multi-target Alias
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m SimpleHTTPServer
-package-test:
-	python setup.py test
 python-virtualenv-2-7:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-6:
