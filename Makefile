@@ -217,7 +217,7 @@ pip-install-django:
 	@$(MAKE) pip-install
 	@$(MAKE) freeze
 	-git add requirements.txt
-	-@$(MAKE) commit-push
+	-@$(MAKE) commit-push-up
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
