@@ -146,7 +146,7 @@ loaddata: django-loaddata  # Alias
 
 # Git
 git-ignore:
-	echo ".Python\nbin/\ninclude/\nlib/\n" >> .gitignore
+	echo ".Python\nbin/\ninclude/\nlib/\n.vagrant/\n" >> .gitignore
 	git add .gitignore
 	$(MAKE) commit-push
 git-init:
