@@ -148,8 +148,10 @@ loaddata: django-loaddata  # Alias
 
 fin-init-d7:
 	git clone https://github.com/docksal/boilerplate-drupal7.git d7
-	cd d7
-	fin init
+	cd d7; fin init
+fin-init-d8:
+	git clone https://github.com/docksal/boilerplate-drupal8.git d8
+	cd d8; fin init
 d7: fin-init-d7
 
 #######
