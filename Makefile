@@ -57,6 +57,7 @@ TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
 # http://unix.stackexchange.com/a/37316
 REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
+RANDIR := `openssl rand -base64 12 | sed 's/\///g'`
 
 #-------------------------------------------------------------------------------
 
@@ -147,7 +148,7 @@ loaddata: django-loaddata  # Alias
 ##########
 
 drupal-init-composer-d8:
-	composer create-project drupal/recommended-project `openssl rand -base64 12 | sed 's/\///g'` --no-interaction
+	composer create-project drupal/recommended-project $(RANDIR) --no-interaction
 drupal-init-fin-d7:
 	git clone https://github.com/docksal/boilerplate-drupal7.git d7
 	cd d7; fin init
