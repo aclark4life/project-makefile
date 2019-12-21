@@ -44,7 +44,6 @@ Usage
     make commit-push-up
     make cp
     make d
-    make d7
     make d8
     make deploy-default
     make django-graph
@@ -62,8 +61,9 @@ Usage
     make django-up-settings
     make django-wc
     make django-yapf
-    make fin-init-d7
-    make fin-init-d8
+    make drupal-init-composer-d8
+    make drupal-init-fin-d7
+    make drupal-init-fin-d8
     make freeze
     make git-branches
     make git-commit
@@ -79,7 +79,6 @@ Usage
     make h
     make help
     make init-db
-    make lint
     make loaddata
     make make
     make migrate
@@ -92,13 +91,12 @@ Usage
     make pip-install-test
     make pip-upgrade-default
     make push
-    make python-clean
-    make python-flake
-    make python-lint
     make python-serve
     make python-virtualenv
     make python-virtualenv-2-7
     make python-virtualenv-3-7
+    make r
+    make rand
     make readme
     make review
     make serve

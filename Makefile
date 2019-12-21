@@ -273,16 +273,9 @@ freeze: pip-freeze  # Alias
 # Python # 
 ##########
 
-python-clean:
-	find . -name \*.pyc | xargs rm -v
-python-flake:
-	-flake8 *.py
-	-flake8 $(PROJECT)/*.py
-	-flake8 $(PROJECT)/$(APP)/*.py
-python-lint: python-black python-flake python-wc  # Multi-target Alias
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m SimpleHTTPServer
+	python -m httpd.server
 python-virtualenv-2-7:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-7:
@@ -290,7 +283,6 @@ python-virtualenv-3-7:
 python-virtualenv: python-virtualenv-3-7  # Alias
 virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
-lint: python-lint  # Alias
 serve: python-serve  # Alias
 
 ##########
