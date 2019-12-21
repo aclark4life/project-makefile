@@ -167,7 +167,7 @@ git-ignore:
 	$(MAKE) commit-push
 git-init:
 	git init
-	hub create `openssl rand -base64 12 | sed 's/\///g'`
+	hub create $(RAND)
 	hub browse
 git-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
@@ -198,7 +198,7 @@ git-commit-edit-push: commit-edit-push  # BBB
 ########
 
 rand:
-	@openssl rand -base64 12
+	@openssl rand -base64 12 | sed 's/\///g'
 r: rand  # Alias
 
 readme:
