@@ -223,7 +223,7 @@ usage:
 	@echo "Project Makefile"
 	@echo "Usage:\n"
 	@echo "\tmake <target>\n"
-	@echo "Examples:\n"
+	@echo "Help:\n"
 	@echo "\tmake help"
 
 make:

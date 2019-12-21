@@ -29,7 +29,7 @@ Usage
 
         make <target>
 
-    Examples:
+    Help:
 
         make help
 
