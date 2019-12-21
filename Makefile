@@ -291,13 +291,11 @@ serve: python-serve  # Alias
 ##########
 
 sphinx-build:
-	sphinx-build -b html -d $(DOC)/_build/doctrees $(DOC) $(DOC)/_build/html
+	sphinx-build -b html -d $(RANDIR)/_build/doctrees $(RANDIR) $(RANDIR)/_build/html
 sphinx-init:
-	sphinx-quickstart -q -p $(PROJECT)-$(APP) -a $(USER) -v 0.0.1 $(DOC)
-# https://stackoverflow.com/a/32302366/185820
-sphinx-serve:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	pushd $(DOC)/_build/html; python3 -m http.server
+	$(MAKE) pip-install-sphinx
+	sphinx-quickstart -q -p $(PROJECT) -a $(USER) -v 0.0.1 $(RANDIR)
+	$(MAKE) sphinx-build
 
 ###########
 # Vagrant #
