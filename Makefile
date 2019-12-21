@@ -49,6 +49,10 @@
 #
 # https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
+# Flavors
+
+# https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+
 COMMIT_MESSAGE = "Update"
 PROJECT = project
 APP = app
