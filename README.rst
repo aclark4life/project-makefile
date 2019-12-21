@@ -44,6 +44,8 @@ Usage
     make commit-push-up
     make cp
     make d
+    make d7
+    make d8
     make deploy-default
     make django-graph
     make django-init
@@ -60,6 +62,8 @@ Usage
     make django-up-settings
     make django-wc
     make django-yapf
+    make fin-init-d7
+    make fin-init-d8
     make freeze
     make git-branches
     make git-commit
@@ -81,7 +85,6 @@ Usage
     make migrate
     make migrations
     make p
-    make pack
     make pip-freeze-default
     make pip-install
     make pip-install-django
