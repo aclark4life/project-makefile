@@ -142,18 +142,19 @@ su: django-su  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
 
-###########
-# Docksal #
-###########
+##########
+# Drupal #
+##########
 
-fin-init-d7:
+drupal-init-composer-d8:
+	composer create-project drupal/recommended-project `openssl rand -base64 12 | sed 's/\//g'` --no-interaction
+drupal-init-fin-d7:
 	git clone https://github.com/docksal/boilerplate-drupal7.git d7
 	cd d7; fin init
-fin-init-d8:
+drupal-init-fin-d8:
 	git clone https://github.com/docksal/boilerplate-drupal8.git d8
 	cd d8; fin init
-d7: fin-init-d7
-d8: fin-init-d8
+d8: drupal-init-composer-d8  # Alias
 
 #######
 # Git #
