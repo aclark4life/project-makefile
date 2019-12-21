@@ -285,8 +285,6 @@ python-serve:
 	python -m SimpleHTTPServer
 python-virtualenv-2-7:
 	virtualenv --python=python2.7 .
-python-virtualenv-3-6:
-	virtualenv --python=python3.6 .
 python-virtualenv-3-7:
 	virtualenv --python=python3.7 .
 python-virtualenv: python-virtualenv-3-7  # Alias

@@ -98,7 +98,6 @@ Usage
     make python-serve
     make python-virtualenv
     make python-virtualenv-2-7
-    make python-virtualenv-3-6
     make python-virtualenv-3-7
     make readme
     make review
