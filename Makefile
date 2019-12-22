@@ -225,7 +225,7 @@ list-targets:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
-        '{print "make "$$0}'  # http://stackoverflow.com/a/26339924
+        '{print "make "$$0}' | less  # http://stackoverflow.com/a/26339924
 help: list-targets  # Alias
 h: list-targets  # Alias
 
