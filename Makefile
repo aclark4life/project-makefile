@@ -58,10 +58,10 @@ PROJECT = project
 APP = app
 # https://stackoverflow.com/a/589260/185820
 TMPDIR := $(shell mktemp -d)
+RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 UNAME := $(shell uname)
 # http://unix.stackexchange.com/a/37316
 REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
-RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g'`)
 
 #-------------------------------------------------------------------------------
 
