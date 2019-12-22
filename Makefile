@@ -280,7 +280,7 @@ freeze: pip-freeze  # Alias
 
 python-serve:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m httpd.server
+	python -m http.server
 python-virtualenv-2-7:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-7:
