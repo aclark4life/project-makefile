@@ -294,12 +294,10 @@ serve: python-serve  # Alias
 # Sphinx #
 ##########
 
-sphinx-build:
-	sphinx-build -b html -d $(RANDIR)/_build/doctrees $(RANDIR) $(RANDIR)/_build/html
 sphinx-init:
 	$(MAKE) pip-install-sphinx
 	sphinx-quickstart -q -p $(PROJECT) -a $(USER) -v 0.0.1 $(RANDIR)
-	$(MAKE) sphinx-build
+	sphinx-build -b html -d $(RANDIR)/_build/doctrees $(RANDIR) $(RANDIR)/_build/html
 
 ###########
 # Vagrant #
