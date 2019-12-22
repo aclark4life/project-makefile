@@ -159,7 +159,8 @@ drupal-init-docksal-7:
 drupal-init-docksal-8:
 	git clone https://github.com/docksal/boilerplate-drupal8.git d8
 	cd d8; fin init
-d8: drupal-init-composer-8  # Alias
+d7: drupal-init-docksal-7  # Alias
+d8: drupal-init-docksal-8  # Alias
 
 #######
 # Git #
