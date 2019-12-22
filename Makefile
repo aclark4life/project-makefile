@@ -155,7 +155,7 @@ drupal-init-composer-8:
 	composer create-project drupal/recommended-project $(RANDIR) --no-interaction
 drupal-init-docksal-7:
 	git clone https://github.com/docksal/boilerplate-drupal7.git d7
-	cd d7; fin init; fin db drop default; fin db create default
+	cd d7; fin init
 drupal-init-docksal-8:
 	git clone https://github.com/docksal/boilerplate-drupal8.git d8
 	cd d8; fin init
