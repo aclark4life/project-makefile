@@ -151,15 +151,15 @@ loaddata: django-loaddata  # Alias
 # Drupal #
 ##########
 
-drupal-init-composer-d8:
+drupal-init-composer-8:
 	composer create-project drupal/recommended-project $(RANDIR) --no-interaction
-drupal-init-fin-d7:
+drupal-init-docksal-7:
 	git clone https://github.com/docksal/boilerplate-drupal7.git d7
 	cd d7; fin init
-drupal-init-fin-d8:
+drupal-init-docksal-8:
 	git clone https://github.com/docksal/boilerplate-drupal8.git d8
 	cd d8; fin init
-d8: drupal-init-composer-d8  # Alias
+d8: drupal-init-composer-8  # Alias
 
 #######
 # Git #
