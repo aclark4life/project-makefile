@@ -302,8 +302,7 @@ sphinx-init:
 	mv $(RANDIR)/* .
 	$(MAKE) sphinx-build
 sphinx-serve:
-	cd _build/html
-	python -m http.server
+	cd _build/html;python -m http.server
 
 ###########
 # Vagrant #
