@@ -172,7 +172,7 @@ git-ignore:
 	$(MAKE) commit-push
 git-init:
 	git init
-	hub create $(RAND)
+	hub create $(RANDDIR)
 	hub browse
 git-branches:
 	-for i in $(REMOTE_BRANCHES) ; do \
@@ -263,11 +263,8 @@ pip-install-django:
 	-git add requirements.txt
 	-@$(MAKE) commit-push-up
 pip-install-sphinx:
-	@echo "Sphinx\n" > requirements.txt
-	@$(MAKE) pip-install
-	@$(MAKE) freeze
-	-git add requirements.txt
-	-@$(MAKE) commit-push-up
+	echo "Sphinx\n" > requirements.txt
+	$(MAKE) pip-install
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -300,7 +297,8 @@ serve: python-serve  # Alias
 sphinx-init:
 	$(MAKE) pip-install-sphinx
 	sphinx-quickstart -q -p $(PROJECT) -a $(USER) -v 0.0.1 $(RANDIR)
-	sphinx-build -b html -d $(RANDIR)/_build/doctrees $(RANDIR) $(RANDIR)/_build/html
+	mv $(RANDIR)/* .
+	sphinx-build -b html -d _build/doctrees . _build/html
 
 ###########
 # Vagrant #
