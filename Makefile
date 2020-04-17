@@ -276,7 +276,7 @@ freeze: pip-freeze  # Alias
 # Python # 
 ##########
 
-python-serve:
+python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
 python-virtualenv-2-6:
@@ -288,7 +288,6 @@ python-virtualenv-3-7:
 python-virtualenv: python-virtualenv-3-7  # Alias
 virtualenv: python-virtualenv-3-7  # Alias
 virtualenv-2: python-virtualenv-2-7  # Alias
-serve: python-serve  # Alias
 
 ##########
 # Sphinx #
@@ -332,3 +331,4 @@ vm: vagrant-init  # Alias
 #APP = app
 #.DEFAULT_GOAL=commit-push
 #install: pip-install
+#serve: django-serve
