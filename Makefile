@@ -95,15 +95,11 @@ django-init-app:
 	-touch $(PROJECT)/$(APP)/templates/base.html
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-init-db:  # PostgreSQL
-	-dropdb $(PROJECT)
-	-createdb $(PROJECT)
-init-db: django-init-db  # Alias
 django-graph:
 	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
 	@$(MAKE) pip-install-django
-	@$(MAKE) django-init-db
+	@$(MAKE) init-db
 	@$(MAKE) django-init-app
 	@$(MAKE) django-up-settings
 	git add $(PROJECT)
@@ -271,6 +267,14 @@ pip-upgrade-default:
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
 freeze: pip-freeze  # Alias
+
+##############
+# PostgreSQL #
+##############
+
+init-db-default:
+	-dropdb $(PROJECT)
+	-createdb $(PROJECT)
 
 ##########
 # Python # 
