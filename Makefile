@@ -273,8 +273,8 @@ freeze: pip-freeze  # Alias
 ##############
 
 init-db-default:
-	-dropdb $(PROJECT)
-	-createdb $(PROJECT)
+	-dropdb $(PROJECT)_$(APP)
+	-createdb $(PROJECT)_$(APP)
 
 ##########
 # Python # 
