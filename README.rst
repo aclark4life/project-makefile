@@ -33,7 +33,6 @@ Usage
 
         make help
 
-
 ::
 
     $ make help
@@ -44,12 +43,12 @@ Usage
     make commit-push-up
     make cp
     make d
+    make d7
     make d8
     make deploy-default
     make django-graph
     make django-init
     make django-init-app
-    make django-init-db
     make django-loaddata-default
     make django-migrate
     make django-migrations-default
@@ -61,9 +60,9 @@ Usage
     make django-up-settings
     make django-wc
     make django-yapf
-    make drupal-init-composer-d8
-    make drupal-init-fin-d7
-    make drupal-init-fin-d8
+    make drupal-init-composer-8
+    make drupal-init-docksal-7
+    make drupal-init-docksal-8
     make freeze
     make git-branches
     make git-commit
@@ -78,7 +77,7 @@ Usage
     make graph
     make h
     make help
-    make init-db
+    make init-db-default
     make loaddata
     make make
     make migrate
@@ -91,15 +90,15 @@ Usage
     make pip-install-test
     make pip-upgrade-default
     make push
-    make python-serve
+    make python-serve-default
     make python-virtualenv
+    make python-virtualenv-2-6
     make python-virtualenv-2-7
     make python-virtualenv-3-7
     make r
     make rand
     make readme
     make review
-    make serve
     make sphinx-build
     make sphinx-init
     make sphinx-serve
