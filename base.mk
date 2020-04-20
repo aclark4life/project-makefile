@@ -330,9 +330,3 @@ vm: vagrant-init  # Alias
 # https://stackoverflow.com/a/49804748
 %: %-default
 	@ true
-
-#PROJECT = project
-#APP = app
-#.DEFAULT_GOAL=commit-push
-#install: pip-install
-#serve: django-serve
