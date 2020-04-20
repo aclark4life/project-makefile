@@ -11,6 +11,7 @@ Installation
 
 ::
 
+    curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/master/base.mk
     curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile
 
 Slides
