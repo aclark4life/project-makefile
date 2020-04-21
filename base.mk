@@ -234,6 +234,7 @@ usage:
 	@echo "\tmake help"
 
 make:
+	git add base.mk
 	git add Makefile
 	@$(MAKE) commit-push-up
 
