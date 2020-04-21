@@ -1,8 +1,10 @@
 include base.mk
 
-##########
-# Custom #
-##########
+#-------------------------------------------------------------------------------
+#
+# Custom Overrides
+#
+# https://stackoverflow.com/a/49804748
 
 #PROJECT = project
 #APP = app
