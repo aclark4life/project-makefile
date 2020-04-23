@@ -105,7 +105,7 @@ django-init:
 	git add $(PROJECT)
 	git add manage.py
 	@$(MAKE) commit-push
-django-migrate:
+django-migrate-default:
 	python manage.py migrate
 django-migrations-default:
 	python manage.py makemigrations $(APP)
