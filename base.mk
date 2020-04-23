@@ -99,7 +99,7 @@ django-graph:
 	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
 	@$(MAKE) pip-install-django
-	@$(MAKE) init-db
+	@$(MAKE) pg-init
 	@$(MAKE) django-init-app
 	@$(MAKE) django-up-settings
 	git add $(PROJECT)
@@ -273,7 +273,7 @@ freeze: pip-freeze  # Alias
 # PostgreSQL #
 ##############
 
-init-db-default:
+pg-init-default:
 	-dropdb $(PROJECT)_$(APP)
 	-createdb $(PROJECT)_$(APP)
 
@@ -321,6 +321,7 @@ vagrant-up:
 	vagrant up --provider virtualbox
 vagrant: vagrant-init  # Alias
 vm: vagrant-init  # Alias
+vm-up: vagrant-up  # Alias
 
 #-------------------------------------------------------------------------------
 
