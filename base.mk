@@ -298,7 +298,7 @@ virtualenv-2: python-virtualenv-2-7  # Alias
 # Sphinx #
 ##########
 
-sphinx-build:
+sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
 sphinx-init:
 	$(MAKE) pip-install-sphinx
