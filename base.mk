@@ -242,6 +242,14 @@ deploy-default:
 	eb deploy
 d: deploy  # Alias
 
+#########
+# MySQL #
+#########
+
+my-init-default:
+	-mysqladmin drop $(PROJECT)_$(APP)
+	-mysqladmin create $(PROJECT)_$(APP)
+
 #######
 # Pip #
 #######
