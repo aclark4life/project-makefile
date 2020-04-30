@@ -247,8 +247,8 @@ d: deploy  # Alias
 #########
 
 my-init-default:
-	-mysqladmin drop $(PROJECT)_$(APP)
-	-mysqladmin create $(PROJECT)_$(APP)
+	-mysqladmin -u root drop $(PROJECT)_$(APP)
+	-mysqladmin -u root create $(PROJECT)_$(APP)
 
 #######
 # Pip #
