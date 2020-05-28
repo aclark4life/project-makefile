@@ -308,9 +308,6 @@ python-virtualenv-2-7-default:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-7-default:
 	virtualenv --python=python3.7 .
-python-virtualenv: python-virtualenv-3-7  # Alias
-virtualenv: python-virtualenv-3-7  # Alias
-virtualenv-2: python-virtualenv-2-7  # Alias
 
 ##########
 # Sphinx #
