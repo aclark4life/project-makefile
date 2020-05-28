@@ -250,13 +250,15 @@ my-init-default:
 	-mysqladmin -u root drop $(PROJECT)_$(APP)
 	-mysqladmin -u root create $(PROJECT)_$(APP)
 
-
 #########
 # Plone #
 #########
 
 plone-serve-default:
 	plone fg
+
+plone-install-default:
+	buildout
 
 #######
 # Pip #
