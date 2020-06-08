@@ -1,4 +1,4 @@
-# https://github.com/aclark4life/makefile
+# https://github.com/aclark4life/project-makefile
 #
 # The MIT License (MIT)
 #
