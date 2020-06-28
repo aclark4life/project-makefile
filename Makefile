@@ -35,4 +35,4 @@ include base.mk
 #.DEFAULT_GOAL=commit-push
 #install: pip-install
 #serve: django-serve
-#virtualenv: python-virtualenv-3-7
+#virtualenv: python-virtualenv-3-8
