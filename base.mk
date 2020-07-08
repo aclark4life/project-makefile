@@ -265,7 +265,7 @@ plone-install-default:
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-pip-install:
+pip-install-default:
 	pip install -r requirements.txt
 pip-install-test:
 	pip install -r requirements-test.txt
