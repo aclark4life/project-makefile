@@ -320,7 +320,7 @@ sphinx-init:
 	sphinx-quickstart -q -p $(PROJECT) -a $(USER) -v 0.0.1 $(RANDIR)
 	mv $(RANDIR)/* .
 	rmdir $(RANDIR)
-sphinx-serve:
+sphinx-serve-default:
 	cd _build/html;python -m http.server
 
 ###########
