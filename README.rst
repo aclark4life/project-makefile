@@ -1,7 +1,7 @@
 Project Makefile
 ================
 
-A generic Makefile for Python projects
+A generic Makefile for Django projects
 
 Why
 ---
