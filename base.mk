@@ -326,8 +326,6 @@ python-virtualenv-2-6-default:
 	virtualenv --python=python2.6 .
 python-virtualenv-2-7-default:
 	virtualenv --python=python2.7 .
-python-virtualenv-3-7-default:
-	virtualenv --python=python3.7 .
 python-virtualenv-3-8-default:
 	virtualenv --python=python3.8 .
 python-virtualenv-3-9-default:
