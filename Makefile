@@ -36,3 +36,8 @@ include base.mk
 # Overrides
 # ------------------------------------------------------------------------------ 
 #
+# Here you can override variables, targets, etc. set in base.mk
+#
+#.DEFAULT_GOAL := commit-push
+#PROJECT := my_project
+#APP := my_app
