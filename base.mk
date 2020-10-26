@@ -1,7 +1,7 @@
 # Project Makefile
 # ================
 #
-# https://github.com/aclark4life/project-makefile
+# - https://github.com/aclark4life/project-makefile
 #
 #
 # License
@@ -240,7 +240,7 @@ git-branches:
 git-prune:
 	git remote update origin --prune
 git-commit:
-	git commit -a -m $(COMMIT_MESSAGE)
+	git commit -a -m $(MESSAGE)
 git-commit-edit:
 	git commit -a
 git-push:
