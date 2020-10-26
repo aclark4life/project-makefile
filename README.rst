@@ -1,5 +1,7 @@
-Project Makefile™
-=================
+Project Makefile
+================
+
+A Makefile for Django projects
 
 Why
 ---
