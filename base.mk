@@ -127,7 +127,7 @@
 #
 #
 # Variables
-# --------------------------------------------------------------------------------  
+# ------------------------------------------------------------------------------  
 #
 .DEFAULT_GOAL := usage
 
@@ -146,20 +146,20 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 
 
 # Rules
-# --------------------------------------------------------------------------------  
+# ------------------------------------------------------------------------------  
 #
+# Django
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 django-start:
 	-mkdir -p $(PROJECT)/$(APP)/templates
 	-touch $(PROJECT)/$(APP)/templates/base.html
 	-django-admin startproject $(PROJECT) .
 	-django-admin startapp $(APP) $(PROJECT)/$(APP)
-django-graph:
-	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 django-init: 
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
-	@$(MAKE) django-init-app
-	@$(MAKE) django-up-settings
+	@$(MAKE) django-start
+	@$(MAKE) django-config
 	git add $(PROJECT)
 	git add manage.py
 	@$(MAKE) commit-push
@@ -172,7 +172,7 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test:
 	python manage.py test
-django-up-settings:
+django-config:
 	echo "STATIC_ROOT = 'static'" >> $(PROJECT)/settings.py
 	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT)/settings.py
 	echo "AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', }, { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]" >> $(PROJECT)/settings.py
@@ -193,6 +193,8 @@ django-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
 	-wc -l $(PROJECT)/$(APP)/*.py
+django-graph:
+	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
@@ -200,7 +202,8 @@ static: django-static  # Alias
 su: django-su  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
-#
+
+
 ##########
 # Drupal #
 ##########
