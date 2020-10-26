@@ -41,3 +41,4 @@ include base.mk
 #.DEFAULT_GOAL := commit-push
 #PROJECT := my_project
 #APP := my_app
+#MESSAGE := My update
