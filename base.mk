@@ -117,14 +117,6 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # Like an Alias, but with multiple targets.
 #
-# BBB
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-# "When adding (or leaving) a piece of code for backward compatibility, we use a
-# BBB comment marker with a date."
-#
-# - https://docs.plone.org/appendices/glossary.html
-#
 #
 # Variables
 # ------------------------------------------------------------------------------  
@@ -236,8 +228,6 @@ p: push  # Alias
 commit-push: git-commit git-push  # Multi-target Alias
 commit-push-up: git-commit git-push-up  # Multi-target Alias
 commit-edit: git-commit-edit git-push  # Multi-target Alias
-git-commit-auto-push: commit-push  # BBB
-git-commit-edit-push: commit-edit-push  # BBB
 #
 # Misc
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
