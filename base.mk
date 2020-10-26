@@ -22,34 +22,63 @@
 
 #-------------------------------------------------------------------------------
 
-# Default Goal
+# Goal
 # 
-# https://www.gnu.org/software/make/manual/html_node/Goals.html
-# https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
-# 
-# By default, the goal is the first target in the makefile (not counting targets
+# "By default, the goal is the first target in the makefile (not counting targets
 # that start with a period). Therefore, makefiles are usually written so that the
 # first target is for compiling the entire program or programs they describe. If
 # the first rule in the makefile has several targets, only the first target in the
 # rule becomes the default goal, not the whole list. You can manage the selection
 # of the default goal from within your makefile using the .DEFAULT_GOAL variable
-# (see Other Special Variables). 
+# (see Other Special Variables)."
+# 
+# Via https://www.gnu.org/software/make/manual/html_node/Goals.html
 
-.DEFAULT_GOAL=usage
+#-------------------------------------------------------------------------------
+
+# Default goal
+#
+# "Sets the default goal to be used if no targets were specified on the command 
+# line (see Arguments to Specify the Goals). The .DEFAULT_GOAL variable allows
+# you to discover the current default goal, restart the default goal selection
+# algorithm by clearing its value, or to explicitly set the default goal."
+#
+# Via https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
+
+.DEFAULT_GOAL := usage
 
 #-------------------------------------------------------------------------------
 
 # Variables
-
-# A variable is a name defined in a makefile to represent a string of text, called
-# the variable's value. These values are substituted by explicit request into targets,
-# prerequisites, recipes, and other parts of the makefile.
 #
-# https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
+# "A variable is a name defined in a makefile to represent a string of text, called
+# the variable's value. These values are substituted by explicit request into targets,
+# prerequisites, recipes, and other parts of the makefile."
+#
+# Via https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
+#-------------------------------------------------------------------------------
+#
 # Flavors
+#
+# "The first flavor of variable is a recursively expanded variable. Variables of
+# this sort are defined by lines using ‘=’ (see Setting Variables) or by the
+# define directive (see Defining Multi-Line Variables). The value you specify
+# is installed verbatim; if it contains references to other variables, these
+# references are expanded whenever this variable is substituted (in the course
+# of expanding some other string). When this happens, it is called recursive expansion.
+#
+# To avoid all the problems and inconveniences of recursively expanded variables,
+# there is another flavor: simply expanded variables.
+#
+# Simply expanded variables are defined by lines using ‘:=’ or ‘::=’ (see Setting
+# Variables). Both forms are equivalent in GNU make; however only the ‘::=’ form
+# is described by the POSIX standard (support for ‘::=’ was added to the POSIX
+# standard in 2012, so older versions of make won’t accept this form either)."
+#
+# Via https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 
-# https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+#-------------------------------------------------------------------------------
 
 COMMIT_MESSAGE = "Update"
 PROJECT = project
