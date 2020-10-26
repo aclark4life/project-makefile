@@ -1,4 +1,11 @@
+# Project Makefile
+# ================
+#
 # https://github.com/aclark4life/project-makefile
+#
+#
+# License
+# ------------------------------------------------------------------------------ 
 #
 # Copyright 2020 Jeffrey Alexander Clark
 #
@@ -19,10 +26,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-#-------------------------------------------------------------------------------
-
+#
+#
+# Overview of concepts
+# ------------------------------------------------------------------------------ 
+#
 # Goal
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # 
 # "By default, the goal is the first target in the makefile (not counting targets
 # that start with a period). Therefore, makefiles are usually written so that the
@@ -33,33 +43,28 @@
 # (see Other Special Variables)."
 # 
 # Via https://www.gnu.org/software/make/manual/html_node/Goals.html
-
-#-------------------------------------------------------------------------------
-
-# Default goal
 #
+# Default goal
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
+#  
 # "Sets the default goal to be used if no targets were specified on the command 
 # line (see Arguments to Specify the Goals). The .DEFAULT_GOAL variable allows
 # you to discover the current default goal, restart the default goal selection
 # algorithm by clearing its value, or to explicitly set the default goal."
 #
 # Via https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
-
-.DEFAULT_GOAL := usage
-
-#-------------------------------------------------------------------------------
-
+#
 # Variables
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 # "A variable is a name defined in a makefile to represent a string of text, called
 # the variable's value. These values are substituted by explicit request into targets,
 # prerequisites, recipes, and other parts of the makefile."
 #
 # Via https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
-
-#-------------------------------------------------------------------------------
 #
 # Flavors
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 # "The first flavor of variable is a recursively expanded variable. Variables of
 # this sort are defined by lines using ‘=’ (see Setting Variables) or by the
@@ -77,45 +82,77 @@
 # standard in 2012, so older versions of make won’t accept this form either)."
 #
 # Via https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+#
+# Rules
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+# "A rule appears in the makefile and says when and how to remake certain files,
+# called the rule's targets (most often only one per rule). It lists the other
+# files that are the prerequisites of the target, and the recipe to use to
+# create or update the target."
+#
+# Via https://www.gnu.org/software/make/manual/html_node/Rules.html
+#
+# Overrides
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+# "Sometimes it is useful to have a makefile that is mostly just like another makefile.
+# You can often use the ‘include’ directive to include one in the other, and add more
+# targets or variable definitions. However, it is invalid for two makefiles to give
+# different recipes for the same target. But there is another way.
+#
+# Via https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
+#
+# Also see https://stackoverflow.com/a/49804748
+#
+#
+# Additional concepts
+# ------------------------------------------------------------------------------ 
+#
+# Alias
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#
+# A new target definition that only exists to create a shorter target 
+# name for another target that already exists.
+#
+# Multi-target Alias
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+# Like an "Alias", but with multiple targets.
+#
+# BBB
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+# "When adding (or leaving) a piece of code for backward compatibility, we use a
+# BBB comment marker with a date."
+#
+# Via https://docs.plone.org/appendices/glossary.html
+#
+#
+# Variables
+# --------------------------------------------------------------------------------  
+#
+#
 
-#-------------------------------------------------------------------------------
+.DEFAULT_GOAL := usage
 
-COMMIT_MESSAGE = "Update"
-PROJECT = project
-APP = app
+MESSAGE := Update
+
+PROJECT := project
+APP := app
+
 # https://stackoverflow.com/a/589260/185820
 TMPDIR := $(shell mktemp -d)
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 UNAME := $(shell uname)
+
 # http://unix.stackexchange.com/a/37316
-REMOTE_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
+BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 
-#-------------------------------------------------------------------------------
-
-# Additional Concepts for this Makefile
-#
-# "Alias" - A new target definition that only exists to create a shorter target 
-# name for another target that already exists.
-#
-# "Multi-target Alias" - Like an "Alias", but with multiple targets.
-#
-# "BBB" - For backwards compatibility. Via
-# https://docs.plone.org/appendices/glossary.html
-
-#-------------------------------------------------------------------------------
 
 # Rules
+# --------------------------------------------------------------------------------  
 #
-# A rule appears in the makefile and says when and how to remake certain files,
-# called the rule's targets (most often only one per rule). It lists the other
-# files that are the prerequisites of the target, and the recipe to use to
-# create or update the target. 
 #
-# https://www.gnu.org/software/make/manual/html_node/Rules.html
-
-##########
-# Django #
-##########
 
 django-init-app:
 	-mkdir -p $(PROJECT)/$(APP)/templates
@@ -169,11 +206,11 @@ static: django-static  # Alias
 su: django-su  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
-
+#
 ##########
 # Drupal #
 ##########
-
+#
 drupal-init-composer-8:
 	composer create-project drupal/recommended-project $(RANDIR) --no-interaction
 drupal-init-docksal-7:
@@ -184,11 +221,11 @@ drupal-init-docksal-8:
 	cd d8; fin init
 d7: drupal-init-docksal-7  # Alias
 d8: drupal-init-docksal-8  # Alias
-
+#
 #######
 # Git #
 #######
-
+#
 git-ignore:
 	echo ".Python\nbin/\ninclude/\nlib/\n.vagrant/\n" >> .gitignore
 	git add .gitignore
@@ -198,7 +235,7 @@ git-init:
 	hub create $(RANDDIR)
 	hub browse
 git-branches:
-	-for i in $(REMOTE_BRANCHES) ; do \
+	-for i in $(BRANCHES) ; do \
         git checkout -t $$i ; done
 git-prune:
 	git remote update origin --prune
@@ -220,15 +257,15 @@ commit-push-up: git-commit git-push-up  # Multi-target Alias
 commit-edit: git-commit-edit git-push  # Multi-target Alias
 git-commit-auto-push: commit-push  # BBB
 git-commit-edit-push: commit-edit-push  # BBB
-
+#
 ########
 # Misc #
 ########
-
+#
 rand:
 	@openssl rand -base64 12 | sed 's/\///g'
 r: rand  # Alias
-
+#
 readme:
 	echo "Creating README.rst"
 	@echo $(PROJECT) > README.rst
@@ -236,7 +273,7 @@ readme:
 	echo "Done."
 	git add README.rst
 	@$(MAKE) commit-push
-
+#
 review:
 ifeq ($(UNAME), Darwin)
 	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py | grep -v migrations`\
@@ -244,7 +281,7 @@ ifeq ($(UNAME), Darwin)
 else
 	@echo "Unsupported"
 endif
-
+#
 list-targets-default:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
@@ -252,45 +289,45 @@ list-targets-default:
         '{print "make "$$0}' | less  # http://stackoverflow.com/a/26339924
 help: list-targets  # Alias
 h: list-targets  # Alias
-
+#
 usage:
 	@echo "Project Makefile"
 	@echo "Usage:\n"
 	@echo "\tmake <target>\n"
 	@echo "Help:\n"
 	@echo "\tmake help"
-
+#
 make:
 	git add base.mk
 	git add Makefile
 	@$(MAKE) commit-push-up
-
+#
 deploy-default:
 	eb deploy
 d: deploy  # Alias
-
+#
 #########
 # MySQL #
 #########
-
+#
 my-init-default:
 	-mysqladmin -u root drop $(PROJECT)_$(APP)
 	-mysqladmin -u root create $(PROJECT)_$(APP)
-
+#
 #########
 # Plone #
 #########
-
+#
 plone-serve-default:
 	plone fg
-
+#
 plone-install-default:
 	buildout
-
+#
 #######
 # Pip #
 #######
-
+#
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -313,19 +350,19 @@ pip-upgrade-default:
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
 freeze: pip-freeze  # Alias
-
+#
 ##############
 # PostgreSQL #
 ##############
-
+#
 pg-init-default:
 	-dropdb $(PROJECT)_$(APP)
 	-createdb $(PROJECT)_$(APP)
-
+#
 ##########
 # Python # 
 ##########
-
+#
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
@@ -337,11 +374,11 @@ python-virtualenv-3-7-default:
 	virtualenv --python=python3.7 .
 python-virtualenv-3-8-default:
 	virtualenv --python=python3.8 .
-
+#
 ##########
 # Sphinx #
 ##########
-
+#
 sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
 sphinx-init:
@@ -351,11 +388,11 @@ sphinx-init:
 	rmdir $(RANDIR)
 sphinx-serve-default:
 	cd _build/html;python -m http.server
-
+#
 ###########
 # Vagrant #
 ###########
-
+#
 vagrant-init:
 	vagrant init ubuntu/trusty64
 	git add Vagrantfile
@@ -366,13 +403,15 @@ vagrant-up:
 vagrant: vagrant-init  # Alias
 vm: vagrant-init  # Alias
 vm-up: vagrant-up  # Alias
-
-#-------------------------------------------------------------------------------
-
+#
+#
+#
+################################################################################
+# 
 # Overrides
 #
-# https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
+################################################################################
 #
-# https://stackoverflow.com/a/49804748
+#
 %: %-default
 	@ true
