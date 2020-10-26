@@ -46,32 +46,25 @@ Usage
     make commit-push-up
     make cp
     make d
-    make d7
-    make d8
     make deploy-default
+    make django-config
     make django-graph
     make django-init
-    make django-init-app
     make django-loaddata-default
-    make django-migrate
+    make django-migrate-default
     make django-migrations-default
     make django-serve-default
     make django-shell
+    make django-start
     make django-static
     make django-su
     make django-test
-    make django-up-settings
     make django-wc
     make django-yapf
-    make drupal-init-composer-8
-    make drupal-init-docksal-7
-    make drupal-init-docksal-8
     make freeze
     make git-branches
     make git-commit
-    make git-commit-auto-push
     make git-commit-edit
-    make git-commit-edit-push
     make git-ignore
     make git-init
     make git-prune
@@ -80,31 +73,32 @@ Usage
     make graph
     make h
     make help
-    make init-db-default
     make loaddata
     make make
     make migrate
     make migrations
+    make my-init-default
     make p
+    make pg-init-default
     make pip-freeze-default
-    make pip-install
+    make pip-install-default
     make pip-install-django
     make pip-install-sphinx
     make pip-install-test
     make pip-upgrade-default
     make push
     make python-serve-default
-    make python-virtualenv
-    make python-virtualenv-2-6
-    make python-virtualenv-2-7
-    make python-virtualenv-3-7
+    make python-virtualenv-2-6-default
+    make python-virtualenv-2-7-default
+    make python-virtualenv-3-8-default
+    make python-virtualenv-3-9-default
     make r
     make rand
     make readme
     make review
-    make sphinx-build
+    make sphinx-build-default
     make sphinx-init
-    make sphinx-serve
+    make sphinx-serve-default
     make static
     make su
     make test
@@ -112,6 +106,5 @@ Usage
     make vagrant
     make vagrant-init
     make vagrant-up
-    make virtualenv
-    make virtualenv-2
     make vm
+    make vm-up
