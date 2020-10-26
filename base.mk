@@ -99,11 +99,9 @@
 # "Sometimes it is useful to have a makefile that is mostly just like another makefile.
 # You can often use the ‘include’ directive to include one in the other, and add more
 # targets or variable definitions. However, it is invalid for two makefiles to give
-# different recipes for the same target. But there is another way.
+# different recipes for the same target. But there is another way."
 #
 # - https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
-#
-# Also see https://stackoverflow.com/a/49804748
 #
 #
 # Additional concepts
@@ -413,5 +411,7 @@ vm-up: vagrant-up  # Alias
 ################################################################################
 #
 #
+# 
+# https://stackoverflow.com/a/49804748
 %: %-default
 	@ true
