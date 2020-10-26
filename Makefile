@@ -1,4 +1,11 @@
-# https://github.com/aclark4life/project-makefile
+# Project Makefile
+# ================
+#
+# - https://github.com/aclark4life/project-makefile
+#
+#
+# License
+# ------------------------------------------------------------------------------ 
 #
 # Copyright 2020 Jeffrey Alexander Clark
 #
@@ -19,18 +26,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+#
+#
+# Includes
+# ------------------------------------------------------------------------------ 
+#
 include base.mk
-
-#-------------------------------------------------------------------------------
 #
-# Custom Overrides
+# Overrides
+# ------------------------------------------------------------------------------ 
 #
-# https://stackoverflow.com/a/49804748
-
-#PROJECT = project
-#APP = app
-#.DEFAULT_GOAL=commit-push
-#install: pip-install
-#serve: django-serve
-#virtualenv: python-virtualenv-3-8

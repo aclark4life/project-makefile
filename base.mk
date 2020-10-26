@@ -103,6 +103,14 @@
 #
 # - https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
 #
+# Includes
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+# "The include directive tells make to suspend reading the current makefile and
+# read one or more other makefiles before continuing.
+# 
+# - https://www.gnu.org/software/make/manual/html_node/Include.html
+#
 #
 # Additional concepts
 # ------------------------------------------------------------------------------ 
