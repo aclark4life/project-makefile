@@ -115,7 +115,7 @@
 #
 # Multi-target Alias
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# Like an "Alias", but with multiple targets.
+# Like an Alias, but with multiple targets.
 #
 # BBB
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -129,8 +129,6 @@
 # Variables
 # --------------------------------------------------------------------------------  
 #
-#
-
 .DEFAULT_GOAL := usage
 
 MESSAGE := Update
@@ -150,9 +148,7 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 # Rules
 # --------------------------------------------------------------------------------  
 #
-#
-
-django-init-app:
+django-start:
 	-mkdir -p $(PROJECT)/$(APP)/templates
 	-touch $(PROJECT)/$(APP)/templates/base.html
 	-django-admin startproject $(PROJECT) .
