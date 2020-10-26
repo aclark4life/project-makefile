@@ -42,7 +42,7 @@
 # of the default goal from within your makefile using the .DEFAULT_GOAL variable
 # (see Other Special Variables)."
 # 
-# Via https://www.gnu.org/software/make/manual/html_node/Goals.html
+# - https://www.gnu.org/software/make/manual/html_node/Goals.html
 #
 # Default goal
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
@@ -52,7 +52,7 @@
 # you to discover the current default goal, restart the default goal selection
 # algorithm by clearing its value, or to explicitly set the default goal."
 #
-# Via https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
+# - https://www.gnu.org/software/make/manual/html_node/Special-Variables.html#Special-Variables
 #
 # Variables
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -61,7 +61,7 @@
 # the variable's value. These values are substituted by explicit request into targets,
 # prerequisites, recipes, and other parts of the makefile."
 #
-# Via https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
+# - https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 #
 # Flavors
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -81,7 +81,7 @@
 # is described by the POSIX standard (support for ‘::=’ was added to the POSIX
 # standard in 2012, so older versions of make won’t accept this form either)."
 #
-# Via https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
+# - https://www.gnu.org/software/make/manual/html_node/Flavors.html#Flavors
 #
 # Rules
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -91,7 +91,7 @@
 # files that are the prerequisites of the target, and the recipe to use to
 # create or update the target."
 #
-# Via https://www.gnu.org/software/make/manual/html_node/Rules.html
+# - https://www.gnu.org/software/make/manual/html_node/Rules.html
 #
 # Overrides
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -101,7 +101,7 @@
 # targets or variable definitions. However, it is invalid for two makefiles to give
 # different recipes for the same target. But there is another way.
 #
-# Via https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
+# - https://www.gnu.org/software/make/manual/html_node/Overriding-Makefiles.html
 #
 # Also see https://stackoverflow.com/a/49804748
 #
@@ -125,7 +125,7 @@
 # "When adding (or leaving) a piece of code for backward compatibility, we use a
 # BBB comment marker with a date."
 #
-# Via https://docs.plone.org/appendices/glossary.html
+# - https://docs.plone.org/appendices/glossary.html
 #
 #
 # Variables
