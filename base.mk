@@ -150,6 +150,7 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 #
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
 django-start:
 	-mkdir -p $(PROJECT)/$(APP)/templates
 	-touch $(PROJECT)/$(APP)/templates/base.html
@@ -202,11 +203,9 @@ static: django-static  # Alias
 su: django-su  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
-
-
-#######
-# Git #
-#######
+#
+# Git
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 git-ignore:
 	echo ".Python\nbin/\ninclude/\nlib/\n.vagrant/\n" >> .gitignore
@@ -240,9 +239,8 @@ commit-edit: git-commit-edit git-push  # Multi-target Alias
 git-commit-auto-push: commit-push  # BBB
 git-commit-edit-push: commit-edit-push  # BBB
 #
-########
-# Misc #
-########
+# Misc
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 rand:
 	@openssl rand -base64 12 | sed 's/\///g'
@@ -288,27 +286,15 @@ deploy-default:
 	eb deploy
 d: deploy  # Alias
 #
-#########
-# MySQL #
-#########
+# MySQL
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 my-init-default:
 	-mysqladmin -u root drop $(PROJECT)_$(APP)
 	-mysqladmin -u root create $(PROJECT)_$(APP)
 #
-#########
-# Plone #
-#########
-#
-plone-serve-default:
-	plone fg
-#
-plone-install-default:
-	buildout
-#
-#######
-# Pip #
-#######
+# Pip
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
@@ -333,17 +319,15 @@ pip-upgrade-default:
 	$(MAKE) pip-freeze
 freeze: pip-freeze  # Alias
 #
-##############
-# PostgreSQL #
-##############
+# PostgreSQL
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 pg-init-default:
 	-dropdb $(PROJECT)_$(APP)
 	-createdb $(PROJECT)_$(APP)
 #
-##########
-# Python # 
-##########
+# Python
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
@@ -357,9 +341,8 @@ python-virtualenv-3-7-default:
 python-virtualenv-3-8-default:
 	virtualenv --python=python3.8 .
 #
-##########
-# Sphinx #
-##########
+# Sphinx
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
@@ -371,9 +354,8 @@ sphinx-init:
 sphinx-serve-default:
 	cd _build/html;python -m http.server
 #
-###########
-# Vagrant #
-###########
+# Vagrant
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 vagrant-init:
 	vagrant init ubuntu/trusty64
@@ -386,16 +368,9 @@ vagrant: vagrant-init  # Alias
 vm: vagrant-init  # Alias
 vm-up: vagrant-up  # Alias
 #
-#
-#
-################################################################################
-# 
 # Overrides
+# ------------------------------------------------------------------------------  
 #
-################################################################################
-#
-#
-# 
 # https://stackoverflow.com/a/49804748
 %: %-default
 	@ true
