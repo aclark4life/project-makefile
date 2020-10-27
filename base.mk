@@ -316,6 +316,7 @@ pip-upgrade-default:
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
 freeze: pip-freeze  # Alias
+install-test: pip-install-test  # Alias
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
