@@ -171,7 +171,7 @@ django-migrations-default:
 	git add $(PROJECT)/$(APP)/migrations/*.py
 django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
-django-test:
+django-test-default:
 	python manage.py test
 django-config:
 	echo "STATIC_ROOT = 'static'" >> $(PROJECT)/settings.py
