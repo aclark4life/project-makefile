@@ -325,9 +325,9 @@ freeze: pip-freeze  # Alias
 install: pip-install  # Alias
 install-test: pip-install-test  # Alias
 pip-up: pip-upgrade  # Alias
-pip-up-pip: pip-upgrade  # Alias
+pip-up-pip: pip-upgrade-pip  # Alias
 req: pip-init-requirements  # Alias
-up-pip: pip-up-pip  # Alias
+up-pip: pip-upgrade-pip  # Alias
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
