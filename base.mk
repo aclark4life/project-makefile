@@ -269,6 +269,8 @@ help: list-targets  # Alias
 h: list-targets  # Alias
 pdf:
 	rst2pdf README.rst > README.pdf
+	git add README.pdf
+	$(MAKE) commit-push
 #
 usage:
 	@echo "Project Makefile"
