@@ -248,6 +248,8 @@ readme:
 	echo "Creating README.rst"
 	@echo $(PROJECT) > README.rst
 	@echo ================================================================================ >> README.rst
+	@echo $(APP) >> README.rst
+	@echo -------------------------------------------------------------------------------- >> README.rst
 	echo "Done."
 	git add README.rst
 	@$(MAKE) commit-push
