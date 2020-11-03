@@ -267,6 +267,8 @@ list-targets-default:
         '{print "make "$$0}' | less  # http://stackoverflow.com/a/26339924
 help: list-targets  # Alias
 h: list-targets  # Alias
+pdf:
+	rst2pdf README.rst > README.pdf
 #
 usage:
 	@echo "Project Makefile"
@@ -339,6 +341,7 @@ python-virtualenv-3-8-default:
 	virtualenv --python=python3.8 .
 python-virtualenv-3-9-default:
 	virtualenv --python=python3.9 .
+virtualenv: python-virtualenv-3-9
 #
 # Sphinx
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
