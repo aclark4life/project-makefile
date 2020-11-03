@@ -280,7 +280,7 @@ usage:
 make:
 	git add base.mk
 	git add Makefile
-	@$(MAKE) commit-push-up
+	@$(MAKE) commit-push
 #
 deploy-default:
 	eb deploy
@@ -321,6 +321,8 @@ pip-upgrade-pip:
 	pip install -U pip
 pip-init-requirements:
 	touch requirements.txt
+	git add requirements.txt
+	$(MAKE) git-commit-push
 freeze: pip-freeze  # Alias
 install: pip-install  # Alias
 install-test: pip-install-test  # Alias
