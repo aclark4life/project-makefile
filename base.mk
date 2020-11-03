@@ -320,8 +320,9 @@ pip-upgrade-default:
 pip-init-requirements:
 	touch requirements.txt
 freeze: pip-freeze  # Alias
+install: pip-install  # Alias
 install-test: pip-install-test  # Alias
-req: pip-init-requirements
+req: pip-init-requirements  # Alias
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
