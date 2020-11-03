@@ -322,7 +322,7 @@ pip-upgrade-pip:
 pip-init-requirements:
 	touch requirements.txt
 	git add requirements.txt
-	$(MAKE) git-commit-push
+	$(MAKE) commit-push
 freeze: pip-freeze  # Alias
 install: pip-install  # Alias
 install-test: pip-install-test  # Alias
