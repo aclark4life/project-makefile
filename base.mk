@@ -317,12 +317,17 @@ pip-upgrade-default:
 	mv -f $(TMPDIR)/requirements.txt .
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
+pip-upgrade-pip:
+	pip install -U pip
 pip-init-requirements:
 	touch requirements.txt
 freeze: pip-freeze  # Alias
 install: pip-install  # Alias
 install-test: pip-install-test  # Alias
+pip-up: pip-upgrade  # Alias
+pip-up-pip: pip-upgrade  # Alias
 req: pip-init-requirements  # Alias
+up-pip: pip-up-pip  # Alias
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
