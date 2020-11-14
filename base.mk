@@ -318,7 +318,9 @@ pip-install-sphinx:
 	echo "Sphinx\n" > requirements.txt
 	$(MAKE) pip-install
 pip-upgrade-default:
+	echo $(TMPDIR)
 	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
+	echo $(TMPDIR)
 	mv -f $(TMPDIR)/requirements.txt .
 	cat requirements.txt
 	$(PIP) install -U -r requirements.txt
