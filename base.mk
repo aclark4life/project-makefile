@@ -318,12 +318,11 @@ pip-install-sphinx:
 	echo "Sphinx\n" > requirements.txt
 	$(MAKE) pip-install
 pip-upgrade-default:
-	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
+	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	cat $(TMPDIR)/requirements.txt
-	# mv -f $(TMPDIR)/requirements.txt .
-	# cat requirements.txt
-	# $(PIP) install -U -r requirements.txt
-	# $(MAKE) pip-freeze
+	mv -f $(TMPDIR)/requirements.txt .
+	$(PIP) install -U -r requirements.txt
+	$(MAKE) pip-freeze
 pip-upgrade-pip:
 	$(PIP) install -U pip
 pip-init-requirements:
