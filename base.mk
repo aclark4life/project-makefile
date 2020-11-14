@@ -336,6 +336,7 @@ pip-up: pip-upgrade  # Alias
 pip-up-pip: pip-upgrade-pip  # Alias
 req: pip-init-requirements  # Alias
 up-pip: pip-upgrade-pip  # Alias
+up: pip-upgrade  # Alias
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
