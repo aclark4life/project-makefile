@@ -269,7 +269,7 @@ list-targets-default:
         '{print "make "$$0}' | less  # http://stackoverflow.com/a/26339924
 help: list-targets  # Alias
 h: list-targets  # Alias
-pdf:
+pdf-default:
 	rst2pdf README.rst > README.pdf
 	git add README.pdf
 	$(MAKE) commit-push
