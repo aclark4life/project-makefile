@@ -319,6 +319,7 @@ pip-install-sphinx:
 	$(MAKE) pip-install
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
+	cat $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	$(PIP) install -U -r requirements.txt
 	$(MAKE) pip-freeze
