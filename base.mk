@@ -300,13 +300,14 @@ my-init-default:
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
+PIP := pip --use-feature=2020-resolver
 pip-freeze-default:
-	pip freeze | sort > $(TMPDIR)/requirements.txt
+	$(PIP) freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 pip-install-default:
-	pip install -r requirements.txt
+	$(PIP) install -r requirements.txt
 pip-install-test:
-	pip install -r requirements-test.txt
+	$(PIP) install -r requirements-test.txt
 pip-install-django:
 	@echo "Django\ndj-database-url\npsycopg2-binary\n" > requirements.txt
 	@$(MAKE) pip-install
@@ -319,10 +320,10 @@ pip-install-sphinx:
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	pip install -U -r requirements.txt
+	$(PIP) install -U -r requirements.txt
 	$(MAKE) pip-freeze
 pip-upgrade-pip:
-	pip install -U pip
+	$(PIP) install -U pip
 pip-init-requirements:
 	touch requirements.txt
 	git add requirements.txt
