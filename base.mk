@@ -355,9 +355,9 @@ python-virtualenv-2-6-default:
 python-virtualenv-2-7-default:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-8-default:
-	virtualenv --python=python3.8 .
+	python3.8 -m venv .
 python-virtualenv-3-9-default:
-	virtualenv --python=python3.9 .
+	python3.9 -m venv .
 virtualenv: python-virtualenv-3-9
 #
 # Sphinx
