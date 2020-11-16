@@ -324,7 +324,7 @@ pip-upgrade-default:
 	$(MAKE) pip-freeze
 pip-upgrade-pip:
 	$(PIP) install -U pip
-pip-init-requirements:
+pip-init:
 	touch requirements.txt
 	git add requirements.txt
 	$(MAKE) commit-push
