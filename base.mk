@@ -183,7 +183,7 @@ django-shell:
 django-static:
 	python manage.py collectstatic --noinput
 django-su:
-	python manage.py createsuperuser
+	python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')"
 django-loaddata-default:
 	python manage.py loaddata
 django-yapf:
