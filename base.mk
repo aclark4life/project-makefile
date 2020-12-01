@@ -356,10 +356,8 @@ python-virtualenv-2-7-default:
 	virtualenv --python=python2.7 .
 python-virtualenv-3-8-default:
 	python3.8 -m venv .
-	source bin/activate
 python-virtualenv-3-9-default:
 	python3.9 -m venv .
-	source bin/activate
 virtualenv: python-virtualenv-3-8
 #
 # Sphinx
