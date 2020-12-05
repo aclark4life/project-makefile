@@ -42,4 +42,4 @@ include base.mk
 #PROJECT := my_project
 #APP := my_app
 #MESSAGE := My update
-#virtualenv = python-virtualenv-3-8
+#virtualenv: python-virtualenv-3-8
