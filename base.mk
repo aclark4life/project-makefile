@@ -184,6 +184,8 @@ django-static:
 	python manage.py collectstatic --noinput
 django-su:
 	python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')"
+django-user:
+	python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_user('user', '', 'user')"
 django-loaddata-default:
 	python manage.py loaddata
 django-yapf:
@@ -329,8 +331,8 @@ pip-init:
 	git add requirements.txt
 	$(MAKE) commit-push
 freeze: pip-freeze  # Alias
-install: pip-install  # Alias
-install-test: pip-install-test  # Alias
+install-default: pip-install  # Alias
+install-test-default: pip-install-test  # Alias
 pip-up: pip-upgrade  # Alias
 pip-up-pip: pip-upgrade-pip  # Alias
 req: pip-init-requirements  # Alias
