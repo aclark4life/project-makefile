@@ -316,12 +316,14 @@ pip-install-django:
 	-git add requirements.txt
 pip-install-sphinx:
 	echo "Sphinx\n" > requirements.txt
-	$(MAKE) pip-install
+	@$(MAKE) pip-install
 	@$(MAKE) freeze
+	-git add requirements.txt
 pip-install-wagtail:
 	@echo "wagtail\ndj-database-url\npsycopg2-binary\nwhitenoise\n" > requirements.txt
-	$(MAKE) pip-install
+	@$(MAKE) pip-install
 	@$(MAKE) freeze
+	-git add requirements.txt
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -331,7 +333,7 @@ pip-upgrade-pip:
 	$(PIP) install -U pip
 pip-init:
 	touch requirements.txt
-	git add requirements.txt
+	-git add requirements.txt
 freeze: pip-freeze  # Alias
 install-default: pip-install  # Alias
 install-test-default: pip-install-test  # Alias
@@ -417,6 +419,7 @@ wagtail-settings:
 	echo "import dj_database_url" >> $(PROJECT)/$(PROJECT)/settings/base.py
 	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/$(PROJECT)/settings/base.py
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(PROJECT)/settings/base.py
+wagtail-serve:
 
 # Overrides
 # ------------------------------------------------------------------------------  
