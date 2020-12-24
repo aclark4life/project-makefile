@@ -136,7 +136,6 @@
 MESSAGE := Update
 
 PROJECT := project
-APP := app
 
 # https://stackoverflow.com/a/589260/185820
 TMPDIR := $(shell mktemp -d)
@@ -154,10 +153,9 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 django-start:
-	-mkdir -p $(PROJECT)/$(APP)/templates
-	-touch $(PROJECT)/$(APP)/templates/base.html
+	-mkdir -p $(PROJECT)/templates
+	-touch $(PROJECT)/templates/base.html
 	-django-admin startproject $(PROJECT) .
-	-django-admin startapp $(APP) $(PROJECT)/$(APP)
 django-init: 
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
@@ -169,8 +167,8 @@ django-init:
 django-migrate-default:
 	python manage.py migrate
 django-migrations-default:
-	python manage.py makemigrations $(APP)
-	git add $(PROJECT)/$(APP)/migrations/*.py
+	python manage.py makemigrations
+	git add $(PROJECT)/migrations/*.py
 django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test-default:
@@ -193,13 +191,11 @@ django-loaddata-default:
 django-yapf:
 	-yapf -i *.py
 	-yapf -i $(PROJECT)/*.py
-	-yapf -i $(PROJECT)/$(APP)/*.py
 django-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
-	-wc -l $(PROJECT)/$(APP)/*.py
 django-graph:
-	python manage.py graph_models $(APP) -o graph_models_$(PROJECT)_$(APP).png 
+	python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png 
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
@@ -252,8 +248,6 @@ readme:
 	echo "Creating README.rst"
 	@echo $(PROJECT) > README.rst
 	@echo "================================================================================\n" >> README.rst
-	@echo $(APP) >> README.rst
-	@echo -------------------------------------------------------------------------------- >> README.rst
 	echo "Done."
 	git add README.rst
 	@$(MAKE) commit-push
@@ -298,8 +292,8 @@ d: deploy  # Alias
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 my-init-default:
-	-mysqladmin -u root drop $(PROJECT)_$(APP)
-	-mysqladmin -u root create $(PROJECT)_$(APP)
+	-mysqladmin -u root drop $(PROJECT)
+	-mysqladmin -u root create $(PROJECT)
 #
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -345,8 +339,8 @@ up: pip-upgrade  # Alias
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 pg-init-default:
-	-dropdb $(PROJECT)_$(APP)
-	-createdb $(PROJECT)_$(APP)
+	-dropdb $(PROJECT)
+	-createdb $(PROJECT)
 #
 # Python
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
