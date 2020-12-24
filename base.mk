@@ -169,6 +169,7 @@ django-init-hub:
 	@$(MAKE) django-init
 	@$(MAKE) make
 	@$(MAKE) readme
+	@$(MAKE) git-ignore
 	hub browse
 django-migrate-default:
 	python manage.py migrate
@@ -209,7 +210,7 @@ loaddata: django-loaddata  # Alias
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 git-ignore:
-	echo ".Python\nbin/\ninclude/\nlib/\n.vagrant/\n" >> .gitignore
+	echo "bin/\nlib/\npyvenv.cfg\n" > .gitignore
 	git add .gitignore
 	$(MAKE) commit-push
 git-init:
