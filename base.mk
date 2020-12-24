@@ -171,7 +171,8 @@ django-init-hub:
 	@$(MAKE) make
 	@$(MAKE) readme
 	@$(MAKE) git-ignore
-	@$(MAKE) commit-push
+	@$(MAKE) git-commit
+	@$(MAKE) git-push-set
 	hub browse
 django-migrate-default:
 	python manage.py migrate
@@ -231,7 +232,7 @@ git-commit-edit:
 	git commit -a
 git-push:
 	git push
-git-push-up:
+git-push-set:
 	git push --set-upstream origin master
 commit: git-commit  # Alias
 ce: commit-edit  # Alias
@@ -313,7 +314,6 @@ pip-install-django:
 	@$(MAKE) pip-install
 	@$(MAKE) freeze
 	-git add requirements.txt
-	-@$(MAKE) commit-push
 pip-install-sphinx:
 	echo "Sphinx\n" > requirements.txt
 	$(MAKE) pip-install
@@ -332,7 +332,6 @@ pip-upgrade-pip:
 pip-init:
 	touch requirements.txt
 	git add requirements.txt
-	$(MAKE) commit-push
 freeze: pip-freeze  # Alias
 install-default: pip-install  # Alias
 install-test-default: pip-install-test  # Alias
@@ -382,7 +381,6 @@ sphinx-serve-default:
 vagrant-init:
 	vagrant init ubuntu/trusty64
 	git add Vagrantfile
-	$(MAKE) git-push-up
 	$(MAKE) vagrant-up
 vagrant-up:
 	vagrant up --provider virtualbox
@@ -410,7 +408,8 @@ wagtail-init-hub:
 	@$(MAKE) make
 	@$(MAKE) readme
 	@$(MAKE) git-ignore
-	@$(MAKE) commit-push
+	@$(MAKE) git-commit
+	@$(MAKE) git-push-set
 	hub browse
 wagtail-settings:
 	echo "\n# $(PROJECT)\n" >> $(PROJECT)/$(PROJECT)/settings/base.py
