@@ -44,4 +44,4 @@ include base.mk
 #MESSAGE := My update
 #PROJECT := my_project
 #serve: django-serve
-virtualenv: python-virtualenv-3-8
+#virtualenv: python-virtualenv-3-8
