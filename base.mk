@@ -183,13 +183,13 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test-default:
 	python manage.py test
-django-shell:
+django-shell-default:
 	python manage.py shell
-django-static:
+django-static-default:
 	python manage.py collectstatic --noinput
-django-su:
+django-su-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')"
-django-user:
+django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_user('user', '', 'user')"
 django-loaddata-default:
 	python manage.py loaddata
