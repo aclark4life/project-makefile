@@ -160,7 +160,6 @@ django-init:
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
 	@$(MAKE) django-start
-	@$(MAKE) django-config
 	git add $(PROJECT)
 	git add manage.py
 	@$(MAKE) commit-push
@@ -173,11 +172,6 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test-default:
 	python manage.py test
-django-config:
-	echo "STATIC_ROOT = 'static'" >> $(PROJECT)/settings.py
-	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT)/settings.py
-	echo "AUTH_PASSWORD_VALIDATORS = [{'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', }, { 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', },]" >> $(PROJECT)/settings.py
-	echo "import dj_database_url; DATABASES = { 'default': dj_database_url.config(default=os.environ.get( 'DATABASE_URL', 'postgres://%s:%s@%s:%s/%s' % (os.environ.get('DB_USER', ''), os.environ.get('DB_PASS', ''), os.environ.get('DB_HOST', 'localhost'), os.environ.get('DB_PORT', '5432'), os.environ.get('DB_NAME', 'project_app'))))}" >> $(PROJECT)/settings.py
 django-shell:
 	python manage.py shell
 django-static:
