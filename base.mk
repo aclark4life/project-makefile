@@ -419,7 +419,8 @@ wagtail-settings:
 	echo "import dj_database_url" >> $(PROJECT)/$(PROJECT)/settings/base.py
 	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/$(PROJECT)/settings/base.py
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(PROJECT)/settings/base.py
-wagtail-serve:
+wagtail-serve-default:
+	python $(PROJECT)/manage.py runserver 0.0.0.0:8000
 
 # Overrides
 # ------------------------------------------------------------------------------  
