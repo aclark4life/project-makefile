@@ -309,7 +309,7 @@ pip-install-default:
 pip-install-test:
 	$(PIP) install -r requirements-test.txt
 pip-install-django:
-	@echo "Django\ndj-database-url\npsycopg2-binary\n" > requirements.txt
+	@echo "Django\ndj-database-url\npsycopg2-binary\nwhitenoise\n" > requirements.txt
 	@$(MAKE) pip-install
 	@$(MAKE) freeze
 	-git add requirements.txt
