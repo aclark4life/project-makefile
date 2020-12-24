@@ -163,6 +163,7 @@ django-init:
 	@$(MAKE) django-start
 	git add $(PROJECT)
 	git add manage.py
+	@$(MAKE) make
 	@$(MAKE) readme
 django-init-hub:
 	git init
