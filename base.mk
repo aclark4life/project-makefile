@@ -181,9 +181,6 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test-default:
 	python manage.py test
-django-settings:
-	echo "# $(PROJECT)\n\n" >> $(PROJECT)/settings.py
-	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings.py
 django-shell:
 	python manage.py shell
 django-static:
@@ -202,6 +199,12 @@ django-wc:
 	-wc -l $(PROJECT)/*.py
 django-graph:
 	python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png 
+django-settings:
+	echo "# $(PROJECT)\n\n" >> $(PROJECT)/settings.py
+	echo "ALLOWED_HOSTS = ['*']\n\n" >> $(PROJECT)/settings.py
+	echo "import dj_database_url\n\n" >> $(PROJECT)/settings.py
+	echo "DATABASE_URL = 'postgres://admin:admin@0.0.0.0:5432/$(PROJECT)" >> $(PROJECT)/settings.py
+	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/settings.py
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
@@ -216,7 +219,6 @@ loaddata: django-loaddata  # Alias
 git-ignore:
 	echo "bin/\nlib/\npyvenv.cfg\n" > .gitignore
 	git add .gitignore
-	$(MAKE) commit-push
 git-init:
 	git init
 	hub create $(RANDDIR)
@@ -256,7 +258,6 @@ readme:
 	@echo "================================================================================\n" >> README.rst
 	echo "Done."
 	git add README.rst
-	@$(MAKE) commit-push
 #
 review:
 ifeq ($(UNAME), Darwin)
@@ -288,7 +289,6 @@ usage:
 make:
 	git add base.mk
 	git add Makefile
-	@$(MAKE) commit-push
 #
 deploy-default:
 	eb deploy
