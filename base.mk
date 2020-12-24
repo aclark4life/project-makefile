@@ -220,10 +220,6 @@ loaddata: django-loaddata  # Alias
 git-ignore:
 	echo "bin/\nlib/\npyvenv.cfg\n" > .gitignore
 	git add .gitignore
-git-init:
-	git init
-	hub create $(RANDDIR)
-	hub browse
 git-branches:
 	-for i in $(BRANCHES) ; do \
         git checkout -t $$i ; done
@@ -243,7 +239,6 @@ cp: commit-push  # Alias
 push: git-push  # Alias
 p: push  # Alias
 commit-push: git-commit git-push  # Multi-target Alias
-commit-push-up: git-commit git-push-up  # Multi-target Alias
 commit-edit: git-commit-edit git-push  # Multi-target Alias
 #
 # Misc
@@ -318,7 +313,7 @@ pip-install-django:
 	@$(MAKE) pip-install
 	@$(MAKE) freeze
 	-git add requirements.txt
-	-@$(MAKE) commit-push-up
+	-@$(MAKE) commit-push
 pip-install-sphinx:
 	echo "Sphinx\n" > requirements.txt
 	$(MAKE) pip-install
@@ -399,16 +394,19 @@ vm-up: vagrant-up  # Alias
 # Wagtail
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
+wagtail-project:
+	wagtail start $(PROJECT)
 wagtail-init:
 	@$(MAKE) pip-upgrade-pip
 	@$(MAKE) pip-install-wagtail
-	wagtail start $(PROJECT)
+	@$(MAKE) pg-init
+	@$(MAKE) wagtail-project
+	@$(MAKE) wagtail-settings
 	git add $(PROJECT)
 wagtail-init-hub:
 	git init
 	hub create -p
 	@$(MAKE) wagtail-init
-	@$(MAKE) wagtail-settings
 	@$(MAKE) make
 	@$(MAKE) readme
 	@$(MAKE) git-ignore
