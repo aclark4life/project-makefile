@@ -383,7 +383,16 @@ vagrant-up:
 vagrant: vagrant-init  # Alias
 vm: vagrant-init  # Alias
 vm-up: vagrant-up  # Alias
+
 #
+# Wagtail
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+wagtail-init:
+	wagtail start $(PROJECT)
+	git add $(PROJECT)
+	$(MAKE) git-push-up
+
 # Overrides
 # ------------------------------------------------------------------------------  
 #
