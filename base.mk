@@ -157,6 +157,7 @@ django-start:
 	-touch $(PROJECT)/templates/base.html
 	-django-admin startproject $(PROJECT) .
 django-init: 
+	@$(MAKE) pip-upgrade-pip
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
 	@$(MAKE) django-start
@@ -334,7 +335,6 @@ install-default: pip-install  # Alias
 install-test-default: pip-install-test  # Alias
 pip-up: pip-upgrade  # Alias
 pip-up-pip: pip-upgrade-pip  # Alias
-req: pip-init-requirements  # Alias
 up-pip: pip-upgrade-pip  # Alias
 up: pip-upgrade  # Alias
 #
