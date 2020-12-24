@@ -152,7 +152,7 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
-django-start:
+django-project:
 	-mkdir -p $(PROJECT)/templates
 	-touch $(PROJECT)/templates/base.html
 	-django-admin startproject $(PROJECT) .
@@ -160,7 +160,8 @@ django-init:
 	@$(MAKE) pip-upgrade-pip
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
-	@$(MAKE) django-start
+	@$(MAKE) django-project
+	@$(MAKE) django-settings
 	git add $(PROJECT)
 	git add manage.py
 django-init-hub:
@@ -180,6 +181,9 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-test-default:
 	python manage.py test
+django-settings:
+	echo "# $(PROJECT)\n\n" >> $(PROJECT)/settings.py
+	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings.py
 django-shell:
 	python manage.py shell
 django-static:
