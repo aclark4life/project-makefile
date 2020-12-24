@@ -319,7 +319,7 @@ pip-install-sphinx:
 	$(MAKE) pip-install
 	@$(MAKE) freeze
 pip-install-wagtail:
-	echo "wagtail\n" > requirements.txt
+	@echo "wagtail\ndj-database-url\npsycopg2-binary\nwhitenoise\n" > requirements.txt
 	$(MAKE) pip-install
 	@$(MAKE) freeze
 pip-upgrade-default:
