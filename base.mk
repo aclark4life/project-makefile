@@ -165,7 +165,7 @@ django-init:
 	@$(MAKE) commit-push
 django-init-hub:
 	git init
-	hub create
+	hub create -p
 	$(MAKE) django-init
 django-migrate-default:
 	python manage.py migrate
