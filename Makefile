@@ -41,7 +41,6 @@ include base.mk
 # Here you can override variables, targets, etc.
 #
 #.DEFAULT_GOAL := commit-push
-#MESSAGE := My update
-#PROJECT := my_project
-#serve: django-serve
-#virtualenv: python-virtualenv-3-8
+#MESSAGE := Interactively seize installed base information whereas cross functional best.
+#PROJECT := project
+serve: django-serve

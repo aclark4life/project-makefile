@@ -171,6 +171,7 @@ django-init-hub:
 	@$(MAKE) make
 	@$(MAKE) readme
 	@$(MAKE) git-ignore
+	@$(MAKE) commit-push
 	hub browse
 django-migrate-default:
 	python manage.py migrate
