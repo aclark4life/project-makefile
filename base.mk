@@ -1,13 +1,15 @@
 # Project Makefile
 # ================
 #
+# A generic Makefile for projects
+#
 # - https://github.com/aclark4life/project-makefile
 #
 #
 # License
 # ------------------------------------------------------------------------------ 
 #
-# Copyright 2020 Jeffrey Alexander Clark
+# Copyright 2016—2021 Jeffrey Alexander Clark
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

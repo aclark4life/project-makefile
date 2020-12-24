@@ -1,13 +1,15 @@
 # Project Makefile
 # ================
 #
+# A generic Makefile for projects
+#
 # - https://github.com/aclark4life/project-makefile
 #
 #
 # License
 # ------------------------------------------------------------------------------ 
 #
-# Copyright 2020 Jeffrey Alexander Clark
+# Copyright 2016—2021 Jeffrey Alexander Clark
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -39,8 +41,7 @@ include base.mk
 # Here you can override variables, targets, etc.
 #
 #.DEFAULT_GOAL := commit-push
-#PROJECT := my_project
-#APP := my_app
 #MESSAGE := My update
-#virtualenv: python-virtualenv-3-8
+#PROJECT := my_project
 #serve: django-serve
+#virtualenv: python-virtualenv-3-8
