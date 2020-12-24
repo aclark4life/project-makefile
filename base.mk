@@ -400,10 +400,10 @@ vm-up: vagrant-up  # Alias
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 wagtail-init:
-	$(MAKE) pip-install-wagtail
+	@$(MAKE) pip-upgrade-pip
+	@$(MAKE) pip-install-wagtail
 	wagtail start $(PROJECT)
 	git add $(PROJECT)
-	$(MAKE) git-push-up
 wagtail-init-hub:
 	git init
 	hub create -p
