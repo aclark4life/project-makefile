@@ -43,22 +43,23 @@ Usage
     make commit
     make commit-edit
     make commit-push
-    make commit-push-up
     make cp
     make d
     make deploy-default
-    make django-config
     make django-graph
     make django-init
+    make django-init-hub
     make django-loaddata-default
     make django-migrate-default
     make django-migrations-default
+    make django-project
     make django-serve-default
+    make django-settings
     make django-shell
-    make django-start
     make django-static
     make django-su
-    make django-test
+    make django-test-default
+    make django-user
     make django-wc
     make django-yapf
     make freeze
@@ -66,26 +67,33 @@ Usage
     make git-commit
     make git-commit-edit
     make git-ignore
-    make git-init
     make git-prune
     make git-push
-    make git-push-up
+    make git-push-set
     make graph
     make h
     make help
+    make install-default
+    make install-test-default
     make loaddata
     make make
     make migrate
     make migrations
     make my-init-default
     make p
+    make pdf-default
     make pg-init-default
     make pip-freeze-default
+    make pip-init
     make pip-install-default
     make pip-install-django
     make pip-install-sphinx
     make pip-install-test
+    make pip-install-wagtail
+    make pip-up
+    make pip-up-pip
     make pip-upgrade-default
+    make pip-upgrade-pip
     make push
     make python-serve-default
     make python-virtualenv-2-6-default
@@ -102,9 +110,16 @@ Usage
     make static
     make su
     make test
+    make up
+    make up-pip
     make usage
     make vagrant
     make vagrant-init
     make vagrant-up
     make vm
     make vm-up
+    make wagtail-init
+    make wagtail-init-hub
+    make wagtail-project
+    make wagtail-serve-default
+    make wagtail-settings
