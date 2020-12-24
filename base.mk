@@ -163,6 +163,10 @@ django-init:
 	git add $(PROJECT)
 	git add manage.py
 	@$(MAKE) commit-push
+django-init-hub:
+	git init
+	hub create
+	$(MAKE) django-init
 django-migrate-default:
 	python manage.py migrate
 django-migrations-default:
