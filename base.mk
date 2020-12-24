@@ -199,11 +199,11 @@ django-wc:
 	-wc -l *.py
 	-wc -l $(PROJECT)/*.py
 django-graph:
-	python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png 
+	python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png
 django-settings:
-	echo "# $(PROJECT)\n\n" >> $(PROJECT)/settings.py
-	echo "ALLOWED_HOSTS = ['*']\n\n" >> $(PROJECT)/settings.py
-	echo "import dj_database_url\n\n" >> $(PROJECT)/settings.py
+	echo "\n# $(PROJECT)\n" >> $(PROJECT)/settings.py
+	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings.py
+	echo "import dj_database_url" >> $(PROJECT)/settings.py
 	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/settings.py
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/settings.py
 graph: django-graph
