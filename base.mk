@@ -163,12 +163,13 @@ django-init:
 	@$(MAKE) django-start
 	git add $(PROJECT)
 	git add manage.py
-	@$(MAKE) make
-	@$(MAKE) readme
 django-init-hub:
 	git init
 	hub create -p
-	$(MAKE) django-init
+	@$(MAKE) django-init
+	@$(MAKE) make
+	@$(MAKE) readme
+	hub browse
 django-migrate-default:
 	python manage.py migrate
 django-migrations-default:
