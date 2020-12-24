@@ -404,6 +404,22 @@ wagtail-init:
 	wagtail start $(PROJECT)
 	git add $(PROJECT)
 	$(MAKE) git-push-up
+wagtail-init-hub:
+	git init
+	hub create -p
+	@$(MAKE) wagtail-init
+	@$(MAKE) wagtail-settings
+	@$(MAKE) make
+	@$(MAKE) readme
+	@$(MAKE) git-ignore
+	@$(MAKE) commit-push
+	hub browse
+wagtail-settings:
+	echo "\n# $(PROJECT)\n" >> $(PROJECT)/$(PROJECT)/settings/base.py
+	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/$(PROJECT)/settings/base.py
+	echo "import dj_database_url" >> $(PROJECT)/$(PROJECT)/settings/base.py
+	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/$(PROJECT)/settings/base.py
+	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(PROJECT)/settings/base.py
 
 # Overrides
 # ------------------------------------------------------------------------------  
