@@ -149,6 +149,12 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 # Rules
 # ------------------------------------------------------------------------------  
 #
+# Beanstalk
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+# 
+eb-create:
+	eb create $(ENV_NAME) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET) --vpc.securitygroup $(VPC_SG) -k $(SSH_KEY)
+#
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
