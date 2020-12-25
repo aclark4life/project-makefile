@@ -219,7 +219,7 @@ loaddata: django-loaddata  # Alias
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 git-ignore:
-	echo "bin/\nlib/\npyvenv.cfg\n" > .gitignore
+	echo "bin/\nlib/\npyvenv.cfg\n__pycache__" > .gitignore
 	git add .gitignore
 git-branches:
 	-for i in $(BRANCHES) ; do \
