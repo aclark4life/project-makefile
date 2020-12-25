@@ -319,10 +319,7 @@ pip-install-sphinx:
 	@$(MAKE) freeze
 	-git add requirements.txt
 pip-install-wagtail:
-	@echo "wagtail\ndj-database-url\npsycopg2-binary\nwhitenoise\n" > requirements.txt
-	@$(MAKE) pip-install
-	@$(MAKE) freeze
-	-git add requirements.txt
+	pip install dj-database-url psycopg2-binary whitenoise wagtail
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -402,6 +399,8 @@ wagtail-init:
 	@$(MAKE) wagtail-project
 	@$(MAKE) wagtail-settings
 	git add $(PROJECT)
+	git add requirements.txt
+	git add manage.py
 wagtail-init-hub:
 	git init
 	hub create -p
