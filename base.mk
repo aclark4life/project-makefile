@@ -405,6 +405,7 @@ wagtail-init:
 	git add .dockerignore
 	git add home
 	git add search
+	@$(MAKE) freeze
 wagtail-init-hub:
 	git init
 	hub create -p
