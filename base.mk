@@ -395,7 +395,7 @@ vm-up: vagrant-up  # Alias
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 wagtail-project:
-	wagtail start $(PROJECT)
+	wagtail start $(PROJECT) .
 wagtail-init:
 	@$(MAKE) pip-upgrade-pip
 	@$(MAKE) pip-install-wagtail
@@ -414,13 +414,11 @@ wagtail-init-hub:
 	@$(MAKE) git-push-set
 	hub browse
 wagtail-settings:
-	echo "\n# $(PROJECT)\n" >> $(PROJECT)/$(PROJECT)/settings/base.py
-	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/$(PROJECT)/settings/base.py
-	echo "import dj_database_url" >> $(PROJECT)/$(PROJECT)/settings/base.py
-	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/$(PROJECT)/settings/base.py
-	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(PROJECT)/settings/base.py
-wagtail-serve-default:
-	python $(PROJECT)/manage.py runserver 0.0.0.0:8000
+	echo "\n# $(PROJECT)\n" >> $(PROJECT)/settings/base.py
+	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings/base.py
+	echo "import dj_database_url" >> $(PROJECT)/settings/base.py
+	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/settings/base.py
+	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/settings/base.py
 
 # Overrides
 # ------------------------------------------------------------------------------  
