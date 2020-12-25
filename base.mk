@@ -211,7 +211,7 @@ django-settings:
 	echo "\n# $(PROJECT)\n" >> $(PROJECT)/settings.py
 	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings.py
 	echo "import dj_database_url" >> $(PROJECT)/settings.py
-	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/settings.py
+	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/settings.py
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/settings.py
 graph: django-graph
 migrate: django-migrate  # Alias
