@@ -401,6 +401,10 @@ wagtail-init:
 	git add $(PROJECT)
 	git add requirements.txt
 	git add manage.py
+	git add Dockerfile
+	git add .dockerignore
+	git add home
+	git add search
 wagtail-init-hub:
 	git init
 	hub create -p
