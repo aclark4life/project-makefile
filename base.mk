@@ -354,6 +354,18 @@ pg-init-default:
 # Python
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
+black:
+	black *.py
+	black $(PROJECT)/*.py
+	black $(PROJECT)/*/*.py
+isort:
+	isort *.py
+	isort $(PROJECT)/*.py
+	isort $(PROJECT)/*/*.py
+flake:
+	flake *.py
+	flake $(PROJECT)/*.py
+	flake $(PROJECT)/*/*.py
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
