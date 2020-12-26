@@ -432,7 +432,7 @@ wagtail-settings:
 	echo "\n# $(PROJECT)\n" >> $(PROJECT)/settings/base.py
 	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings/base.py
 	echo "import dj_database_url" >> $(PROJECT)/settings/base.py
-	echo "DATABASE_URL = 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)'" >> $(PROJECT)/settings/base.py
+	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/settings/base.py
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/settings/base.py
 
 # Overrides
