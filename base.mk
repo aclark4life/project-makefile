@@ -212,6 +212,7 @@ migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
 static: django-static  # Alias
 su: django-su  # Alias
+user: django-user  # Alias
 test: django-test  # Alias
 loaddata: django-loaddata  # Alias
 #
