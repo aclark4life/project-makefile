@@ -373,6 +373,7 @@ python-virtualenv-3-8-default:
 python-virtualenv-3-9-default:
 	python3.9 -m venv .
 virtualenv: python-virtualenv-3-8  # Alias
+v: virtualenv  # Alias
 #
 # Sphinx
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
