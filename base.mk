@@ -358,9 +358,9 @@ isort-default:
 	isort $(PROJECT)/*.py
 	isort $(PROJECT)/*/*.py
 flake-default:
-	flake8 *.py
-	flake8 $(PROJECT)/*.py
-	flake8 $(PROJECT)/*/*.py
+	-flake8 *.py
+	-flake8 $(PROJECT)/*.py
+	-flake8 $(PROJECT)/*/*.py
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
