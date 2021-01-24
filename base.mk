@@ -350,13 +350,13 @@ pg-init-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 black-default:
-	black *.py
-	black $(PROJECT)/*.py
-	black $(PROJECT)/*/*.py
+	-black *.py
+	-black $(PROJECT)/*.py
+	-black $(PROJECT)/*/*.py
 isort-default:
-	isort *.py
-	isort $(PROJECT)/*.py
-	isort $(PROJECT)/*/*.py
+	-isort *.py
+	-isort $(PROJECT)/*.py
+	-isort $(PROJECT)/*/*.py
 flake-default:
 	-flake8 *.py
 	-flake8 $(PROJECT)/*.py
