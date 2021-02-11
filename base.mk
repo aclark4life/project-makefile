@@ -153,7 +153,7 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # 
 eb-create-default:
-	eb create $(ENV_NAME) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET) --vpc.securitygroup $(VPC_SG) -k $(SSH_KEY)
+	eb create $(ENV_NAME) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET_EC2) --vpc.elbsubnets $(VPC_SUBNET_ELB) --vpc.securitygroups $(VPC_SG) -k $(SSH_KEY)
 #
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
