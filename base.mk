@@ -392,7 +392,7 @@ sphinx-serve-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 vagrant-init:
-	vagrant init ubuntu/trusty64
+	vagrant init ubuntu/bionic64
 	git add Vagrantfile
 	$(MAKE) vagrant-up
 vagrant-up:
