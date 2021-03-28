@@ -167,7 +167,7 @@ django-init:
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
 	@$(MAKE) django-project
-	export SETTINGS=settings.py; @$(MAKE) django-settings
+	export SETTINGS=settings.py; $(MAKE) django-settings
 	git add $(PROJECT)
 	git add manage.py
 django-init-hub:
@@ -413,7 +413,7 @@ wagtail-init:
 	@$(MAKE) pip-install-wagtail
 	@$(MAKE) pg-init
 	@$(MAKE) wagtail-project
-	export SETTINGS=settings/base.py; @$(MAKE) django-settings
+	export SETTINGS=settings/base.py; $(MAKE) django-settings
 	git add $(PROJECT)
 	git add requirements.txt
 	git add manage.py
