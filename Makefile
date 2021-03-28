@@ -42,5 +42,4 @@ include base.mk
 #
 #.DEFAULT_GOAL := commit-push
 #PROJECT := project
-#serve: django-serve-webpack
-serve: django-serve
+serve: django-serve-webpack

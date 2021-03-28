@@ -432,6 +432,7 @@ wagtail-init:
 	@$(MAKE) django-webpack-init
 	git add frontend
 	@$(MAKE) django-npm-install
+	@$(MAKE) migrate
 wagtail-init-hub:
 	git init
 	hub create -p
