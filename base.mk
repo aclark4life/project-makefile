@@ -187,6 +187,9 @@ django-migrations-default:
 	git add $(PROJECT)/migrations/*.py
 django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
+django-serve-webpack-default:
+	cd frontend; npm run watch &
+	python manage.py runserver
 django-test-default:
 	python manage.py test
 django-shell-default:
