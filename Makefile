@@ -29,6 +29,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
+# Checkmake
+# ------------------------------------------------------------------------------ 
+# Make checkmake happy
+
+.PHONY: all
+all-default: list-targets-default
+
+.PHONY: clean
+clean: list-targets-default
+
+.PHONY: test
+test: list-targets-default
+
 #
 # Includes
 # ------------------------------------------------------------------------------ 
@@ -42,4 +55,5 @@ include base.mk
 #
 #.DEFAULT_GOAL := commit-push
 #PROJECT := project
+.PHONY: serve
 serve: django-serve-webpack

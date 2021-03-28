@@ -109,24 +109,19 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 # "The include directive tells make to suspend reading the current makefile and
-# read one or more other makefiles before continuing.
+#  read one or more other makefiles before continuing.
 # 
 # - https://www.gnu.org/software/make/manual/html_node/Include.html
-#
-#
-# Additional concepts
-# ------------------------------------------------------------------------------ 
-#
-# Alias
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#
-# A new target definition that only exists to create a shorter target 
-# name for another target that already exists.
-#
-# Multi-target Alias
+
+# Phony Targets
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# Like an Alias, but with multiple targets.
 #
+# "A phony target is one that is not really the name of a file; rather it is
+#  just a name for a recipe to be executed when you make an explicit request.
+#  There are two reasons to use a phony target: to avoid a conflict with a file
+#  of the same name, and to improve performance."
+#
+# - https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
 #
 # Variables
 # ------------------------------------------------------------------------------  
@@ -144,7 +139,6 @@ UNAME := $(shell uname)
 
 # http://unix.stackexchange.com/a/37316
 BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
-
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -217,14 +211,22 @@ django-webpack-init:
 	python manage.py webpack_init
 django-npm-install-default:
 	cd frontend; npm install
+.PHONY: graph
 graph: django-graph
-migrate: django-migrate  # Alias
-migrations: django-migrations  # Alias
-static: django-static  # Alias
-su: django-su  # Alias
-user: django-user  # Alias
-test: django-test  # Alias
-loaddata: django-loaddata  # Alias
+.PHONY: migrate
+migrate: django-migrate
+.PHONY: migrations
+migrations: django-migrations
+.PHONY: static
+static: django-static
+.PHONY: su
+su: django-su
+.PHONY: user
+user: django-user
+.PHONY: test
+test: django-test
+.PHONY: loaddata
+loaddata: django-loaddata
 #
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -245,20 +247,28 @@ git-push:
 	git push
 git-push-set:
 	git push --set-upstream origin master
-commit: git-commit  # Alias
-ce: commit-edit  # Alias
-cp: commit-push  # Alias
-push: git-push  # Alias
-p: push  # Alias
-commit-push: git-commit git-push  # Multi-target Alias
-commit-edit: git-commit-edit git-push  # Multi-target Alias
+.PHONY: commit
+commit: git-commit
+.PHONY: ce
+ce: commit-edit
+.PHONY: cp
+cp: commit-push
+.PHONY: push
+push: git-push
+.PHONY: p
+p: push
+.PHONY: commit-push
+commit-push: git-commit git-push
+.PHONY: commit-edit
+commit-edit: git-commit-edit git-push
 #
 # Misc
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 rand:
 	@openssl rand -base64 12 | sed 's/\///g'
-r: rand  # Alias
+.PHONY: r
+r: rand
 #
 readme:
 	echo "Creating README.rst"
@@ -267,6 +277,7 @@ readme:
 	echo "Done."
 	git add README.rst
 #
+.PHONY: review
 review:
 ifeq ($(UNAME), Darwin)
 	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py | grep -v migrations`\
@@ -280,8 +291,10 @@ list-targets-default:
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "make "$$0}' | less  # http://stackoverflow.com/a/26339924
-help: list-targets  # Alias
-h: list-targets  # Alias
+.PHONY: help
+help: list-targets
+.PHONY: h
+h: list-targets
 pdf-default:
 	rst2pdf README.rst > README.pdf
 	git add README.pdf
@@ -300,7 +313,8 @@ make:
 #
 deploy-default:
 	eb deploy
-d: deploy  # Alias
+.PHONY: d
+d: deploy
 #
 # MySQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -341,13 +355,15 @@ pip-upgrade-pip:
 pip-init:
 	touch requirements.txt
 	-git add requirements.txt
-freeze: pip-freeze  # Alias
-install-default: pip-install  # Alias
-install-test-default: pip-install-test  # Alias
-pip-up: pip-upgrade  # Alias
-pip-up-pip: pip-upgrade-pip  # Alias
-up-pip: pip-upgrade-pip  # Alias
-up: pip-upgrade  # Alias
+.PHONY: freeze
+freeze: pip-freeze
+install-default: pip-install
+install-test-default: pip-install-test
+pip-up: pip-upgrade
+pip-up-pip: pip-upgrade-pip
+up-pip: pip-upgrade-pip
+.PHONY: up
+up: pip-upgrade
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -382,8 +398,10 @@ python-virtualenv-3-8-default:
 	python3.8 -m venv .
 python-virtualenv-3-9-default:
 	python3.9 -m venv .
-virtualenv: python-virtualenv-3-8  # Alias
-v: virtualenv  # Alias
+.PHONY: virtualenv
+virtualenv: python-virtualenv-3-8
+.PHONY: v
+v: virtualenv
 #
 # Sphinx
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -407,9 +425,11 @@ vagrant-init:
 	$(MAKE) vagrant-up
 vagrant-up:
 	vagrant up --provider virtualbox
-vagrant: vagrant-init  # Alias
-vm: vagrant-init  # Alias
-vm-up: vagrant-up  # Alias
+.PHONY: vagrant
+vagrant: vagrant-init
+.PHONY: vm
+vm: vagrant-init
+vm-up: vagrant-up
 
 #
 # Wagtail
@@ -438,7 +458,6 @@ wagtail-init:
 	@$(MAKE) su
 	@$(MAKE) wagtail-home
 
-
 wagtail-init-hub:
 	git init
 	hub create -p
@@ -450,6 +469,7 @@ wagtail-init-hub:
 	@$(MAKE) git-push-set
 	hub browse
 
+# https://stackoverflow.com/a/649462/185820
 define HOME_PAGE
 {% extends "base.html" %}
 {% load webpack_loader static %}
@@ -492,6 +512,12 @@ endef
 export HOME_PAGE
 wagtail-home:
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
+
+.PHONY: all
+all-default: list-targets-default
+
+.PHONY: clean
+clean: list-targets-default
 
 # Overrides
 # ------------------------------------------------------------------------------  
