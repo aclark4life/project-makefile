@@ -211,6 +211,8 @@ django-settings:
 	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/$(SETTINGS)
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(SETTINGS)
 	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT)/$(SETTINGS)
+	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(PROJECT)/$(SETTINGS)
+	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(PROJECT)/$(SETTINGS)
 django-webpack-init:
 	python manage.py webpack_init
 django-npm-install-default:
