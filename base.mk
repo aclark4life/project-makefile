@@ -435,6 +435,7 @@ wagtail-init:
 	git add frontend
 	@$(MAKE) django-npm-install
 	@$(MAKE) migrate
+	@$(MAKE) su
 wagtail-init-hub:
 	git init
 	hub create -p
