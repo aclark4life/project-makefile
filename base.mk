@@ -208,6 +208,8 @@ django-settings:
 	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/$(SETTINGS)
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(SETTINGS)
 	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT)/$(SETTINGS)
+django-webpack-init:
+	python manage.py webpack_init
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
@@ -422,6 +424,8 @@ wagtail-init:
 	git add home
 	git add search
 	@$(MAKE) freeze
+	@$(MAKE) django-webpack-init
+	git add frontend
 wagtail-init-hub:
 	git init
 	hub create -p
