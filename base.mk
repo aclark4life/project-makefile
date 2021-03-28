@@ -436,6 +436,9 @@ wagtail-init:
 	@$(MAKE) django-npm-install
 	@$(MAKE) migrate
 	@$(MAKE) su
+	@$(MAKE) wagtail-home
+
+
 wagtail-init-hub:
 	git init
 	hub create -p
@@ -446,6 +449,49 @@ wagtail-init-hub:
 	@$(MAKE) git-commit
 	@$(MAKE) git-push-set
 	hub browse
+
+define HOME_PAGE
+{% extends "base.html" %}
+{% load webpack_loader static %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+
+  {% stylesheet_pack 'app' %}
+
+{% endblock extra_css %}
+
+{% block content %}
+
+{% load webpack_loader static %}
+
+<div class="jumbotron py-5">
+  <div class="container">
+    <h1 class="display-3">Hello, world!</h1>
+    <p>This is a template for a simple marketing or informational website. It includes a large callout called a
+      jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+    <p><a class="btn btn-primary btn-lg" href="{% url 'admin:index' %}" role="button">Learn more »</a></p>
+
+    <div class="d-flex justify-content-center">
+      <img src="{% static 'vendors/images/webpack.png' %}" class="img-fluid"/>
+    </div>
+
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+
+{% javascript_pack 'app' 'app2' attrs='charset="UTF-8"' %}
+
+{% endblock %}
+endef
+
+export HOME_PAGE
+wagtail-home:
+	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 
 # Overrides
 # ------------------------------------------------------------------------------  
