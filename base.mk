@@ -213,6 +213,8 @@ django-settings:
 	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT)/$(SETTINGS)
 django-webpack-init:
 	python manage.py webpack_init
+django-npm-install-default:
+	cd frontend; npm install
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
@@ -429,6 +431,7 @@ wagtail-init:
 	@$(MAKE) freeze
 	@$(MAKE) django-webpack-init
 	git add frontend
+	@$(MAKE) django-npm-install
 wagtail-init-hub:
 	git init
 	hub create -p
