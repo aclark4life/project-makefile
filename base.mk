@@ -167,7 +167,7 @@ django-init:
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
 	@$(MAKE) django-project
-	@$(MAKE) django-settings
+	export SETTINGS=settings.py; @$(MAKE) django-settings
 	git add $(PROJECT)
 	git add manage.py
 django-init-hub:
@@ -202,11 +202,12 @@ django-loaddata-default:
 django-graph:
 	python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png
 django-settings:
-	echo "\n# $(PROJECT)\n" >> $(PROJECT)/settings.py
-	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings.py
-	echo "import dj_database_url" >> $(PROJECT)/settings.py
-	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/settings.py
-	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/settings.py
+	echo "\n# $(PROJECT)\n" >> $(PROJECT)/$(SETTINGS)
+	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/$(SETTINGS)
+	echo "import dj_database_url" >> $(PROJECT)/$(SETTINGS)
+	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(SETTINGS)
+	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(SETTINGS)
+	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT)/$(SETTINGS)
 graph: django-graph
 migrate: django-migrate  # Alias
 migrations: django-migrations  # Alias
@@ -412,7 +413,7 @@ wagtail-init:
 	@$(MAKE) pip-install-wagtail
 	@$(MAKE) pg-init
 	@$(MAKE) wagtail-project
-	@$(MAKE) wagtail-settings
+	export SETTINGS=settings/base.py; @$(MAKE) django-settings
 	git add $(PROJECT)
 	git add requirements.txt
 	git add manage.py
@@ -431,12 +432,6 @@ wagtail-init-hub:
 	@$(MAKE) git-commit
 	@$(MAKE) git-push-set
 	hub browse
-wagtail-settings:
-	echo "\n# $(PROJECT)\n" >> $(PROJECT)/settings/base.py
-	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/settings/base.py
-	echo "import dj_database_url" >> $(PROJECT)/settings/base.py
-	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/settings/base.py
-	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/settings/base.py
 
 # Overrides
 # ------------------------------------------------------------------------------  
