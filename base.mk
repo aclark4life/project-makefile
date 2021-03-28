@@ -320,7 +320,7 @@ pip-install-sphinx:
 	@$(MAKE) freeze
 	-git add requirements.txt
 pip-install-wagtail:
-	pip install dj-database-url psycopg2-binary whitenoise wagtail
+	pip install dj-database-url psycopg2-binary whitenoise wagtail python-webpack-boilerplate
 pip-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
