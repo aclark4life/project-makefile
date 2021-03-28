@@ -205,7 +205,7 @@ django-settings:
 	echo "\n# $(PROJECT)\n" >> $(PROJECT)/$(SETTINGS)
 	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/$(SETTINGS)
 	echo "import dj_database_url" >> $(PROJECT)/$(SETTINGS)
-	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(SETTINGS)
+	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/$(SETTINGS)
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(SETTINGS)
 	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT)/$(SETTINGS)
 graph: django-graph
