@@ -156,8 +156,7 @@ django-project:
 	-mkdir -p $(PROJECT)/templates
 	-touch $(PROJECT)/templates/base.html
 	-django-admin startproject $(PROJECT) .
-django-init: 
-	@$(MAKE) pip-upgrade-pip
+django-init:
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
 	@$(MAKE) django-project
@@ -329,7 +328,8 @@ my-init-default:
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-pip-install-default:
+pip-install-default: pip-up
+	pip install wheel
 	pip install -r requirements.txt
 pip-install-test:
 	pip install -r requirements-test.txt
@@ -345,12 +345,12 @@ pip-install-sphinx:
 	-git add requirements.txt
 pip-install-wagtail:
 	pip install dj-database-url psycopg2-binary whitenoise wagtail python-webpack-boilerplate
-pip-upgrade-default:
+pip-install-upgrade:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
-pip-upgrade-pip:
+pip-up:
 	pip install -U pip
 pip-init:
 	touch requirements.txt
@@ -359,11 +359,6 @@ pip-init:
 freeze: pip-freeze
 install-default: pip-install
 install-test-default: pip-install-test
-pip-up: pip-upgrade
-pip-up-pip: pip-upgrade-pip
-up-pip: pip-upgrade-pip
-.PHONY: up
-up: pip-upgrade
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -438,7 +433,6 @@ vm-up: vagrant-up
 wagtail-project:
 	wagtail start $(PROJECT) .
 wagtail-init:
-	@$(MAKE) pip-upgrade-pip
 	@$(MAKE) pip-install-wagtail
 	@$(MAKE) pg-init
 	@$(MAKE) wagtail-project
