@@ -226,6 +226,8 @@ user: django-user
 test: django-test
 .PHONY: loaddata
 loaddata: django-loaddata
+.PHONY: npm-install
+npm-install: django-npm-install
 #
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
