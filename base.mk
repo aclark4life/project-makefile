@@ -368,6 +368,10 @@ install-test-default: pip-install-test
 pg-init-default:
 	-dropdb $(PROJECT)
 	-createdb $(PROJECT)
+
+.PHONY: db-init
+db-init: pg-init
+
 #
 # Python
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
