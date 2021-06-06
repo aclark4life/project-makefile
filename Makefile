@@ -39,9 +39,6 @@ all-default: list-targets-default
 .PHONY: clean
 clean: list-targets-default
 
-.PHONY: test
-test: list-targets-default
-
 #
 # Includes
 # ------------------------------------------------------------------------------ 
