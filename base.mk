@@ -210,6 +210,10 @@ django-webpack-init:
 	python manage.py webpack_init
 django-npm-install-default:
 	cd frontend; npm install
+django-shell:
+	python manage.py shell
+.PHONY: shell
+shell: django-shell
 .PHONY: graph
 graph: django-graph
 .PHONY: migrate
