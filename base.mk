@@ -248,10 +248,8 @@ git-commit:
 	git commit -a -m $(MESSAGE)
 git-commit-edit:
 	git commit -a
-git-push:
+git-push-default:
 	git push
-git-push-set:
-	git push --set-upstream origin master
 .PHONY: commit
 commit: git-commit
 .PHONY: ce
