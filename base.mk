@@ -3,13 +3,13 @@
 #
 # A generic Makefile for projects
 #
-# - https://github.com/aclark4life/project-makefile
+# - https://github.com/project-makefile/project-makefile
 #
 #
 # License
 # ------------------------------------------------------------------------------ 
 #
-# Copyright 2016—2021 Jeffrey Alexander Clark
+# Copyright 2016—2021 Jeffrey A. Clark
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -171,7 +171,8 @@ django-init-hub:
 	@$(MAKE) readme
 	@$(MAKE) git-ignore
 	@$(MAKE) git-commit
-	@$(MAKE) git-push-set
+	@$(MAKE) git-set-upstream
+	@$(MAKE) git-push
 	hub browse
 django-migrate-default:
 	python manage.py migrate
@@ -250,6 +251,8 @@ git-commit-edit:
 	git commit -a
 git-push-default:
 	git push
+git-set-upstream-default:
+	git push --set-upstream origin main
 .PHONY: commit
 commit: git-commit
 .PHONY: ce
@@ -468,7 +471,8 @@ wagtail-init-hub:
 	@$(MAKE) readme
 	@$(MAKE) git-ignore
 	@$(MAKE) git-commit
-	@$(MAKE) git-push-set
+	@$(MAKE) git-set-upstream
+	@$(MAKE) git-push
 	hub browse
 
 # https://stackoverflow.com/a/649462/185820
