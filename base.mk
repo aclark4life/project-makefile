@@ -469,7 +469,6 @@ wagtail-init-hub:
 	@$(MAKE) wagtail-init
 	@$(MAKE) make
 	@$(MAKE) readme
-	export MESSAGE="wagtail-init by project-makefile"; $(MAKE) git-commit
 	@$(MAKE) git-ignore
 	@$(MAKE) git-commit
 	@$(MAKE) git-set-upstream
