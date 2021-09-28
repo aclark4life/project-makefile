@@ -433,6 +433,8 @@ python-virtualenv-3-9-default:
 virtualenv: python-virtualenv-3-8
 .PHONY: v
 v: virtualenv
+.PHONY: venv
+venv: virtualenv
 #
 # Sphinx
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
