@@ -363,6 +363,8 @@ pip-lock-default:
 pip-install-default: pip-upgrade
 	pip install wheel
 	pip install -r requirements.txt
+pipenv-install-default:
+	pipenv install -r requirements.txt
 pip-install-test:
 	pip install -r requirements-test.txt
 pip-install-django:
