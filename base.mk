@@ -465,6 +465,8 @@ tidelift-align-save:
 	tidelift alignment save --debug
 tidelift-request-all:
 	  tidelift request --all --debug
+.PHONY: align
+align: tidelift-align
 
 #
 # Vagrant
