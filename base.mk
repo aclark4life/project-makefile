@@ -269,6 +269,28 @@ commit-push: git-commit git-push
 .PHONY: commit-edit
 commit-edit: git-commit-edit git-push
 #
+# Jenkins
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+
+define PIPELINE
+pipeline {
+    agent any
+    stages {
+        stage('') {
+            steps {
+                echo ''
+            }
+        }
+	}
+}
+endef
+
+export PIPELINE
+pipeline:
+	@echo "$$PIPELINE" > Jenkinsfile
+
+#
 # Misc
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
