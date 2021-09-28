@@ -455,6 +455,18 @@ sphinx-init:
 sphinx-serve-default:
 	cd _build/html;python -m http.server
 #
+# Tidelift
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+
+tidelift-align:
+	tidelift alignment --debug
+tidelift-align-save:
+	tidelift alignment save --debug
+tidelift-request-all:
+	  tidelift request --all --debug
+
+#
 # Vagrant
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
