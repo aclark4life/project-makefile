@@ -336,7 +336,7 @@ my-init-default:
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-pip-install-default: pip-up
+pip-install-default: pip-upgrade
 	pip install wheel
 	pip install -r requirements.txt
 pip-install-test:
@@ -358,13 +358,15 @@ pip-install-upgrade:
 	mv -f $(TMPDIR)/requirements.txt .
 	pip install -U -r requirements.txt
 	$(MAKE) pip-freeze
-pip-up:
+pip-upgrade:
 	pip install -U pip
 pip-init:
 	touch requirements.txt
 	-git add requirements.txt
 .PHONY: freeze
 freeze: pip-freeze
+.PHONY: pip-up
+pip-up: pip-upgrade
 install-default: pip-install
 install-test-default: pip-install-test
 #
