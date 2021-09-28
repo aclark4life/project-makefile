@@ -358,6 +358,8 @@ my-init-default:
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
+pip-lock-default:
+	pipenv lock
 pip-install-default: pip-upgrade
 	pip install wheel
 	pip install -r requirements.txt
@@ -389,6 +391,8 @@ pip-init:
 freeze: pip-freeze
 .PHONY: pip-up
 pip-up: pip-upgrade
+.PHONY: lock
+lock: pip-lock
 install-default: pip-install
 install-test-default: pip-install-test
 #
