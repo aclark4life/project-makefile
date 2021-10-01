@@ -170,7 +170,7 @@ django-init-hub:
 	@$(MAKE) django-init
 	@$(MAKE) make
 	@$(MAKE) readme
-	@$(MAKE) git-ignore
+	@$(MAKE) gitignore
 	@$(MAKE) git-commit
 	@$(MAKE) git-set-upstream
 	@$(MAKE) git-push
@@ -238,7 +238,7 @@ npm-install: django-npm-install
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
-git-ignore:
+gitignore:
 	echo "bin/\nlib/\npyvenv.cfg\n__pycache__" > .gitignore
 	git add .gitignore
 git-branches:
@@ -516,7 +516,7 @@ wagtail-init-hub:
 	@$(MAKE) wagtail-init
 	@$(MAKE) make
 	@$(MAKE) readme
-	@$(MAKE) git-ignore
+	@$(MAKE) gitignore
 	git commit -m "wagtail-init by project-makefile"
 	@$(MAKE) git-set-upstream
 	@$(MAKE) git-push
