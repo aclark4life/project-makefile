@@ -1,12 +1,12 @@
 Project Makefile
 ================
 
-A generic makefile for projects
+A generic makefile for projects.
 
 Why
 ---
 
-- I like typing ``make <target>`` to perform tasks.
+- I like typing ``make <target>`` to perform tasks. 🤷
 
 Installation
 ------------
