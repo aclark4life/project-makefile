@@ -1,7 +1,7 @@
 # Project Makefile
 # ================
 #
-# A generic Makefile for projects
+# A generic makefile for projects
 #
 # - https://github.com/project-makefile/project-makefile
 #
