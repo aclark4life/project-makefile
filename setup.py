@@ -21,4 +21,5 @@ setup(
     url="",
     version=VERSION,
     zip_safe=False,
+    scripts=['project/makefile/project-makefile'],
 )
