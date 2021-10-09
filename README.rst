@@ -18,6 +18,8 @@ Installation
 Slides
 ------
 
+.. image:: screenshot.png
+
 - https://slides.com/aclark/project-makefile#/
 
 Usage
