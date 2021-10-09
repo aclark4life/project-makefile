@@ -8,7 +8,6 @@ setup(
     author_email="aclark@aclark.net",
     classifiers=[],
     description="A generic makefile for projects.",
-    entry_points={},
     keywords="",
     license="",
     include_package_data=True,
@@ -21,5 +20,8 @@ setup(
     url="",
     version=VERSION,
     zip_safe=False,
-    scripts=['project/makefile/project-makefile.py'],
+    # scripts=['project/makefile/project-makefile.py'],
+    entry_points={
+        "console_scripts": ["project-makefile=project.makefile.project_makefile:main"],
+    },
 )
