@@ -1,20 +1,8 @@
 Changelog
 =========
 
-0.0.2 (12/24/20)
-----------------
+0.0.1
+-----
 
-Add wagtail targets
-
-::
-
-    make wagtail-init
-    make wagtail-init-hub
-    make wagtail-project
-    make wagtail-serve-default
-    make wagtail-settings
-
-0.0.1 (01/01/20)
-----------------
-
-- Every commit from Tue Jan 12 11:19:13 2016 to Jan 1 2020
+- Every commit from Tue Jan 12 11:19:13 2016 to Sat Oct  9 07:32:52 EDT 2021
+- Add Python installer
