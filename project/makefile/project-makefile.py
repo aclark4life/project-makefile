@@ -1,38 +1,42 @@
 #!/usr/bin/env python
 
-print("Project Makefile")
-
 import os
 import subprocess
 import sys
 
+print("Project Makefile")
 if len(sys.argv) != 2:
-    exit(1)
+    print("Usage: project-makefile <project_dir>")
+    sys.exit(1)
 
 project_dir = sys.argv[1]
 
-# import pdb; pdb.set_trace()
-
 try:
-    print("Creating project dir")
+    print("- Create %s" % project_dir)
     os.mkdir(project_dir)
+    print("  - Done!")
 except FileExistsError:
-    print("Project dir exists")
-    exit(1)
+    print("  - Done (already exists)")
 
+
+print("- Change dir")
 os.chdir(project_dir)
+print("  - Done!")
 
-subprocess.run(
+print("- Download files")
+subprocess.getoutput(
     [
         "curl",
         "-O",
         "https://raw.githubusercontent.com/aclark4life/project-makefile/master/base.mk",
     ]
 )
-subprocess.run(
+subprocess.getoutput(
     [
         "curl",
         "-O",
         "https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile",
     ]
 )
+print("  - Done!")
+print("Now run `make` from %s" % project_dir)
