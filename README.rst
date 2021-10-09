@@ -15,12 +15,14 @@ Installation
 
     pip install project-makefile
 
-Slides
-------
+.. slides
 
-.. image:: screenshot.png
+    Slides
+    ------
 
-- https://slides.com/aclark/project-makefile#/
+    .. image:: screenshot.png
+
+    - https://slides.com/aclark/project-makefile#/
 
 Usage
 -----
