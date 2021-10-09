@@ -1,2 +1,38 @@
 #!/usr/bin/env python
+
 print("Project Makefile")
+
+import os
+import subprocess
+import sys
+
+if len(sys.argv) != 2:
+    exit(1)
+
+project_dir = sys.argv[1]
+
+# import pdb; pdb.set_trace()
+
+try:
+    print("Creating project dir")
+    os.mkdir(project_dir)
+except FileExistsError:
+    print("Project dir exists")
+    exit(1)
+
+os.chdir(project_dir)
+
+subprocess.run(
+    [
+        "curl",
+        "-O",
+        "https://raw.githubusercontent.com/aclark4life/project-makefile/master/base.mk",
+    ]
+)
+subprocess.run(
+    [
+        "curl",
+        "-O",
+        "https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile",
+    ]
+)
