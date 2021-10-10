@@ -30,14 +30,14 @@ def main():
         [
             "curl",
             "-O",
-            "https://raw.githubusercontent.com/aclark4life/project-makefile/master/base.mk",
+            "https://raw.githubusercontent.com/aclark4life/project-makefile/0.0.1/base.mk",
         ]
     )
     subprocess.run(
         [
             "curl",
             "-O",
-            "https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile",
+            "https://raw.githubusercontent.com/aclark4life/project-makefile/0.0.1/Makefile",
         ]
     )
     print("  - Done!")
