@@ -22,7 +22,7 @@ setup(
     zip_safe=False,
     # scripts=['project/makefile/project-makefile.py'],
     entry_points={
-        "console_scripts": ["project-makefile=installer:main"],
+        "console_scripts": ["project-makefile=install:main"],
     },
-    py_modules=["installer"],
+    py_modules=["install"],
 )
