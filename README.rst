@@ -8,6 +8,11 @@ Why
 
 - I like typing ``make <target>`` to perform tasks. 🤷
 
+Slides
+------
+
+- https://slides.com/aclark/project-makefile
+
 Installation
 ------------
 
