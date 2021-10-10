@@ -3,12 +3,6 @@ from setuptools import setup
 
 VERSION = "0.0.1"
 
-# Via Pillow
-with open("README.rst") as readme:
-    long_description = readme.read()
-with open("CHANGES.rst") as changes:
-    long_description += changes.read()
-
 setup(
     author="Alex Clark",
     author_email="aclark@aclark.net",
@@ -18,7 +12,7 @@ setup(
     license="",
     include_package_data=True,
     install_requires=[],
-    long_description=long_description,
+    long_description=open("README.rst").read() + "\n" + open("CHANGES.rst").read(),
     name="project-makefile",
     namespace_packages=[],
     packages=find_packages(),
