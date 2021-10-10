@@ -4,6 +4,9 @@ import os
 import subprocess
 import sys
 
+VERSION = "0.0.3"
+
+
 def main():
 
     print("Project Makefile")
@@ -20,7 +23,6 @@ def main():
     except FileExistsError:
         print("  - Done (already exists)")
 
-
     print("- Change dir")
     os.chdir(project_dir)
     print("  - Done!")
@@ -30,19 +32,21 @@ def main():
         [
             "curl",
             "-O",
-            "https://raw.githubusercontent.com/aclark4life/project-makefile/master/base.mk",
+            "https://raw.githubusercontent.com/aclark4life/project-makefile/%s/base.mk"
+            % VERSION,
         ]
     )
     subprocess.run(
         [
             "curl",
             "-O",
-            "https://raw.githubusercontent.com/aclark4life/project-makefile/master/Makefile",
+            "https://raw.githubusercontent.com/aclark4life/project-makefile/%s/Makefile"
+            % VERSION,
         ]
     )
     print("  - Done!")
     print("Now run `make` from %s" % project_dir)
 
 
-if __name__ == '__MAIN__':
+if __name__ == "__MAIN__":
     main()
