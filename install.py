@@ -26,14 +26,14 @@ def main():
     print("  - Done!")
 
     print("- Download files")
-    subprocess.getoutput(
+    subprocess.run(
         [
             "curl",
             "-O",
             "https://raw.githubusercontent.com/aclark4life/project-makefile/master/base.mk",
         ]
     )
-    subprocess.getoutput(
+    subprocess.run(
         [
             "curl",
             "-O",
