@@ -53,10 +53,8 @@ Requires ``curl`` in ``PATH``
 
     $ make help
     make align
-    make all
     make black-default
     make ce
-    make clean
     make commit
     make commit-edit
     make commit-push
@@ -83,7 +81,10 @@ Requires ``curl`` in ``PATH``
     make django-test-default
     make django-user-default
     make django-webpack-init
+    make eb-check-env-name
     make eb-create-default
+    make eb-deploy-default
+    make eb-init-default
     make flake-default
     make freeze
     make git-branches
@@ -138,7 +139,6 @@ Requires ``curl`` in ``PATH``
     make sphinx-serve-default
     make static
     make su
-    make test
     make tidelift-align
     make tidelift-align-save
     make tidelift-request-all
