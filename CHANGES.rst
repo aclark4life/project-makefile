@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.0.5 (XXXX-XX-XX)
+------------------
+
+- AWS Elastic Beanstalk
+
+  - Add PLATFORM env var
+
 0.0.4 (2021-10-12)
 ------------------
 
