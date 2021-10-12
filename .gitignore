@@ -3,3 +3,4 @@ lib/
 pyvenv.cfg
 project_makefile.egg-info/
 __pycache__
+dist/
