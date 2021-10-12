@@ -29,16 +29,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-# Checkmake
-# ------------------------------------------------------------------------------ 
-# Make checkmake happy
-
-.PHONY: all
-all-default: list-targets-default
-
-.PHONY: clean
-clean: list-targets-default
-
 #
 # Includes
 # ------------------------------------------------------------------------------ 

@@ -566,11 +566,6 @@ export HOME_PAGE
 wagtail-home:
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 
-.PHONY: all
-all-default: list-targets-default
-
-.PHONY: clean
-clean: list-targets-default
 
 # Overrides
 # ------------------------------------------------------------------------------  
@@ -578,3 +573,13 @@ clean: list-targets-default
 # https://stackoverflow.com/a/49804748
 %: %-default
 	@ true
+
+# ------------------------------------------------------------------------------ 
+# Make checkmake happy
+# https://github.com/mrtazz/checkmake
+
+.PHONY: all
+all: list-targets-default
+
+.PHONY: clean
+clean: list-targets-default

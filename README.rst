@@ -54,7 +54,6 @@ Requires ``curl`` in ``PATH``
     $ make help
     make align
     make all
-    make all-default
     make black-default
     make ce
     make clean
@@ -65,6 +64,7 @@ Requires ``curl`` in ``PATH``
     make d
     make db-init
     make deploy-default
+    make dev
     make django-graph
     make django-init
     make django-init-hub
@@ -145,13 +145,8 @@ Requires ``curl`` in ``PATH``
     make usage
     make user
     make v
-    make vagrant
-    make vagrant-init
-    make vagrant-up
     make venv
     make virtualenv
-    make vm
-    make vm-up
     make wagtail-home
     make wagtail-init
     make wagtail-init-hub
