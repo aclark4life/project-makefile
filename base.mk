@@ -138,20 +138,38 @@ PROJECT_NAME := project
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # 
 
-
-eb-init-default: eb-check-env-name
+eb-init-default:
 	eb init
-
-eb-create-default: eb-check-env-name
-	eb create $(ENV_NAME) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET_EC2) --vpc.elbsubnets $(VPC_SUBNET_ELB) --vpc.securitygroups $(VPC_SG) -k $(SSH_KEY) --vpc.elbpublic --vpc.publicip
-
 eb-deploy-default:
 	eb deploy
+eb-create-default: eb-check-env
+	eb create $(ENV_NAME) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET_EC2) --vpc.elbsubnets $(VPC_SUBNET_ELB) --vpc.securitygroups $(VPC_SG) -k $(SSH_KEY) --vpc.elbpublic --vpc.publicip
 
 # https://stackoverflow.com/a/4731504/185820
-eb-check-env-name:
+eb-check-env:
 ifndef ENV_NAME
 	$(error ENV_NAME is undefined)
+endif
+ifndef LB_TYPE
+	$(error LB_TYPE is undefined)
+endif
+ifndef INSTANCE_TYPE
+	$(error INSTANCE_TYPE is undefined)
+endif
+ifndef VPC_ID
+	$(error VPC_ID is undefined)
+endif
+ifndef VPC_SUBNET_EC2
+	$(error VPC_SUBNET_EC2 is undefined)
+endif
+ifndef VPC_SUBNET_ELB
+	$(error VPC_SUBNET_ELB is undefined)
+endif
+ifndef VPC_SG
+	$(error VPC_SG is undefined)
+endif
+ifndef SSH_KEY
+	$(error SSH_KEY is undefined)
 endif
 
 #
