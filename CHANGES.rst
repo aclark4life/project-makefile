@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.0.4 (2021-10-12)
+------------------
+
+- AWS Elastic Beanstalk
+  - Add eb-init and eb-deploy
+  - Add env check for eb-create
+- Vagrant
+  - Removed
+
 0.0.3 (2021-10-10)
 ------------------
 
