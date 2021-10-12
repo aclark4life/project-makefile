@@ -1,7 +1,7 @@
 # Project Makefile
 # ================
 #
-# A generic Makefile for projects
+# A generic Makefile for projects.
 #
 # - https://github.com/project-makefile/project-makefile
 #
@@ -143,11 +143,24 @@ BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 # Rules
 # ------------------------------------------------------------------------------  
 #
-# Beanstalk
+# AWS Elasic Beanstalk
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # 
-eb-create-default:
+
+eb-init-default:
+	eb init
+
+eb-create-default: eb-check-env-name
 	eb create $(ENV_NAME) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET_EC2) --vpc.elbsubnets $(VPC_SUBNET_ELB) --vpc.securitygroups $(VPC_SG) -k $(SSH_KEY) --vpc.elbpublic --vpc.publicip
+
+eb-deploy-default:
+	eb deploy
+
+# https://stackoverflow.com/a/4731504/185820
+eb-check-env-name:
+ifndef ENV_NAME
+	$(error ENV_NAME is undefined)
+endif
 
 #
 # Django
@@ -340,10 +353,8 @@ make:
 	git add base.mk
 	git add Makefile
 #
-deploy-default:
-	eb deploy
 .PHONY: d
-d: deploy
+d: eb-deploy
 #
 # MySQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
