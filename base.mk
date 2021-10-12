@@ -381,6 +381,15 @@ UNAME := $(shell uname)
 my-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
+
+#
+# Pipenv
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+pip-env-lock-default:
+	pipenv lock
+pip-env-install-default:
+	pipenv install
 #
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -388,13 +397,9 @@ my-init-default:
 pip-freeze-default:
 	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-pip-lock-default:
-	pipenv lock
 pip-install-default: pip-upgrade
 	pip install wheel
 	pip install -r requirements.txt
-pipenv-install-default:
-	pipenv install -r requirements.txt
 pip-install-test:
 	pip install -r requirements-test.txt
 pip-install-django:
