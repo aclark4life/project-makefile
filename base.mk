@@ -219,8 +219,6 @@ static: django-static
 su: django-su
 .PHONY: user
 user: django-user
-.PHONY: test
-test: django-test
 .PHONY: loaddata
 loaddata: django-loaddata
 .PHONY: npm-install
@@ -566,20 +564,9 @@ export HOME_PAGE
 wagtail-home:
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 
-
 # Overrides
 # ------------------------------------------------------------------------------  
 #
 # https://stackoverflow.com/a/49804748
 %: %-default
 	@ true
-
-# ------------------------------------------------------------------------------ 
-# Make checkmake happy
-# https://github.com/mrtazz/checkmake
-
-.PHONY: all
-all: list-targets-default
-
-.PHONY: clean
-clean: list-targets-default
