@@ -485,22 +485,6 @@ tidelift-request-all:
 align: tidelift-align
 
 #
-# Vagrant
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-vagrant-init:
-	vagrant init ubuntu/bionic64
-	git add Vagrantfile
-	$(MAKE) vagrant-up
-vagrant-up:
-	vagrant up --provider virtualbox
-.PHONY: vagrant
-vagrant: vagrant-init
-.PHONY: vm
-vm: vagrant-init
-vm-up: vagrant-up
-
-#
 # Wagtail
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
