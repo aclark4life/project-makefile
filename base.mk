@@ -134,11 +134,25 @@ PROJECT_NAME := project
 # Rules
 # ------------------------------------------------------------------------------  
 #
-# Beanstalk
+# AWS Elastic Beanstalk
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # 
-eb-create-default:
+
+
+eb-init-default: eb-check-env-name
+	eb init
+
+eb-create-default: eb-check-env-name
 	eb create $(ENV_NAME) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET_EC2) --vpc.elbsubnets $(VPC_SUBNET_ELB) --vpc.securitygroups $(VPC_SG) -k $(SSH_KEY) --vpc.elbpublic --vpc.publicip
+
+eb-deploy-default:
+	eb deploy
+
+# https://stackoverflow.com/a/4731504/185820
+eb-check-env-name:
+ifndef ENV_NAME
+	$(error ENV_NAME is undefined)
+endif
 
 #
 # Django
