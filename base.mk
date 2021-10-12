@@ -1,7 +1,7 @@
 # Project Makefile
 # ================
 #
-# A generic Makefile for projects.
+# A generic Makefile for projects
 #
 # - https://github.com/project-makefile/project-makefile
 #
@@ -123,59 +123,37 @@
 #
 # - https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
 #
+
 # Variables
 # ------------------------------------------------------------------------------  
 #
 .DEFAULT_GOAL := usage
-
-MESSAGE := Update
-
-PROJECT := project
-
-# https://stackoverflow.com/a/589260/185820
-TMPDIR := $(shell mktemp -d)
-RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
-UNAME := $(shell uname)
-
-# http://unix.stackexchange.com/a/37316
-BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
+COMMIT_MESSAGE := Update
+PROJECT_NAME := project
 
 # Rules
 # ------------------------------------------------------------------------------  
 #
-# AWS Elasic Beanstalk
+# Beanstalk
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # 
-
-eb-init-default:
-	eb init
-
-eb-create-default: eb-check-env-name
+eb-create-default:
 	eb create $(ENV_NAME) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET_EC2) --vpc.elbsubnets $(VPC_SUBNET_ELB) --vpc.securitygroups $(VPC_SG) -k $(SSH_KEY) --vpc.elbpublic --vpc.publicip
-
-eb-deploy-default:
-	eb deploy
-
-# https://stackoverflow.com/a/4731504/185820
-eb-check-env-name:
-ifndef ENV_NAME
-	$(error ENV_NAME is undefined)
-endif
 
 #
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 django-project:
-	-mkdir -p $(PROJECT)/templates
-	-touch $(PROJECT)/templates/base.html
-	-django-admin startproject $(PROJECT) .
+	-mkdir -p $(PROJECT_NAME)/templates
+	-touch $(PROJECT_NAME)/templates/base.html
+	-django-admin startproject $(PROJECT_NAME) .
 django-init:
 	@$(MAKE) pip-install-django
 	@$(MAKE) pg-init
 	@$(MAKE) django-project
 	export SETTINGS=settings.py; $(MAKE) django-settings
-	git add $(PROJECT)
+	git add $(PROJECT_NAME)
 	git add manage.py
 django-init-hub:
 	git init
@@ -192,7 +170,7 @@ django-migrate-default:
 	python manage.py migrate
 django-migrations-default:
 	python manage.py makemigrations
-	git add $(PROJECT)/migrations/*.py
+	git add $(PROJECT_NAME)/migrations/*.py
 django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 django-serve-webpack-default:
@@ -211,16 +189,16 @@ django-user-default:
 django-loaddata-default:
 	python manage.py loaddata
 django-graph:
-	python manage.py graph_models $(PROJECT) -o graph_models_$(PROJECT).png
+	python manage.py graph_models $(PROJECT_NAME) -o graph_models_$(PROJECT_NAME).png
 django-settings:
-	echo "\n# $(PROJECT)\n" >> $(PROJECT)/$(SETTINGS)
-	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT)/$(SETTINGS)
-	echo "import dj_database_url" >> $(PROJECT)/$(SETTINGS)
-	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT)')" >> $(PROJECT)/$(SETTINGS)
-	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT)/$(SETTINGS)
-	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(PROJECT)/$(SETTINGS)
-	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(PROJECT)/$(SETTINGS)
+	echo "\n# $(PROJECT_NAME)\n" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "import dj_database_url" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(PROJECT_NAME)/$(SETTINGS)
 django-webpack-init:
 	python manage.py webpack_init
 django-npm-install-default:
@@ -251,6 +229,7 @@ npm-install: django-npm-install
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
+
 gitignore:
 	echo "bin/\nlib/\npyvenv.cfg\n__pycache__" > .gitignore
 	git add .gitignore
@@ -260,7 +239,7 @@ git-branches:
 git-prune:
 	git remote update origin --prune
 git-commit:
-	git commit -a -m $(MESSAGE)
+	git commit -a -m $(COMMIT_MESSAGE)
 git-commit-edit:
 	git commit -a
 git-push-default:
@@ -281,6 +260,10 @@ p: push
 commit-push: git-commit git-push
 .PHONY: commit-edit
 commit-edit: git-commit-edit git-push
+
+# http://unix.stackexchange.com/a/37316
+BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
+
 #
 # Jenkins
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -314,7 +297,7 @@ r: rand
 #
 readme:
 	echo "Creating README.rst"
-	@echo $(PROJECT) > README.rst
+	@echo $(PROJECT_NAME) > README.rst
 	@echo "================================================================================\n" >> README.rst
 	echo "Done."
 	git add README.rst
@@ -322,8 +305,8 @@ readme:
 .PHONY: review
 review:
 ifeq ($(UNAME), Darwin)
-	@open -a $(EDITOR) `find $(PROJECT) -name \*.py | grep -v __init__.py | grep -v migrations`\
-		`find $(PROJECT) -name \*.html` `find $(PROJECT) -name \*.js`
+	@open -a $(EDITOR) `find $(PROJECT_NAME) -name \*.py | grep -v __init__.py | grep -v migrations`\
+		`find $(PROJECT_NAME) -name \*.html` `find $(PROJECT_NAME) -name \*.js`
 else
 	@echo "Unsupported"
 endif
@@ -353,15 +336,21 @@ make:
 	git add base.mk
 	git add Makefile
 #
+deploy-default:
+	eb deploy
 .PHONY: d
-d: eb-deploy
+d: deploy
+
+# https://stackoverflow.com/a/589260/185820
+UNAME := $(shell uname)
+
 #
 # MySQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 my-init-default:
-	-mysqladmin -u root drop $(PROJECT)
-	-mysqladmin -u root create $(PROJECT)
+	-mysqladmin -u root drop $(PROJECT_NAME)
+	-mysqladmin -u root create $(PROJECT_NAME)
 #
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -408,13 +397,17 @@ pip-up: pip-upgrade
 lock: pip-lock
 install-default: pip-install
 install-test-default: pip-install-test
+
+# https://stackoverflow.com/a/589260/185820
+TMPDIR := $(shell mktemp -d)
+
 #
 # PostgreSQL
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 pg-init-default:
-	-dropdb $(PROJECT)
-	-createdb $(PROJECT)
+	-dropdb $(PROJECT_NAME)
+	-createdb $(PROJECT_NAME)
 
 .PHONY: db-init
 db-init: pg-init
@@ -433,16 +426,16 @@ dev:
 #
 black-default:
 	-black *.py
-	-black $(PROJECT)/*.py
-	-black $(PROJECT)/*/*.py
+	-black $(PROJECT_NAME)/*.py
+	-black $(PROJECT_NAME)/*/*.py
 isort-default:
 	-isort *.py
-	-isort $(PROJECT)/*.py
-	-isort $(PROJECT)/*/*.py
+	-isort $(PROJECT_NAME)/*.py
+	-isort $(PROJECT_NAME)/*/*.py
 flake-default:
 	-flake8 *.py
-	-flake8 $(PROJECT)/*.py
-	-flake8 $(PROJECT)/*/*.py
+	-flake8 $(PROJECT_NAME)/*.py
+	-flake8 $(PROJECT_NAME)/*/*.py
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
@@ -468,11 +461,15 @@ sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
 sphinx-init:
 	$(MAKE) pip-install-sphinx
-	sphinx-quickstart -q -p $(PROJECT) -a $(USER) -v 0.0.1 $(RANDIR)
+	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
 	mv $(RANDIR)/* .
 	rmdir $(RANDIR)
 sphinx-serve-default:
 	cd _build/html;python -m http.server
+
+# https://stackoverflow.com/a/589260/185820
+RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
+
 #
 # Tidelift
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -508,13 +505,13 @@ vm-up: vagrant-up
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 wagtail-project:
-	wagtail start $(PROJECT) .
+	wagtail start $(PROJECT_NAME) .
 wagtail-init:
 	@$(MAKE) pip-install-wagtail
 	@$(MAKE) pg-init
 	@$(MAKE) wagtail-project
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
-	git add $(PROJECT)
+	git add $(PROJECT_NAME)
 	git add requirements.txt
 	git add manage.py
 	git add Dockerfile

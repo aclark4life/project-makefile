@@ -48,11 +48,17 @@ include base.mk
 # Overrides
 # ------------------------------------------------------------------------------ 
 #
-# Here you can override variables, targets, etc.
+# E.g.
 #
+# Uncomment next line to customize the default goal
 #.DEFAULT_GOAL := commit-push
-#PROJECT := project
-.PHONY: serve
-serve: django-serve-webpack
-
-# test
+#
+# Uncomment next line to customize the project name
+#PROJECT_NAME := my_project
+#
+# Uncomment next line to customize the commit message
+#COMMIT_MESSAGE := Update
+#
+# Uncomment next two lines to add a "phony" target
+#.PHONY: serve
+#serve: django-serve-webpack
