@@ -32,7 +32,7 @@ Installation
 Usage
 -----
 
-*Requires ``curl``*
+Requires `curl`
 
 
 ::
