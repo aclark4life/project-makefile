@@ -16,8 +16,6 @@ Slides
 Installation
 ------------
 
-*Requires `curl`*
-
 ::
 
     pip install project-makefile
@@ -33,6 +31,9 @@ Installation
 
 Usage
 -----
+
+*Requires ``curl``*
+
 
 ::
 
