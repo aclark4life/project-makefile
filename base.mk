@@ -515,7 +515,7 @@ tidelift-align-default:
 tidelift-align-save-default:
 	tidelift alignment save --debug
 tidelift-request-all-default:
-	  tidelift request --all --debug
+	tidelift request --all --debug
 
 #
 # Wagtail
