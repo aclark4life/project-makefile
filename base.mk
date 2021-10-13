@@ -510,14 +510,12 @@ RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-tidelift-align:
+tidelift-align-default:
 	tidelift alignment --debug
-tidelift-align-save:
+tidelift-align-save-default:
 	tidelift alignment save --debug
-tidelift-request-all:
+tidelift-request-all-default:
 	  tidelift request --all --debug
-.PHONY: align
-align: tidelift-align
 
 #
 # Wagtail
