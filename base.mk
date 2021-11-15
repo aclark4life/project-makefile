@@ -365,11 +365,9 @@ usage:
 make:
 	git add base.mk
 	git add Makefile
-#
-deploy-default:
-	eb deploy
+
 .PHONY: d
-d: deploy
+d: eb-deploy
 
 # https://stackoverflow.com/a/589260/185820
 UNAME := $(shell uname)
