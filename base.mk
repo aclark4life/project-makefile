@@ -393,13 +393,13 @@ pip-env-install-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 pip-freeze-default:
-	pip freeze | sort > $(TMPDIR)/requirements.txt
+	pip3 freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 pip-install-default: pip-upgrade
-	pip install wheel
-	pip install -r requirements.txt
+	pip3 install wheel
+	pip3 install -r requirements.txt
 pip-install-test:
-	pip install -r requirements-test.txt
+	pip3 install -r requirements-test.txt
 pip-install-django:
 	@echo "Django\ndj-database-url\npsycopg2-binary\nwhitenoise\n" > requirements.txt
 	@$(MAKE) pip-install
@@ -411,14 +411,14 @@ pip-install-sphinx:
 	@$(MAKE) freeze
 	-git add requirements.txt
 pip-install-wagtail:
-	pip install dj-database-url psycopg2-binary whitenoise wagtail python-webpack-boilerplate
+	pip3 install dj-database-url psycopg2-binary whitenoise wagtail python-webpack-boilerplate
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	pip install -U -r requirements.txt
+	pip3 install -U -r requirements.txt
 	$(MAKE) pip-freeze
 pip-upgrade:
-	pip install -U pip
+	pip3 install -U pip
 pip-init:
 	touch requirements.txt
 	-git add requirements.txt
