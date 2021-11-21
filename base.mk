@@ -325,13 +325,6 @@ rand:
 .PHONY: r
 r: rand
 #
-readme:
-	echo "Creating README.rst"
-	@echo $(PROJECT_NAME) > README.rst
-	@echo "================================================================================\n" >> README.rst
-	echo "Done."
-	git add README.rst
-#
 .PHONY: review
 review:
 ifeq ($(UNAME), Darwin)
@@ -350,10 +343,6 @@ list-targets-default:
 help: list-targets
 .PHONY: h
 h: list-targets
-pdf-default:
-	rst2pdf README.rst > README.pdf
-	git add README.pdf
-	$(MAKE) commit-push
 #
 usage:
 	@echo "Project Makefile"
@@ -486,6 +475,35 @@ virtualenv: python-virtualenv-3-8
 v: virtualenv
 .PHONY: venv
 venv: virtualenv
+
+#
+# README
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+
+pdf-default:
+	rst2pdf README.rst > README.pdf
+	git add README.pdf
+	$(MAKE) commit-push
+
+readme-default:
+	echo "Creating README.rst"
+	@echo $(PROJECT_NAME) > README.rst
+	@echo "================================================================================\n" >> README.rst
+	echo "Done."
+	git add README.rst
+
+edit-default:
+	vi README.rst
+
+.PHONY: e
+e: edit
+
+open-default:
+	open README.pdf
+.PHONY: o
+o: open
+
 #
 # Sphinx
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
