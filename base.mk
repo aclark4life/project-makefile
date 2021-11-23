@@ -355,8 +355,8 @@ make:
 	git add base.mk
 	git add Makefile
 
-.PHONY: d
-d: eb-deploy
+#.PHONY: d
+#d: eb-deploy
 
 # https://stackoverflow.com/a/589260/185820
 UNAME := $(shell uname)
