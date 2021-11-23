@@ -417,7 +417,7 @@ freeze: pip-freeze
 pip-up: pip-upgrade
 .PHONY: lock
 lock: pip-lock
-install-default: pip-install
+#install-default: pip-install
 install-test-default: pip-install-test
 
 # https://stackoverflow.com/a/589260/185820
