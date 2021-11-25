@@ -448,8 +448,8 @@ dev:
 #
 black-default:
 	-black *.py
-	-black $(PROJECT_NAME)/*.py
-	-black $(PROJECT_NAME)/*/*.py
+#	-black $(PROJECT_NAME)/*.py
+#	-black $(PROJECT_NAME)/*/*.py
 isort-default:
 	-isort *.py
 	-isort $(PROJECT_NAME)/*.py
