@@ -409,7 +409,7 @@ pip-install-default: pip-upgrade
 	pip3 install wheel
 	pip3 install -r requirements.txt
 
-pip-install-test:
+pip-install-test-default:
 	pip3 install -r requirements-test.txt
 
 pip-install-wagtail:
@@ -553,7 +553,6 @@ wagtail-init-hub:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-# loaddata: django-loaddata
 # lock: pip-lock
 # migrate: django-migrate
 # migrations: django-migrations
@@ -581,6 +580,9 @@ e: edit
 .PHONY: freeze
 freeze: pip-freeze
 
+.PHONY: loaddata
+loaddata: django-loaddata
+
 .PHONY: npm-install
 npm-install: django-npm-install
 
@@ -589,7 +591,6 @@ r: rand
 
 # .PHONY: h
 # .PHONY: help
-# .PHONY: loaddata
 # .PHONY: lock
 # .PHONY: migrate
 # .PHONY: migrations
