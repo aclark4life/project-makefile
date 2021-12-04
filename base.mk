@@ -370,12 +370,30 @@ my-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
 
+pdf-build-default:
+	rst2pdf README.rst > README.pdf
+	git add README.pdf
+	$(MAKE) commit-push
+
 pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
+
+readme-init-default:
+	echo "Creating README.rst"
+	@echo $(PROJECT_NAME) > README.rst
+	@echo "================================================================================\n" >> README.rst
+	echo "Done."
+	git add README.rst
+
+edit-default:
+	vi base.mk
+
+open-default:
+	open README.pdf
 
 review-default:
 ifeq ($(UNAME), Darwin)
@@ -452,28 +470,7 @@ python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
 
-#
-# README
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
 
-pdf-default:
-	rst2pdf README.rst > README.pdf
-	git add README.pdf
-	$(MAKE) commit-push
-
-readme-default:
-	echo "Creating README.rst"
-	@echo $(PROJECT_NAME) > README.rst
-	@echo "================================================================================\n" >> README.rst
-	echo "Done."
-	git add README.rst
-
-edit-default:
-	vi base.mk
-
-open-default:
-	open README.pdf
 
 #
 # Sphinx
@@ -556,7 +553,6 @@ wagtail-init-hub:
 # lock: pip-lock
 # migrate: django-migrate
 # migrations: django-migrations
-# o: open
 # pip-up: pip-upgrade
 # p: push
 # push: git-push
@@ -586,6 +582,9 @@ loaddata: django-loaddata
 .PHONY: npm-install
 npm-install: django-npm-install
 
+.PHONY: o
+o: open
+
 .PHONY: r
 r: rand
 
@@ -594,7 +593,6 @@ r: rand
 # .PHONY: lock
 # .PHONY: migrate
 # .PHONY: migrations
-# .PHONY: o
 # .PHONY: p
 # .PHONY: pip-up
 # .PHONY: push
