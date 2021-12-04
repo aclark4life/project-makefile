@@ -470,7 +470,7 @@ readme-default:
 	git add README.rst
 
 edit-default:
-	vi README.rst base.mk Makefile
+	vi base.mk
 
 open-default:
 	open README.pdf
@@ -553,7 +553,6 @@ wagtail-init-hub:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-# db-init: pg-init
 # #d: eb-deploy
 # e: edit
 # freeze: pip-freeze
@@ -581,11 +580,13 @@ ce: git-commit-edit git-push
 .PHONY: cp
 cp: git-commit-push
 
+.PHONY: db-init
+db-init: pg-init
+
 .PHONY: e
 e: edit
 
 # .PHONY: d
-# .PHONY: db-init
 # .PHONY: freeze
 # .PHONY: graph
 # .PHONY: h

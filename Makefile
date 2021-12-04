@@ -49,9 +49,12 @@ include base.mk
 # Uncomment the next line to customize the commit message variable
 #GIT_COMMIT := My awesome update
 #
-# Uncomment the next line to customize the default goal
-#.DEFAULT_GOAL := commit-push
-#
 # Uncomment the next two lines to customize the default edit target
 #edit:
 #	vi my_project.py
+#
+# Uncomment the next two lines to customize the default db-init target
+#db-init: my-init
+#
+# Uncomment the next line to customize the default goal
+#.DEFAULT_GOAL := commit-push
