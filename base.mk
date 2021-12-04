@@ -557,7 +557,6 @@ wagtail-init-hub:
 # lock: pip-lock
 # migrate: django-migrate
 # migrations: django-migrations
-# npm-install: django-npm-install
 # o: open
 # pip-up: pip-upgrade
 # p: push
@@ -582,17 +581,18 @@ e: edit
 .PHONY: freeze
 freeze: pip-freeze
 
+.PHONY: npm-install
+npm-install: django-npm-install
+
 .PHONY: r
 r: rand
 
-# .PHONY: graph
 # .PHONY: h
 # .PHONY: help
 # .PHONY: loaddata
 # .PHONY: lock
 # .PHONY: migrate
 # .PHONY: migrations
-# .PHONY: npm-install
 # .PHONY: o
 # .PHONY: p
 # .PHONY: pip-up
