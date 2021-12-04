@@ -553,10 +553,6 @@ wagtail-init-hub:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-# ce: commit-edit
-# commit-edit: git-commit-edit git-push
-# commit: git-commit
-# commit-push: git-commit git-push
 # db-init: pg-init
 # #d: eb-deploy
 # e: edit
@@ -578,10 +574,9 @@ wagtail-init-hub:
 # static: django-static
 # su: django-su
 # user: django-user
-# .PHONY: ce
-# .PHONY: commit
-# .PHONY: commit-edit
-# .PHONY: commit-push
+
+.PHONY: ce
+ce: git-commit-edit
 
 .PHONY: cp
 cp: git-commit-push
