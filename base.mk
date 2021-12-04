@@ -130,6 +130,12 @@
 .DEFAULT_GOAL := usage
 COMMIT_MESSAGE := Update
 PROJECT_NAME := project
+# https://stackoverflow.com/a/589260/185820
+UNAME := $(shell uname)
+# https://stackoverflow.com/a/589260/185820
+TMPDIR := $(shell mktemp -d)
+# https://stackoverflow.com/a/589260/185820
+RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -358,8 +364,6 @@ make:
 #.PHONY: d
 #d: eb-deploy
 
-# https://stackoverflow.com/a/589260/185820
-UNAME := $(shell uname)
 
 #
 # MySQL
@@ -420,8 +424,6 @@ lock: pip-lock
 #install-default: pip-install
 install-test-default: pip-install-test
 
-# https://stackoverflow.com/a/589260/185820
-TMPDIR := $(shell mktemp -d)
 
 #
 # PostgreSQL
@@ -518,8 +520,6 @@ sphinx-init:
 sphinx-serve-default:
 	cd _build/html;python -m http.server
 
-# https://stackoverflow.com/a/589260/185820
-RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 
 #
 # Tidelift
