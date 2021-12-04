@@ -553,11 +553,6 @@ wagtail-init-hub:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-# #d: eb-deploy
-# e: edit
-# graph: django-graph
-# help: list-targets
-# h: list-targets
 # loaddata: django-loaddata
 # lock: pip-lock
 # migrate: django-migrate
@@ -567,7 +562,6 @@ wagtail-init-hub:
 # pip-up: pip-upgrade
 # p: push
 # push: git-push
-# r: rand
 # shell: django-shell
 # static: django-static
 # su: django-su
@@ -588,6 +582,9 @@ e: edit
 .PHONY: freeze
 freeze: pip-freeze
 
+.PHONY: r
+r: rand
+
 # .PHONY: graph
 # .PHONY: h
 # .PHONY: help
@@ -600,7 +597,6 @@ freeze: pip-freeze
 # .PHONY: p
 # .PHONY: pip-up
 # .PHONY: push
-# .PHONY: r
 # .PHONY: shell
 # .PHONY: static
 # .PHONY: su
