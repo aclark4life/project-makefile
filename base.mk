@@ -586,9 +586,11 @@ wagtail-init-hub:
 .PHONY: cp
 cp: git-commit-push
 
+.PHONY: e
+e: edit
+
 # .PHONY: d
 # .PHONY: db-init
-# .PHONY: e
 # .PHONY: freeze
 # .PHONY: graph
 # .PHONY: h

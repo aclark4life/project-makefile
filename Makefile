@@ -42,15 +42,16 @@ include base.mk
 #
 # E.g.
 #
-# Uncomment next line to customize the default goal
-#.DEFAULT_GOAL := commit-push
 #
-# Uncomment next line to customize the project name
+# Uncomment the next line to customize the project name variable
 #PROJECT_NAME := my_project
 #
-# Uncomment next line to customize the commit message
-#COMMIT_MESSAGE := Update
+# Uncomment the next line to customize the commit message variable
+#GIT_COMMIT := My awesome update
 #
-# Uncomment next two lines to add a "phony" target
-#.PHONY: serve
-#serve: django-serve-webpack
+# Uncomment the next line to customize the default goal
+#.DEFAULT_GOAL := commit-push
+#
+# Uncomment the next two lines to customize the default edit target
+#edit:
+#	vi README.rst base.mk Makefile
