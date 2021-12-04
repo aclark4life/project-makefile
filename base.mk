@@ -264,7 +264,7 @@ django-init-webpack:
 django-install-default:
 	@echo "Django\ndj-database-url\npsycopg2-binary\nwhitenoise\n" > requirements.txt
 	@$(MAKE) pip-install
-	@$(MAKE) freeze
+	@$(MAKE) pip-freeze
 	-git add requirements.txt
 
 django-loaddata-default:
@@ -492,7 +492,7 @@ sphinx-init:
 sphinx-install:
 	echo "Sphinx\n" > requirements.txt
 	@$(MAKE) pip-install
-	@$(MAKE) freeze
+	@$(MAKE) pip-freeze
 	-git add requirements.txt
 sphinx-serve-default:
 	cd _build/html;python -m http.server
@@ -528,7 +528,7 @@ wagtail-init-default:
 	git add .dockerignore
 	git add home
 	git add search
-	@$(MAKE) freeze
+	@$(MAKE) pip-freeze
 	@$(MAKE) django-webpack-init
 	git add frontend
 	@$(MAKE) django-npm-install
@@ -555,7 +555,6 @@ wagtail-init-hub:
 
 # #d: eb-deploy
 # e: edit
-# freeze: pip-freeze
 # graph: django-graph
 # help: list-targets
 # h: list-targets
@@ -586,8 +585,9 @@ db-init: pg-init
 .PHONY: e
 e: edit
 
-# .PHONY: d
-# .PHONY: freeze
+.PHONY: freeze
+freeze: pip-freeze
+
 # .PHONY: graph
 # .PHONY: h
 # .PHONY: help
