@@ -315,7 +315,7 @@ django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
 		User.objects.create_user('user', '', 'user')"
 
-django-npm-install:
+django-npm-install-default:
 	cd frontend
 	npm install
 
