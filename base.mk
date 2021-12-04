@@ -576,7 +576,7 @@ wagtail-init-hub:
 # user: django-user
 
 .PHONY: ce
-ce: git-commit-edit
+ce: git-commit-edit git-push
 
 .PHONY: cp
 cp: git-commit-push
