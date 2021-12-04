@@ -1,7 +1,7 @@
 # Project Makefile
 # ================
 #
-# A generic Makefile for projects
+# A generic makefile for projects
 #
 # - https://github.com/project-makefile/project-makefile
 #
@@ -470,7 +470,7 @@ readme-default:
 	git add README.rst
 
 edit-default:
-	vi README.rst
+	vi README.rst base.mk Makefile
 
 open-default:
 	open README.pdf

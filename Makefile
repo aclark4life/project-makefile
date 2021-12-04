@@ -54,4 +54,4 @@ include base.mk
 #
 # Uncomment the next two lines to customize the default edit target
 #edit:
-#	vi README.rst base.mk Makefile
+#	vi my_project.py
