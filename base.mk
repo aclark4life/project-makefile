@@ -127,15 +127,29 @@
 # Variables
 # ------------------------------------------------------------------------------  
 #
+
 .DEFAULT_GOAL := usage
-COMMIT_MESSAGE := Update
+
+GIT_MESSAGE := Update
+
+# http://unix.stackexchange.com/a/37316
+GIT_BRANCHES = `git branch -a \
+	| grep remote \
+	| grep -v HEAD \
+	| grep -v main \
+	| grep -v master`
+
 PROJECT_NAME := project
-# https://stackoverflow.com/a/589260/185820
-UNAME := $(shell uname)
-# https://stackoverflow.com/a/589260/185820
-TMPDIR := $(shell mktemp -d)
+
 # https://stackoverflow.com/a/589260/185820
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
+
+# https://stackoverflow.com/a/589260/185820
+TMPDIR := $(shell mktemp -d)
+
+# https://stackoverflow.com/a/589260/185820
+UNAME := $(shell uname)
+
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -144,26 +158,25 @@ RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 # 
 
-eb-init-default:
-	eb init
-eb-deploy-default:
-	eb deploy
-eb-create-default: eb-check-env
-	eb create $(ENV_NAME) -p $(PLATFORM) --elb-type $(LB_TYPE) -i $(INSTANCE_TYPE) --vpc --vpc.id $(VPC_ID) --vpc.ec2subnets $(VPC_SUBNET_EC2) --vpc.elbsubnets $(VPC_SUBNET_ELB) --vpc.securitygroups $(VPC_SG) -k $(SSH_KEY) --vpc.elbpublic --vpc.publicip
-
 # https://stackoverflow.com/a/4731504/185820
 eb-check-env:
 ifndef ENV_NAME
 	$(error ENV_NAME is undefined)
 endif
-ifndef LB_TYPE
-	$(error LB_TYPE is undefined)
-endif
 ifndef INSTANCE_TYPE
 	$(error INSTANCE_TYPE is undefined)
 endif
+ifndef LB_TYPE
+	$(error LB_TYPE is undefined)
+endif
+ifndef SSH_KEY
+	$(error SSH_KEY is undefined)
+endif
 ifndef VPC_ID
 	$(error VPC_ID is undefined)
+endif
+ifndef VPC_SG
+	$(error VPC_SG is undefined)
 endif
 ifndef VPC_SUBNET_EC2
 	$(error VPC_SUBNET_EC2 is undefined)
@@ -171,64 +184,78 @@ endif
 ifndef VPC_SUBNET_ELB
 	$(error VPC_SUBNET_ELB is undefined)
 endif
-ifndef VPC_SG
-	$(error VPC_SG is undefined)
-endif
-ifndef SSH_KEY
-	$(error SSH_KEY is undefined)
-endif
+
+eb-create-default: eb-check-env
+	eb create $(ENV_NAME) \
+		-i $(INSTANCE_TYPE) \
+		-k $(SSH_KEY) \
+		-p $(PLATFORM) \
+		--elb-type $(LB_TYPE) \
+		--vpc \
+		--vpc.id $(VPC_ID) \
+		--vpc.elbpublic \
+		--vpc.ec2subnets $(VPC_SUBNET_EC2) \
+		--vpc.elbsubnets $(VPC_SUBNET_ELB) \
+		--vpc.publicip \
+		--vpc.securitygroups $(VPC_SG)
+
+eb-deploy-default:
+	eb deploy
+
+eb-init-default:
+	eb init
 
 #
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
-django-project:
-	-mkdir -p $(PROJECT_NAME)/templates
-	-touch $(PROJECT_NAME)/templates/base.html
-	-django-admin startproject $(PROJECT_NAME) .
-django-init:
-	@$(MAKE) pip-install-django
-	@$(MAKE) pg-init
-	@$(MAKE) django-project
+
+django-project-default:
+	mkdir -p $(PROJECT_NAME)/templates
+	touch $(PROJECT_NAME)/templates/base.html
+	django-admin startproject $(PROJECT_NAME) .
+
+django-init-default: pip-install-django pg-init django-project
 	export SETTINGS=settings.py; $(MAKE) django-settings
 	git add $(PROJECT_NAME)
 	git add manage.py
-django-init-hub:
-	git init
-	hub create -p
-	@$(MAKE) django-init
-	@$(MAKE) make
-	@$(MAKE) readme
-	@$(MAKE) gitignore
-	@$(MAKE) git-commit
-	@$(MAKE) git-set-upstream
-	@$(MAKE) git-push
-	hub browse
+
 django-migrate-default:
 	python manage.py migrate
+
 django-migrations-default:
 	python manage.py makemigrations
 	git add $(PROJECT_NAME)/migrations/*.py
+
 django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
+
 django-serve-webpack-default:
 	cd frontend; npm run watch &
 	python manage.py runserver
+
 django-test-default:
 	python manage.py test
+
 django-shell-default:
 	python manage.py shell
+
 django-static-default:
 	python manage.py collectstatic --noinput
+
 django-su-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', '', 'admin')"
+
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_user('user', '', 'user')"
+
 django-loaddata-default:
 	python manage.py loaddata
-django-graph:
+
+django-graph-default:
 	python manage.py graph_models $(PROJECT_NAME) -o graph_models_$(PROJECT_NAME).png
-django-settings:
+
+django-settings-default:
 	echo "\n# $(PROJECT_NAME)\n" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "import dj_database_url" >> $(PROJECT_NAME)/$(SETTINGS)
@@ -237,30 +264,16 @@ django-settings:
 	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(PROJECT_NAME)/$(SETTINGS)
+
 django-webpack-init:
 	python manage.py webpack_init
+
 django-npm-install-default:
 	cd frontend; npm install
+
 django-shell:
 	python manage.py shell
-.PHONY: shell
-shell: django-shell
-.PHONY: graph
-graph: django-graph
-.PHONY: migrate
-migrate: django-migrate
-.PHONY: migrations
-migrations: django-migrations
-.PHONY: static
-static: django-static
-.PHONY: su
-su: django-su
-.PHONY: user
-user: django-user
-.PHONY: loaddata
-loaddata: django-loaddata
-.PHONY: npm-install
-npm-install: django-npm-install
+
 #
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -270,35 +283,19 @@ gitignore:
 	echo "bin/\nlib/\npyvenv.cfg\n__pycache__" > .gitignore
 	git add .gitignore
 git-branches:
-	-for i in $(BRANCHES) ; do \
+	-for i in $(GIT_BRANCHES) ; do \
         git checkout -t $$i ; done
 git-prune:
 	git remote update origin --prune
 git-commit:
-	git commit -a -m $(COMMIT_MESSAGE)
+	git commit -a -m $(GIT_MESSAGE)
 git-commit-edit:
 	git commit -a
 git-push-default:
 	git push
 git-set-upstream-default:
 	git push --set-upstream origin main
-.PHONY: commit
-commit: git-commit
-.PHONY: ce
-ce: commit-edit
-.PHONY: cp
-cp: commit-push
-.PHONY: push
-push: git-push
-.PHONY: p
-p: push
-.PHONY: commit-push
-commit-push: git-commit git-push
-.PHONY: commit-edit
-commit-edit: git-commit-edit git-push
 
-# http://unix.stackexchange.com/a/37316
-BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v master`
 
 #
 # Jenkins
@@ -537,8 +534,10 @@ tidelift-request-all-default:
 # Wagtail
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
+
 wagtail-project:
 	wagtail start $(PROJECT_NAME) .
+
 wagtail-init:
 	@$(MAKE) pip-install-wagtail
 	@$(MAKE) pg-init
@@ -614,6 +613,59 @@ endef
 export HOME_PAGE
 wagtail-home:
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
+
+#
+# .PHONY
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+
+.PHONY: shell
+shell: django-shell
+
+.PHONY: graph
+graph: django-graph
+
+.PHONY: migrate
+migrate: django-migrate
+
+.PHONY: migrations
+migrations: django-migrations
+
+.PHONY: static
+static: django-static
+
+.PHONY: su
+su: django-su
+
+.PHONY: user
+user: django-user
+
+.PHONY: loaddata
+loaddata: django-loaddata
+
+.PHONY: npm-install
+npm-install: django-npm-install
+
+.PHONY: commit
+commit: git-commit
+
+.PHONY: ce
+ce: commit-edit
+
+.PHONY: cp
+cp: commit-push
+
+.PHONY: push
+push: git-push
+
+.PHONY: p
+p: push
+
+.PHONY: commit-push
+commit-push: git-commit git-push
+
+.PHONY: commit-edit
+commit-edit: git-commit-edit git-push
 
 # Overrides
 # ------------------------------------------------------------------------------  
