@@ -576,6 +576,9 @@ e: edit
 .PHONY: freeze
 freeze: pip-freeze
 
+.PHONY: install
+install: pip-install
+
 .PHONY: loaddata
 loaddata: django-loaddata
 
