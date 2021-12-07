@@ -57,4 +57,4 @@ include base.mk
 #db-init: my-init
 #
 # Uncomment the next line to customize the default goal
-#.DEFAULT_GOAL := commit-push
+#.DEFAULT_GOAL := git-commit-push
