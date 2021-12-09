@@ -360,7 +360,7 @@ dev-default:
 jenkins-file:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
-list-targets-default:
+help-default:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
@@ -576,6 +576,9 @@ e: edit
 .PHONY: freeze
 freeze: pip-freeze
 
+.PHONY: h
+h: help
+
 .PHONY: install
 install: pip-install
 
@@ -591,8 +594,9 @@ o: open
 .PHONY: r
 r: rand
 
-# .PHONY: h
-# .PHONY: help
+.PHONY: test
+test: django-test
+
 # .PHONY: lock
 # .PHONY: migrate
 # .PHONY: migrations
@@ -603,8 +607,6 @@ r: rand
 # .PHONY: static
 # .PHONY: su
 # .PHONY: user
-# .PHONY: v
-# .PHONY: venv
 
 # Overrides
 # ------------------------------------------------------------------------------  
