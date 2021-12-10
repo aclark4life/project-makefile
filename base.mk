@@ -593,6 +593,9 @@ o: open
 .PHONY: r
 r: rand
 
+.PHONY: serve
+serve: django-webpack-serve
+
 .PHONY: test
 test: django-test
 
