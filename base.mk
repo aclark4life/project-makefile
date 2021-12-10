@@ -316,8 +316,7 @@ django-user-default:
 		User.objects.create_user('user', '', 'user')"
 
 django-npm-install-default:
-	cd frontend
-	npm install
+	cd frontend; npm install
 
 #
 # Git
