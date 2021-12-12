@@ -339,6 +339,8 @@ git-commit-edit-default:
 
 git-commit-push-default: git-commit git-push
 
+git-edit-push-default: git-commit-edit git-push
+
 git-prune-default:
 	git remote update origin --prune
 
