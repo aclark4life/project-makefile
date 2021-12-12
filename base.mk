@@ -383,19 +383,6 @@ pg-init-default:
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
 
-readme-init-default:
-	echo "Creating README.rst"
-	@echo $(PROJECT_NAME) > README.rst
-	@echo "================================================================================\n" >> README.rst
-	echo "Done."
-	git add README.rst
-
-edit-default:
-	vi base.mk
-
-open-default:
-	open README.pdf
-
 review-default:
 ifeq ($(UNAME), Darwin)
 	@open -a $(EDITOR) `find $(PROJECT_NAME) -name \*.py | grep -v __init__.py | grep -v migrations`\
@@ -471,7 +458,23 @@ python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
 
+#
+# Readme
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
 
+readme-init-default:
+	echo "Creating README.rst"
+	@echo $(PROJECT_NAME) > README.rst
+	@echo "================================================================================\n" >> README.rst
+	echo "Done."
+	git add README.rst
+
+readme-edit-default:
+	vi README.rst
+
+readme-open-default:
+	open README.pdf
 
 #
 # Sphinx
@@ -570,6 +573,15 @@ cp: git-commit-push
 
 .PHONY: db-init
 db-init: pg-init
+
+.PHONY: deploy
+deploy: eb-deploy
+
+.PHONY: d
+d: deploy
+
+.PHONY: edit
+edit: readme-edit
 
 .PHONY: e
 e: edit
