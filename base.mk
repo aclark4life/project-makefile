@@ -559,13 +559,11 @@ wagtail-init-hub:
 
 .PHONY: build
 build: readme-build
-
 .PHONY: b
 b: build
 
 .PHONY: ce
 ce: git-commit-edit git-push
-
 .PHONY: cp
 cp: git-commit-push
 
@@ -574,13 +572,11 @@ db-init: pg-init
 
 .PHONY: deploy
 deploy: eb-deploy
-
 .PHONY: d
 d: deploy
 
 .PHONY: edit
 edit: readme-edit
-
 .PHONY: e
 e: edit
 
@@ -601,7 +597,6 @@ npm-install: django-npm-install
 
 .PHONY: open
 open: readme-open
-
 .PHONY: o
 o: open
 
@@ -610,7 +605,6 @@ r: rand
 
 .PHONY: serve
 serve: django-serve
-
 .PHONY: test
 test: django-test
 
