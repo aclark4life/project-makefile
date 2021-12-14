@@ -476,6 +476,9 @@ readme-edit-default:
 readme-open-default:
 	open README.pdf
 
+readme-build-default:
+	rst2pdf README.rst
+
 #
 # Sphinx
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
