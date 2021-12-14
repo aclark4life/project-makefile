@@ -601,6 +601,9 @@ loaddata: django-loaddata
 .PHONY: npm-install
 npm-install: django-npm-install
 
+.PHONY: open
+open: readme-open
+
 .PHONY: o
 o: open
 
