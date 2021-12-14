@@ -554,16 +554,11 @@ wagtail-init-hub:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-# lock: pip-lock
-# migrate: django-migrate
-# migrations: django-migrations
-# pip-up: pip-upgrade
-# p: push
-# push: git-push
-# shell: django-shell
-# static: django-static
-# su: django-su
-# user: django-user
+.PHONY: build
+build: readme-build
+
+.PHONY: b
+b: build
 
 .PHONY: ce
 ce: git-commit-edit git-push
@@ -615,17 +610,6 @@ serve: django-serve
 
 .PHONY: test
 test: django-test
-
-# .PHONY: lock
-# .PHONY: migrate
-# .PHONY: migrations
-# .PHONY: p
-# .PHONY: pip-up
-# .PHONY: push
-# .PHONY: shell
-# .PHONY: static
-# .PHONY: su
-# .PHONY: user
 
 # Overrides
 # ------------------------------------------------------------------------------  
