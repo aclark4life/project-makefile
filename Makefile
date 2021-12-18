@@ -29,15 +29,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+include base.mk
 
 #
-#
-# Includes
-# ------------------------------------------------------------------------------ 
-#
-include base.mk
-#
-# Overrides
+# Overrides and includes
 # ------------------------------------------------------------------------------ 
 #
 # E.g.
@@ -55,6 +50,9 @@ include base.mk
 #
 # Uncomment the next two lines to customize the default db-init target
 #db-init: my-init
+
+# Uncomment the next line to include additional makefiles
+# include my_makefile.mk
 #
 # Uncomment the next line to customize the default goal
 #.DEFAULT_GOAL := git-commit-push
