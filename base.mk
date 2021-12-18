@@ -536,7 +536,7 @@ wagtail-init-default:
 	@$(MAKE) django-webpack-init
 	git add frontend
 	@$(MAKE) django-npm-install
-	@$(MAKE) migrate
+	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 
@@ -609,6 +609,11 @@ install: pip-install
 
 .PHONY: loaddata
 loaddata: django-loaddata
+
+# --------------------------------------------------------------------------------
+
+.PHONY: migrate
+migrate: django-migrate
 
 # --------------------------------------------------------------------------------
 
