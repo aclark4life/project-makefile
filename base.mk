@@ -622,6 +622,9 @@ freeze: pip-freeze
 .PHONY: install
 install: pip-install
 
+.PHONY: install-test
+install: pip-install-test
+
 # --------------------------------------------------------------------------------
 
 .PHONY: db-init
