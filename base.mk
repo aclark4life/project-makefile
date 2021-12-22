@@ -623,7 +623,7 @@ freeze: pip-freeze
 install: pip-install
 
 .PHONY: install-test
-install: pip-install-test
+install-test: pip-install-test
 
 # --------------------------------------------------------------------------------
 
