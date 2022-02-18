@@ -488,7 +488,7 @@ sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
 
 sphinx-init:
-	$(MAKE) pip-install-sphinx
+	$(MAKE) sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
 	mv $(RANDIR)/* .
 	rmdir $(RANDIR)
