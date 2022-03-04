@@ -289,7 +289,7 @@ django-serve-default:
 django-settings-default:
 	echo "\n# $(PROJECT_NAME)\n" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "import dj_database_url os" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "import dj_database_url, os" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
 		'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT_NAME)/$(SETTINGS)
