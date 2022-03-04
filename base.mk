@@ -466,11 +466,9 @@ python-serve-default:
 #
 
 readme-init-default:
-	echo "Creating README.rst"
 	@echo $(PROJECT_NAME) > README.rst
 	@echo "================================================================================\n" >> README.rst
-	echo "Done."
-	git add README.rst
+	@git add README.rst
 
 readme-edit-default:
 	vi README.rst
