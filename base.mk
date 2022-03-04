@@ -261,6 +261,7 @@ django-init-default: django-install pg-init django-project
 	git add frontend
 	$(MAKE) npm-install
 	$(MAKE) migrate
+	$(MAKE) cp
 	$(MAKE) serve
 
 django-install-default:
