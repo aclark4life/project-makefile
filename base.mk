@@ -402,6 +402,8 @@ make-default:
 	git add base.mk
 	git add Makefile
 
+init-default: gitignore make pip-init readme-init 
+
 #
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
