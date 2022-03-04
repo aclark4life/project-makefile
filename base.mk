@@ -565,7 +565,7 @@ wagtail-init-hub:
 	hub browse
 
 wagtail-install-default:
-	pip3 install dj-database-url psycopg2-binary whitenoise wagtail python-webpack-boilerplate
+	pip3 install dj-database-url psycopg2-binary wagtail python-webpack-boilerplate
 
 #
 # .PHONY
