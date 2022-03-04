@@ -257,8 +257,6 @@ django-init-default: django-install pg-init django-project
 	export SETTINGS=settings.py; $(MAKE) django-settings
 	git add $(PROJECT_NAME)
 	git add manage.py
-
-django-init-webpack:
 	python manage.py webpack_init
 
 django-install-default:
