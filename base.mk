@@ -538,28 +538,15 @@ wagtail-init-default: wagtail-install pg-init
 	git add .dockerignore
 	git add home
 	git add search
-	@$(MAKE) pip-freeze
-	@$(MAKE) django-init
 	git add frontend
 	@$(MAKE) django-npm-install
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 
-wagtail-init-hub:
-	git init
-	hub create -p
-	@$(MAKE) wagtail-init
-	@$(MAKE) make
-	@$(MAKE) readme
-	@$(MAKE) gitignore
-	git commit -m "wagtail-init by project-makefile"
-	@$(MAKE) git-set-upstream
-	@$(MAKE) git-push
-	hub browse
-
 wagtail-install-default:
 	pip3 install dj-database-url psycopg2-binary wagtail python-webpack-boilerplate
+	@$(MAKE) pip-freeze
 
 #
 # .PHONY
