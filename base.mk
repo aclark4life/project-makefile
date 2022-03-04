@@ -517,6 +517,7 @@ tidelift-request-all-default:
 
 wagtail-init-default: db-init
 	wagtail start $(PROJECT_NAME) .
+	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
 	git add $(PROJECT_NAME)
 	git add requirements.txt
@@ -532,6 +533,7 @@ wagtail-init-default: db-init
 	git add frontend
 	@$(MAKE) cp
 	@$(MAKE) django-npm-install
+	@$(MAKE) cp
 	@$(MAKE) serve
 
 wagtail-install-default:
