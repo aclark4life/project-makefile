@@ -530,7 +530,9 @@ wagtail-init-default: db-init
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 	python manage.py webpack_init --skip-checks
 	git add frontend
+	@$(MAKE) cp
 	@$(MAKE) django-npm-install
+	@$(MAKE) serve
 
 wagtail-install-default:
 	pip3 install dj-database-url psycopg2-binary wagtail python-webpack-boilerplate
