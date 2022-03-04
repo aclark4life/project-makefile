@@ -271,12 +271,6 @@ django-init-default: django-install pg-init django-project
 	git add manage.py
 	python manage.py webpack_init --skip-checks
 	git add frontend
-	@echo "$$HOME_PAGE" > project/templates/home.html
-	@echo "$$DJANGO_URLS" > project/urls.py
-	$(MAKE) npm-install
-	$(MAKE) migrate
-	$(MAKE) cp
-	$(MAKE) serve
 
 django-install-default:
 	@echo "Django\ndj-database-url\npsycopg2-binary\npython-webpack-boilerplate\n" > requirements.txt
@@ -545,7 +539,7 @@ wagtail-init-default: wagtail-install pg-init
 	git add home
 	git add search
 	@$(MAKE) pip-freeze
-	@$(MAKE) django-webpack-init
+	@$(MAKE) django-init
 	git add frontend
 	@$(MAKE) django-npm-install
 	@$(MAKE) django-migrate
