@@ -294,7 +294,7 @@ django-settings-default:
 		'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "INSTALLED_APPS.append('webpack_loader')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build')]" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> \
 		$(PROJECT_NAME)/$(SETTINGS)
 
