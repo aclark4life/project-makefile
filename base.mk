@@ -534,9 +534,7 @@ tidelift-request-all-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-wagtail-init-default:
-	@$(MAKE) pip-install-wagtail
-	@$(MAKE) pg-init
+wagtail-init-default: wagtail-install pg-init
 	wagtail start $(PROJECT_NAME) .
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
 	git add $(PROJECT_NAME)
