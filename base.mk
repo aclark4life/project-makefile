@@ -258,6 +258,7 @@ django-init-default: django-install pg-init django-project
 	git add $(PROJECT_NAME)
 	git add manage.py
 	python manage.py webpack_init --skip-checks
+	git add frontend
 	$(MAKE) npm-install
 	$(MAKE) migrate
 	$(MAKE) serve
