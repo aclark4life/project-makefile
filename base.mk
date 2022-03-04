@@ -525,7 +525,6 @@ wagtail-init-default: db-init
 	git add .dockerignore
 	git add home
 	git add search
-	git add frontend
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
