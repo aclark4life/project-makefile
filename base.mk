@@ -253,7 +253,7 @@ eb-init-default:
 django-graph-default:
 	python manage.py graph_models $(PROJECT_NAME) -o graph_models_$(PROJECT_NAME).png
 
-django-init-default: pip-install-django pg-init django-project
+django-init-default: pg-init django-project
 	export SETTINGS=settings.py; $(MAKE) django-settings
 	git add $(PROJECT_NAME)
 	git add manage.py
