@@ -265,19 +265,6 @@ eb-init-default:
 django-graph-default:
 	python manage.py graph_models $(PROJECT_NAME) -o graph_models_$(PROJECT_NAME).png
 
-# django-init-default: db-init django-install django-project
-# 	export SETTINGS=settings.py; $(MAKE) django-settings
-# 	git add $(PROJECT_NAME)
-# 	git add manage.py
-# 	python manage.py webpack_init --skip-checks
-# 	git add frontend
-
-# django-install-default:
-# 	@echo "Django\ndj-database-url\npsycopg2-binary\npython-webpack-boilerplate\n" > requirements.txt
-# 	@$(MAKE) pip-install
-# 	@$(MAKE) pip-freeze
-# 	-git add requirements.txt
-
 django-loaddata-default:
 	python manage.py loaddata
 
@@ -543,6 +530,8 @@ wagtail-init-default: db-init
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
+	python manage.py webpack_init --skip-checks
+	git add frontend
 
 wagtail-install-default:
 	pip3 install dj-database-url psycopg2-binary wagtail python-webpack-boilerplate
