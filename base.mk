@@ -420,9 +420,6 @@ pip-install-default: pip-upgrade
 pip-install-test-default:
 	pip3 install -r requirements-test.txt
 
-pip-install-wagtail:
-	pip3 install dj-database-url psycopg2-binary whitenoise wagtail python-webpack-boilerplate
-
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -551,6 +548,9 @@ wagtail-init-hub:
 	@$(MAKE) git-set-upstream
 	@$(MAKE) git-push
 	hub browse
+
+wagtail-install-default:
+	pip3 install dj-database-url psycopg2-binary whitenoise wagtail python-webpack-boilerplate
 
 #
 # .PHONY
