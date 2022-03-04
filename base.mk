@@ -272,11 +272,11 @@ django-graph-default:
 # 	python manage.py webpack_init --skip-checks
 # 	git add frontend
 
-django-install-default:
-	@echo "Django\ndj-database-url\npsycopg2-binary\npython-webpack-boilerplate\n" > requirements.txt
-	@$(MAKE) pip-install
-	@$(MAKE) pip-freeze
-	-git add requirements.txt
+# django-install-default:
+# 	@echo "Django\ndj-database-url\npsycopg2-binary\npython-webpack-boilerplate\n" > requirements.txt
+# 	@$(MAKE) pip-install
+# 	@$(MAKE) pip-freeze
+# 	-git add requirements.txt
 
 django-loaddata-default:
 	python manage.py loaddata
@@ -528,7 +528,7 @@ tidelift-request-all-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-wagtail-init-default: wagtail-install pg-init
+wagtail-init-default: db-init
 	wagtail start $(PROJECT_NAME) .
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
 	git add $(PROJECT_NAME)
