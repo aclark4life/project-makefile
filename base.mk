@@ -188,8 +188,20 @@ pipeline {
 	}
 }
 endef
+define DJANGO_URLS
+from django.contrib import admin
+from django.urls import path
+
+import .views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.home),
+]
+endef
 export HOME_PAGE
 export JENKINS_FILE
+export DJANGO_URLS
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -260,6 +272,7 @@ django-init-default: django-install pg-init django-project
 	python manage.py webpack_init --skip-checks
 	git add frontend
 	@echo "$$HOME_PAGE" > project/templates/home.html
+	@echo "$$DJANGO_URLS" > project/urls.py
 	$(MAKE) npm-install
 	$(MAKE) migrate
 	$(MAKE) cp
