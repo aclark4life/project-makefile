@@ -257,7 +257,10 @@ django-init-default: django-install pg-init django-project
 	export SETTINGS=settings.py; $(MAKE) django-settings
 	git add $(PROJECT_NAME)
 	git add manage.py
-	python manage.py webpack_init
+	python manage.py webpack_init --skip-checks
+	$(MAKE) npm-install
+	$(MAKE) migrate
+	$(MAKE) serve
 
 django-install-default:
 	@echo "Django\ndj-database-url\npsycopg2-binary\npython-webpack-boilerplate\n" > requirements.txt
