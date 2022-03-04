@@ -39,20 +39,13 @@ include base.mk
 #
 #
 # Uncomment the next line to customize the project name variable
-#PROJECT_NAME := my_project
+#PROJECT_NAME := project
 #
 # Uncomment the next line to customize the commit message variable
-#GIT_COMMIT := My awesome update
+#GIT_COMMIT := update
 #
-# Uncomment the next two lines to customize the default edit target
-#edit:
-#	vi my_project.py
-#
-# Uncomment the next two lines to customize the default db-init target
-#db-init: my-init
-
 # Uncomment the next line to include additional makefiles
-#include my_makefile.mk
+#include project.mk
 #
 # Uncomment the next line to customize the default goal
 #.DEFAULT_GOAL := git-commit-push
