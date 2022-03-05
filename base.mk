@@ -582,24 +582,24 @@ wagtail-init-default: db-init
 	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
 	export URLS=urls.py; $(MAKE) django-urls
-	git add $(PROJECT_NAME)
-	git add requirements.txt
-	git add manage.py
-	git add Dockerfile
-	git add .dockerignore
-	git add home
-	git add search
+	-git add $(PROJECT_NAME)
+	-git add requirements.txt
+	-git add manage.py
+	-git add Dockerfile
+	-git add .dockerignore
+	-git add home
+	-git add search
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 	python manage.py webpack_init --skip-checks
-	git add frontend
-	@$(MAKE) cp
+	-git add frontend
+	-@$(MAKE) cp
 	@$(MAKE) django-npm-install
-	@$(MAKE) cp
+	-@$(MAKE) cp
 	@$(MAKE) isort
 	@$(MAKE) black
-	@$(MAKE) cp
+	-@$(MAKE) cp
 	@$(MAKE) flake
 	@$(MAKE) serve
 
