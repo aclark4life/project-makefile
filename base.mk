@@ -188,15 +188,9 @@ pipeline {
 	}
 }
 endef
-define DJANGO_URLS
-from django.contrib import admin
-from django.urls import path
-
-import .views
-
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.home),
+define URLS
+urlpatterns = urlpatterns + [
+    path('api-auth/', include('rest_framework.urls'))
 ]
 endef
 export HOME_PAGE
@@ -312,6 +306,10 @@ django-test-default:
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
 		User.objects.create_user('user', '', 'user')"
+
+django-urls-default:
+	echo "\n# $(PROJECT_NAME)\n" >> $(PROJECT_NAME)/$(URLS)
+	echo "$(URLS)\n" >> $(PROJECT_NAME)/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
@@ -519,6 +517,7 @@ wagtail-init-default: db-init
 	wagtail start $(PROJECT_NAME) .
 	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
+	export URLS=urls.py; $(MAKE) django-urls
 	git add $(PROJECT_NAME)
 	git add requirements.txt
 	git add manage.py
