@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     py_modules=["install"],
     test_suite="",
-    url="",
+    url="https://github.com/project-makefile/project-makefile",
     version=VERSION,
     zip_safe=False,
 )
