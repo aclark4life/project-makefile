@@ -309,7 +309,7 @@ django-user-default:
 
 django-urls-default:
 	echo "\n# $(PROJECT_NAME)\n" >> $(PROJECT_NAME)/$(URLS)
-	echo "$(API_AUTH)\n" >> $(PROJECT_NAME)/$(URLS)
+	echo "$$API_AUTH" >> $(PROJECT_NAME)/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
