@@ -165,10 +165,9 @@ define HOME_PAGE
     <h1 class="display-3">Hello, world!</h1>
     <p>This is a template for a simple marketing or informational website. It includes a large callout called a
       jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-    <div class="btn-group" role="group" aria-label="Basic example">
-      <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Learn more »</a>
-      <button type="button" class="btn btn-primary">Middle</button>
-      <button type="button" class="btn btn-primary">Right</button>
+    <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+      <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Admin</a>
+      <a type="button" class="btn btn-primary" href="/api" role="button">API</a>
     </div>
     <div class="d-flex justify-content-center">
       <img src="{% static 'vendors/images/webpack.png' %}" class="img-fluid"/>
