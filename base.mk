@@ -605,6 +605,8 @@ wagtail-init-default: db-init
 	@$(MAKE) cp
 	@$(MAKE) django-npm-install
 	@$(MAKE) cp
+	@$(MAKE) black
+	@$(MAKE) cp
 	@$(MAKE) serve
 
 wagtail-install-default:
