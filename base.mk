@@ -423,17 +423,29 @@ git-set-upstream-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-dev-default:
-	python setup.py develop
+black-default:
+	-black *.py
+	-black $(PROJECT_NAME)/*.py
+	-black $(PROJECT_NAME)/*/*.py
 
-jenkins-file:
-	@echo "$$JENKINS_FILE" > Jenkinsfile
+flake-default:
+	-flake8 *.py
+	-flake8 $(PROJECT_NAME)/*.py
+	-flake8 $(PROJECT_NAME)/*/*.py
 
 help-default:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
         '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
         | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
         '{print "make "$$0}' | less  # http://stackoverflow.com/a/26339924
+
+isort-default:
+	-isort *.py
+	-isort $(PROJECT_NAME)/*.py
+	-isort $(PROJECT_NAME)/*/*.py
+
+jenkins-file:
+	@echo "$$JENKINS_FILE" > Jenkinsfile
 
 my-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
@@ -447,6 +459,10 @@ pdf-build-default:
 pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
+
+python-serve-default:
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	python -m http.server
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
@@ -500,30 +516,6 @@ pip-upgrade:
 pip-init-default:
 	touch requirements.txt
 	-git add requirements.txt
-
-#
-# Python
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-
-black-default:
-	-black *.py
-	-black $(PROJECT_NAME)/*.py
-	-black $(PROJECT_NAME)/*/*.py
-
-isort-default:
-	-isort *.py
-	-isort $(PROJECT_NAME)/*.py
-	-isort $(PROJECT_NAME)/*/*.py
-
-flake-default:
-	-flake8 *.py
-	-flake8 $(PROJECT_NAME)/*.py
-	-flake8 $(PROJECT_NAME)/*/*.py
-
-python-serve-default:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m http.server
 
 #
 # Readme
