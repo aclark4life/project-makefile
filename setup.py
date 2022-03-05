@@ -15,7 +15,7 @@ setup(
     install_requires=[],
     keywords="",
     license="",
-    long_description=open("README.md").read(),
+    long_description=open("README.rst").read(),
     name="project-makefile",
     namespace_packages=[],
     packages=find_packages(),
