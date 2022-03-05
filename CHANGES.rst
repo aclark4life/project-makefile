@@ -4,6 +4,11 @@ Changelog
 0.0.8 (2022-03-05)
 ------------------
 
+- Update docs
+
+0.0.8 (2022-03-05)
+------------------
+
 - Remove ``django-init`` in favor of ``wagtail-init``
 
   - Add PHONY for ``django-init: wagtail-init``
