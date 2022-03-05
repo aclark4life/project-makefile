@@ -605,7 +605,6 @@ wagtail-init-default: db-init wagtail-install
 
 wagtail-install-default:
 	pip3 install dj-database-url djangorestframework psycopg2-binary python-webpack-boilerplate wagtail
-	@$(MAKE) pip-freeze
 
 #
 # .PHONY
