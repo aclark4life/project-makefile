@@ -6,33 +6,7 @@ A generic makefile for projects.
 Why
 ---
 
-- I like typing ``make <target>`` to perform tasks. 🤷
-
-::
-
-
-     
-                                     _________
-             This             _.--""'-----,   `"--.._
-           Makefile        .-''   _/_      ; .'"----,`-,
-                         .'      :___:     ; :      ;;`.`.
-                        .      _.- _.-    .' :      ::  `..
-                     __;..----------------' :: ___  ::   ;;
-                .--"". '           ___.....`:=(___)-' :--'`.
-              .'   .'         .--''__       :       ==:    ;
-          .--/    /        .'.''     ``-,   :         :   '`-.
-       ."', :    /       .'-`\\       .--.\ :         :  ,   _\
-      ;   ; |   ;       /:'  ;;      /__  \\:         :  :  /_\\
-      |\_/  |   |      / \__//      /"--\\ \:         :  : ;|`\|    
-      : "  /\__/\____//   """      /     \\ :         :  : :|'||
-    ["""""""""--------........._  /      || ;      __.:--' :|//|
-     "------....______         ].'|      // |--"""'__...-'`\ \//
-       `| GNUMAKE |__;_...--'": :  \    //  |---"""      \__\_/
-         """""""""'            \ \  \_.//  /
-           `---'                \ \_     _'
-                                 `--`---'  dp
-
-Via https://www.asciiart.eu/vehicles/cars
+I like typing ``make <target>`` to perform tasks. 🤷
 
 Installation
 ------------
@@ -41,10 +15,13 @@ Installation
 
 	pip install project-makefile
 
+Runtime dependencies
+--------------------
+
+Requires ``curl`` in ``PATH``.
+
 Usage
 -----
-
-Requires ``curl`` in ``PATH``
 
 ::
 
