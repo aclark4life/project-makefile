@@ -597,8 +597,10 @@ wagtail-init-default: db-init
 	@$(MAKE) cp
 	@$(MAKE) django-npm-install
 	@$(MAKE) cp
+	@$(MAKE) isort
 	@$(MAKE) black
 	@$(MAKE) cp
+	@$(MAKE) flake
 	@$(MAKE) serve
 
 wagtail-install-default:
