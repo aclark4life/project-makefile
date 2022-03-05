@@ -166,8 +166,8 @@ define HOME_PAGE
     <p>This is a template for a simple marketing or informational website. It includes a large callout called a
       jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-      <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Admin</a>
-      <a type="button" class="btn btn-primary" href="/api" role="button">API</a>
+      <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Django Admin</a>
+      <a type="button" class="btn btn-primary" href="/api" target="_blank" role="button">Web Browseable API</a>
     </div>
     <div class="d-flex justify-content-center">
       <img src="{% static 'vendors/images/webpack.png' %}" class="img-fluid"/>
