@@ -577,7 +577,7 @@ tidelift-request-all-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-wagtail-init-default: db-init
+wagtail-init-default: db-init wagtail-install
 	wagtail start $(PROJECT_NAME) .
 	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
