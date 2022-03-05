@@ -25,22 +25,19 @@ Usage
 
 ::
 
-	$ project-makefile <project_dir>
-	$ cd <project_dir>
-	$ make
-	Project Makefile
-	Usage:
-
-		make <project_dir>
-
-	Help:
-
-		make help
+    Project Makefile
+    Usage:
+    
+    	make <project_dir>
+    
+    Help:
+    
+    	make help
 
 Example
 -------
 
 ::
 
-	$ project-makefile .
-	$ make django-init
+	project-makefile .
+	make django-init
