@@ -478,7 +478,7 @@ endif
 usage-default:
 	@echo "Project Makefile"
 	@echo "Usage:\n"
-	@echo "\tmake <target>\n"
+	@echo "\tmake <project_dir>\n"
 	@echo "Help:\n"
 	@echo "\tmake help"
 
