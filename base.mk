@@ -537,7 +537,7 @@ wagtail-init-default: db-init
 	@$(MAKE) serve
 
 wagtail-install-default:
-	pip3 install dj-database-url psycopg2-binary wagtail python-webpack-boilerplate
+	pip3 install dj-database-url djangorestframework psycopg2-binary python-webpack-boilerplate wagtail
 	@$(MAKE) pip-freeze
 
 #
