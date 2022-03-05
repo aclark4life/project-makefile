@@ -1,8 +1,12 @@
 Changelog
 =========
 
-0.0.5 (XXXX-XX-XX)
+0.0.5 (2022-03-05)
 ------------------
+
+- Remove ``django-init`` in favor of ``wagtail-init``
+
+  - Add PHONY for ``django-init: wagtail-init``
 
 - AWS Elastic Beanstalk
 

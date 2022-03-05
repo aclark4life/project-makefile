@@ -1,7 +1,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-VERSION = "0.0.4"
+VERSION = "0.0.5"
 
 setup(
     author="Alex Clark",
@@ -15,7 +15,7 @@ setup(
     install_requires=[],
     keywords="",
     license="",
-    long_description=open("README.rst").read(),
+    long_description=open("README.md").read(),
     name="project-makefile",
     namespace_packages=[],
     packages=find_packages(),
