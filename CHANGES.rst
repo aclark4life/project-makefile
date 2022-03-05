@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.0.5 (2022-03-05)
+0.0.7 (2022-03-05)
 ------------------
 
 - Remove ``django-init`` in favor of ``wagtail-init``
@@ -11,6 +11,16 @@ Changelog
 - AWS Elastic Beanstalk
 
   - Add PLATFORM env var
+
+0.0.6 (2022-03-05)
+------------------
+
+- Brown bag
+
+0.0.5 (2022-03-05)
+------------------
+
+- Brown bag
 
 0.0.4 (2021-10-12)
 ------------------
