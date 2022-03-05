@@ -1,7 +1,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-VERSION = "0.0.5"
+VERSION = "0.0.6"
 
 setup(
     author="Alex Clark",
