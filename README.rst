@@ -31,7 +31,7 @@ Usage
 	Project Makefile
 	Usage:
 
-		make <target>
+		make <project_dir>
 
 	Help:
 
