@@ -11,3 +11,4 @@
 - Tag release
 
   - `git tag X.X.X`
+  - `git push --tags`
