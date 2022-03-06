@@ -2,5 +2,8 @@
 
 # Steps
 
-- Update version in install.py
-- Update version in CHANGES.rst
+- Update version 
+
+  - CHANGES.rst
+  - install.py
+  - setup.py
