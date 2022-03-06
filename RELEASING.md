@@ -7,11 +7,14 @@
   - CHANGES.rst
   - install.py
   - setup.py
+  - RELEASING.md
 
 - Tag release
 
-  - `git tag X.X.X`
-  - `git push --tags`
+```
+git tag 0.0.9
+git push --tags
+```
 
 - Create distribution
 
