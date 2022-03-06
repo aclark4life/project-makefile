@@ -18,8 +18,12 @@ git push --tags
 
 - Create distribution
 
-  - `python setup.py sdist --form=zip`
+```
+python setup.py sdist --format=zip
+```
 
 - Upload distribution
 
-  - `twine upload dist/project-makefile-X.X.X.zip`
+```
+twine upload dist/project-makefile-0.0.9.zip
+```
