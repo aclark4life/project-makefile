@@ -362,6 +362,7 @@ django-settings-default:
 		$(PROJECT_NAME)/$(SETTINGS)
 	echo "$$REST_FRAMEWORK" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "LOGIN_REDIRECT_URL = '/'" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(PROJECT_NAME)/$(SETTINGS)
 
 django-shell-default:
 	python manage.py shell
