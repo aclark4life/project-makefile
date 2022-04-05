@@ -470,7 +470,7 @@ rand-default:
 
 review-default:
 ifeq ($(UNAME), Darwin)
-	@open -a $(EDITOR) `find $(PROJECT_NAME) -name \*.py | grep -v __init__.py | grep -v migrations`\
+	@open -a $(REVIEW_EDITOR) `find $(PROJECT_NAME) -name \*.py | grep -v __init__.py | grep -v migrations`\
 		`find $(PROJECT_NAME) -name \*.html` `find $(PROJECT_NAME) -name \*.js`
 else
 	@echo "Unsupported"
