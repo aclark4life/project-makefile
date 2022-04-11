@@ -626,6 +626,9 @@ load: loaddata
 .PHONY: migrate
 migrate: django-migrate
 
+.PHONY: migrations
+migrations: django-migrations
+
 .PHONY: npm-install
 npm-install: django-npm-install
 
