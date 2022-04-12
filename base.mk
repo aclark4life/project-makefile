@@ -162,7 +162,7 @@ define HOME_PAGE
 {% load webpack_loader static %}
 <div class="jumbotron py-5">
   <div class="container">
-    <h1 class="display-3">Hello, world!</h1>
+    <a href="/" class="text-decoration-none text-dark"><h1 class="display-3">Hello, world!</h1></a>
     <p>This is a template for a simple marketing or informational website. It includes a large callout called a
       jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
