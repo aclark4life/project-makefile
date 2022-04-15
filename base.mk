@@ -395,6 +395,8 @@ django-npm-install-default:
 gitignore-default:
 	echo "bin/\nlib/\npyvenv.cfg\n__pycache__" > .gitignore
 	git add .gitignore
+	git commit -a -m "Add .gitignore"
+	git push
 
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
