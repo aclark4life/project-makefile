@@ -430,7 +430,7 @@ black-default:
 	-black *.py
 	-black $(PROJECT_NAME)/*.py
 	-black $(PROJECT_NAME)/*/*.py
-	git commit -a -m "A one time black event"
+	-git commit -a -m "A one time black event"
 	git push
 
 flake-default:
