@@ -486,6 +486,8 @@ usage-default:
 make-default:
 	git add base.mk
 	git add Makefile
+	git commit -a -m "Add project-makefile files"
+	git push
 
 init-default: gitignore make pip-init readme-init 
 
