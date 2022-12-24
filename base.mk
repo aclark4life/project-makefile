@@ -614,7 +614,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
 	python manage.py webpack_init --skip-checks
 	-git add frontend
-	-@$(MAKE) cp
+	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
 	-@$(MAKE) cp
 	@$(MAKE) isort
