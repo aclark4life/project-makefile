@@ -393,7 +393,7 @@ django-npm-install-default:
 #
 
 gitignore-default:
-	echo "bin/\nlib/\nlib64\nshare/\npyvenv.cfg\n__pycache__" > .gitignore
+	echo "bin/\nlib/\nlib64\nshare/\npyvenv.cfg\n__pycache__\n.elasticbeanstalk/" > .gitignore
 	git add .gitignore
 	git commit -a -m "Add .gitignore"
 	git push
