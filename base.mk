@@ -657,6 +657,9 @@ readme: readme-init
 .PHONY: serve
 serve: django-serve
 
+.PHONY: s
+s: serve
+
 .PHONY: static
 static: django-static
 
