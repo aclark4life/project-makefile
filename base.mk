@@ -387,6 +387,9 @@ django-urls-default:
 django-npm-install-default:
 	cd frontend; npm install
 
+django-open-default:
+	open http://0.0.0.0:8000
+
 #
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -687,7 +690,7 @@ edit: readme-edit
 e: edit
 
 .PHONY: open
-open: readme-open
+open: django-open
 
 .PHONY: o
 o: open
