@@ -695,6 +695,9 @@ open: django-open
 .PHONY: o
 o: open
 
+.PHONY: pdf
+pdf: readme-build-pdf
+
 # git --------------------------------------------------------------------------------
 
 .PHONY: ce
