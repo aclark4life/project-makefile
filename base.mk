@@ -191,7 +191,13 @@ pipeline {
 	}
 }
 endef
-define API_AUTH
+define AUTHENTICATION_BACKENDS
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+endef
+define ALL_AUTH
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
@@ -206,13 +212,9 @@ from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 
 urlpatterns = [
-    path('django-admin/', admin.site.urls),
-
-    path('admin/', include(wagtailadmin_urls)),
-    path('documents/', include(wagtaildocs_urls)),
-
-    path('search/', search_views.search, name='search'),
-
+	path('accounts/', include('allauth.urls')),
+    path('admin/', admin.site.urls),
+    path('cms/', include(wagtailadmin_urls)),
 ]
 
 
@@ -264,8 +266,9 @@ REST_FRAMEWORK = {
 endef
 export HOME_PAGE
 export JENKINS_FILE
-export API_AUTH
+export ALL_AUTH
 export REST_FRAMEWORK
+export AUTHENTICATION_BACKENDS
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -357,12 +360,16 @@ django-settings-default:
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "INSTALLED_APPS.append('rest_framework')" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "INSTALLED_APPS.append('allauth')" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "INSTALLED_APPS.append('allauth.account')" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build')]" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> \
 		$(PROJECT_NAME)/$(SETTINGS)
 	echo "$$REST_FRAMEWORK" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "LOGIN_REDIRECT_URL = '/'" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "$$AUTHENTICATION_BACKENDS" >> $(PROJECT_NAME)/$(SETTINGS)
 
 django-shell-default:
 	python manage.py shell
@@ -382,7 +389,7 @@ django-user-default:
 		User.objects.create_user('user', '', 'user')"
 
 django-urls-default:
-	echo "$$API_AUTH" > $(PROJECT_NAME)/$(URLS)
+	echo "$$ALL_AUTH" > $(PROJECT_NAME)/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
@@ -627,7 +634,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) serve
 
 wagtail-install-default:
-	pip3 install dj-database-url djangorestframework psycopg2-binary python-webpack-boilerplate wagtail
+	pip3 install dj-database-url django-allauth djangorestframework psycopg2-binary python-webpack-boilerplate wagtail
 
 #
 # .PHONY
