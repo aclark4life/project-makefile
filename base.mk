@@ -514,6 +514,8 @@ make-default:
 
 init-default: gitignore make pip-init readme-init 
 
+serve-default: django-serve
+
 #
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -664,9 +666,6 @@ npm-install: django-npm-install
 
 .PHONY: readme
 readme: readme-init
-
-.PHONY: serve
-serve: django-serve
 
 .PHONY: s
 s: serve
