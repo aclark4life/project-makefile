@@ -516,6 +516,8 @@ init-default: gitignore make pip-init readme-init
 
 serve-default: django-serve
 
+open-default: django-open
+
 #
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -695,9 +697,6 @@ edit: readme-edit
 
 .PHONY: e
 e: edit
-
-.PHONY: open
-open: django-open
 
 .PHONY: o
 o: open
