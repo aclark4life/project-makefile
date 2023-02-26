@@ -467,6 +467,8 @@ isort-default:
 	-isort *.py
 	-isort $(PROJECT_NAME)/*.py
 	-isort $(PROJECT_NAME)/*/*.py
+	-git commit -a -m "A one time isort event"
+	git push
 
 jenkins-file:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
@@ -517,6 +519,13 @@ init-default: gitignore make pip-init readme-init
 serve-default: django-serve
 
 open-default: django-open
+
+ruff-default:
+	-ruff *.py
+	-ruff $(PROJECT_NAME)/*.py
+	-ruff $(PROJECT_NAME)/*/*.py
+	-git commit -a -m "A one time ruff event"
+	git push
 
 #
 # Pip
