@@ -41,11 +41,11 @@ include base.mk
 # Uncomment the next line to customize the project name variable
 #PROJECT_NAME := project
 #
-# Uncomment the next line to include additional makefiles
-#include project.mk
-#
 # Uncomment the next line to customize the default goal
 #.DEFAULT_GOAL := git-commit-push
+#
+# Uncomment the next line to include additional makefiles
+#include project.mk
 
 # Uncomment and edit the next 12 lines to customize the eb-create goal
 # eb-create:
