@@ -453,13 +453,23 @@ black-default:
 	-black *.py
 	-black $(PROJECT_NAME)/*.py
 	-black $(PROJECT_NAME)/*/*.py
+	-black $(PROJECT_NAME)/*/*/*.py
 	-git commit -a -m "A one time black event"
+	git push
+
+djlint-default:
+	-djlint --reformat *.py
+	-djlint --reformat $(PROJECT_NAME)/*.py
+	-djlint --reformat $(PROJECT_NAME)/*/*.py
+	-djlint --reformat $(PROJECT_NAME)/*/*/*.py
+	-git commit -a -m "A one time djlint event"
 	git push
 
 flake-default:
 	-flake8 *.py
 	-flake8 $(PROJECT_NAME)/*.py
 	-flake8 $(PROJECT_NAME)/*/*.py
+	-flake8 $(PROJECT_NAME)/*/*/*.py
 
 help-default:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
