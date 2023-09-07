@@ -352,6 +352,10 @@ django-serve-default:
 	cd frontend; npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
+django-serve-prod-default:
+	cd frontend; npm run watch &
+	python manage.py runserver 0.0.0.0:8000 --settings=$(PROJECT_NAME).settings.production
+
 django-settings-default:
 	echo "\n# $(PROJECT_NAME)\n" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT_NAME)/$(SETTINGS)
@@ -518,6 +522,8 @@ init-default: gitignore make pip-init readme-init
 
 serve-default: django-serve
 
+serve-prod-default: django-serve-prod
+
 open-default: django-open
 
 ruff-default:
@@ -526,6 +532,9 @@ ruff-default:
 	-ruff $(PROJECT_NAME)/*/*.py
 	-git commit -a -m "A one time ruff event"
 	git push
+
+pack-default:
+	cd frontend; npm run build
 
 #
 # Pip
@@ -680,6 +689,9 @@ readme: readme-init
 
 .PHONY: s
 s: serve
+
+.PHONY: sp
+sp: serve-prod
 
 .PHONY: static
 static: django-static
