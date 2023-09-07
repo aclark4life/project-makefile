@@ -37,27 +37,11 @@ include base.mk
 #
 # E.g.
 #
+# Uncomment the next line to customize the default goal
+#.DEFAULT_GOAL := git-commit-push
 #
 # Uncomment the next line to customize the project name variable
 #PROJECT_NAME := project
 #
-# Uncomment the next line to customize the default goal
-#.DEFAULT_GOAL := git-commit-push
-#
 # Uncomment the next line to include additional makefiles
 #include project.mk
-
-# Uncomment and edit the next 12 lines to customize the eb-create goal
-# eb-create:
-#     export PLATFORM=\"64bit\ Amazon\ Linux\ 2\ v3.3.13\ running\ Python\ 3.8\";\
-#     export AWS_PROFILE=profile;\
-#     export AWS_EB_PROFILE=profile;\
-#     export ENV_NAME=env;\
-#     export INSTANCE_TYPE=t3.micro;\
-#     export LB_TYPE=application;\
-#     export SSH_KEY=key;\
-#     export VPC_ID=vpc;\
-#     export VPC_SG=sg;\
-#     export VPC_SUBNET_EC2=subnet;\
-#     export VPC_SUBNET_ELB=subnet;\
-#     $(MAKE) eb-create-default
