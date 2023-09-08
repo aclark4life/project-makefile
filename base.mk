@@ -714,13 +714,14 @@ test: django-test
 .PHONY: user
 user: django-user
 
-# readme --------------------------------------------------------------------------------
-
 .PHONY: build
-build: readme-build
+build: sphinx-build
 
 .PHONY: b
 b: build
+
+
+# readme --------------------------------------------------------------------------------
 
 .PHONY: edit
 edit: readme-edit
