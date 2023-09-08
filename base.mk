@@ -491,11 +491,6 @@ my-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
 
-pdf-build-default:
-	rst2pdf README.rst > README.pdf
-	git add README.pdf
-	$(MAKE) commit-push
-
 pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
@@ -619,6 +614,9 @@ sphinx-install:
 sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
 
+sphinx-build-pdf-default:
+	sphinx-build -b rinoh . _build/rinoh
+
 sphinx-serve-default:
 	cd _build/html;python -m http.server
 
@@ -732,9 +730,6 @@ e: edit
 
 .PHONY: o
 o: open
-
-.PHONY: pdf
-pdf: readme-build
 
 # git --------------------------------------------------------------------------------
 
