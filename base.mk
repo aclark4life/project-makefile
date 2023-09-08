@@ -458,10 +458,10 @@ black-default:
 	git push
 
 djlint-default:
-	-djlint --reformat *.py
-	-djlint --reformat $(PROJECT_NAME)/*.py
-	-djlint --reformat $(PROJECT_NAME)/*/*.py
-	-djlint --reformat $(PROJECT_NAME)/*/*/*.py
+	-djlint --reformat *.html
+	-djlint --reformat $(PROJECT_NAME)/*.html
+	-djlint --reformat $(PROJECT_NAME)/*/*.html
+	-djlint --reformat $(PROJECT_NAME)/*/*/*.html
 	-git commit -a -m "A one time djlint event"
 	git push
 
