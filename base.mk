@@ -604,9 +604,6 @@ readme-build-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-sphinx-build-default:
-	sphinx-build -b html -d _build/doctrees . _build/html
-
 sphinx-init:
 	$(MAKE) sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
@@ -618,6 +615,10 @@ sphinx-install:
 	@$(MAKE) pip-install
 	@$(MAKE) pip-freeze
 	-git add requirements.txt
+
+sphinx-build-default:
+	sphinx-build -b html -d _build/doctrees . _build/html
+
 sphinx-serve-default:
 	cd _build/html;python -m http.server
 
