@@ -449,6 +449,9 @@ xcodegen:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
+build-default:
+	$(MAKE) readme-build
+
 black-default:
 	-black *.py
 	-black $(PROJECT_NAME)/*.py
@@ -693,15 +696,6 @@ migrations: django-migrations
 .PHONY: npm-install
 npm-install: django-npm-install
 
-.PHONY: readme
-readme: readme-init
-
-.PHONY: s
-s: serve
-
-.PHONY: sp
-sp: serve-prod
-
 .PHONY: static
 static: django-static
 
@@ -714,12 +708,19 @@ test: django-test
 .PHONY: user
 user: django-user
 
-.PHONY: build
-build: sphinx-build
+# misc --------------------------------------------------------------------------------
+
+.PHONY: readme
+readme: readme-init
+
+.PHONY: s
+s: serve
+
+.PHONY: sp
+sp: serve-prod
 
 .PHONY: b
 b: build
-
 
 # readme --------------------------------------------------------------------------------
 
