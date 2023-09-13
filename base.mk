@@ -436,6 +436,9 @@ git-push-default:
 git-set-upstream-default:
 	git push --set-upstream origin main
 
+git-commit-empty-default:
+	git commit --allow-empty -m "Empty-Commit" ; git push
+
 #
 # iOS
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -740,6 +743,9 @@ ce: git-commit-edit git-push
 
 .PHONY: cp
 cp: git-commit-push
+
+.PHONY: e
+e: git-commit-empty
 
 # pip --------------------------------------------------------------------------------
 
