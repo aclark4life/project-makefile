@@ -745,7 +745,7 @@ ce: git-commit-edit git-push
 cp: git-commit-push
 
 .PHONY: e
-e: git-commit-empty
+empty: git-commit-empty
 
 # pip --------------------------------------------------------------------------------
 
