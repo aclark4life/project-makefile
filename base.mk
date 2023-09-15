@@ -768,6 +768,9 @@ install: pip-install
 .PHONY: install-test
 install-test: pip-install-test
 
+.PHONY: install-dev
+install-dev: pip-install-dev
+
 # --------------------------------------------------------------------------------
 
 .PHONY: db-init
