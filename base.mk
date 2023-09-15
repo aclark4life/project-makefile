@@ -403,6 +403,9 @@ django-npm-install-default:
 django-npm-test-default:
 	cd frontend; npm run test
 
+django-npm-build-default:
+	cd frontend; npm run build
+
 django-open-default:
 	open http://0.0.0.0:8000
 
@@ -547,9 +550,6 @@ ruff-default:
 	-ruff $(PROJECT_NAME)/*/*.py
 	-git commit -a -m "A one time ruff event"
 	git push
-
-pack-default:
-	cd frontend; npm run build
 
 #
 # Pip
@@ -714,6 +714,9 @@ test: django-test
 
 .PHONY: user
 user: django-user
+
+.PHONY: pack
+pack: django-npm-build
 
 # misc --------------------------------------------------------------------------------
 
