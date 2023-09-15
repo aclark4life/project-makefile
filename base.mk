@@ -570,6 +570,9 @@ pip-install-default: pip-upgrade
 pip-install-test-default:
 	pip3 install -r requirements-test.txt
 
+pip-install-dev-default:
+	pip3 install -r requirements-dev.txt
+
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
