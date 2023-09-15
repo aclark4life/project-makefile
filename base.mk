@@ -400,6 +400,9 @@ django-urls-default:
 django-npm-install-default:
 	cd frontend; npm install
 
+django-npm-test-default:
+	cd frontend; npm run test
+
 django-open-default:
 	open http://0.0.0.0:8000
 
