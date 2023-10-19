@@ -426,7 +426,8 @@ django-open-default:
 
 gitignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
-	echo "$(PROJECT_NAME)/" >> .gitignore
+	echo "$(PROJECT_NAME)/__pycache__/" >> .gitignore
+	echo "$(PROJECT_NAME)/settings/__pycache__/" >> .gitignore
 	git add .gitignore
 	git commit -a -m "Add .gitignore"
 	git push
@@ -711,6 +712,9 @@ wagtail-install-default:
 
 .PHONY: django-init
 django-init: wagtail-init
+
+.PHONY: django-clean
+django-clean: wagtail-init-clean
 
 .PHONY: loaddata
 loaddata: django-loaddata
