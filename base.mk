@@ -525,10 +525,10 @@ endif
 
 usage-default:
 	@echo "Project Makefile"
-	@echo "Usage:\n"
-	@echo "\tmake <project_dir>\n"
-	@echo "Help:\n"
-	@echo "\tmake help"
+	@echo "Usage:"
+	@echo "  make <task>"
+	@echo "Help:"
+	@echo "  make help"
 
 make-default:
 	git add base.mk
