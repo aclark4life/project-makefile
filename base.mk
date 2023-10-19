@@ -357,8 +357,8 @@ django-serve-prod-default:
 	python manage.py runserver 0.0.0.0:8000 --settings=$(PROJECT_NAME).settings.production
 
 django-settings-default:
-	echo "\n# $(PROJECT_NAME)\n" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "ALLOWED_HOSTS = ['*']\n" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "# $(PROJECT_NAME)" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "import dj_database_url, os" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
 		'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(PROJECT_NAME)/$(SETTINGS)
@@ -651,6 +651,13 @@ tidelift-request-all-default:
 # Wagtail
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
+wagtail-init-clean-default:
+	-rm -vf .dockerignore
+	-rm -vf Dockerfile
+	-rm -vf manage.py
+	-rm -vf requirements.txt
+	-rm -rvf home/
+	-rm -rvf search/
 
 wagtail-init-default: db-init wagtail-install
 	wagtail start $(PROJECT_NAME) .
