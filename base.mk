@@ -267,12 +267,10 @@ REST_FRAMEWORK = {
 endef
 define GIT_IGNORE
 bin/
-home/__pycache__/
-home/migrations/__pycache__/
+__pycache__
 lib/
 lib64
 pyvenv.cfg
-search/__pycache__/
 endef
 export HOME_PAGE
 export JENKINS_FILE
@@ -426,8 +424,6 @@ django-open-default:
 
 gitignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
-	echo "$(PROJECT_NAME)/__pycache__/" >> .gitignore
-	echo "$(PROJECT_NAME)/settings/__pycache__/" >> .gitignore
 	git add .gitignore
 	git commit -a -m "Add .gitignore"
 	git push
