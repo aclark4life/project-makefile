@@ -265,11 +265,23 @@ REST_FRAMEWORK = {
     ]
 }
 endef
+define GIT_IGNORE
+	bin/
+	home/__pycache__/
+	home/migrations/__pycache__/
+	lib/
+	lib64
+	project/__pycache__/
+	project/settings/__pycache__/
+	pyvenv.cfg
+	search/__pycache__/
+endef
 export HOME_PAGE
 export JENKINS_FILE
 export ALL_AUTH
 export REST_FRAMEWORK
 export AUTHENTICATION_BACKENDS
+export GIT_IGNORE
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -413,17 +425,6 @@ django-open-default:
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
-define GIT_IGNORE
-	bin/
-	home/__pycache__/
-	home/migrations/__pycache__/
-	lib/
-	lib64
-	project/__pycache__/
-	project/settings/__pycache__/
-	pyvenv.cfg
-	search/__pycache__/
-endef
 
 gitignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
@@ -672,7 +673,7 @@ wagtail-init-clean-default:
 	-rm -rvf $(PROJECT_NAME)/
 	-rm -rvf frontend/
 
-wagtail-init-default: db-init wagtail-install gitignore
+wagtail-init-default: db-init wagtail-install
 	wagtail start $(PROJECT_NAME) .
 	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
@@ -696,6 +697,7 @@ wagtail-init-default: db-init wagtail-install gitignore
 	@$(MAKE) black
 	-@$(MAKE) cp
 	@$(MAKE) flake
+	@$(MAKE) gitignore
 	@$(MAKE) serve
 
 wagtail-install-default:
