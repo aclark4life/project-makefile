@@ -600,8 +600,8 @@ pip-init-default:
 #
 
 readme-init-default:
-	@echo $(PROJECT_NAME) > README.rst
-	@echo "================================================================================\n" >> README.rst
+	@echo "$(PROJECT_NAME)" > README.rst
+	@echo "================================================================================" >> README.rst
 	@git add README.rst
 	git commit -a -m "Add readme"
 	git push
