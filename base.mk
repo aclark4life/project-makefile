@@ -413,9 +413,20 @@ django-open-default:
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
+define GIT_IGNORE
+	bin/
+	home/__pycache__/
+	home/migrations/__pycache__/
+	lib/
+	lib64
+	project/__pycache__/
+	project/settings/__pycache__/
+	pyvenv.cfg
+	search/__pycache__/
+endef
 
 gitignore-default:
-	echo "bin/\nlib/\nlib64\nshare/\npyvenv.cfg\n__pycache__\n.elasticbeanstalk/\n_build/" > .gitignore
+	echo "$$GIT_IGNORE" > .gitignore
 	git add .gitignore
 	git commit -a -m "Add .gitignore"
 	git push
@@ -659,8 +670,9 @@ wagtail-init-clean-default:
 	-rm -rvf home/
 	-rm -rvf search/
 	-rm -rvf $(PROJECT_NAME)/
+	-rm -rvf frontend/
 
-wagtail-init-default: db-init wagtail-install
+wagtail-init-default: db-init wagtail-install gitignore
 	wagtail start $(PROJECT_NAME) .
 	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
