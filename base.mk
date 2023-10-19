@@ -668,6 +668,7 @@ wagtail-init-clean-default:
 	-rm -rvf search/
 	-rm -rvf $(PROJECT_NAME)/
 	-rm -rvf frontend/
+	-rm -vf README.rst
 
 wagtail-init-default: db-init wagtail-install
 	wagtail start $(PROJECT_NAME) .
@@ -694,6 +695,7 @@ wagtail-init-default: db-init wagtail-install
 	-@$(MAKE) cp
 	@$(MAKE) flake
 	@$(MAKE) gitignore
+	@$(MAKE) readme
 	@$(MAKE) serve
 
 wagtail-install-default:
