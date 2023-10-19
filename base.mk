@@ -658,6 +658,7 @@ wagtail-init-clean-default:
 	-rm -vf requirements.txt
 	-rm -rvf home/
 	-rm -rvf search/
+	-rm -rvf $(PROJECT_NAME)/
 
 wagtail-init-default: db-init wagtail-install
 	wagtail start $(PROJECT_NAME) .
