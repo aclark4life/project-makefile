@@ -377,7 +377,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('allauth.account')" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build')]" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> \
 		$(PROJECT_NAME)/$(SETTINGS)
 	echo "$$REST_FRAMEWORK" >> $(PROJECT_NAME)/$(SETTINGS)
