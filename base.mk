@@ -546,6 +546,8 @@ make-default:
 
 init-default: gitignore make pip-init readme-init 
 
+deploy-default: eb-deploy
+
 serve-default: django-serve
 
 serve-prod-default: django-serve-prod
@@ -798,13 +800,6 @@ install-dev: pip-install-dev
 
 .PHONY: db-init
 db-init: pg-init
-
-# --------------------------------------------------------------------------------
-
-.PHONY: deploy
-deploy: eb-deploy
-.PHONY: d
-d: deploy
 
 # --------------------------------------------------------------------------------
 
