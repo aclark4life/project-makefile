@@ -587,6 +587,8 @@ pip-install-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	pip3 install -U -r requirements.txt
+	pip3 freeze | sort > $(TMPDIR)/requirements.txt
+	mv -f $(TMPDIR)/requirements.txt .
 
 pip-upgrade:
 	pip3 install -U pip
