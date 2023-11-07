@@ -168,7 +168,11 @@ define HOME_PAGE
     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
       <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Django Admin</a>
       <a type="button" class="btn btn-primary" href="/api" target="_blank" role="button">Web Browseable API</a>
-	  <a type="button" class="btn btn-primary" href="{% url 'account_login' %}" role="button">Login</a>
+        {% if request.user.is_anonymous %}
+          <a type="button" class="btn btn-primary" href="{% url 'account_login' %}" role="button">Login</a>
+        {% else %}
+          <a type="button" class="btn btn-primary" href="{% url 'account_logout' %}" role="button">Logout</a>
+        {% endif %}
     </div>
     <div class="d-flex justify-content-center">
       <img src="{% static 'vendors/images/webpack.png' %}" class="img-fluid"/>
