@@ -700,7 +700,6 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) black
 	-@$(MAKE) cp
 	@$(MAKE) flake
-	@$(MAKE) gitignore
 	@$(MAKE) readme
 	@$(MAKE) serve
 
