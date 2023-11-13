@@ -494,7 +494,6 @@ flake-default:
 	-flake8 *.py
 	-flake8 $(PROJECT_NAME)/*.py
 	-flake8 $(PROJECT_NAME)/*/*.py
-	-flake8 $(PROJECT_NAME)/*/*/*.py
 
 help-default:
 	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
