@@ -172,32 +172,49 @@ define HOME_PAGE_TEMPLATE
 {% load webpack_loader static %}
 {% block body_class %}template-homepage{% endblock %}
 {% block extra_css %}
-  {% stylesheet_pack 'app' %}
+    {% stylesheet_pack 'app' %}
 {% endblock extra_css %}
 {% block content %}
-{% load webpack_loader static %}
-<div class="jumbotron py-5">
-  <div class="container">
-    <a href="/" class="text-decoration-none text-dark"><h1 class="display-3">{{ page.title }}</h1></a>
-    <h2>{{ page.description|default:'' }}</h2>
-    {{ page.body|safe|default:'' }}
-    <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
-      <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Django Admin</a>
-      <a type="button" class="btn btn-primary" href="/api" target="_blank" role="button">Web Browseable API</a>
-        {% if request.user.is_anonymous %}
-          <a type="button" class="btn btn-primary" href="{% url 'account_login' %}" role="button">Login</a>
-        {% else %}
-          <a type="button" class="btn btn-primary" href="{% url 'account_logout' %}" role="button">Logout</a>
-        {% endif %}
+    {% load webpack_loader static %}
+    <div class="jumbotron py-5">
+        <div class="container">
+            <a href="/" class="text-decoration-none text-dark">
+                <h1 class="display-3">{{ page.title }}</h1>
+            </a>
+            <h2>{{ page.description|default:'' }}</h2>
+            {{ page.body|default:''|safe }}
+            <div class="btn-group btn-group-lg"
+                 role="group"
+                 aria-label="Basic example">
+                <a type="button"
+                   class="btn btn-primary"
+                   href="{% url 'admin:index' %}"
+                   role="button">Django Admin</a>
+                <a type="button"
+                   class="btn btn-primary"
+                   href="/api"
+                   target="_blank"
+                   role="button">Web Browseable API</a>
+                {% if request.user.is_anonymous %}
+                    <a type="button"
+                       class="btn btn-primary"
+                       href="{% url 'account_login' %}"
+                       role="button">Login</a>
+                {% else %}
+                    <a type="button"
+                       class="btn btn-primary"
+                       href="{% url 'account_logout' %}"
+                       role="button">Logout</a>
+                {% endif %}
+            </div>
+            <div class="d-flex justify-content-center">
+                <img src="{% static 'vendors/images/webpack.png' %}" class="img-fluid" />
+            </div>
+        </div>
     </div>
-    <div class="d-flex justify-content-center">
-      <img src="{% static 'vendors/images/webpack.png' %}" class="img-fluid"/>
-    </div>
-  </div>
-</div>
 {% endblock content %}
 {% block extra_js %}
-{% javascript_pack 'app' attrs='charset="UTF-8"' %}
+    {% javascript_pack 'app' attrs='charset="UTF-8"' %}
 {% endblock %}
 endef
 define JENKINS_FILE
