@@ -162,9 +162,9 @@ define HOME_PAGE
 {% load webpack_loader static %}
 <div class="jumbotron py-5">
   <div class="container">
-    <a href="/" class="text-decoration-none text-dark"><h1 class="display-3">Hello, world!</h1></a>
-    <p>This is a template for a simple marketing or informational website. It includes a large callout called a
-      jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+    <a href="/" class="text-decoration-none text-dark"><h1 class="display-3">{{ page.title }}</h1></a>
+    <h2>{{ page.description }}</h2>
+    <p>{{ page.body }}</p>
     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
       <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Django Admin</a>
       <a type="button" class="btn btn-primary" href="/api" target="_blank" role="button">Web Browseable API</a>
