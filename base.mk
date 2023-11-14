@@ -155,15 +155,16 @@ from django.db import models
 from wagtail.models import Page
 from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel
+from wagtailseo.models import SeoMixin
 
-class HomePage(Page):
+class HomePage(SeoMixin, Page):
     description = models.CharField(max_length=255, help_text='A short description of the page', blank=True, null=True)
     body = RichTextField(blank=True, null=True, help_text='The main content of the page')
-
     content_panels = Page.content_panels + [
         FieldPanel('description'),
         FieldPanel('body'),
     ]
+    promote_panels = SeoMixin.seo_panels
 endef
 
 # https://stackoverflow.com/a/649462/185820
