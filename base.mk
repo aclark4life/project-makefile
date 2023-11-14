@@ -745,7 +745,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) serve
 
 wagtail-install-default:
-	pip3 install dj-database-url django-allauth djangorestframework psycopg2-binary python-webpack-boilerplate wagtail wagtail-seo
+	pip3 install dj-database-url django-allauth djangorestframework psycopg2-binary python-webpack-boilerplate wagtail wagtail-seo django-countries
 
 #
 # .PHONY
