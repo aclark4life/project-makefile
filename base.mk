@@ -174,6 +174,7 @@ define HOME_PAGE_TEMPLATE
 {% block body_class %}template-homepage{% endblock %}
 {% block extra_css %}
     {% stylesheet_pack 'app' %}
+    {% include "wagtailseo/meta.html" %}
 {% endblock extra_css %}
 {% block content %}
     {% load webpack_loader static %}
@@ -216,6 +217,7 @@ define HOME_PAGE_TEMPLATE
 {% endblock content %}
 {% block extra_js %}
     {% javascript_pack 'app' attrs='charset="UTF-8"' %}
+    {% include "wagtailseo/struct_data.html" %}
 {% endblock %}
 endef
 define JENKINS_FILE
