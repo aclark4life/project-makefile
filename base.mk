@@ -720,8 +720,8 @@ wagtail-init-default: db-init wagtail-install
 	-git add Dockerfile
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
-	-git add home
 	@$(MAKE) django-migrations
+	-git add home
 	-git add search
 	@$(MAKE) django-migrate
 	@$(MAKE) su
