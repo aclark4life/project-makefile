@@ -424,6 +424,7 @@ django-settings-default:
 	echo "LOGIN_REDIRECT_URL = '/'" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(PROJECT_NAME)/$(SETTINGS)
 	echo "$$AUTHENTICATION_BACKENDS" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(PROJECT_NAME)/$(SETTINGS)
 
 django-shell-default:
 	python manage.py shell
