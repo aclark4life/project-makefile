@@ -150,8 +150,24 @@ TMPDIR := $(shell mktemp -d)
 # https://stackoverflow.com/a/589260/185820
 UNAME := $(shell uname)
 
+define HOME_PAGE_MODEL
+from django.db import models
+from wagtail.models import Page
+from wagtail.fields import RichTextField
+from wagtail.admin.panels import FieldPanel
+
+class HomePage(Page):
+    description = models.CharField(max_length=255, help_text='A short description of the page', blank=True, null=True)
+    body = RichTextField(blank=True, null=True, help_text='The main content of the page')
+
+    content_panels = Page.content_panels + [
+        FieldPanel('description'),
+        FieldPanel('body'),
+    ]
+endef
+
 # https://stackoverflow.com/a/649462/185820
-define HOME_PAGE
+define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% load webpack_loader static %}
 {% block body_class %}template-homepage{% endblock %}
@@ -276,7 +292,8 @@ lib/
 lib64
 pyvenv.cfg
 endef
-export HOME_PAGE
+export HOME_PAGE_MODEL
+export HOME_PAGE_TEMPLATE
 export JENKINS_FILE
 export ALL_AUTH
 export REST_FRAMEWORK
@@ -687,9 +704,10 @@ wagtail-init-default: db-init wagtail-install
 	-git add .dockerignore
 	-git add home
 	-git add search
+	@echo "$$HOME_PAGE_MODEL" > home/models.py
 	@$(MAKE) django-migrate
 	@$(MAKE) su
-	@echo "$$HOME_PAGE" > home/templates/home/home_page.html
+	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --skip-checks
 	-git add frontend
 	-git commit -a -m "Add frontend"
