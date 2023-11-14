@@ -180,7 +180,7 @@ define HOME_PAGE_TEMPLATE
   <div class="container">
     <a href="/" class="text-decoration-none text-dark"><h1 class="display-3">{{ page.title }}</h1></a>
     <h2>{{ page.description|default:'' }}</h2>
-    <p>{{ page.body|default:'' }}</p>
+    {{ page.body|safe|default:'' }}
     <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
       <a type="button" class="btn btn-primary" href="{% url 'admin:index' %}" role="button">Django Admin</a>
       <a type="button" class="btn btn-primary" href="/api" target="_blank" role="button">Web Browseable API</a>
