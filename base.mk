@@ -353,7 +353,6 @@ django-migrate-default:
 
 django-migrations-default:
 	python manage.py makemigrations
-	git add $(PROJECT_NAME)/migrations/*.py
 
 django-project-default:
 	mkdir -p $(PROJECT_NAME)/templates
