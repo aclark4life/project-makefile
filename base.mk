@@ -451,6 +451,9 @@ django-urls-default:
 django-npm-install-default:
 	cd frontend; npm install
 
+django-npm-install-dev-default:
+	cd frontend; npm install eslint-plugin-react eslint-config-standard eslint-config-standard-jsx --save-dev
+
 django-npm-test-default:
 	cd frontend; npm run test
 
@@ -736,6 +739,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
+	@$(MAKE) django-npm-install-dev
 	-@$(MAKE) cp
 	@$(MAKE) isort
 	@$(MAKE) black
