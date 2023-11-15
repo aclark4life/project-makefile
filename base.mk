@@ -751,6 +751,7 @@ wagtail-install-default:
         django-countries \
         django-imagekit \
         django-ipware \
+        django-recurrence \
         django-registration \
         django-richtextfield \
         dj-database-url \
