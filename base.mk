@@ -750,6 +750,7 @@ wagtail-install-default:
         django-allauth \
         django-countries \
         django-imagekit \
+        django-ipware \
         django-registration \
         django-richtextfield \
         dj-database-url \
