@@ -749,6 +749,7 @@ wagtail-install-default:
         djangorestframework \
         django-allauth \
         django-countries \
+        django-imagekit \
         django-registration \
         django-richtextfield \
         dj-database-url \
