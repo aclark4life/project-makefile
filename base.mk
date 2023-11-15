@@ -750,6 +750,7 @@ wagtail-install-default:
         django-allauth \
         django-countries \
         django-registration \
+        django-richtextfield \
         dj-database-url \
         psycopg2-binary \
         python-webpack-boilerplate \
