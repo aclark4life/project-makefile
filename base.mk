@@ -758,6 +758,8 @@ wagtail-install-default:
         django-richtextfield \
         django-timezone-field \
         dj-database-url \
+        mailchimp-marketing \
+        mailchimp-transactional \
         psycopg2-binary \
         python-webpack-boilerplate \
         wagtail \
