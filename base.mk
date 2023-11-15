@@ -748,6 +748,7 @@ wagtail-install-default:
 	pip3 install \
         djangorestframework \
         django-allauth \
+        django-after-response \
         django-ckeditor \
         django-countries \
         django-imagekit \
