@@ -456,7 +456,7 @@ django-npm-install-dev-default:
         eslint-plugin-react \
         eslint-config-standard \
         eslint-config-standard-jsx \
-        map-gl \
+        mapbox-gl \
         react-date-range \
         react-image-crop \
         --save-dev
