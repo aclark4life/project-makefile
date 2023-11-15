@@ -754,6 +754,7 @@ wagtail-install-default:
         django-recurrence \
         django-registration \
         django-richtextfield \
+        django-timezone-field \
         dj-database-url \
         psycopg2-binary \
         python-webpack-boilerplate \
