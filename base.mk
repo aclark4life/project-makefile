@@ -452,7 +452,13 @@ django-npm-install-default:
 	cd frontend; npm install
 
 django-npm-install-dev-default:
-	cd frontend; npm install eslint-plugin-react eslint-config-standard eslint-config-standard-jsx --save-dev
+	cd frontend; npm install \
+        eslint-plugin-react \
+        eslint-config-standard \
+        eslint-config-standard-jsx \
+        react-date-range \
+        react-image-crop \
+        --save-dev
 
 django-npm-test-default:
 	cd frontend; npm run test
