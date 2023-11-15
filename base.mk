@@ -751,6 +751,7 @@ wagtail-install-default:
         django-ckeditor \
         django-countries \
         django-imagekit \
+        django-import-export \
         django-ipware \
         django-recurrence \
         django-registration \
