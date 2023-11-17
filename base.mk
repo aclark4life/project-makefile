@@ -391,7 +391,10 @@ eb-init-default:
 #
 
 django-graph-default:
-	python manage.py graph_models $(PROJECT_NAME) -o graph_models_$(PROJECT_NAME).png
+	python manage.py graph_models -a -o $(PROJECT_NAME).png
+
+django-urls-default:
+	python manage.py show_urls
 
 django-loaddata-default:
 	python manage.py loaddata
@@ -805,6 +808,9 @@ django-clean: wagtail-init-clean
 
 .PHONY: graph
 graph: django-graph
+
+.PHONY: urls
+graph: django-urls
 
 .PHONY: loaddata
 loaddata: django-loaddata
