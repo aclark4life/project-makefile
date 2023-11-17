@@ -810,7 +810,7 @@ django-clean: wagtail-init-clean
 graph: django-graph
 
 .PHONY: urls
-graph: django-show-urls
+urls: django-show-urls
 
 .PHONY: loaddata
 loaddata: django-loaddata
