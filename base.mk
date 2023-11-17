@@ -312,6 +312,16 @@ lib/
 lib64
 pyvenv.cfg
 endef
+
+define DEBUG_TOOLBAR
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]
+endef
+
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export JENKINS_FILE
@@ -319,6 +329,7 @@ export ALL_AUTH
 export REST_FRAMEWORK
 export AUTHENTICATION_BACKENDS
 export GIT_IGNORE
+export DEBUG_TOOLBAR
 
 # Rules
 # ------------------------------------------------------------------------------  
