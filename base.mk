@@ -238,7 +238,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 endef
-define ALL_AUTH
+define URL_PATTERNS
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
@@ -255,7 +255,7 @@ from rest_framework import routers, serializers, viewsets
 urlpatterns = [
 	path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
-    path('cms/', include(wagtailadmin_urls)),
+    path('wagtail-admin/', include(wagtailadmin_urls)),
 ]
 
 
@@ -325,7 +325,7 @@ endef
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export JENKINS_FILE
-export ALL_AUTH
+export URL_PATTERNS
 export REST_FRAMEWORK
 export AUTHENTICATION_BACKENDS
 export GIT_IGNORE
@@ -393,7 +393,7 @@ eb-init-default:
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
-django-urls-default:
+django-show-urls-default:
 	python manage.py show_urls
 
 django-loaddata-default:
@@ -460,8 +460,8 @@ django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
 		User.objects.create_user('user', '', 'user')"
 
-django-urls-default:
-	echo "$$ALL_AUTH" > $(PROJECT_NAME)/$(URLS)
+django-url-patterns-default:
+	echo "$$URL_PATTERNS" > $(PROJECT_NAME)/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
@@ -743,7 +743,7 @@ wagtail-init-default: db-init wagtail-install
 	wagtail start $(PROJECT_NAME) .
 	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
-	export URLS=urls.py; $(MAKE) django-urls
+	export URLS=urls.py; $(MAKE) django-url-patterns
 	-git add $(PROJECT_NAME)
 	-git add requirements.txt
 	-git add manage.py
@@ -810,7 +810,7 @@ django-clean: wagtail-init-clean
 graph: django-graph
 
 .PHONY: urls
-graph: django-urls
+graph: django-show-urls
 
 .PHONY: loaddata
 loaddata: django-loaddata
