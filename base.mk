@@ -803,6 +803,9 @@ django-init: wagtail-init
 .PHONY: django-clean
 django-clean: wagtail-init-clean
 
+.PHONY: graph
+graph: django-graph
+
 .PHONY: loaddata
 loaddata: django-loaddata
 
