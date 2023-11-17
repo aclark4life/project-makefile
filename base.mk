@@ -761,6 +761,7 @@ wagtail-install-default:
         django-after-response \
         django-ckeditor \
         django-countries \
+        django-debug-toolbar \
         django-imagekit \
         django-import-export \
         django-ipware \
