@@ -776,6 +776,7 @@ wagtail-install-default:
         django-after-response \
         django-ckeditor \
         django-countries \
+        django-crispy-forms \
         django-debug-toolbar \
         django-extensions \
         django-imagekit \
