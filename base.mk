@@ -558,11 +558,14 @@ flake-default:
 	-flake8 $(PROJECT_NAME)/*.py
 	-flake8 $(PROJECT_NAME)/*/*.py
 
-help-default:
-	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F:\
-        '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}'\
-        | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs | tr ' ' '\n' | awk\
-        '{print "make "$$0}' | less  # http://stackoverflow.com/a/26339924
+help-default:  # Via https://chat.openai.com/share/8f2ca244-b6e4-4af3-81e2-714726b6cf8b
+	@for makefile in $(MAKEFILE_LIST); do \
+        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
+            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
+            | xargs | tr ' ' '\n' \
+            | awk '{printf "%s\n", $$0}' ; \
+    done | less
 
 isort-default:
 	-isort *.py
