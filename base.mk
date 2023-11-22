@@ -444,6 +444,7 @@ if settings.DEBUG:
     ]
 endef
 
+export ALLAUTH_LAYOUT_BASE
 export BASE_TEMPLATE
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
