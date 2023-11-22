@@ -44,4 +44,4 @@ include base.mk
 #PROJECT_NAME := project
 #
 # Uncomment the next line to customize the default goal
-#.DEFAULT_GOAL := git-commit-up
+#.DEFAULT_GOAL := git-commit-push
