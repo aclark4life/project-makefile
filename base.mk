@@ -177,7 +177,6 @@ define HOME_PAGE_TEMPLATE
     {% include "wagtailseo/meta.html" %}
 {% endblock extra_css %}
 {% block content %}
-    {% load webpack_loader static %}
     <div class="jumbotron py-5">
         <div class="container">
             <a href="/" class="text-decoration-none text-dark">
