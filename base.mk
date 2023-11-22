@@ -171,7 +171,7 @@ endef
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% load webpack_loader static %}
-{% block body_class %}template-homepage{% endblock %}
+{% block body_class %}bg-dark{% endblock %}
 {% block extra_css %}
     {% stylesheet_pack 'app' %}
     {% include "wagtailseo/meta.html" %}
