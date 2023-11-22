@@ -259,6 +259,7 @@ define HOME_PAGE_TEMPLATE
                 <a type="button"
                    class="btn btn-primary"
                    href="{% url 'admin:index' %}"
+                   target="_blank"
                    role="button">Django Admin</a>
                 <a type="button"
                    class="btn btn-primary"
