@@ -176,13 +176,6 @@ define BASE_TEMPLATE
         <base target="_blank">
         {% endif %}
 
-		<style>
-		body {
-		  min-height: 75rem;
-		  padding-top: 4.5rem;
-		}
-		</style>
-
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
