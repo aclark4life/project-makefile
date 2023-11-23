@@ -689,8 +689,7 @@ help-default:  # http://stackoverflow.com/a/26339924
             | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
             | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
             | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; \
-    done | less
+            | awk '{printf "%s\n", $$0}' ; done | less
 
 isort-default:
 	-isort *.py
