@@ -682,6 +682,8 @@ flake-default:
 	-flake8 $(PROJECT_NAME)/*.py
 	-flake8 $(PROJECT_NAME)/*/*.py
 
+# Given a base.mk, Makefile and project.mk, and base.mk and project.mk
+# included from Makefile, print target names from all makefiles.
 help-default:  # Via https://chat.openai.com/share/8f2ca244-b6e4-4af3-81e2-714726b6cf8b, http://stackoverflow.com/a/26339924
 	@for makefile in $(MAKEFILE_LIST); do \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
