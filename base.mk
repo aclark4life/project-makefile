@@ -992,14 +992,6 @@ sp: serve-prod
 .PHONY: b
 b: build
 
-# readme --------------------------------------------------------------------------------
-
-.PHONY: edit
-edit: readme-edit
-
-.PHONY: e
-e: edit
-
 .PHONY: o
 o: open
 
