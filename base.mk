@@ -983,6 +983,9 @@ readme: readme-init
 .PHONY: s
 s: serve
 
+.PHONY: e
+e: edit
+
 .PHONY: sp
 sp: serve-prod
 
