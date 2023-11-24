@@ -743,6 +743,8 @@ deploy-default: eb-deploy
 
 serve-default: django-serve
 
+edit-default: readme-edit
+
 serve-prod-default: django-serve-prod
 
 open-default: django-open
