@@ -625,10 +625,10 @@ git-branches-default:
         git checkout -t $$i ; done
 
 git-commit-default:
-	git commit -a -m $(GIT_MESSAGE)
+	-git commit -a -m $(GIT_MESSAGE)
 
 git-commit-edit-default:
-	git commit -a
+	-git commit -a
 
 git-commit-push-default: git-commit git-push
 
@@ -638,7 +638,7 @@ git-prune-default:
 	git remote update origin --prune
 
 git-push-default:
-	git push
+	-git push
 
 git-set-upstream-default:
 	git push --set-upstream origin main
