@@ -113,17 +113,6 @@
 # 
 # - https://www.gnu.org/software/make/manual/html_node/Include.html
 
-# Phony Targets
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-# "A phony target is one that is not really the name of a file; rather it is
-#  just a name for a recipe to be executed when you make an explicit request.
-#  There are two reasons to use a phony target: to avoid a conflict with a file
-#  of the same name, and to improve performance."
-#
-# - https://www.gnu.org/software/make/manual/html_node/Phony-Targets.html
-#
-
 # Variables
 # ------------------------------------------------------------------------------  
 #
@@ -517,17 +506,27 @@ eb-init-default:
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
+graph: django-graph
+
 django-show-urls-default:
 	python manage.py show_urls
+
+urls: django-show-urls
 
 django-loaddata-default:
 	python manage.py loaddata
 
+load: django-loaddata
+
 django-migrate-default:
 	python manage.py migrate
 
+migrate: django-migrate
+
 django-migrations-default:
 	python manage.py makemigrations
+
+migrations: django-migrations
 
 django-project-default:
 	mkdir -p $(PROJECT_NAME)/templates
@@ -573,22 +572,32 @@ django-shell-default:
 django-static-default:
 	python manage.py collectstatic --noinput
 
+static: django-static
+
 django-su-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
 		User.objects.create_superuser('admin', '', 'admin')"
 
+su: django-su
+
 django-test-default:
 	python manage.py test
+
+test: django-test
 
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
 		User.objects.create_user('user', '', 'user')"
+
+user: django-user
 
 django-url-patterns-default:
 	echo "$$URL_PATTERNS" > $(PROJECT_NAME)/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
+
+npm-install: django-npm-install
 
 django-npm-install-dev-default:
 	cd frontend; npm install \
@@ -606,8 +615,12 @@ django-npm-test-default:
 django-npm-build-default:
 	cd frontend; npm run build
 
+pack: django-npm-build
+
 django-open-default:
 	open http://0.0.0.0:8000
+
+django-clean: wagtail-init-clean
 
 #
 # Git
@@ -646,14 +659,6 @@ git-commit-empty-default:
 
 git-commit-push: git-commit git-push
 git-commit-edit-push: git-commit-edit git-push
-
-#
-# iOS
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-
-xcodegen:
-	xcodegen -p $(PROJECT)
 
 #
 # Misc
@@ -709,6 +714,8 @@ my-init-default:
 pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
+
+db-init: pg-init
 
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
@@ -888,6 +895,8 @@ wagtail-init-default: pg-init wagtail-install
 	@$(MAKE) readme
 	@$(MAKE) serve
 
+django-init: wagtail-init
+
 wagtail-install-default:
 	pip3 install \
         djangorestframework \
@@ -913,116 +922,21 @@ wagtail-install-default:
         wagtail \
         wagtail-seo 
 
-#
-# .PHONY
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-
-# django --------------------------------------------------------------------------------
-
-.PHONY: django-init
-django-init: wagtail-init
-
-.PHONY: django-clean
-django-clean: wagtail-init-clean
-
-.PHONY: graph
-graph: django-graph
-
-.PHONY: urls
-urls: django-show-urls
-
-.PHONY: loaddata
-loaddata: django-loaddata
-
-.PHONY: load
-load: loaddata
-
-.PHONY: migrate
-migrate: django-migrate
-
-.PHONY: migrations
-migrations: django-migrations
-
-.PHONY: npm-install
-npm-install: django-npm-install
-
-.PHONY: static
-static: django-static
-
-.PHONY: su
-su: django-su
-
-.PHONY: test
-test: django-test
-
-.PHONY: user
-user: django-user
-
-.PHONY: pack
-pack: django-npm-build
-
-.PHONY: db-init
-db-init: pg-init
-
-# misc --------------------------------------------------------------------------------
-
-.PHONY: readme
 readme: readme-init
-
-.PHONY: s
 s: serve
-
-.PHONY: e
 e: edit
-
-.PHONY: sp
 sp: serve-prod
-
-.PHONY: b
 b: build
-
-.PHONY: o
 o: open
-
-# git --------------------------------------------------------------------------------
-
-.PHONY: cp
 cp: git-commit-push
-
-.PHONY: ce
 ce: git-commit-edit-push 
-
-.PHONY: empty
 empty: git-commit-empty
-
-# pip --------------------------------------------------------------------------------
-
-.PHONY: freeze
 freeze: pip-freeze
-
-.PHONY: install
 install: pip-install
-
-.PHONY: install-test
 install-test: pip-install-test
-
-.PHONY: install-dev
 install-dev: pip-install-dev
-
-# --------------------------------------------------------------------------------
-
-.PHONY: h
 h: help
-
-# --------------------------------------------------------------------------------
-
-.PHONY: r
 r: rand
-
-# --------------------------------------------------------------------------------
-
-.PHONY: d
 d: deploy
 
 # Overrides
