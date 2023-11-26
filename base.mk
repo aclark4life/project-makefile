@@ -740,10 +740,10 @@ usage-default:
 	@echo "  make help"
 
 make-default:
-	git add base.mk
-	git add Makefile
-	git commit -a -m "Add/update project-makefile files"
-	git push
+	-git add base.mk
+	-git add Makefile
+	-git commit -a -m "Add/update project-makefile files"
+	-git push
 
 init-default: gitignore make pip-init readme-init 
 
