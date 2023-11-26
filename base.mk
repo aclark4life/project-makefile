@@ -772,9 +772,9 @@ ruff-default:
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	git add requirements.txt
-	git commit -a -m "Freezing requirements."
-	git push
+	-git add requirements.txt
+	-git commit -a -m "Freezing requirements."
+	-git push
 
 pip-install-default: pip-upgrade
 	pip3 install wheel
