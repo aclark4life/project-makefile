@@ -897,6 +897,8 @@ wagtail-init-default: pg-init wagtail-install
 	@$(MAKE) readme
 	@$(MAKE) serve
 
+init: wagtail-init
+
 django-init: wagtail-init
 
 wagtail-install-default:
