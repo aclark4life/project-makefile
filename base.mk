@@ -673,7 +673,7 @@ black-default:
 	-black $(PROJECT_NAME)/*.py
 	-black $(PROJECT_NAME)/*/*.py
 	-git commit -a -m "A one time black event"
-	git push
+	-git push
 
 djlint-default:
 	-djlint --reformat *.html
@@ -681,7 +681,7 @@ djlint-default:
 	-djlint --reformat $(PROJECT_NAME)/*/*.html
 	-djlint --reformat $(PROJECT_NAME)/*/*/*.html
 	-git commit -a -m "A one time djlint event"
-	git push
+	-git push
 
 flake-default:
 	-flake8 *.py
@@ -760,7 +760,7 @@ ruff-default:
 	-ruff $(PROJECT_NAME)/*.py
 	-ruff $(PROJECT_NAME)/*/*.py
 	-git commit -a -m "A one time ruff event"
-	git push
+	-git push
 
 #
 # Pip
