@@ -745,8 +745,6 @@ make-default:
 	-git commit -a -m "Add/update project-makefile files"
 	-git push
 
-init-default: gitignore make pip-init readme-init 
-
 deploy-default: eb-deploy
 
 serve-default: django-serve
@@ -897,9 +895,8 @@ wagtail-init-default: pg-init wagtail-install
 	@$(MAKE) readme
 	@$(MAKE) serve
 
-init: wagtail-init
-
 django-init: wagtail-init
+init: wagtail-init
 
 wagtail-install-default:
 	pip3 install \
