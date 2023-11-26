@@ -702,7 +702,7 @@ isort-default:
 	-isort $(PROJECT_NAME)/*.py
 	-isort $(PROJECT_NAME)/*/*.py
 	-git commit -a -m "A one time isort event"
-	git push
+	-git push
 
 jenkins-file:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
@@ -887,10 +887,10 @@ wagtail-init-default: pg-init wagtail-install
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
 	@$(MAKE) django-npm-install-dev
-	-@$(MAKE) cp
+	@$(MAKE) cp
 	@$(MAKE) isort
 	@$(MAKE) black
-	-@$(MAKE) cp
+	@$(MAKE) cp
 	@$(MAKE) flake
 	@$(MAKE) readme
 	@$(MAKE) serve
