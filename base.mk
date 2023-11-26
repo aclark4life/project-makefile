@@ -841,20 +841,6 @@ sphinx-serve-default:
 	cd _build/html;python -m http.server
 
 #
-# Tidelift
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-
-tidelift-align-default:
-	tidelift alignment --debug
-
-tidelift-align-save-default:
-	tidelift alignment save --debug
-
-tidelift-request-all-default:
-	tidelift request --all --debug
-
-#
 # Wagtail
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
@@ -975,6 +961,9 @@ user: django-user
 
 .PHONY: pack
 pack: django-npm-build
+
+.PHONY: db-init
+db-init: pg-init
 
 # misc --------------------------------------------------------------------------------
 
