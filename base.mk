@@ -258,7 +258,7 @@ endef
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% load webpack_loader static i18n wagtailcore_tags %}
-{% block body_class %}bg-dark{% endblock %}
+{% block body_class %}{% endblock %}
 {% block extra_css %}
     {% stylesheet_pack 'app' %}
     {% include "wagtailseo/meta.html" %}
@@ -280,7 +280,7 @@ define HOME_PAGE_TEMPLATE
     </div>
 </header>
 <main class="main">
-    <div class="figure">
+    <div class="">
         <svg class="figure-space" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" aria-hidden="true">
             <path class="egg" fill="currentColor" d="M150 250c-42.741 0-75-32.693-75-90s42.913-110 75-110c32.088 0 75 52.693 75 110s-32.258 90-75 90z"/>
             <ellipse fill="#ddd" cx="150" cy="270" rx="40" ry="7"/>
