@@ -869,7 +869,7 @@ wagtail-init-clean-default:
 	-rm -rvf frontend/
 	-rm -vf README.rst
 
-wagtail-init-default: db-init wagtail-install
+wagtail-init-default: pg-init wagtail-install
 	wagtail start $(PROJECT_NAME) .
 	$(MAKE) pip-freeze
 	export SETTINGS=settings/base.py; $(MAKE) django-settings
@@ -1020,11 +1020,6 @@ install-test: pip-install-test
 
 .PHONY: install-dev
 install-dev: pip-install-dev
-
-# --------------------------------------------------------------------------------
-
-.PHONY: db-init
-db-init: pg-init
 
 # --------------------------------------------------------------------------------
 
