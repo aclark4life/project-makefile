@@ -878,7 +878,7 @@ wagtail-init-default: pg-init wagtail-install
 	-git add search
 	@$(MAKE) django-migrate
 	@$(MAKE) su
-	@echo "$$BASE_TEMPLATE" > $(PROJECT_NAME)/templates/base.html
+	# @echo "$$BASE_TEMPLATE" > $(PROJECT_NAME)/templates/base.html
 	mkdir -p $(PROJECT_NAME)/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > $(PROJECT_NAME)/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
