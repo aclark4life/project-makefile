@@ -629,9 +629,9 @@ django-clean: wagtail-init-clean
 
 gitignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
-	git add .gitignore
-	git commit -a -m "Add .gitignore"
-	git push
+	-git add .gitignore
+	-git commit -a -m "Add .gitignore"
+	-git push
 
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
