@@ -139,6 +139,19 @@ TMPDIR := $(shell mktemp -d)
 # https://stackoverflow.com/a/589260/185820
 UNAME := $(shell uname)
 
+define FRONTEND_APP
+
+// This is the scss entry file
+import "../styles/index.scss";
+
+// We can import Bootstrap JS instead of the CDN link, if you do not use
+// Bootstrap, please feel free to remove it.
+import "bootstrap/dist/js/bootstrap.bundle";
+
+import { createRoot } from 'react-dom/client';
+
+endef
+
 define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar %}
 
@@ -674,6 +687,7 @@ django-npm-install-dev-default:
         mapbox-gl \
         react-date-range \
         react-image-crop \
+        react-dom \
         --save-dev
 
 django-npm-test-default:
@@ -949,6 +963,7 @@ wagtail-init-default: pg-init wagtail-install
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
+	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
