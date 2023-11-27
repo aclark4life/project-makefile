@@ -639,6 +639,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
+	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
 	echo "$$REST_FRAMEWORK" >> $(SETTINGS)
