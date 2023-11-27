@@ -528,43 +528,37 @@ django-migrations-default:
 
 migrations: django-migrations
 
-django-project-default:
-	mkdir -p $(PROJECT_NAME)/templates
-	touch $(PROJECT_NAME)/templates/base.html
-	django-admin startproject $(PROJECT_NAME) .
-
 django-serve-default:
 	cd frontend; npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
 django-serve-prod-default:
 	cd frontend; npm run watch &
-	python manage.py runserver 0.0.0.0:8000 --settings=$(PROJECT_NAME).settings.production
+	python manage.py runserver 0.0.0.0:8000 --settings=backend.settings.production
 
 django-settings-default:
-	echo "# $(PROJECT_NAME)" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "ALLOWED_HOSTS = ['*']" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "import dj_database_url, os" >> $(PROJECT_NAME)/$(SETTINGS)
+	echo "# $(PROJECT_NAME)" >> $(SETTINGS)
+	echo "ALLOWED_HOSTS = ['*']" >> $(SETTINGS)
+	echo "import dj_database_url, os" >> $(SETTINGS)
 	echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
-		'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('rest_framework')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('allauth')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('allauth.account')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('wagtailseo')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "INSTALLED_APPS.append('django_extensions')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> \
-		$(PROJECT_NAME)/$(SETTINGS)
-	echo "$$REST_FRAMEWORK" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "LOGIN_REDIRECT_URL = '/'" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "$$AUTHENTICATION_BACKENDS" >> $(PROJECT_NAME)/$(SETTINGS)
-	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(PROJECT_NAME)/$(SETTINGS)
+		'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
+	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('rest_framework')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('allauth')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('wagtailseo')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
+	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
+	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
+	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
+	echo "$$REST_FRAMEWORK" >> $(SETTINGS)
+	echo "LOGIN_REDIRECT_URL = '/'" >> $(SETTINGS)
+	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
+	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
+	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
 
 django-shell-default:
 	python manage.py shell
@@ -592,7 +586,7 @@ django-user-default:
 user: django-user
 
 django-url-patterns-default:
-	echo "$$URL_PATTERNS" > $(PROJECT_NAME)/$(URLS)
+	echo "$$URL_PATTERNS" > backend/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
@@ -670,23 +664,22 @@ build-default:
 
 black-default:
 	-black *.py
-	-black $(PROJECT_NAME)/*.py
-	-black $(PROJECT_NAME)/*/*.py
+	-black backend/*.py
+	-black backend/*/*.py
 	-git commit -a -m "A one time black event"
 	-git push
 
 djlint-default:
 	-djlint --reformat *.html
-	-djlint --reformat $(PROJECT_NAME)/*.html
-	-djlint --reformat $(PROJECT_NAME)/*/*.html
-	-djlint --reformat $(PROJECT_NAME)/*/*/*.html
+	-djlint --reformat backend/*.html
+	-djlint --reformat backend/*/*.html
 	-git commit -a -m "A one time djlint event"
 	-git push
 
 flake-default:
 	-flake8 *.py
-	-flake8 $(PROJECT_NAME)/*.py
-	-flake8 $(PROJECT_NAME)/*/*.py
+	-flake8 backend/*.py
+	-flake8 backend/*/*.py
 
 # Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
 help-default:  # http://stackoverflow.com/a/26339924
@@ -699,12 +692,19 @@ help-default:  # http://stackoverflow.com/a/26339924
 
 isort-default:
 	-isort *.py
-	-isort $(PROJECT_NAME)/*.py
-	-isort $(PROJECT_NAME)/*/*.py
+	-isort backend/*.py
+	-isort backend/*/*.py
 	-git commit -a -m "A one time isort event"
 	-git push
 
-jenkins-file:
+ruff-default:
+	-ruff *.py
+	-ruff backend/*.py
+	-ruff backend/*/*.py
+	-git commit -a -m "A one time ruff event"
+	-git push
+
+jenkins-file-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
 my-init-default:
@@ -726,8 +726,7 @@ rand-default:
 
 review-default:
 ifeq ($(UNAME), Darwin)
-	@open -a $(REVIEW_EDITOR) `find $(PROJECT_NAME) -name \*.py | grep -v migrations`\
-		`find $(PROJECT_NAME) -name \*.html` `find $(PROJECT_NAME) -name \*.js`
+	@open -a $(REVIEW_EDITOR) `find backend -name \*.py | grep -v migrations` `find backend -name \*.html` `find $(PROJECT_NAME) -name \*.js`
 else
 	@echo "Unsupported"
 endif
@@ -755,12 +754,6 @@ serve-prod-default: django-serve-prod
 
 open-default: django-open
 
-ruff-default:
-	-ruff *.py
-	-ruff $(PROJECT_NAME)/*.py
-	-ruff $(PROJECT_NAME)/*/*.py
-	-git commit -a -m "A one time ruff event"
-	-git push
 
 #
 # Pip
@@ -856,7 +849,7 @@ wagtail-init-clean-default:
 	-rm -vf requirements.txt
 	-rm -rvf home/
 	-rm -rvf search/
-	-rm -rvf $(PROJECT_NAME)/
+	-rm -rvf backend/
 	-rm -rvf frontend/
 	-rm -vf README.rst
 
@@ -865,7 +858,7 @@ clean: wagtail-init-clean
 wagtail-init-default: pg-init wagtail-install
 	wagtail start backend .
 	$(MAKE) pip-freeze
-	export SETTINGS=settings/base.py; $(MAKE) django-settings
+	export SETTINGS=backend/settings/base.py; $(MAKE) django-settings
 	export URLS=urls.py; $(MAKE) django-url-patterns
 	-git add backend
 	-git add requirements.txt
@@ -878,9 +871,9 @@ wagtail-init-default: pg-init wagtail-install
 	-git add search
 	@$(MAKE) django-migrate
 	@$(MAKE) su
-	@echo "$$BASE_TEMPLATE" > $(PROJECT_NAME)/templates/base.html
-	mkdir -p $(PROJECT_NAME)/templates/allauth/layouts
-	@echo "$$ALLAUTH_LAYOUT_BASE" > $(PROJECT_NAME)/templates/allauth/layouts/base.html
+	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
+	mkdir -p backend/templates/allauth/layouts
+	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
 	-git add frontend
