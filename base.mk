@@ -689,6 +689,9 @@ django-npm-install-dev-default:
         react-date-range \
         react-image-crop \
         react-dom \
+		@babel/core \
+		@babel/preset-env \
+		@babel/preset-react \
         --save-dev
 
 django-npm-test-default:
