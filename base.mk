@@ -882,7 +882,7 @@ wagtail-init-default: pg-init wagtail-install
 	mkdir -p $(PROJECT_NAME)/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > $(PROJECT_NAME)/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
-	python manage.py webpack_init --skip-checks
+	python manage.py webpack_init --no-input
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
