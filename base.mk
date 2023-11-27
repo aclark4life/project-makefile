@@ -306,12 +306,12 @@ define HOME_PAGE_TEMPLATE
         <div class="main-text">
             <h1>{% trans "Welcome to your new Wagtail site!" %}</h1>
             <p>
-                {% trans 'Please feel free to <a href="https://github.com/wagtail/wagtail/wiki/Slack">join our community on Slack</a>, or get started with one of the links below.' %}
+                {% trans 'Please feel free to <a target="_blank" href="https://wagtail.org/slack/">join our community on Slack</a>, or get started with one of the links below.' %}
             </p>
         </div>
     </main>
     <footer class="footer" role="contentinfo">
-        <a class="option option-one" href="{% wagtail_documentation_path %}/">
+        <a target="_blank" class="option option-one" href="{% wagtail_documentation_path %}/">
             <svg xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 24 24"
                  aria-hidden="true">
@@ -322,7 +322,18 @@ define HOME_PAGE_TEMPLATE
                 <p>{% trans "Topics, references, & how-tos" %}</p>
             </div>
         </a>
-        <a class="option option-two"
+        <a target="_blank" class="option option-one" href="https://docs.djangoproject.com/en/4.2/">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24"
+                 aria-hidden="true">
+                <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7zm2.9 11.1l-.9.6V16h-4v-2.3l-.9-.6C7.8 12.2 7 10.6 7 9c0-2.8 2.2-5 5-5s5 2.2 5 5c0 1.6-.8 3.2-2.1 4.1z" />
+            </svg>
+            <div>
+                <h2>{% trans "Django Documentation" %}</h2>
+                <p>{% trans "Topics, references, & how-tos" %}</p>
+            </div>
+        </a>
+        <a target="_blank" class="option option-two"
            href="{% wagtail_documentation_path %}/getting_started/tutorial.html">
             <svg xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 24 24"
