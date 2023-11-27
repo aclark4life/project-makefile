@@ -443,9 +443,8 @@ from rest_framework import routers, serializers, viewsets
 urlpatterns = [
 	path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
-    path('wagtail-admin/', include(wagtailadmin_urls)),
+    path('wagtail/', include(wagtailadmin_urls)),
 ]
-
 
 if settings.DEBUG:
     from django.conf.urls.static import static
@@ -454,6 +453,11 @@ if settings.DEBUG:
     # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    import debug_toolbar
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]
 
 # https://www.django-rest-framework.org/#example
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -468,12 +472,13 @@ class UserViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
-urlpatterns = urlpatterns + [
+
+urlpatterns += [
     path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
-urlpatterns = urlpatterns + [
+urlpatterns += [
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:
@@ -501,15 +506,6 @@ lib64
 pyvenv.cfg
 endef
 
-define DEBUG_TOOLBAR
-if settings.DEBUG:
-    import debug_toolbar
-
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
-endef
-
 export ALLAUTH_LAYOUT_BASE
 export BASE_TEMPLATE
 export HOME_PAGE_MODEL
@@ -519,7 +515,6 @@ export URL_PATTERNS
 export REST_FRAMEWORK
 export AUTHENTICATION_BACKENDS
 export GIT_IGNORE
-export DEBUG_TOOLBAR
 
 # Rules
 # ------------------------------------------------------------------------------  
