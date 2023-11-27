@@ -936,9 +936,7 @@ clean: wagtail-init-clean
 wagtail-init-default: pg-init wagtail-install
 	wagtail start backend .
 	$(MAKE) pip-freeze
-	export SETTINGS=backend/settings/base.py
-	export DEV_SETTINGS=backend/settings/dev.py
-	$(MAKE) django-settings
+	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; $(MAKE) django-settings
 	export URLS=urls.py; $(MAKE) django-url-patterns
 	-git add backend
 	-git add requirements.txt
