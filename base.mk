@@ -628,6 +628,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('wagtailseo')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
@@ -935,7 +936,9 @@ clean: wagtail-init-clean
 wagtail-init-default: pg-init wagtail-install
 	wagtail start backend .
 	$(MAKE) pip-freeze
-	export SETTINGS=backend/settings/base.py; $(MAKE) django-settings
+	export SETTINGS=backend/settings/base.py
+	export DEV_SETTINGS=backend/settings/dev.py
+	$(MAKE) django-settings
 	export URLS=urls.py; $(MAKE) django-url-patterns
 	-git add backend
 	-git add requirements.txt
