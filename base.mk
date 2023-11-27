@@ -139,17 +139,77 @@ TMPDIR := $(shell mktemp -d)
 # https://stackoverflow.com/a/589260/185820
 UNAME := $(shell uname)
 
+define BABELRC
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "3.0.0"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-class-properties"
+  ]
+}
+endef
+
 define FRONTEND_APP
-
-// This is the scss entry file
+import React from 'react';
+import ReactDOM from 'react-dom';
 import "../styles/index.scss";
-
-// We can import Bootstrap JS instead of the CDN link, if you do not use
-// Bootstrap, please feel free to remove it.
 import "bootstrap/dist/js/bootstrap.bundle";
 
-import { createRoot } from 'react-dom/client';
+const CustomComponent = ({ componentType, ...otherProps }) => {
+  // Your custom component logic here based on componentType
+  return (
+    <div style={{ border: '1px solid black', padding: '10px', margin: '10px' }}>
+      <p>Component Type: {componentType}</p>
+      <p>Other Props: {JSON.stringify(otherProps)}</p>
+    </div>
+  );
+};
 
+const renderComponents = () => {
+  const root = document.getElementById('root');
+  const elements = root.querySelectorAll('[data-component]');
+
+  elements.forEach((element) => {
+    const componentType = element.getAttribute('data-component');
+    const otherProps = {};
+
+    // Extract other data-* attributes as props
+    Array.from(element.attributes).forEach((attr) => {
+      if (attr.name.startsWith('data-') && attr.name !== 'data-component') {
+        const propKey = attr.name.replace('data-', '');
+        otherProps[propKey] = attr.value;
+      }
+    });
+
+    // Render the custom component
+    ReactDOM.createRoot(element).render(
+      <CustomComponent key={element.dataset.key} componentType={componentType} {...otherProps} />
+    );
+  });
+};
+
+const App = () => {
+  // Call the function to render components on mount
+  React.useEffect(() => {
+    renderComponents();
+  }, []);
+
+  return null; // You can return null as this component doesn't render anything itself
+};
+
+// Render the main App component
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 endef
 
 define BASE_TEMPLATE
@@ -529,6 +589,7 @@ export REST_FRAMEWORK
 export AUTHENTICATION_BACKENDS
 export GIT_IGNORE
 export FRONTEND_APP
+export BABELRC
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -969,6 +1030,7 @@ wagtail-init-default: pg-init wagtail-install
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
+	@echo "$$BABELRC" > frontend/.babelrc
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
