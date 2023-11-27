@@ -528,6 +528,7 @@ export URL_PATTERNS
 export REST_FRAMEWORK
 export AUTHENTICATION_BACKENDS
 export GIT_IGNORE
+export FRONTEND_APP
 
 # Rules
 # ------------------------------------------------------------------------------  
