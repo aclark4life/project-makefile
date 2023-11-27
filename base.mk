@@ -170,6 +170,8 @@ define BASE_TEMPLATE
         {% endblock %}
 
 		<link type="text/css" href="{% static 'css/welcome_page.css' %}" rel="stylesheet">
+
+		<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
