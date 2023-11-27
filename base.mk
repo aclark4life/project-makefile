@@ -288,7 +288,7 @@ define HOME_PAGE_TEMPLATE
             {% comment %}
         This works for all cases but prerelease versions:
             {% endcomment %}
-            <a href="{% wagtail_documentation_path %}/releases/{% wagtail_release_notes_path %}">
+            <a target="_blank" href="{% wagtail_documentation_path %}/releases/{% wagtail_release_notes_path %}">
                 {% trans "View the release notes" %}
             </a>
         </div>
