@@ -610,6 +610,7 @@ export AUTHENTICATION_BACKENDS
 export GIT_IGNORE
 export FRONTEND_APP
 export BABELRC
+export INTERNAL_IPS
 
 # Rules
 # ------------------------------------------------------------------------------  
@@ -724,6 +725,7 @@ django-settings-default:
 	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
 	echo "$$REST_FRAMEWORK" >> $(SETTINGS)
+	echo "$$INTERNAL_IPS" >> $(DEV_SETTINGS)
 	echo "LOGIN_REDIRECT_URL = '/'" >> $(SETTINGS)
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
 	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
