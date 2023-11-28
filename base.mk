@@ -1067,7 +1067,7 @@ wagtail-init-default: pg-init wagtail-install
 	@$(MAKE) serve
 
 django-init: wagtail-init
-init: wagtail-init
+init-default: wagtail-init
 
 wagtail-install-default:
 	pip3 install \
