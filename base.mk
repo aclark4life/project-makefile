@@ -161,8 +161,9 @@ define BABELRC
 endef
 
 define FRONTEND_APP
+// Via ChatGPT based on concept from pwellever
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import "../styles/index.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
 
@@ -193,7 +194,7 @@ const renderComponents = () => {
     });
 
     // Render the custom component
-    ReactDOM.createRoot(element).render(
+    createRoot(element).render(
       <CustomComponent key={element.dataset.key} componentType={componentType} {...otherProps} />
     );
   });
@@ -250,6 +251,7 @@ define BASE_TEMPLATE
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
+		<div id="root"></div>
         {% block content %}{% endblock %}
 
         {% block extra_js %}
