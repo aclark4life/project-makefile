@@ -210,7 +210,7 @@ const App = () => {
 };
 
 // Render the main App component
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+createRoot(document.getElementById('root')).render(<App />);
 endef
 
 define BASE_TEMPLATE
