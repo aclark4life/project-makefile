@@ -161,12 +161,13 @@ define BABELRC
 endef
 
 define FRONTEND_APP
-// Via ChatGPT based on concept from pwellever
+// Via ChatGPT based on concept by pwellever
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import "../styles/index.scss";
 import "bootstrap/dist/js/bootstrap.bundle";
 
+// eslint-disable-next-line no-unused-vars
 const CustomComponent = ({ componentType, ...otherProps }) => {
   // Your custom component logic here based on componentType
   return (
@@ -200,6 +201,7 @@ const renderComponents = () => {
   });
 };
 
+// eslint-disable-next-line no-unused-vars
 const App = () => {
   // Call the function to render components on mount
   React.useEffect(() => {
