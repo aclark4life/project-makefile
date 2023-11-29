@@ -1104,9 +1104,9 @@ cp: git-commit-push
 ce: git-commit-edit-push 
 empty: git-commit-empty
 freeze: pip-freeze
-install: pip-install
-install-test: pip-install-test
-install-dev: pip-install-dev
+install-default: pip-install
+install-test-default: pip-install-test
+install-dev-default: pip-install-dev
 h: help
 r: rand
 d: deploy
