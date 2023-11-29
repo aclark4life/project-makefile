@@ -597,6 +597,7 @@ __pycache__
 lib/
 lib64
 pyvenv.cfg
+node_modules/
 endef
 
 export ALLAUTH_LAYOUT_BASE
