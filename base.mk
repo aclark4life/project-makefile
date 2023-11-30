@@ -668,6 +668,19 @@ eb-init-default:
 	eb init
 
 #
+# NPM
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+#
+
+npm-init:
+	npm init -y
+	-git add package.json
+	-git add package-lock.json
+
+npm-install:
+	npm install
+
+#
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
@@ -761,7 +774,7 @@ django-url-patterns-default:
 	echo "$$URL_PATTERNS" > backend/$(URLS)
 
 django-npm-install-default:
-	cd frontend; npm install
+	cd frontend; $(MAKE) npm-install
 
 npm-install: django-npm-install
 
