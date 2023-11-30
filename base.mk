@@ -672,15 +672,15 @@ eb-init-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-npm-init:
+npm-init-default:
 	npm init -y
 	-git add package.json
 	-git add package-lock.json
 
-npm-install:
+npm-install-default:
 	npm install
 
-npm-clean:
+npm-clean-default:
 	rm -rvf node_modules/
 	rm -vf package.json
 	rm -vf package-lock.json
