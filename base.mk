@@ -1139,17 +1139,6 @@ PROJECT_NAME := project
 # Specify the filename
 FILENAME := $(PROJECT_NAME).mk
 
-# Check if the file exists
-ifeq ($(wildcard $(FILENAME)),)
-    # If the file does not exist, create an empty file
-    $(info Creating $(FILENAME)...)
-    $(shell touch $(FILENAME))
-    -$(shell git add $(FILENAME))
-endif
-
-# Include the file
-include $(FILENAME)
-
 # Overrides
 # ------------------------------------------------------------------------------  
 #

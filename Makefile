@@ -30,6 +30,23 @@
 # SOFTWARE.
 
 include base.mk
+#
+# Project-specific makefile
+# ------------------------------------------------------------------------------ 
+
+# Uncomment and edit the following line to change the project name 
+#PROJECT_NAME := project
+
+# Check if the file exists
+ifeq ($(wildcard $(FILENAME)),)
+    # If the file does not exist, create an empty file
+    $(info Creating $(FILENAME)...)
+    $(shell touch $(FILENAME))
+    $(shell git add $(FILENAME))
+endif
+
+# Include the file 
+include $(FILENAME) 
 
 #
 # Overrides and includes
