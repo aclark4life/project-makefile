@@ -45,7 +45,9 @@ FILENAME := $(PROJECT_NAME).mk
 ifeq ($(wildcard $(FILENAME)),)
     $(info Creating $(FILENAME)...)
     $(shell touch $(FILENAME))
+	-git add $(FILENAME)
 endif
+
 include $(FILENAME)
 
 # Uncomment the next line to customize the default goal
