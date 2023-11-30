@@ -675,10 +675,10 @@ eb-init-default:
 npm-init-default:
 	npm init -y
 	-git add package.json
-	-git add package-lock.json
 
 npm-install-default:
 	npm install
+	-git add package-lock.json
 
 npm-clean-default:
 	rm -rvf node_modules/
