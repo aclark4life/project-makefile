@@ -36,12 +36,10 @@ include base.mk
 # ------------------------------------------------------------------------------ 
 #
 # E.g.
-# 
-# Uncomment the next line to include additional makefiles
-#include project.mk
 #
-# Uncomment the next line to customize the project name variable
+# Uncomment the next line to customize the project name variable as well as the
+# project-specific makefile name which is created automatically e.g. project.mk.
 #PROJECT_NAME := project
-#
+
 # Uncomment the next line to customize the default goal
 #.DEFAULT_GOAL := git-commit-push

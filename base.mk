@@ -128,8 +128,6 @@ GIT_BRANCHES = `git branch -a \
 	| grep -v main \
 	| grep -v master`
 
-PROJECT_NAME := project
-
 # https://stackoverflow.com/a/589260/185820
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 
@@ -1129,6 +1127,27 @@ install-dev-default: pip-install-dev
 h: help
 r: rand
 d: deploy
+
+# Project-specific makefile
+# ------------------------------------------------------------------------------  
+#
+
+PROJECT_NAME := project
+
+# Create project-specific makefile if it doesn't exist (via ChatGPT)
+
+# Specify the filename
+FILENAME := $(PROJECT_NAME).mk
+
+# Check if the file exists
+ifeq ($(wildcard $(FILENAME)),)
+    # If the file does not exist, create an empty file
+    $(info Creating $(FILENAME)...)
+    $(shell touch $(FILENAME))
+endif
+
+# Include the file
+include $(FILENAME)
 
 # Overrides
 # ------------------------------------------------------------------------------  
