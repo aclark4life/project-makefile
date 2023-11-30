@@ -45,7 +45,6 @@ FILENAME := $(PROJECT_NAME).mk
 ifeq ($(wildcard $(FILENAME)),)
     $(info Creating $(FILENAME)...)
     $(shell touch $(FILENAME))
-	$(shell if [ -d .git ]; then git add $(FILENAME); fi)
 endif
 include $(FILENAME)
 
