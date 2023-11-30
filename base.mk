@@ -1029,7 +1029,7 @@ wagtail-init-clean-default:
 	-rm -rvf frontend/
 	-rm -vf README.rst
 
-clean: wagtail-init-clean
+clean-default: wagtail-init-clean
 
 wagtail-init-default: pg-init wagtail-install
 	wagtail start backend .
