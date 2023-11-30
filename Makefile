@@ -38,16 +38,10 @@ include base.mk
 # makefile name.
 #PROJECT_NAME := project
 
-## Makefile check file existence (Via ChatGPT)
-## ------------------------------------------------------------------------------ 
-## Specify the filename
-FILENAME := $(PROJECT_NAME).mk
-ifeq ($(wildcard $(FILENAME)),)
-    $(info Creating $(FILENAME)...)
-    $(shell touch $(FILENAME))
-endif
-
-include $(FILENAME)
+touch_include_add:
+	touch $(FILENAME)
+	include $(FILENAME)
+	if [ -d .git ]; then git add $(FILENAME); fi
 
 # Uncomment the next line to customize the default goal
 #.DEFAULT_GOAL := git-commit-push
