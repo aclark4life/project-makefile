@@ -28,35 +28,25 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
 include base.mk
-#
-# Project-specific makefile
-# ------------------------------------------------------------------------------ 
 
-# Uncomment and edit the following line to change the project name 
-#PROJECT_NAME := project
-
-# Check if the file exists
-ifeq ($(wildcard $(FILENAME)),)
-    # If the file does not exist, create an empty file
-    $(info Creating $(FILENAME)...)
-    $(shell touch $(FILENAME))
-    $(shell git add $(FILENAME))
-endif
-
-# Include the file 
-include $(FILENAME) 
-
-#
 # Overrides and includes
 # ------------------------------------------------------------------------------ 
 #
-# E.g.
-#
-# Uncomment the next line to customize the project name variable as well as the
-# project-specific makefile name which is created automatically e.g. project.mk.
+
+# Uncomment, edit following line to change project name and project-specific
+# makefile name.
 #PROJECT_NAME := project
+
+## Makefile check file existence (Via ChatGPT)
+## ------------------------------------------------------------------------------ 
+## Specify the filename
+FILENAME := $(PROJECT_NAME).mk
+ifeq ($(wildcard $(FILENAME)),)
+    $(info Creating $(FILENAME)...)
+    $(shell touch $(FILENAME))
+endif
+include $(FILENAME)
 
 # Uncomment the next line to customize the default goal
 #.DEFAULT_GOAL := git-commit-push

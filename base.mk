@@ -121,6 +121,8 @@
 
 GIT_MESSAGE := Update
 
+PROJECT_NAME := project
+
 # http://unix.stackexchange.com/a/37316
 GIT_BRANCHES = `git branch -a \
 	| grep remote \
@@ -1127,17 +1129,6 @@ install-dev-default: pip-install-dev
 h: help
 r: rand
 d: deploy
-
-# Project-specific makefile
-# ------------------------------------------------------------------------------  
-#
-
-PROJECT_NAME := project
-
-# Create project-specific makefile if it doesn't exist (via ChatGPT)
-
-# Specify the filename
-FILENAME := $(PROJECT_NAME).mk
 
 # Overrides
 # ------------------------------------------------------------------------------  
