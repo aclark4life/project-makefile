@@ -680,6 +680,11 @@ npm-init:
 npm-install:
 	npm install
 
+npm-clean:
+	rm -rvf node_modules/
+	rm -vf package.json
+	rm -vf package-lock.json
+
 #
 # Django
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
