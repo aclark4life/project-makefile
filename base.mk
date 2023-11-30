@@ -781,7 +781,7 @@ django-url-patterns-default:
 django-npm-install-default:
 	cd frontend; $(MAKE) npm-install
 
-npm-install: django-npm-install
+npm-install-default: django-npm-install
 
 django-npm-install-dev-default:
 	cd frontend; npm install \
