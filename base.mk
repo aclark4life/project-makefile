@@ -851,7 +851,7 @@ git-commit-edit-push: git-commit-edit git-push
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-build-default: readme-build
+build: readme-build
 
 black-default:
 	-black *.py
