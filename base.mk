@@ -117,7 +117,7 @@
 # ------------------------------------------------------------------------------  
 #
 
-.DEFAULT_GOAL := usage
+.DEFAULT_GOAL := git-commit-push
 
 GIT_MESSAGE := Update
 
