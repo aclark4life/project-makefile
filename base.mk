@@ -1135,6 +1135,7 @@ d: deploy
 PROJECT_MAKEFILE := $(PROJECT_NAME).mk
 custom:
 	@echo "# Define your project-specific rules and targets below." > $(PROJECT_MAKEFILE)
+	-git add $(PROJECT_MAKEFILE)
 
 ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
 	include $(PROJECT_MAKEFILE)
