@@ -964,6 +964,9 @@ pip-install-default: pip-upgrade
 	pip3 install wheel
 	pip3 install -r requirements.txt
 
+install-default: pip-install
+i: install
+
 pip-install-test-default:
 	pip3 install -r requirements-test.txt
 
