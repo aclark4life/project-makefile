@@ -722,9 +722,8 @@ django-serve-default:
 	cd frontend; npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
-django-serve-prod-default:
-	cd frontend; npm run watch &
-	python manage.py runserver 0.0.0.0:8000 --settings=backend.settings.production
+serve-default: django-serve
+s: serve
 
 django-settings-default:
 	echo "# $(PROJECT_NAME)" >> $(SETTINGS)
@@ -943,7 +942,6 @@ make-default:
 	-git push
 
 
-serve-default: django-serve
 
 edit-default: readme-edit
 
