@@ -667,6 +667,9 @@ eb-deploy-default:
 eb-init-default:
 	eb init
 
+deploy-default: eb-deploy
+d: deploy
+
 #
 # NPM
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -939,13 +942,11 @@ make-default:
 	-git commit -a -m "Add/update project-makefile files"
 	-git push
 
-deploy-default: eb-deploy
 
 serve-default: django-serve
 
 edit-default: readme-edit
 
-serve-prod-default: django-serve-prod
 
 open-default: django-open
 
