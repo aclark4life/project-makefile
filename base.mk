@@ -883,6 +883,8 @@ help-default:  # http://stackoverflow.com/a/26339924
             | xargs | tr ' ' '\n' \
             | awk '{printf "%s\n", $$0}' ; done | less
 
+h: help
+
 isort-default:
 	-isort *.py
 	-isort backend/*.py
