@@ -1110,7 +1110,7 @@ wagtail-install-default:
         wagtail-seo 
 
 
-build-default: readme-build
+build: readme-build
 
 # Include project-specific makefile
 # ------------------------------------------------------------------------------  
