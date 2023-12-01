@@ -667,9 +667,6 @@ eb-deploy-default:
 eb-init-default:
 	eb init
 
-deploy-default: eb-deploy
-d: deploy
-
 #
 # NPM
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -696,34 +693,21 @@ npm-clean-default:
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
-graph: django-graph
-
 django-show-urls-default:
 	python manage.py show_urls
-
-urls: django-show-urls
 
 django-loaddata-default:
 	python manage.py loaddata
 
-load: django-loaddata
-
 django-migrate-default:
 	python manage.py migrate
-
-migrate: django-migrate
 
 django-migrations-default:
 	python manage.py makemigrations
 
-migrations: django-migrations
-
 django-serve-default:
 	cd frontend; npm run watch &
 	python manage.py runserver 0.0.0.0:8000
-
-serve-default: django-serve
-s: serve
 
 django-settings-default:
 	echo "# $(PROJECT_NAME)" >> $(SETTINGS)
@@ -758,24 +742,16 @@ django-shell-default:
 django-static-default:
 	python manage.py collectstatic --noinput
 
-static: django-static
-
 django-su-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
 		User.objects.create_superuser('admin', '', 'admin')"
 
-su: django-su
-
 django-test-default:
 	python manage.py test
-
-test: django-test
 
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
 		User.objects.create_user('user', '', 'user')"
-
-user: django-user
 
 django-url-patterns-default:
 	echo "$$URL_PATTERNS" > backend/$(URLS)
@@ -803,19 +779,19 @@ django-npm-test-default:
 django-npm-build-default:
 	cd frontend; npm run build
 
-pack: django-npm-build
-
 django-open-default:
 	open http://0.0.0.0:8000
 
 django-clean: wagtail-init-clean
+
+migrate: django-migrate
 
 #
 # Git
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-gitignore-default:
+git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	-git add .gitignore
 	-git commit -a -m "Add .gitignore"
@@ -845,10 +821,11 @@ git-set-upstream-default:
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit" ; git push
 
-git-commit-push: git-commit git-push
-git-commit-edit-push: git-commit-edit git-push
-cp: git-commit-push
 ce: git-commit-edit
+cp: git-commit-push
+git-commit-edit-push: git-commit-edit git-push
+git-commit-push: git-commit git-push
+gitignore: git-ignore
 
 #
 # Misc
