@@ -945,7 +945,6 @@ serve-prod-default: django-serve-prod
 
 open-default: django-open
 
-
 #
 # Pip
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -1109,23 +1108,6 @@ wagtail-install-default:
         python-webpack-boilerplate \
         wagtail \
         wagtail-seo 
-
-readme: readme-init
-s: serve
-e: edit
-sp: serve-prod
-b: build
-o: open
-cp: git-commit-push
-ce: git-commit-edit-push 
-empty: git-commit-empty
-freeze: pip-freeze
-install-default: pip-install
-install-test-default: pip-install-test
-install-dev-default: pip-install-dev
-h: help
-r: rand
-d: deploy
 
 # Include project-specific makefile
 # ------------------------------------------------------------------------------  
