@@ -1008,13 +1008,13 @@ readme-build-default:
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 #
 
-sphinx-init:
+sphinx-init-default:
 	$(MAKE) sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
 	mv $(RANDIR)/* .
 	rmdir $(RANDIR)
 
-sphinx-install:
+sphinx-install-default:
 	echo "Sphinx\n" > requirements.txt
 	@$(MAKE) pip-install
 	@$(MAKE) pip-freeze
@@ -1028,6 +1028,8 @@ sphinx-build-pdf-default:
 
 sphinx-serve-default:
 	cd _build/html;python -m http.server
+
+build: sphinx-build
 
 #
 # Wagtail
@@ -1111,16 +1113,12 @@ wagtail-install-default:
         wagtail-seo 
 
 
-build: readme-build
-
 # Include project-specific makefile
-# ------------------------------------------------------------------------------  
+# ------------------------------------------------------------------------------
 #
 
 PROJECT_MAKEFILE := $(PROJECT_NAME).mk
-ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
-	include $(PROJECT_MAKEFILE)
-endif
+include $(PROJECT_MAKEFILE)
 
 # Overrides
 # ------------------------------------------------------------------------------  
