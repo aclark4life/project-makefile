@@ -1128,6 +1128,15 @@ h: help
 r: rand
 d: deploy
 
+# Include project-specific makefile
+# ------------------------------------------------------------------------------  
+#
+
+PROJECT_MAKEFILE := $(PROJECT_NAME).mk
+ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
+	include $(PROJECT_MAKEFILE)
+endif
+
 # Overrides
 # ------------------------------------------------------------------------------  
 #
