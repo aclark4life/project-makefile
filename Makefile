@@ -36,7 +36,7 @@ include base.mk
 
 # Uncomment, edit following line to change project name and project-specific
 # makefile name.
-#PROJECT_NAME := project
+#override PROJECT_NAME := project
 
 # Uncomment the next line to customize the default goal
 #.DEFAULT_GOAL := git-commit-push
