@@ -24,6 +24,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# --------------------------------------------------------------------------------
+# Variables
+# --------------------------------------------------------------------------------
+
 .DEFAULT_GOAL := git-commit-push
 
 GIT_MESSAGE := Update
@@ -504,27 +508,25 @@ node_modules/
 endef
 
 export ALLAUTH_LAYOUT_BASE
+export AUTHENTICATION_BACKENDS
+export BABELRC
 export BASE_TEMPLATE
+export FRONTEND_APP
+export GIT_IGNORE
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
-export JENKINS_FILE
-export URL_PATTERNS
-export REST_FRAMEWORK
-export AUTHENTICATION_BACKENDS
-export GIT_IGNORE
-export FRONTEND_APP
-export BABELRC
 export INTERNAL_IPS
+export JENKINS_FILE
+export REST_FRAMEWORK
+export URL_PATTERNS
 
+# ------------------------------------------------------------------------------  
 # Rules
 # ------------------------------------------------------------------------------  
-#
-# AWS Elastic Beanstalk
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-# 
 
-# https://stackoverflow.com/a/4731504/185820
-eb-check-env:
+# Elastic Beanstalk
+
+eb-check-env:  # https://stackoverflow.com/a/4731504/185820
 ifndef ENV_NAME
 	$(error ENV_NAME is undefined)
 endif
@@ -570,10 +572,7 @@ eb-deploy-default:
 eb-init-default:
 	eb init
 
-#
-# NPM
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
+# npm
 
 npm-init-default:
 	npm init -y
@@ -588,10 +587,7 @@ npm-clean-default:
 	rm -vf package.json
 	rm -vf package-lock.json
 
-#
 # Django
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
 
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
@@ -689,10 +685,7 @@ django-clean: wagtail-init-clean
 
 migrate: django-migrate
 
-#
 # Git
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
 
 git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
@@ -730,12 +723,7 @@ git-commit-edit-push: git-commit-edit git-push
 git-commit-push: git-commit git-push
 gitignore: git-ignore
 
-#
-# Misc
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
-
-build: readme-build
+# Lint
 
 black-default:
 	-black *.py
@@ -756,16 +744,6 @@ flake-default:
 	-flake8 backend/*.py
 	-flake8 backend/*/*.py
 
-# Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
-help-default:  # http://stackoverflow.com/a/26339924
-	@for makefile in $(MAKEFILE_LIST); do \
-        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
-            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
-            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
-            | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | less
-
-h: help
 
 isort-default:
 	-isort *.py
@@ -781,8 +759,9 @@ ruff-default:
 	-git commit -a -m "A one time ruff event"
 	-git push
 
-jenkins-file-default:
-	@echo "$$JENKINS_FILE" > Jenkinsfile
+
+
+# Database
 
 my-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
@@ -797,6 +776,11 @@ db-init: pg-init
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
+
+# Misc
+
+jenkins-file-default:
+	@echo "$$JENKINS_FILE" > Jenkinsfile
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
@@ -821,17 +805,11 @@ make-default:
 	-git commit -a -m "Add/update project-makefile files"
 	-git push
 
-
-
 edit-default: readme-edit
-
 
 open-default: django-open
 
-#
-# Pip
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
+# pip
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
@@ -867,10 +845,7 @@ pip-init-default:
 	touch requirements.txt
 	-git add requirements.txt
 
-#
-# Readme
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
+# README
 
 readme-init-default:
 	@echo "$(PROJECT_NAME)" > README.rst
@@ -888,10 +863,7 @@ readme-open-default:
 readme-build-default:
 	rst2pdf README.rst
 
-#
 # Sphinx
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
 
 sphinx-init-default:
 	$(MAKE) sphinx-install
@@ -916,10 +888,8 @@ sphinx-serve-default:
 
 build: sphinx-build
 
-#
 # Wagtail
-# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
-#
+
 wagtail-init-clean-default:
 	-rm -vf .dockerignore
 	-rm -vf Dockerfile
@@ -969,9 +939,6 @@ wagtail-init-default: pg-init wagtail-install
 	@$(MAKE) readme
 	@$(MAKE) serve
 
-django-init: wagtail-init
-init-default: wagtail-init
-
 wagtail-install-default:
 	pip3 install \
         djangorestframework \
@@ -997,16 +964,24 @@ wagtail-install-default:
         wagtail \
         wagtail-seo 
 
-
-# Include project-specific makefile
-# ------------------------------------------------------------------------------
-#
+# Include project makefile
 
 PROJECT_MAKEFILE := $(PROJECT_NAME).mk
 include $(PROJECT_MAKEFILE)
 
+# Help
+
+## Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
+help-default:  # http://stackoverflow.com/a/26339924
+	@for makefile in $(MAKEFILE_LIST); do \
+        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
+            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
+            | xargs | tr ' ' '\n' \
+            | awk '{printf "%s\n", $$0}' ; done | less
+h: help
+
 # Overrides
-# ------------------------------------------------------------------------------  
 #
 # https://stackoverflow.com/a/49804748
 %: %-default
