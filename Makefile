@@ -1,13 +1,8 @@
-# Project Makefile
-# ================
+# Project Makefile - https://github.com/project-makefile/project-makefile
 #
 # A generic makefile for projects
 #
-# - https://github.com/project-makefile/project-makefile
-#
-#
 # License
-# ------------------------------------------------------------------------------ 
 #
 # Copyright 2016—2023 Jeffrey A. Clark (Alex)
 #
@@ -28,16 +23,11 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 include base.mk
 include project.mk
 
 # Overrides and includes
-# ------------------------------------------------------------------------------ 
-#
 
-# Uncomment the next line to customize the default target
-#.DEFAULT_GOAL := git-commit-edit
-
-# Uncomment and edit the following line to change the project name which is used
-# by other targets to include in their output.
+#.DEFAULT_GOAL := project
 #PROJECT_NAME := project
