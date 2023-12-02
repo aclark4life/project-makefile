@@ -956,6 +956,8 @@ git-commit-push-default: git-commit git-push
 gitignore-default: git-ignore
 open-default: django-open
 p-default: git-push
+serve-default: django-serve
+s-default: serve
 
 # Overrides
 
