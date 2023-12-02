@@ -948,6 +948,7 @@ build-default: sphinx-build
 b-default: build 
 ce-default: git-commit-edit
 cp-default: git-commit-push
+db-init: pg-init
 edit-default: readme-edit
 e-default: edit
 h-default: help
