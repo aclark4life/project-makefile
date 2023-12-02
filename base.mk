@@ -765,6 +765,7 @@ pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-init: pg-init
+db: pg-init
 
 # Misc
 
