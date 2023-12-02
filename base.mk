@@ -658,7 +658,7 @@ django-url-patterns-default:
 django-npm-install-default:
 	cd frontend; $(MAKE) npm-install
 
-django-npm-install-dev-default:
+django-npm-install-save-dev-default:
 	cd frontend; npm install \
         eslint-plugin-react \
         eslint-config-standard \
@@ -680,10 +680,6 @@ django-npm-build-default:
 
 django-open-default:
 	open http://0.0.0.0:8000
-
-django-clean: wagtail-init-clean
-
-migrate: django-migrate
 
 # Git
 
@@ -764,9 +760,6 @@ pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
-db-init: pg-init
-db: pg-init
-
 # Misc
 
 python-serve-default:
@@ -808,14 +801,11 @@ pip-install-default: pip-upgrade
 	pip3 install wheel
 	pip3 install -r requirements.txt
 
-install-default: pip-install
-i: install
+pip-install-dev-default:
+	pip3 install -r requirements-dev.txt
 
 pip-install-test-default:
 	pip3 install -r requirements-test.txt
-
-pip-install-dev-default:
-	pip3 install -r requirements-dev.txt
 
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
@@ -871,8 +861,6 @@ sphinx-build-pdf-default:
 sphinx-serve-default:
 	cd _build/html;python -m http.server
 
-build: sphinx-build
-
 # Wagtail
 
 wagtail-init-clean-default:
@@ -886,9 +874,7 @@ wagtail-init-clean-default:
 	-rm -rvf frontend/
 	-rm -vf README.rst
 
-clean-default: wagtail-init-clean
-
-wagtail-init-default: pg-init wagtail-install
+wagtail-init-default: db-init wagtail-install
 	wagtail start backend .
 	$(MAKE) pip-freeze
 	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; $(MAKE) django-settings
@@ -915,7 +901,7 @@ wagtail-init-default: pg-init wagtail-install
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
-	@$(MAKE) django-npm-install-dev
+	@$(MAKE) django-npm-install-save-dev
 	@$(MAKE) cp
 	@$(MAKE) isort
 	@$(MAKE) black
