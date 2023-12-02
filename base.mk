@@ -949,6 +949,7 @@ build-default: sphinx-build
 b-default: build 
 ce-default: git-commit-edit
 cp-default: git-commit-push
+clean: wagtail-clean
 db-init: pg-init
 edit-default: readme-edit
 e-default: edit
