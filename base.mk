@@ -829,7 +829,7 @@ sphinx-serve-default:
 
 # Wagtail
 
-wagtail-init-clean-default:
+wagtail-clean-default:
 	-rm -vf .dockerignore
 	-rm -vf Dockerfile
 	-rm -vf manage.py
