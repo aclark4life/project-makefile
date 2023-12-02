@@ -526,7 +526,7 @@ export URL_PATTERNS
 
 # Elastic Beanstalk
 
-eb-check-env:  # https://stackoverflow.com/a/4731504/185820
+eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef ENV_NAME
 	$(error ENV_NAME is undefined)
 endif
@@ -712,12 +712,6 @@ git-set-upstream-default:
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit" ; git push
 
-ce: git-commit-edit
-cp: git-commit-push
-git-commit-edit-push: git-commit-edit git-push
-git-commit-push: git-commit git-push
-gitignore: git-ignore
-p: git-push
 
 # Lint
 
@@ -760,34 +754,6 @@ pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
-# Misc
-
-python-serve-default:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m http.server
-
-jenkins-file-default:
-	@echo "$$JENKINS_FILE" > Jenkinsfile
-
-rand-default:
-	@openssl rand -base64 12 | sed 's/\///g'
-
-review-default:
-ifeq ($(UNAME), Darwin)
-	@open -a $(REVIEW_EDITOR) `find backend -name \*.py | grep -v migrations` `find backend -name \*.html` `find $(PROJECT_NAME) -name \*.js`
-else
-	@echo "Unsupported"
-endif
-
-
-make-default:
-	-git add base.mk
-	-git add Makefile
-	-git commit -a -m "Add/update project-makefile files"
-
-edit-default: readme-edit
-
-open-default: django-open
 
 # pip
 
@@ -814,7 +780,7 @@ pip-install-upgrade-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 
-pip-upgrade:
+pip-upgrade-default:
 	pip3 install -U pip
 
 pip-init-default:
@@ -955,7 +921,39 @@ usage-default:
 	@echo "Help:"
 	@echo "  make help"
 
-h: help
+# Misc
+
+python-serve-default:
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	python -m http.server
+
+jenkins-file-default:
+	@echo "$$JENKINS_FILE" > Jenkinsfile
+
+rand-default:
+	@openssl rand -base64 12 | sed 's/\///g'
+
+review-default:
+ifeq ($(UNAME), Darwin)
+	@open -a $(REVIEW_EDITOR) `find backend -name \*.py | grep -v migrations` `find backend -name \*.html` `find $(PROJECT_NAME) -name \*.js`
+else
+	@echo "Unsupported"
+endif
+
+make-default:
+	-git add base.mk
+	-git add Makefile
+	-git commit -a -m "Add/update project-makefile files"
+
+ce-default: git-commit-edit
+cp-default: git-commit-push
+edit-default: readme-edit
+h-default: help
+git-commit-edit-push-default: git-commit-edit git-push
+git-commit-push-default: git-commit git-push
+gitignore-default: git-ignore
+open-default: django-open
+p-default: git-push
 
 # Overrides
 
