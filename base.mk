@@ -657,7 +657,7 @@ django-url-patterns-default:
 	echo "$$URL_PATTERNS" > backend/$(URLS)
 
 django-npm-install-default:
-	cd frontend; $(MAKE) npm-install
+	cd frontend; npm-install
 
 django-npm-install-save-dev-default:
 	cd frontend; npm install \
