@@ -24,10 +24,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+#--------------------------------------------------------------------------------
+# Include
+#--------------------------------------------------------------------------------
+
 include base.mk
 include project.mk
 
-# Overrides and includes
+#--------------------------------------------------------------------------------
+# Override
+#--------------------------------------------------------------------------------
 
 #.DEFAULT_GOAL := project
 #PROJECT_NAME := project
