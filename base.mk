@@ -701,7 +701,6 @@ git-push-default:
 git-commit-edit-default:
 	-git commit -a
 
-git-commit-edit-push-default: git-commit-edit git-push
 
 git-prune-default:
 	git remote update origin --prune
@@ -710,35 +709,34 @@ git-set-upstream-default:
 	git push --set-upstream origin main
 
 git-commit-empty-default:
-	git commit --allow-empty -m "Empty-Commit" ; git push
-
+	git commit --allow-empty -m "Empty-Commit"
 
 # Lint
 
-black-default:
+lint-black-default:
 	-black *.py
 	-black backend/*.py
 	-black backend/*/*.py
 	-git commit -a -m "A one time black event"
 
-djlint-default:
+lint-djlint-default:
 	-djlint --reformat *.html
 	-djlint --reformat backend/*.html
 	-djlint --reformat backend/*/*.html
 	-git commit -a -m "A one time djlint event"
 
-flake-default:
+lint-flake-default:
 	-flake8 *.py
 	-flake8 backend/*.py
 	-flake8 backend/*/*.py
 
-isort-default:
+lint-isort-default:
 	-isort *.py
 	-isort backend/*.py
 	-isort backend/*/*.py
 	-git commit -a -m "A one time isort event"
 
-ruff-default:
+lint-ruff-default:
 	-ruff *.py
 	-ruff backend/*.py
 	-ruff backend/*/*.py
@@ -923,12 +921,17 @@ usage-default:
 
 # Misc
 
+jenkins-init-default:
+	@echo "$$JENKINS_FILE" > Jenkinsfile
+
+make-default:
+	-git add base.mk
+	-git add Makefile
+	-git commit -a -m "Add/update project-makefile files"
+
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
-
-jenkins-file-default:
-	@echo "$$JENKINS_FILE" > Jenkinsfile
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
@@ -940,14 +943,10 @@ else
 	@echo "Unsupported"
 endif
 
-make-default:
-	-git add base.mk
-	-git add Makefile
-	-git commit -a -m "Add/update project-makefile files"
-
 ce-default: git-commit-edit
 cp-default: git-commit-push
 edit-default: readme-edit
+e-default: edit
 h-default: help
 i-default: pip-install
 git-commit-edit-push-default: git-commit-edit git-push
