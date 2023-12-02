@@ -951,6 +951,7 @@ cp-default: git-commit-push
 edit-default: readme-edit
 e-default: edit
 h-default: help
+init-default: wagtail-init
 install-default: pip-install
 i-default: install
 git-commit-edit-push-default: git-commit-edit git-push
