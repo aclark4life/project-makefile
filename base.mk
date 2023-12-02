@@ -691,7 +691,6 @@ git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	-git add .gitignore
 	-git commit -a -m "Add .gitignore"
-	-git push
 
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
@@ -722,6 +721,7 @@ cp: git-commit-push
 git-commit-edit-push: git-commit-edit git-push
 git-commit-push: git-commit git-push
 gitignore: git-ignore
+p: git-push
 
 # Lint
 
@@ -730,40 +730,33 @@ black-default:
 	-black backend/*.py
 	-black backend/*/*.py
 	-git commit -a -m "A one time black event"
-	-git push
 
 djlint-default:
 	-djlint --reformat *.html
 	-djlint --reformat backend/*.html
 	-djlint --reformat backend/*/*.html
 	-git commit -a -m "A one time djlint event"
-	-git push
 
 flake-default:
 	-flake8 *.py
 	-flake8 backend/*.py
 	-flake8 backend/*/*.py
 
-
 isort-default:
 	-isort *.py
 	-isort backend/*.py
 	-isort backend/*/*.py
 	-git commit -a -m "A one time isort event"
-	-git push
 
 ruff-default:
 	-ruff *.py
 	-ruff backend/*.py
 	-ruff backend/*/*.py
 	-git commit -a -m "A one time ruff event"
-	-git push
-
-
 
 # Database
 
-my-init-default:
+mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
 
@@ -773,11 +766,11 @@ pg-init-default:
 
 db-init: pg-init
 
+# Misc
+
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python -m http.server
-
-# Misc
 
 jenkins-file-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
@@ -792,18 +785,11 @@ else
 	@echo "Unsupported"
 endif
 
-usage-default:
-	@echo "Project Makefile"
-	@echo "Usage:"
-	@echo "  make <task>"
-	@echo "Help:"
-	@echo "  make help"
 
 make-default:
 	-git add base.mk
 	-git add Makefile
 	-git commit -a -m "Add/update project-makefile files"
-	-git push
 
 edit-default: readme-edit
 
@@ -816,7 +802,6 @@ pip-freeze-default:
 	mv -f $(TMPDIR)/requirements.txt .
 	-git add requirements.txt
 	-git commit -a -m "Freezing requirements."
-	-git push
 
 pip-install-default: pip-upgrade
 	pip3 install wheel
@@ -852,7 +837,6 @@ readme-init-default:
 	@echo "================================================================================" >> README.rst
 	-@git add README.rst
 	-git commit -a -m "Add readme"
-	-git push
 
 readme-edit-default:
 	vi README.rst
@@ -964,25 +948,29 @@ wagtail-install-default:
         wagtail \
         wagtail-seo 
 
-# Include project makefile
-
-PROJECT_MAKEFILE := $(PROJECT_NAME).mk
-include $(PROJECT_MAKEFILE)
-
 # Help
 
-## Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
-help-default:  # http://stackoverflow.com/a/26339924
+## Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile,
+## print target names from all makefiles.
+
+help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
             | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
             | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
             | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | less
+            | awk '{printf "%s\n", $$0}' ; done | less  # http://stackoverflow.com/a/26339924
+
+usage-default:
+	@echo "project-makefile"
+	@echo "Usage:"
+	@echo "  make <task>"
+	@echo "Help:"
+	@echo "  make help"
+
 h: help
 
 # Overrides
-#
-# https://stackoverflow.com/a/49804748
-%: %-default
+
+%: %-default  # https://stackoverflow.com/a/49804748
 	@ true
