@@ -964,6 +964,7 @@ open-default: django-open
 p-default: git-push
 readme-default: readme-init
 serve-default: django-serve
+su: django-su
 s-default: serve
 
 # Overrides
