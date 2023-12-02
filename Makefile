@@ -25,4 +25,8 @@
 # SOFTWARE.
 
 include base.mk
-include project.mk
+
+PROJECT_MAKEFILE := project.mk
+ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
+    include $(PROJECT_MAKEFILE)
+endif
