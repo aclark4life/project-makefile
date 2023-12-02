@@ -761,7 +761,8 @@ pip-freeze-default:
 	-git add requirements.txt
 	-git commit -a -m "Freezing requirements."
 
-pip-install-default: pip-upgrade
+pip-install-default:
+	$(MAKE) pip-upgrade
 	pip3 install wheel
 	pip3 install -r requirements.txt
 
