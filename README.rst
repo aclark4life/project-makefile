@@ -6,7 +6,7 @@ A generic makefile for projects.
 Why
 ---
 
-I like typing ``make <target>`` to perform tasks. 🤷
+I like to type ``make <task>`` to perform tasks. 🤷
 
 Installation
 ------------
