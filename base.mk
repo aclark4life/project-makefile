@@ -28,6 +28,8 @@
 # Variables
 # --------------------------------------------------------------------------------
 
+MAKEFLAGS += --debug
+
 .DEFAULT_GOAL := git-commit-push
 
 GIT_MESSAGE := Update
