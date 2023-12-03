@@ -82,7 +82,7 @@ endef
 
 define FRONTEND_APP
 import React from 'react';
-import TimeDisplay from './TimeDisplay';
+import Clock from '../components/Clock';
 
 const App = () => {
   return (
