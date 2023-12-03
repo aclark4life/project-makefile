@@ -41,3 +41,11 @@ Example
 
 	project-makefile .
 	make django-init
+
+
+Troubleshooting
+---------------
+
+::
+
+    make --debug
