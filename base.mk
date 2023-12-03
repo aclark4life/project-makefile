@@ -72,6 +72,37 @@ define BABELRC
 }
 endef
 
+define PORTAL_PROVIDER
+// PortalProvider.js
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import MyContext from './context';
+
+const portalRoot = document.getElementById('portal-root');
+
+const PortalProvider = ({ children }) => {
+  const portalContainer = document.createElement('div');
+
+  useEffect(() => {
+    // Mount: Append the portal container to the portal root
+    portalRoot.appendChild(portalContainer);
+
+    // Unmount: Remove the portal container from the portal root
+    return () => {
+      portalRoot.removeChild(portalContainer);
+    };
+  }, []); // Empty dependency array ensures that the effect runs only once (on mount and unmount)
+
+  return (
+    <MyContext.Provider value={/* Your context values */}>
+      {children}
+    </MyContext.Provider>
+  );
+};
+
+export default PortalProvider;
+endef
+
 define FRONTEND_APP
 import React from 'react';
 import { createPortal } from 'react-dom';
@@ -516,6 +547,7 @@ export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export INTERNAL_IPS
 export JENKINS_FILE
+export PORTAL_PROVIDER
 export REST_FRAMEWORK
 export URL_PATTERNS
 
@@ -864,6 +896,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
+	@echo "$$PORTAL_PROVIDER" > frontend/src/components/PortalProvider.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	-git add frontend
