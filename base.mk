@@ -901,7 +901,7 @@ wagtail-install-default:
 
 # Misc
 
-help-default:
+helpa-lelpa-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
             | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
