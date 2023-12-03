@@ -901,13 +901,13 @@ wagtail-install-default:
 
 # Misc
 
-helpa-lelpa-default:
+help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
             | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
             | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
             | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | less  # http://stackoverflow.com/a/26339924 Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
+            | awk '{printf "%s\n", $$0}' ; done # http://stackoverflow.com/a/26339924 Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
 
 usage-default:
 	@echo "Project Makefile 🤷"
@@ -940,7 +940,7 @@ endif
 
 build-default: sphinx-build
 b-default: build 
-ce-default: git-commit-edit
+ce-default: git-commit-edit-push
 cp-default: git-commit-push
 clean: wagtail-clean
 db-init: pg-init
