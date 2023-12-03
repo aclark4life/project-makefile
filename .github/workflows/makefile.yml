@@ -15,8 +15,8 @@ jobs:
       postgres:
         image: postgres:latest
 
-	env:
-	  GIT_COMMANDS: false
+    env:
+      GIT_COMMANDS: false
 
     steps:
     - uses: actions/checkout@v3
