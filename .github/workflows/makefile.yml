@@ -11,6 +11,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+
     steps:
     - uses: actions/checkout@v3
 
