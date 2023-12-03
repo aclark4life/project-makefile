@@ -55,7 +55,7 @@ define CLOCK_COMPONENT
 
 import React, { useState, useEffect } from 'react';
 
-const TimeDisplay = () => {
+const Clock = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const TimeDisplay = () => {
   );
 };
 
-export default TimeDisplay;
+export default Clock;
 endef
 
 define FRONTEND_APP
@@ -853,7 +853,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
-	@echo "$$PORTAL_PROVIDER" > frontend/src/components/PortalProvider.js
+	@echo "$$CLOCK_COMPONENT" > frontend/src/components/Clock.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	-git add frontend
