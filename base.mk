@@ -51,6 +51,51 @@ define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
 
+define CLOCK_COMPONENT
+
+import React, { useState, useEffect } from 'react';
+
+const TimeDisplay = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    // Cleanup function to clear the interval when the component is unmounted
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array ensures that the effect runs only once (on mount)
+
+  const formattedTime = currentTime.toLocaleTimeString();
+
+  return (
+    <div>
+      <h2>Current Time:</h2>
+      <p>{formattedTime}</p>
+    </div>
+  );
+};
+
+export default TimeDisplay;
+endef
+
+define FRONTEND_APP
+import React from 'react';
+import TimeDisplay from './TimeDisplay';
+
+const App = () => {
+  return (
+    <div>
+      <h1>React Time Display App</h1>
+      <TimeDisplay />
+    </div>
+  );
+};
+
+export default App;
+endef
+
 define BABELRC
 {
   "presets": [
@@ -70,90 +115,6 @@ define BABELRC
     "@babel/plugin-transform-class-properties"
   ]
 }
-endef
-
-define PORTAL_PROVIDER
-// PortalProvider.js
-import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
-import MyContext from './context';
-
-const portalRoot = document.getElementById('portal-root');
-
-const PortalProvider = ({ children }) => {
-  const portalContainer = document.createElement('div');
-
-  useEffect(() => {
-    // Mount: Append the portal container to the portal root
-    portalRoot.appendChild(portalContainer);
-
-    // Unmount: Remove the portal container from the portal root
-    return () => {
-      portalRoot.removeChild(portalContainer);
-    };
-  }, []); // Empty dependency array ensures that the effect runs only once (on mount and unmount)
-
-  return (
-    <MyContext.Provider value={/* Your context values */}>
-      {children}
-    </MyContext.Provider>
-  );
-};
-
-export default PortalProvider;
-endef
-
-define FRONTEND_APP
-import React from 'react';
-import { createPortal } from 'react-dom';
-
-const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
-  if (value.toLowerCase() === 'true') {
-    value = true;
-  } else if (value.toLowerCase() === 'false') {
-    value = false;
-  } else if (value.toLowerCase() === 'null') {
-    value = null;
-  } else if (!isNaN(parseFloat(value)) && isFinite(value)) {
-    value = parseFloat(value);
-  } else if (
-    (value[0] === '[' && value.slice(-1) === ']') || (value[0] === '{' && value.slice(-1) === '}')
-  ) {
-    value = JSON.parse(value);
-  }
-
-  result[key] = value;
-  return result;
-}, {});
-
-const getPortalComponent = domEl => {
-  const { component: componentName, ...rest } = domEl.dataset;
-  const Component = components[componentName];
-
-  if (!Component) {
-    throw new Error(`Component "${componentName}" not found.`);
-  }
-
-  const props = parseProps(rest);
-
-  // Use React Fragments instead of an unnecessary div wrapper
-  domEl.innerHTML = <></>;
-
-  const { ErrorBoundary } = components;
-  return createPortal(
-    <ErrorBoundary>
-      <Component {...props} />
-    </ErrorBoundary>,
-    domEl,
-  );
-};
-
-const getComponents = components => {
-  const elements = document.querySelectorAll('[data-component]');
-  return Array.from(elements).map(getPortalComponent);
-};
-
-export default getComponents;
 endef
 
 define BASE_TEMPLATE
@@ -541,13 +502,13 @@ export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
 export BASE_TEMPLATE
+export CLOCK_COMPONENT
 export FRONTEND_APP
 export GIT_IGNORE
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export INTERNAL_IPS
 export JENKINS_FILE
-export PORTAL_PROVIDER
 export REST_FRAMEWORK
 export URL_PATTERNS
 
