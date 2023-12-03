@@ -899,10 +899,7 @@ wagtail-install-default:
         wagtail \
         wagtail-seo 
 
-# Help
-
-## Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile,
-## print target names from all makefiles.
+# Misc
 
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
@@ -910,16 +907,14 @@ help-default:
             | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
             | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
             | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | less  # http://stackoverflow.com/a/26339924
+            | awk '{printf "%s\n", $$0}' ; done | less  # http://stackoverflow.com/a/26339924 Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
 
 usage-default:
-	@echo "project-makefile"
-	@echo "Usage:"
-	@echo "  make <task>"
-	@echo "Help:"
-	@echo "  make help"
-
-# Misc
+	@echo "Project Makefile 🤷"
+	@echo "Usage: make [options] [target] ..."
+	@echo "Examples:"
+	@echo "   make help    Print all targets"
+	@echo "   make usage   Print this message"
 
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
@@ -964,6 +959,7 @@ readme-default: readme-init
 serve-default: django-serve
 su: django-su
 s-default: serve
+u-default: usage
 
 # Overrides
 
