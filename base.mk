@@ -73,58 +73,56 @@ define BABELRC
 endef
 
 define FRONTEND_APP
-// Via ChatGPT based on concept by pwellever
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import "../styles/index.scss";
-import "bootstrap/dist/js/bootstrap.bundle";
+import { createPortal } from 'react-dom';
 
-// eslint-disable-next-line no-unused-vars
-const CustomComponent = ({ componentType, ...otherProps }) => {
-  // Your custom component logic here based on componentType
-  return (
-    <div style={{ border: '1px solid black', padding: '10px', margin: '10px' }}>
-      <p>Component Type: {componentType}</p>
-      <p>Other Props: {JSON.stringify(otherProps)}</p>
-    </div>
+const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
+  if (value.toLowerCase() === 'true') {
+    value = true;
+  } else if (value.toLowerCase() === 'false') {
+    value = false;
+  } else if (value.toLowerCase() === 'null') {
+    value = null;
+  } else if (!isNaN(parseFloat(value)) && isFinite(value)) {
+    value = parseFloat(value);
+  } else if (
+    (value[0] === '[' && value.slice(-1) === ']') || (value[0] === '{' && value.slice(-1) === '}')
+  ) {
+    value = JSON.parse(value);
+  }
+
+  result[key] = value;
+  return result;
+}, {});
+
+const getPortalComponent = domEl => {
+  const { component: componentName, ...rest } = domEl.dataset;
+  const Component = components[componentName];
+
+  if (!Component) {
+    throw new Error(`Component "${componentName}" not found.`);
+  }
+
+  const props = parseProps(rest);
+
+  // Use React Fragments instead of an unnecessary div wrapper
+  domEl.innerHTML = <></>;
+
+  const { ErrorBoundary } = components;
+  return createPortal(
+    <ErrorBoundary>
+      <Component {...props} />
+    </ErrorBoundary>,
+    domEl,
   );
 };
 
-const renderComponents = () => {
-  const root = document.getElementById('root');
-  const elements = root.querySelectorAll('[data-component]');
-
-  elements.forEach((element) => {
-    const componentType = element.getAttribute('data-component');
-    const otherProps = {};
-
-    // Extract other data-* attributes as props
-    Array.from(element.attributes).forEach((attr) => {
-      if (attr.name.startsWith('data-') && attr.name !== 'data-component') {
-        const propKey = attr.name.replace('data-', '');
-        otherProps[propKey] = attr.value;
-      }
-    });
-
-    // Render the custom component
-    createRoot(element).render(
-      <CustomComponent key={element.dataset.key} componentType={componentType} {...otherProps} />
-    );
-  });
+const getComponents = components => {
+  const elements = document.querySelectorAll('[data-component]');
+  return Array.from(elements).map(getPortalComponent);
 };
 
-// eslint-disable-next-line no-unused-vars
-const App = () => {
-  // Call the function to render components on mount
-  React.useEffect(() => {
-    renderComponents();
-  }, []);
-
-  return null; // You can return null as this component doesn't render anything itself
-};
-
-// Render the main App component
-createRoot(document.getElementById('root')).render(<App />);
+export default getComponents;
 endef
 
 define BASE_TEMPLATE
