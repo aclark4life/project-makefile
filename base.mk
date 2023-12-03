@@ -757,8 +757,12 @@ pg-init-default:
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	-git add requirements.txt
-	-git commit -a -m "Freezing requirements."
+    @if [ "$(GIT_COMMANDS)" != "false" ]; then \
+		-git add requirements.txt \
+		-git commit -a -m "Freezing requirements." \
+    else \
+        echo "Git commands are skipped as GIT_COMMANDS is set to false"; \
+    fi
 
 pip-install-default:
 	$(MAKE) pip-upgrade

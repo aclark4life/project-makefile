@@ -20,3 +20,6 @@ jobs:
 
     - name: Wagtail init
       run: make wagtail-init
+
+	env:
+	  GIT_COMMANDS: false
