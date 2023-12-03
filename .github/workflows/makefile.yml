@@ -2,9 +2,9 @@ name: Makefile CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
@@ -14,5 +14,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Print all targets
-      run: make help
+    - name: Wagtail init
+      run: make wagtail-init
