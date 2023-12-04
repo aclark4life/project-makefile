@@ -36,7 +36,7 @@ GIT_BRANCHES = `git branch -a \
 
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')  # https://stackoverflow.com/a/589260/185820
 
-TMPDIR := $(shell mktemp -d)  # https://stackoverflow.com/a/589260/185820
+TMPDIR := $(shell mktemp -d)# https://stackoverflow.com/a/589260/185820
 
 UNAME := $(shell uname)  # https://stackoverflow.com/a/589260/185820
 
