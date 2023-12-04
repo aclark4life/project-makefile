@@ -45,8 +45,7 @@ INTERNAL_IPS = ["127.0.0.1",]
 endef
 
 define CLOCK_COMPONENT
-
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 const Clock = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -69,12 +68,11 @@ const Clock = () => {
     </div>
   );
 };
-
 export default Clock;
 endef
 
 define FRONTEND_APP
-import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import Clock from '../components/Clock';
 
 const App = () => {
