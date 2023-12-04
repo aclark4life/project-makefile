@@ -942,6 +942,7 @@ git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
 gitignore-default: git-ignore
 open-default: django-open
+o: open
 p-default: git-push
 readme-default: readme-init
 serve-default: django-serve
