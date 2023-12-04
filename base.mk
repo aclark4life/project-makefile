@@ -686,7 +686,6 @@ git-push-default:
 git-commit-edit-default:
 	-git commit -a
 
-
 git-prune-default:
 	git remote update origin --prune
 
@@ -910,6 +909,7 @@ make-default:
 	-git add base.mk
 	-git add Makefile
 	-git commit -a -m "Add/update project-makefile files"
+	-git push
 
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
@@ -931,6 +931,7 @@ ce-default: git-commit-edit-push
 cp-default: git-commit-push
 clean: wagtail-clean
 db-init: pg-init
+django-init-default: wagtail-init
 edit-default: readme-edit
 e-default: edit
 h-default: help
