@@ -672,6 +672,7 @@ git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	-git add .gitignore
 	-git commit -a -m "Add .gitignore"
+	-git push
 
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
@@ -858,6 +859,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) cp
 	@$(MAKE) lint-flake
 	@$(MAKE) readme
+	@$(MAKE) gitignore
 	@$(MAKE) serve
 
 wagtail-install-default:
