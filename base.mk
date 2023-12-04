@@ -79,7 +79,7 @@ const App = () => {
   return (
     <div>
       <h1>React Time Display App</h1>
-      <TimeDisplay />
+      <Clock />
     </div>
   );
 };
