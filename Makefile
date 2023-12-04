@@ -26,11 +26,11 @@
 
 include base.mk
 
-PROJECT_MAKEFILE := project.mk
+GIT_MESSAGE := Update $(PROJECT_NAME)
+PROJECT_MAKEFILE := $(PROJECT_NAME).mk
 ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
 endif
 
-.DEFAULT_GOAL := git-commit-push
-GIT_MESSAGE := Update
 PROJECT_NAME := project
+.DEFAULT_GOAL := git-commit-push
