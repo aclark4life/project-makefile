@@ -501,6 +501,11 @@ module.exports = {
 };
 endef
 
+define WEBPACK_INDEX_JS
+const message = "Hello, World!";
+console.log(message);
+endef
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -515,6 +520,7 @@ export JENKINS_FILE
 export REST_FRAMEWORK
 export URL_PATTERNS
 export WEBPACK_CONFIG_JS
+export WEBPACK_INDEX_JS
 
 # ------------------------------------------------------------------------------  
 # Rules
@@ -920,6 +926,8 @@ jenkins-init-default:
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
 	npm install --save-dev webpack webpack-cli
+	-mkdir -v src/
+	@echo "$$WEBPACK_INDEX_JS" > src/index.js
 
 make-default:
 	-git add base.mk
