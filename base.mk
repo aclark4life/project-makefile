@@ -925,6 +925,7 @@ endif
 
 project-mk-default:
 	touch project.mk
+	-git add project.mk
 
 build-default: sphinx-build
 b-default: build 
