@@ -587,6 +587,7 @@ npm-install-default:
 npm-clean-default:
 	rm -rvf node_modules/
 	rm -vf package-lock.json
+	rm -rvf dist/
 
 # Django
 
