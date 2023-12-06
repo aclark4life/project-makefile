@@ -489,6 +489,18 @@ pyvenv.cfg
 node_modules/
 endef
 
+define WEBPACK_CONFIG_JS
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+endef
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -502,6 +514,7 @@ export INTERNAL_IPS
 export JENKINS_FILE
 export REST_FRAMEWORK
 export URL_PATTERNS
+export WEBPACK_CONFIG_JS
 
 # ------------------------------------------------------------------------------  
 # Rules
