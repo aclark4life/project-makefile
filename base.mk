@@ -893,7 +893,7 @@ help-default:
             | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
             | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
             | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done # http://stackoverflow.com/a/26339924 Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
+            | awk '{printf "%s\n", $$0}' ; done | less # http://stackoverflow.com/a/26339924 Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
 
 usage-default:
 	@echo "Project Makefile 🤷"
