@@ -516,7 +516,7 @@ define WEBPACK_INDEX_HTML
   <title>Hello, Webpack!</title>
 </head>
 <body>
-  <script src="bundle.js"></script>
+  <script src="dist/bundle.js"></script>
 </body>
 </html>
 endef
