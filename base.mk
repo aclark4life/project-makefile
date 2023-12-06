@@ -507,6 +507,20 @@ const message = "Hello, World!";
 console.log(message);
 endef
 
+define WEBPACK_INDEX_HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello, Webpack!</title>
+</head>
+<body>
+  <script src="bundle.js"></script>
+</body>
+</html>
+endef
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -522,6 +536,7 @@ export REST_FRAMEWORK
 export URL_PATTERNS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_JS
+export WEBPACK_INDEX_HTML
 
 # ------------------------------------------------------------------------------  
 # Rules
@@ -927,9 +942,13 @@ jenkins-init-default:
 
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
+	-git add webpack.config.js
 	npm install --save-dev webpack webpack-cli
 	-mkdir -v src/
 	@echo "$$WEBPACK_INDEX_JS" > src/index.js
+	-git add src/index.js
+	@echo "$$WEBPACK_INDEX_HTML" > index.html
+	-git add index.html
 
 make-default:
 	-git add base.mk
