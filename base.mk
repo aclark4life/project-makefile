@@ -923,6 +923,9 @@ else
 	@echo "Unsupported"
 endif
 
+project-mk-default:
+	touch project.mk
+
 build-default: sphinx-build
 b-default: build 
 ce-default: git-commit-edit-push
@@ -936,6 +939,7 @@ h-default: help
 init-default: wagtail-init
 install-default: pip-install
 i-default: install
+mk-default: project-mk
 git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
 gitignore-default: git-ignore
