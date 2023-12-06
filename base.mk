@@ -493,6 +493,7 @@ define WEBPACK_CONFIG_JS
 const path = require('path');
 
 module.exports = {
+  mode: 'development',
   entry: './src/index.js',
   output: {
     filename: 'bundle.js',
