@@ -916,6 +916,9 @@ usage-default:
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
+webpack-init-default:
+	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
+
 make-default:
 	-git add base.mk
 	-git add Makefile
