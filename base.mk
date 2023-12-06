@@ -970,6 +970,7 @@ serve-default: django-serve
 su-default: django-su
 s-default: serve
 u-default: usage
+webpack-default: webpack-init
 
 # Overrides
 
