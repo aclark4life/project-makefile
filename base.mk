@@ -580,6 +580,7 @@ npm-install-default:
 
 npm-clean-default:
 	rm -rvf node_modules/
+	rm -vf package-lock.json
 
 # Django
 
@@ -916,8 +917,9 @@ usage-default:
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
-webpack-init-default:
+webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
+	npm install --save-dev webpack webpack-cli
 
 make-default:
 	-git add base.mk
