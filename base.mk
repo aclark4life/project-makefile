@@ -567,8 +567,6 @@ npm-install-default:
 
 npm-clean-default:
 	rm -rvf node_modules/
-	rm -vf package.json
-	rm -vf package-lock.json
 
 # Django
 
@@ -928,9 +926,9 @@ endif
 build-default: sphinx-build
 b-default: build 
 ce-default: git-commit-edit-push
+clean-default: npm-clean
 cp-default: git-commit-push
-clean: wagtail-clean
-db-init: pg-init
+db-init-default: pg-init
 django-init-default: wagtail-init
 edit-default: readme-edit
 e-default: edit
@@ -942,11 +940,11 @@ git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
 gitignore-default: git-ignore
 open-default: django-open
-o: open
+o-default: open
 p-default: git-push
 readme-default: readme-init
 serve-default: django-serve
-su: django-su
+su-default: django-su
 s-default: serve
 u-default: usage
 
