@@ -209,6 +209,9 @@ define HOME_PAGE_TEMPLATE
     <p class="lead">{{ page.description|default:'' }}</p>
     <a class="btn btn-lg btn-primary" href="{% url 'account_login' %}" role="button">Login &raquo;</a>
   </div>
+  <div class="container">
+    <p class="lead">{{ page.body }}</p>
+  </div>
 </main>
 {% endblock %}
 endef
