@@ -198,6 +198,60 @@ class HomePage(SeoMixin, Page):
     promote_panels = SeoMixin.seo_panels
 endef
 
+define ALLAUTH_LAYOUT_BASE
+{% extends 'base.html' %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>
+            {% block head_title %}
+            {% endblock head_title %}
+        </title>
+        {% block extra_head %}
+        {% endblock extra_head %}
+    </head>
+    <body>
+        {% block body %}
+            {% if messages %}
+                <div>
+                    <strong>{% trans "Messages:" %}</strong>
+                    <ul>
+                        {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div>
+                <strong>{% trans "Menu:" %}</strong>
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li>
+                            <a href="{% url 'account_email' %}">{% trans "Change Email" %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% block content %}
+            {% endblock content %}
+        {% endblock body %}
+        {% block extra_body %}
+        {% endblock extra_body %}
+    </body>
+</html>
+endef
+
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 
@@ -347,6 +401,7 @@ define WEBPACK_INDEX_HTML
 </html>
 endef
 
+export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
 export BASE_TEMPLATE
@@ -700,6 +755,8 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) su
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
 	mkdir -p backend/templates/allauth/layouts
+	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
+	-git add backend/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
 	@echo "$$CLOCK_COMPONENT" > frontend/src/components/Clock.js
