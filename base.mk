@@ -210,7 +210,7 @@ define HOME_PAGE_TEMPLATE
     <a class="btn btn-lg btn-primary" href="{% url 'account_login' %}" role="button">Login &raquo;</a>
   </div>
   <div class="lead mt-5">
-	{{ page.body|safe|default:'' }}
+	{{ page.body|default:''|safe }}
   </div>
 </main>
 {% endblock %}
