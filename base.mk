@@ -864,9 +864,10 @@ project-mk-default:
 build-default: sphinx-build
 b-default: build 
 ce-default: git-commit-edit-push
-clean-default: npm-clean
+clean-default: wagtail-clean
 cp-default: git-commit-push
 db-init-default: pg-init
+django-clean-default: wagtail-clean
 django-init-default: wagtail-init
 edit-default: readme-edit
 e-default: edit
