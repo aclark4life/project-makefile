@@ -76,6 +76,9 @@ import "../styles/index.scss";
 
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
+
+// eslint-disable-next-line no-unused-vars
+import getPageComponents from '../createPortal';
 endef
 
 define BABELRC
@@ -767,6 +770,7 @@ wagtail-init-default: db-init wagtail-install
 	python manage.py webpack_init --no-input
 	@echo "$$CLOCK_COMPONENT" > frontend/src/components/Clock.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
+	@echo "$$REACT_PORTAL" > frontend/src/createPortal.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	-git add frontend
 	-git commit -a -m "Add frontend"
