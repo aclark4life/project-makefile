@@ -356,7 +356,6 @@ endef
 
 define REACT_PORTAL
 // Via pwellever
-import React from 'react';
 import { createPortal } from 'react-dom';
 
 const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
@@ -396,6 +395,8 @@ export default function getPageComponents (components) {
     }
     const props = parseProps(rest);
     domEl.innerHTML = '';
+
+    // eslint-disable-next-line no-unused-vars
     const { ErrorBoundary } = components;
     return createPortal(
       <ErrorBoundary>
