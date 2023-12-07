@@ -1,7 +1,9 @@
-# Project Makefile - https://github.com/project-makefile/project-makefile
+# Project Makefile
 #
 # A generic makefile for projects.
 #
+# https://github.com/project-makefile/project-makefile
+
 # License
 #
 # Copyright 2016—2023 Jeffrey A. Clark (Alex)
@@ -27,7 +29,6 @@
 include base.mk
 
 GIT_MESSAGE := Update
-
 PROJECT_NAME := project
 
 PROJECT_MAKEFILE := project.mk
