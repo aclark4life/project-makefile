@@ -1,6 +1,8 @@
 Project Makefile
 ================
 
+.. image:: logo.png
+
 A generic makefile for projects.
 
 Why
