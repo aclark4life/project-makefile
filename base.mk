@@ -72,19 +72,7 @@ export default Clock;
 endef
 
 define FRONTEND_APP
-// eslint-disable-next-line no-unused-vars
-import Clock from '../components/Clock';
-
-const App = () => {
-  return (
-    <div>
-      <h1>React Time Display App</h1>
-      <Clock />
-    </div>
-  );
-};
-
-export default App;
+import "../styles/index.scss";
 endef
 
 define BABELRC
