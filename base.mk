@@ -214,7 +214,6 @@ define ALLAUTH_LAYOUT_BASE
         {% endblock extra_head %}
     </head>
     <body>
-	  <div class="container">
         {% block body %}
             {% if messages %}
                 <div>
@@ -249,7 +248,6 @@ define ALLAUTH_LAYOUT_BASE
         {% endblock body %}
         {% block extra_body %}
         {% endblock extra_body %}
-	  </div>
     </body>
 </html>
 endef
