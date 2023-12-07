@@ -73,6 +73,9 @@ endef
 
 define FRONTEND_APP
 import "../styles/index.scss";
+
+// eslint-disable-next-line no-unused-vars
+import bootstrap from 'bootstrap';
 endef
 
 define BABELRC
