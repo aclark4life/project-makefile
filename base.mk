@@ -140,8 +140,6 @@ define BASE_TEMPLATE
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
 
-		<link type="text/css" href="{% static 'css/welcome_page.css' %}" rel="stylesheet">
-
 		<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
     </head>
 
