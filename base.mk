@@ -1,7 +1,9 @@
-# Project Makefile - https://github.com/project-makefile/project-makefile
+# Project Makefile
+#
+# https://github.com/project-makefile/project-makefile
 #
 # A generic makefile for projects.
-#
+ 
 # License
 #
 # Copyright 2016—2023 Jeffrey A. Clark (Alex)
