@@ -1,8 +1,8 @@
 # Project Makefile
 #
-# https://github.com/project-makefile/project-makefile
-#
 # A generic makefile for projects.
+#
+# https://github.com/project-makefile/project-makefile
  
 # License
 #
