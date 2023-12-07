@@ -252,7 +252,7 @@ from rest_framework import routers, serializers, viewsets
 
 urlpatterns = [
 	path('accounts/', include('allauth.urls')),
-    path('admin/', admin.site.urls),
+    path('django/', admin.site.urls),
     path('wagtail/', include(wagtailadmin_urls)),
 ]
 
