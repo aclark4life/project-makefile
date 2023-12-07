@@ -124,6 +124,13 @@ define BASE_TEMPLATE
 
   		{% stylesheet_pack 'app' %}
 
+		<style>
+		  body {
+		    min-height: 75rem;
+		    padding-top: 4.5rem;
+		  }
+		</style>
+
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
