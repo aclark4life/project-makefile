@@ -351,7 +351,7 @@ define WEBPACK_INDEX_HTML
 </html>
 endef
 
-define REACT_ENV_INIT
+define REACT_PORTAL
 // Via pwellever
 import React from 'react';
 import { createPortal } from 'react-dom';
@@ -417,6 +417,7 @@ export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export INTERNAL_IPS
 export JENKINS_FILE
+export REACT_PORTAL
 export REST_FRAMEWORK
 export URL_PATTERNS
 export WEBPACK_CONFIG_JS
