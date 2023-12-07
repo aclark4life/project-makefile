@@ -265,9 +265,9 @@ define HOME_PAGE_TEMPLATE
 {% block content %}
 <main class="container">
   <div class="bg-body-tertiary p-5 rounded">
-    <h1>{% page.title %}</h1>
-    <p class="lead">{% page.description %}</p>
-    <a class="btn btn-lg btn-primary" href="{% url 'account_login'" role="button">Login &raquo;</a>
+    <h1>{{ page.title }}</h1>
+    <p class="lead">{{ page.description }}</p>
+    <a class="btn btn-lg btn-primary" href="{% url 'account_login' %}" role="button">Login &raquo;</a>
   </div>
 </main>
 {% endblock %}
