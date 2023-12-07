@@ -109,7 +109,7 @@ define BABELRC
 endef
 
 define BASE_TEMPLATE
-{% load static wagtailcore_tags wagtailuserbar %}
+{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -134,6 +134,8 @@ define BASE_TEMPLATE
         <base target="_blank">
         {% endif %}
 
+  		{% stylesheet_pack 'app' %}
+
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
@@ -146,8 +148,11 @@ define BASE_TEMPLATE
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-		<div id="root"></div>
+		<div id="react-portal"></div>
+
         {% block content %}{% endblock %}
+
+		{% javascript_pack 'app' %}
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
