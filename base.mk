@@ -32,13 +32,11 @@ GIT_BRANCHES = `git branch -a \
 	| grep remote  \
 	| grep -v HEAD \
 	| grep -v main \
-	| grep -v master`  # http://unix.stackexchange.com/a/37316
+	| grep -v master`
 
-RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')  # https://stackoverflow.com/a/589260/185820
-
-TMPDIR := $(shell mktemp -d)# https://stackoverflow.com/a/589260/185820
-
-UNAME := $(shell uname)  # https://stackoverflow.com/a/589260/185820
+UNAME := $(shell uname)
+RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
+TMPDIR := $(shell mktemp -d)
 
 define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
@@ -390,6 +388,7 @@ define HOME_PAGE_TEMPLATE
     {% include "wagtailseo/struct_data.html" %}
 {% endblock %}
 endef
+
 define JENKINS_FILE
 pipeline {
     agent any
@@ -402,12 +401,14 @@ pipeline {
 	}
 }
 endef
+
 define AUTHENTICATION_BACKENDS
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 endef
+
 define URL_PATTERNS
 from django.conf import settings
 from django.urls import include, path
@@ -471,6 +472,7 @@ urlpatterns += [
     #    path("pages/", include(wagtail_urls)),
 ]
 endef
+
 define REST_FRAMEWORK
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -480,6 +482,7 @@ REST_FRAMEWORK = {
     ]
 }
 endef
+
 define GIT_IGNORE
 bin/
 __pycache__

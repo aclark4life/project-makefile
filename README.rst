@@ -89,3 +89,13 @@ Troubleshooting
       Successfully remade target file `git-commit-push-default'.
     Must remake target `git-commit-push'.
     Successfully remade target file `git-commit-push'.
+
+
+References
+----------
+
+- https://unix.stackexchange.com/a/37316
+- https://stackoverflow.com/a/589260/185820
+- https://stackoverflow.com/a/4731504/185820
+- https://stackoverflow.com/a/26339924
+- https://stackoverflow.com/a/49804748
