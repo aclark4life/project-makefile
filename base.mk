@@ -85,14 +85,15 @@ import * as components from '../components';
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
 
-// eslint-disable-next-line no-unused-vars
 const { ErrorBoundary } = components;
-
-// eslint-disable-next-line no-unused-vars
 const pageComponents = getPageComponents(components);
 const container = document.getElementById('app');
 const root = createRoot(container);
-const App = () => (<></>)
+const App = () => (
+	<ErrorBoundary>
+	  {pageComponents}
+	</ErrorBoundary>
+)
 root.render(<App />);
 endef
 
