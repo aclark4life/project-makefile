@@ -75,18 +75,21 @@ define FRONTEND_APP
 import { React } from 'react';
 import { createRoot } from 'react-dom/client';
 import "../styles/index.scss";
+import getPageComponents from '../createPortal';
+import * as components from '../components';
 
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
 
-// eslint-disable-next-line no-unused-vars
-import getPageComponents from '../createPortal';
-
-// eslint-disable-next-line no-unused-vars
-import * as components from '../components';
-
+const { ErrorBoundary } = components;
+const pageComponents = getPageComponents(components);
 const container = document.getElementById('app');
 const root = createRoot(container);
+const App = () => (
+    <ErrorBoundary>
+      {pageComponents}
+    </ErrorBoundary>
+)
 root.render(<App />);
 endef
 
@@ -264,6 +267,7 @@ define HOME_PAGE_TEMPLATE
   <div class="lead mt-5">
 	{{ page.body|default:''|safe }}
   </div>
+  <div data-component="Clock"></div>
 </main>
 {% endblock %}
 endef
