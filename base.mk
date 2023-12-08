@@ -79,6 +79,9 @@ import bootstrap from 'bootstrap';
 
 // eslint-disable-next-line no-unused-vars
 import getPageComponents from '../createPortal';
+
+// eslint-disable-next-line no-unused-vars
+import * as components from '../components';
 endef
 
 define BABELRC
