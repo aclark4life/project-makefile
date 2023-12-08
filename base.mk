@@ -45,26 +45,45 @@ INTERNAL_IPS = ["127.0.0.1",]
 endef
 
 define COMPONENT_CLOCK
-import React from 'react';  // eslint-disable-line no-unused-vars
-import { useState, useEffect, useCallback, useRef } from 'react';
+// Via ChatGPT
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const Clock = ({ color = '#fff' }) => {
   const [date, setDate] = useState(new Date());
+  const [blink, setBlink] = useState(true);
   const timerID = useRef();
-  const tick = useCallback(() => setDate(new Date(), []));
+
+  const tick = useCallback(() => {
+    setDate(new Date());
+    setBlink(prevBlink => !prevBlink);
+  }, []);
 
   useEffect(() => {
     timerID.current = setInterval(() => tick(), 1000);
 
     // Return a cleanup function to be run on component unmount
     return () => clearInterval(timerID.current);
-  }, []);
+  }, [tick]);
+
+  const formattedDate = date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const formattedTime = date.toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  });
 
   return (
-      <span style={{ color }}>
-        {date.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric' })}
-      </span>
+    <span style={{ color }}>
+      {formattedTime}
+      <span style={{ animation: blink ? 'blink 1s infinite' : 'none' }}>:</span>
+      <span style={{ animation: blink ? 'blink 1s infinite' : 'none' }}>{formattedDate}</span>
+    </span>
   );
 };
 
