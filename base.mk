@@ -451,6 +451,10 @@ export default function getPageComponents (components) {
 }
 endef
 
+define FRONTEND_COMPONENTS
+export { default as Clock } from './Clock';
+endef
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -458,6 +462,7 @@ export BASE_TEMPLATE
 export CLOCK_COMPONENT
 export ESLINTRC
 export FRONTEND_APP
+export FRONTEND_COMPONENTS
 export GIT_IGNORE
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
@@ -813,6 +818,7 @@ wagtail-init-default: db-init wagtail-install
 	python manage.py webpack_init --no-input
 	@echo "$$CLOCK_COMPONENT" > frontend/src/components/Clock.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
+	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
 	@echo "$$REACT_PORTAL" > frontend/src/createPortal.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
