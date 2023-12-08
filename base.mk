@@ -44,7 +44,7 @@ define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
 
-define CLOCK_COMPONENT
+define COMPONENT_CLOCK
 import { React, useState, useEffect } from 'react';
 
 const Clock = () => {
@@ -467,11 +467,59 @@ define FRONTEND_COMPONENTS
 export { default as Clock } from './Clock';
 endef
 
+define COMPONENT_ERROR
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { ErrorBoundary as SentryErrorBoundary } from '@sentry/react';
+
+
+class LocalErrorBoundary extends Component {
+  constructor (props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError () {
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    const { onError } = this.props;
+    console.error(error);
+    onError && onError(error, info);
+  }
+
+  render () {
+    const { fallback, children = null } = this.props;
+    const { hasError } = this.state;
+    return hasError ? (fallback || null) : children;
+  }
+}
+
+LocalErrorBoundary.propTypes = {
+  fallback: PropTypes.node,
+  onError: PropTypes.func,
+  children: PropTypes.node,
+};
+
+const ErrorBoundary = ({ children, ...rest }) => {
+  const Comp = (process.env.NODE_ENV !== 'development' || window.SENTRY_CONF.debug) ? SentryErrorBoundary : LocalErrorBoundary;
+  return <Comp {...rest}>{children || null}</Comp>;
+};
+
+ErrorBoundary.propTypes = {
+  children: PropTypes.node,
+};
+
+export default ErrorBoundary;
+endef
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
 export BASE_TEMPLATE
-export CLOCK_COMPONENT
+export COMPONENT_CLOCK
+export COMPONENT_ERROR
 export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
@@ -828,7 +876,8 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/allauth/layouts/base.html
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
-	@echo "$$CLOCK_COMPONENT" > frontend/src/components/Clock.js
+	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
+	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
 	@echo "$$REACT_PORTAL" > frontend/src/createPortal.js
