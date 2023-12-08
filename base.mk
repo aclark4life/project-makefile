@@ -1003,6 +1003,7 @@ h-default: help
 init-default: wagtail-init
 install-default: pip-install
 i-default: install
+migrate-default: django-migrate
 mk-default: project-mk
 git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
