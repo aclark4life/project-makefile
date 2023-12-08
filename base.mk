@@ -90,9 +90,9 @@ const pageComponents = getPageComponents(components);
 const container = document.getElementById('app');
 const root = createRoot(container);
 const App = () => (
-	<ErrorBoundary>
-	  {pageComponents}
-	</ErrorBoundary>
+    <ErrorBoundary>
+      {pageComponents}
+    </ErrorBoundary>
 )
 root.render(<App />);
 endef
