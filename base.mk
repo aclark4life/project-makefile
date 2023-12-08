@@ -72,6 +72,8 @@ export default Clock;
 endef
 
 define FRONTEND_APP
+import { React } from 'react';
+import { createRoot } from 'react-dom/client';
 import "../styles/index.scss";
 
 // eslint-disable-next-line no-unused-vars
@@ -82,6 +84,10 @@ import getPageComponents from '../createPortal';
 
 // eslint-disable-next-line no-unused-vars
 import * as components from '../components';
+
+const container = document.getElementById('app');
+const root = createRoot(container);
+root.render(<App />);
 endef
 
 define BABELRC
@@ -211,7 +217,7 @@ define BASE_TEMPLATE
 
         {% wagtailuserbar %}
 
-		<div id="react-portal"></div>
+		<div id="app"></div>
 
         {% block content %}{% endblock %}
 
