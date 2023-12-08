@@ -102,6 +102,46 @@ define BABELRC
 }
 endef
 
+define ESLINTRC
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "overrides": [
+        {
+            "env": {
+                "node": true
+            },
+            "files": [
+                ".eslintrc.{js,cjs}"
+            ],
+            "parserOptions": {
+                "sourceType": "script"
+            }
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+}
+endef
+
 define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
@@ -356,6 +396,7 @@ endef
 
 define REACT_PORTAL
 // Via pwellever
+import React from 'react';
 import { createPortal } from 'react-dom';
 
 const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
@@ -415,6 +456,7 @@ export AUTHENTICATION_BACKENDS
 export BABELRC
 export BASE_TEMPLATE
 export CLOCK_COMPONENT
+export ESLINTRC
 export FRONTEND_APP
 export GIT_IGNORE
 export HOME_PAGE_MODEL
@@ -773,6 +815,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$REACT_PORTAL" > frontend/src/createPortal.js
 	@echo "$$BABELRC" > frontend/.babelrc
+	@echo "$$ESLINTRC" > frontend/.eslintrc
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
