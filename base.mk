@@ -45,7 +45,7 @@ INTERNAL_IPS = ["127.0.0.1",]
 endef
 
 define CLOCK_COMPONENT
-import { useState, useEffect } from 'react';
+import { React, useState, useEffect } from 'react';
 
 const Clock = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
