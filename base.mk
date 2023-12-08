@@ -465,15 +465,14 @@ endef
 
 define FRONTEND_COMPONENTS
 export { default as Clock } from './Clock';
+export { default as ErrorBoundary } from './ErrorBoundary';
 endef
 
 define COMPONENT_ERROR
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ErrorBoundary as SentryErrorBoundary } from '@sentry/react';
 
-
-class LocalErrorBoundary extends Component {
+class ErrorBoundary extends Component {
   constructor (props) {
     super(props);
     this.state = { hasError: false };
@@ -490,24 +489,15 @@ class LocalErrorBoundary extends Component {
   }
 
   render () {
-    const { fallback, children = null } = this.props;
+    const { children = null } = this.props;
     const { hasError } = this.state;
-    return hasError ? (fallback || null) : children;
+
+    return hasError ? null : children;
   }
 }
 
-LocalErrorBoundary.propTypes = {
-  fallback: PropTypes.node,
-  onError: PropTypes.func,
-  children: PropTypes.node,
-};
-
-const ErrorBoundary = ({ children, ...rest }) => {
-  const Comp = (process.env.NODE_ENV !== 'development' || window.SENTRY_CONF.debug) ? SentryErrorBoundary : LocalErrorBoundary;
-  return <Comp {...rest}>{children || null}</Comp>;
-};
-
 ErrorBoundary.propTypes = {
+  onError: PropTypes.func,
   children: PropTypes.node,
 };
 
