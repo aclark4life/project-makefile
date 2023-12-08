@@ -45,29 +45,33 @@ INTERNAL_IPS = ["127.0.0.1",]
 endef
 
 define COMPONENT_CLOCK
-import { React, useState, useEffect } from 'react';
+import React from 'react';  // eslint-disable-line no-unused-vars
+import { useState, useEffect, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
 
-const Clock = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
+const Clock = ({ color = '#fff' }) => {
+  const [date, setDate] = useState(new Date());
+  const timerID = useRef();
+  const tick = useCallback(() => setDate(new Date(), []));
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+    timerID.current = setInterval(() => tick(), 1000);
 
-    // Cleanup function to clear the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, []); // Empty dependency array ensures that the effect runs only once (on mount)
-
-  const formattedTime = currentTime.toLocaleTimeString();
+    // Return a cleanup function to be run on component unmount
+    return () => clearInterval(timerID.current);
+  }, []);
 
   return (
-    <div>
-      <h2>Current Time:</h2>
-      <p>{formattedTime}</p>
-    </div>
+      <span style={{ color }}>
+        {date.toLocaleTimeString(undefined, { hour: 'numeric', minute: 'numeric' })}
+      </span>
   );
 };
+
+Clock.propTypes = {
+  color: PropTypes.string,
+};
+
 export default Clock;
 endef
 
