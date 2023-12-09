@@ -397,6 +397,7 @@ lib/
 lib64
 pyvenv.cfg
 node_modules/
+share/
 endef
 
 define WEBPACK_CONFIG_JS
@@ -690,27 +691,26 @@ django-npm-install-default:
 
 django-npm-install-save-default:
 	cd frontend; npm install \
-		camelize \
+        camelize \
         mapbox-gl \
-		react-animate-height \
+        react-animate-height \
         react-date-range \
         react-dom \
-		react-hook-form \
+        react-hook-form \
         react-image-crop \
-		react-quill \
-		react-select \
-		query-string \
-		url-join
-
+        react-quill \
+        react-select \
+        query-string \
+        url-join
 
 django-npm-install-save-dev-default:
 	cd frontend; npm install \
         eslint-plugin-react \
         eslint-config-standard \
         eslint-config-standard-jsx \
-		@babel/core \
-		@babel/preset-env \
-		@babel/preset-react \
+        @babel/core \
+        @babel/preset-env \
+        @babel/preset-react \
         --save-dev
 
 django-npm-test-default:
