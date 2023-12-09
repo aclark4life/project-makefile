@@ -691,6 +691,9 @@ django-npm-install-default:
 
 django-npm-install-save-default:
 	cd frontend; npm install \
+        @fortawesome/fontawesome-svg-core \
+        @fortawesome/free-brands-svg-icons \
+        @fortawesome/react-fontawesome \
         camelize \
         mapbox-gl \
         query-string \
