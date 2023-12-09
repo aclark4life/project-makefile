@@ -711,7 +711,9 @@ django-npm-install-save-default:
         react-quill \
         react-resize-detector \
         react-select \
+        react-swipeable \
         snakeize \
+        striptags \
         url-join \
         viewport-mercator-project
 
