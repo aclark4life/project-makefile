@@ -469,7 +469,7 @@ export default function getPageComponents (components) {
     const { component: componentName, ...rest } = domEl.dataset;
     const Component = components[componentName];
     if (!Component) {
-      console.error(`Component "$$componentName" not found.`);
+      console.error(`Component "$${componentName}" not found.`);
       return null;
     }
     const props = parseProps(rest);
