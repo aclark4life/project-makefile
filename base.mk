@@ -687,15 +687,26 @@ django-url-patterns-default:
 django-npm-install-default:
 	cd frontend; npm install
 
+django-npm-install-save-default:
+	cd frontend; npm install \
+		camelize \
+        mapbox-gl \
+		react-animate-height \
+        react-date-range \
+        react-dom \
+		react-hook-form \
+        react-image-crop \
+		react-quill \
+		react-select \
+		query-string \
+		url-join
+
+
 django-npm-install-save-dev-default:
 	cd frontend; npm install \
         eslint-plugin-react \
         eslint-config-standard \
         eslint-config-standard-jsx \
-        mapbox-gl \
-        react-date-range \
-        react-image-crop \
-        react-dom \
 		@babel/core \
 		@babel/preset-env \
 		@babel/preset-react \
@@ -900,6 +911,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
+	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
 	@$(MAKE) cp
 	@$(MAKE) lint-isort
