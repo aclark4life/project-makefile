@@ -703,6 +703,7 @@ django-npm-install-save-default:
         react-copy-to-clipboard \
         react-date-range \
         react-dom \
+        react-dropzone \
         react-hook-form \
         react-image-crop \
         react-map-gl \
@@ -710,7 +711,8 @@ django-npm-install-save-default:
         react-resize-detector \
         react-select \
         snakeize \
-        url-join
+        url-join \
+        viewport-mercator-project
 
 django-npm-install-save-dev-default:
 	cd frontend; npm install \
