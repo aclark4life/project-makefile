@@ -1069,6 +1069,7 @@ project-mk-default:
 
 build-default: sphinx-build
 b-default: build 
+c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
