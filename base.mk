@@ -168,6 +168,7 @@ define ESLINTRC
         "react"
     ],
     "rules": {
+        "no-unused-vars": "off"
     },
     settings: {
       react: {
