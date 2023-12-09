@@ -693,15 +693,19 @@ django-npm-install-save-default:
 	cd frontend; npm install \
         camelize \
         mapbox-gl \
+        query-string \
         react-animate-height \
         react-chartjs-2 \
+        react-copy-to-clipboard \
         react-date-range \
         react-dom \
         react-hook-form \
         react-image-crop \
+        react-map-gl \
         react-quill \
+        react-resize-detector \
         react-select \
-        query-string \
+        snakeize \
         url-join
 
 django-npm-install-save-dev-default:
