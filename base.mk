@@ -694,6 +694,7 @@ django-npm-install-save-default:
         camelize \
         mapbox-gl \
         react-animate-height \
+        react-chartjs-2 \
         react-date-range \
         react-dom \
         react-hook-form \
