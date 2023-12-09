@@ -696,6 +696,7 @@ django-npm-install-save-default:
         @fortawesome/react-fontawesome \
         camelize \
         date-fns-tz \
+        history \
         mapbox-gl \
         query-string \
         react-animate-height \
