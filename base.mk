@@ -98,19 +98,19 @@ define FRONTEND_APP
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import "../styles/index.scss";
-import getPageComponents from '../createPortal';
+import getDataComponents from '../dataComponents';
 import * as components from '../components';
 
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
 
 const { ErrorBoundary } = components;
-const pageComponents = getPageComponents(components);
+const dataComponents = getDataComponents(components);
 const container = document.getElementById('app');
 const root = createRoot(container);
 const App = () => (
     <ErrorBoundary>
-      {pageComponents}
+      {dataComponents}
     </ErrorBoundary>
 )
 root.render(<App />);
@@ -922,7 +922,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
-	@echo "$$REACT_PORTAL" > frontend/src/createPortal.js
+	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
 	-git add frontend
