@@ -281,19 +281,68 @@ endef
 
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
-
+{% block extra_css %}
+    <style>
+      .success {
+          background-color: #d4edda;
+          border-color: #c3e6cb;
+          color: #155724;
+      }
+      .info {
+          background-color: #d1ecf1;
+          border-color: #bee5eb;
+          color: #0c5460;
+      }
+      .warning {
+          background-color: #fff3cd;
+          border-color: #ffeeba;
+          color: #856404;
+      }
+      .danger {
+          background-color: #f8d7da;
+          border-color: #f5c6cb;
+          color: #721c24;
+      }
+    </style>
+{% endblock %}
 {% block content %}
-<main class="container">
-  <div class="bg-body-tertiary p-5 rounded">
-    <h1>{{ page.title }}</h1>
-    <p class="lead">{{ page.description|default:'' }}</p>
-    <a class="btn btn-lg btn-primary" href="{% url 'account_login' %}" role="button">Login &raquo;</a>
-  </div>
-  <div class="lead mt-5">
-	{{ page.body|default:''|safe }}
-  </div>
-  <div data-component="Clock"></div>
-</main>
+    <main class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible fade show"
+                         role="alert">
+                        {{ message }}
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="bg-body-tertiary p-5 rounded">
+            <h1>{{ page.title }}</h1>
+            <p class="lead">{{ page.description|default:'' }}</p>
+            {% if user.is_authenticated %}
+                <div class="btn-group" role="group" aria-label="User Actions">
+                    <a class="btn btn-lg btn-primary"
+                       href="{% url 'account_logout' %}"
+                       role="button">Logout &raquo;</a>
+                    <a class="btn btn-lg btn-primary"
+                       href="{% url 'admin:index' %}"
+                       target="_blank"
+                       role="button">Django Admin &raquo;</a>
+                </div>
+            {% else %}
+                <a class="btn btn-lg btn-primary"
+                   href="{% url 'account_login' %}"
+                   role="button">Login &raquo;</a>
+            {% endif %}
+        </div>
+        <div class="lead mt-5">{{ page.body|default:''|safe }}</div>
+        <div data-component="Clock"></div>
+    </main>
 {% endblock %}
 endef
 
