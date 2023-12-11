@@ -702,6 +702,7 @@ django-settings-default:
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('rest_framework')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
@@ -1007,6 +1008,7 @@ wagtail-install-default:
         django-ipware \
         django-recurrence \
         django-registration \
+        django-rest-auth \
         django-richtextfield \
         django-timezone-field \
         dj-database-url \
