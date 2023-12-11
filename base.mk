@@ -333,6 +333,10 @@ define HOME_PAGE_TEMPLATE
                        href="{% url 'admin:index' %}"
                        target="_blank"
                        role="button">Django Admin &raquo;</a>
+                    <a class="btn btn-lg btn-primary"
+                       href="/api"
+                       target="_blank"
+                       role="button">Django REST framework &raquo;</a>
                 </div>
             {% else %}
                 <a class="btn btn-lg btn-primary"
