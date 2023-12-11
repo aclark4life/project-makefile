@@ -45,12 +45,12 @@ INTERNAL_IPS = ["127.0.0.1",]
 endef
 
 define CONTEXTS_INDEX
-export { useUserContext as default } from './UserContext';
+export { UserContextProvider as default } from './UserContextProvider';
 endef
 
 
 define CONTEXTS_USER
-// UserContext.js
+// UserContextProvider.js
 import { React, createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -165,7 +165,7 @@ import * as components from '../components';
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
 
-import UserContext from '../contexts';
+import UserContextProvider from '../context';
 
 const { ErrorBoundary } = components;
 const dataComponents = getDataComponents(components);
@@ -173,9 +173,9 @@ const container = document.getElementById('app');
 const root = createRoot(container);
 const App = () => (
     <ErrorBoundary>
-      <useUserContext>
+      <UserContextProvider>
         {dataComponents}
-      </useUserContext>
+      </UserContextProvider>
     </ErrorBoundary>
 )
 root.render(<App />);
@@ -1043,9 +1043,9 @@ wagtail-init-default: db-init wagtail-install
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
-	mkdir frontend/src/contexts
-	@echo "$$CONTEXTS_INDEX" > frontend/src/contexts/index.js
-	@echo "$$CONTEXTS_USER" > frontend/src/contexts/UserContext.js
+	mkdir frontend/src/context
+	@echo "$$CONTEXTS_INDEX" > frontend/src/context/index.js
+	@echo "$$CONTEXTS_USER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
