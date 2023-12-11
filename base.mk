@@ -111,6 +111,7 @@ endef
 define COMPONENT_USER_MENU
 // UserMenu.js
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const UserMenu = ({ isAuthenticated, onLogout }) => {
   return (
@@ -122,6 +123,11 @@ const UserMenu = ({ isAuthenticated, onLogout }) => {
       )}
     </div>
   );
+};
+
+UserMenu.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  onLogout: PropTypes.func.isRequired,
 };
 
 export default UserMenu;
