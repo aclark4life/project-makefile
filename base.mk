@@ -44,6 +44,57 @@ define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
 
+define COMPONENT_USER_CONTEXT
+// UserContext.js
+import { createContext, useContext, useState } from 'react';
+
+const UserContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = () => {
+    // Add logic to handle login, set isAuthenticated to true
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    // Add logic to handle logout, set isAuthenticated to false
+    setIsAuthenticated(false);
+  };
+
+  return (
+    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUserContext = () => {
+  return useContext(UserContext);
+};
+endef
+
+
+define COMPONENT_USER_MENU
+// UserMenu.js
+import React from 'react';
+
+const UserMenu = ({ isAuthenticated, onLogout }) => {
+  return (
+    <div>
+      {isAuthenticated ? (
+        <button onClick={onLogout}>Logout</button>
+      ) : (
+        <a href="/accounts/login">Login</a>
+      )}
+    </div>
+  );
+};
+
+export default UserMenu;
+endef
+
 define COMPONENT_CLOCK
 // Via ChatGPT
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -104,13 +155,17 @@ import * as components from '../components';
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
 
+import UserContext from '../context';
+
 const { ErrorBoundary } = components;
 const dataComponents = getDataComponents(components);
 const container = document.getElementById('app');
 const root = createRoot(container);
 const App = () => (
     <ErrorBoundary>
-      {dataComponents}
+      <UserContext>
+        {dataComponents}
+      </UserContext>
     </ErrorBoundary>
 )
 root.render(<App />);
@@ -417,8 +472,6 @@ class UserViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
-
-
 urlpatterns += [
     path("api/", include(router.urls)),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
@@ -594,6 +647,8 @@ export BABELRC
 export BASE_TEMPLATE
 export COMPONENT_CLOCK
 export COMPONENT_ERROR
+export COMPONENT_USER_CONTEXT
+export COMPONENT_USER_MENU
 export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
@@ -978,6 +1033,8 @@ wagtail-init-default: db-init wagtail-install
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
+	@echo "$$COMPONENT_USER_CONTEXT" > frontend/src/components/UserContext.js
+	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
 	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
