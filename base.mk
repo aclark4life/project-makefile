@@ -383,6 +383,7 @@ from search import views as search_views
 
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
+from dj_rest_auth.registration.views import RegisterView
 
 urlpatterns = [
 	path('accounts/', include('allauth.urls')),
@@ -417,10 +418,12 @@ router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
 
+
 urlpatterns += [
     path("api/", include(router.urls)),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
 	path("api/", include("dj_rest_auth.urls")),
+    path("api/register/", RegisterView.as_view(), name="register"),
 ]
 
 urlpatterns += [
