@@ -44,7 +44,12 @@ define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
 
-define COMPONENT_USER_CONTEXT
+define CONTEXTS_INDEX
+export { useUserContext as default } from './UserContext';
+endef
+
+
+define CONTEXTS_USER
 // UserContext.js
 import { React, createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -652,8 +657,8 @@ export BABELRC
 export BASE_TEMPLATE
 export COMPONENT_CLOCK
 export COMPONENT_ERROR
-export COMPONENT_USER_CONTEXT
 export COMPONENT_USER_MENU
+export CONTEXTS_USER
 export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
@@ -1039,7 +1044,8 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	mkdir frontend/src/contexts
-	@echo "$$COMPONENT_USER_CONTEXT" > frontend/src/contexts/UserContext.js
+	@echo "$$CONTEXTS_INDEX" > frontend/src/contexts/index.js
+	@echo "$$CONTEXTS_USER" > frontend/src/contexts/UserContext.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
