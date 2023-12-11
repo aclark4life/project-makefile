@@ -418,8 +418,9 @@ router.register(r'users', UserViewSet)
 
 
 urlpatterns += [
-    path('api/', include(router.urls)),
-    path('api/', include('rest_framework.urls', namespace='rest_framework'))
+    path("api/", include(router.urls)),
+    path("api/", include("rest_framework.urls", namespace="rest_framework")),
+	path("api/", include("dj_rest_auth.urls")),
 ]
 
 urlpatterns += [
