@@ -1016,6 +1016,7 @@ wagtail-install-default:
         django-richtextfield \
         django-timezone-field \
         dj-database-url \
+        dj-rest-auth \
         mailchimp-marketing \
         mailchimp-transactional \
         psycopg2-binary \
