@@ -46,7 +46,8 @@ endef
 
 define COMPONENT_USER_CONTEXT
 // UserContext.js
-import { createContext, useContext, useState } from 'react';
+import { React, createContext, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 
 const UserContext = createContext();
 
@@ -68,6 +69,10 @@ export const UserContextProvider = ({ children }) => {
       {children}
     </UserContext.Provider>
   );
+};
+
+UserContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export const useUserContext = () => {
