@@ -322,6 +322,7 @@ define BASE_TEMPLATE
 				  <a class="nav-link active" aria-current="page" href="/">Home</a>
 				</li>
 			  </ul>
+              <div data-component="UserMenu"></div>
 			  <form class="d-flex" role="search">
 				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
 				<button class="btn btn-outline-success" type="submit">Search</button>
