@@ -1033,6 +1033,7 @@ wagtail-init-default: db-init wagtail-install
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
+	mkdir frontend/src/contexts
 	@echo "$$COMPONENT_USER_CONTEXT" > frontend/src/contexts/UserContext.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
