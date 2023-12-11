@@ -155,7 +155,7 @@ import * as components from '../components';
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
 
-import UserContext from '../context';
+import UserContext from '../contexts';
 
 const { ErrorBoundary } = components;
 const dataComponents = getDataComponents(components);
@@ -1033,7 +1033,7 @@ wagtail-init-default: db-init wagtail-install
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
-	@echo "$$COMPONENT_USER_CONTEXT" > frontend/src/components/UserContext.js
+	@echo "$$COMPONENT_USER_CONTEXT" > frontend/src/contexts/UserContext.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
