@@ -1101,6 +1101,7 @@ serve-default: django-serve
 su-default: django-su
 s-default: serve
 u-default: usage
+urls-default: django-show-urls
 webpack-default: webpack-init
 
 # Overrides
