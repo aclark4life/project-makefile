@@ -173,9 +173,9 @@ const container = document.getElementById('app');
 const root = createRoot(container);
 const App = () => (
     <ErrorBoundary>
-      <UserContext>
+      <useUserContext>
         {dataComponents}
-      </UserContext>
+      </useUserContext>
     </ErrorBoundary>
 )
 root.render(<App />);
