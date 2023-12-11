@@ -155,7 +155,7 @@ import * as components from '../components';
 // eslint-disable-next-line no-unused-vars
 import bootstrap from 'bootstrap';
 
-import UserContext from '../contexts';
+import UserContext from '../contexts/UserContext';
 
 const { ErrorBoundary } = components;
 const dataComponents = getDataComponents(components);
