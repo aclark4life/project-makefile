@@ -121,7 +121,7 @@ const UserMenu = ({ isAuthenticated }) => {
   return (
     <div>
       {isAuthenticated ? (
-        <button onClick={handleLogout}>Logout</button>
+        <button className="btn" onClick={handleLogout}>Logout</button>
       ) : (
         <a href="/accounts/login">Login</a>
       )}
