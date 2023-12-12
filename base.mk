@@ -114,10 +114,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 function handleLogout() {
-	window.redirect.href = '/accounts/logout'
+    window.location.href = '/accounts/logout';
 }
 
-const UserMenu = ({ isAuthenticated, onLogout }) => {
+const UserMenu = ({ isAuthenticated }) => {
   return (
     <div>
       {isAuthenticated ? (
@@ -131,7 +131,6 @@ const UserMenu = ({ isAuthenticated, onLogout }) => {
 
 UserMenu.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
-  onLogout: PropTypes.func.isRequired,
 };
 
 export default UserMenu;
