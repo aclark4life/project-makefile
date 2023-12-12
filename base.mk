@@ -319,28 +319,7 @@ define BASE_TEMPLATE
 
     <body class="{% block body_class %}{% endblock %}">
 
-	 	{% block navbar %}
-		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-		  <div class="container-fluid">
-			<a class="navbar-brand" href="/">Project Makefile</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-			  <span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarCollapse">
-			  <ul class="navbar-nav me-auto mb-2 mb-md-0">
-				<li class="nav-item">
-				  <a class="nav-link active" aria-current="page" href="/">Home</a>
-				</li>
-			  </ul>
-              <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}"></div>
-			  <form class="d-flex" role="search">
-				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-				<button class="btn btn-outline-success" type="submit">Search</button>
-			  </form>
-			</div>
-		  </div>
-		</nav>
-		{% endblock navbar %}
+		{% include 'navbar.html' %}
 
         {% wagtailuserbar %}
 
@@ -650,6 +629,29 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
 endef
 
+define NAVBAR_HTML
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="/">Project Makefile</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+              </ul>
+              <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}"></div>
+              <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </nav>
+endef 
+
 define COMPONENT_ERROR
 import { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -703,6 +705,7 @@ export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export INTERNAL_IPS
 export JENKINS_FILE
+export NAVBAR_HTML
 export REACT_PORTAL
 export REST_FRAMEWORK
 export URL_PATTERNS
@@ -1073,6 +1076,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$NAVBAR_HTML" > backend/templates/navbar.html
 	mkdir -p backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	-git add backend/templates/allauth/layouts/base.html
