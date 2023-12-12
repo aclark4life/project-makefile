@@ -225,7 +225,8 @@ define BABELRC
   ],
   "plugins": [
     "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-class-properties"
+    "@babel/plugin-transform-class-properties",
+	"macros"
   ]
 }
 endef
@@ -849,6 +850,7 @@ django-npm-install-save-default:
         @fortawesome/fontawesome-svg-core \
         @fortawesome/free-brands-svg-icons \
         @fortawesome/react-fontawesome \
+		babel-plugin-macros \
         camelize \
         date-fns-tz \
         history \
