@@ -303,13 +303,6 @@ define BASE_TEMPLATE
 
   		{% stylesheet_pack 'app' %}
 
-		<style>
-		  body {
-		    min-height: 75rem;
-		    padding-top: 4.5rem;
-		  }
-		</style>
-
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
@@ -630,6 +623,17 @@ export { default as UserMenu } from './UserMenu';
 endef
 
 define NAVBAR_HTML
+		{% block extra_css %}
+
+        <style>
+          body {
+            min-height: 75rem;
+            padding-top: 4.5rem;
+          } 
+        </style>
+
+		{% endblock %}
+
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
           <div class="container-fluid">
             <a class="navbar-brand" href="/">Project Makefile</a>
