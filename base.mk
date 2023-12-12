@@ -113,11 +113,15 @@ define COMPONENT_USER_MENU
 import React from 'react';
 import PropTypes from 'prop-types';
 
+function handleLogout() {
+	window.redirect.href = '/accounts/logout'
+}
+
 const UserMenu = ({ isAuthenticated, onLogout }) => {
   return (
     <div>
       {isAuthenticated ? (
-        <button onClick={onLogout}>Logout</button>
+        <button onClick={handleLogout}>Logout</button>
       ) : (
         <a href="/accounts/login">Login</a>
       )}
