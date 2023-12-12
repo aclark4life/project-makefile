@@ -311,14 +311,13 @@ define BASE_TEMPLATE
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-
-		{% include 'navbar.html' %}
-
         {% wagtailuserbar %}
 
 		<div id="app"></div>
 
+		{% include 'navbar.html' %}
         {% block content %}{% endblock %}
+		{% include 'footer.html' %}
 
 		{% javascript_pack 'app' %}
 
@@ -622,6 +621,17 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
 endef
 
+define FOOTER_HTML
+  <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+    <p class="mb-1">&copy; 2017–2023 Company Name</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+  </footer>
+endef
+
 define NAVBAR_HTML
 		{% block extra_css %}
 
@@ -702,6 +712,7 @@ export COMPONENT_USER_MENU
 export CONTEXT_INDEX
 export CONTEXT_USER_PROVIDER
 export ESLINTRC
+export FOOTER_HTML
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
@@ -1081,6 +1092,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) su
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$NAVBAR_HTML" > backend/templates/navbar.html
+	@echo "$$FOOTER_HTML" > backend/templates/footer.html
 	mkdir -p backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	-git add backend/templates/allauth/layouts/base.html
