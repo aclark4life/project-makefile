@@ -367,6 +367,27 @@ define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
 
+define MARKETING_BLOCK_TEMPLATE
+{% load wagtailcore_tags %}
+
+<div class="marketing-block">
+    {% if self.title %}
+        <h2>{{ self.title }}</h2>
+    {% endif %}
+
+    {% if self.image %}
+        <img src="{{ self.image.url }}" alt="{{ self.title }}">
+    {% endif %}
+
+    {% if self.content %}
+        <div class="content">
+            {{ self.content|richtext }}
+        </div>
+    {% endif %}
+</div>
+endef
+
+
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% block extra_css %}
@@ -433,6 +454,9 @@ define HOME_PAGE_TEMPLATE
             {% endif %}
         </div>
         <div class="lead mt-5">{{ page.body|default:''|safe }}</div>
+		{% for block in page.marketing_blocks %}
+		  {% include 'blocks/marketing_block.html' with block=block %}
+		{% endfor %}
         <div data-component="Clock"></div>
     </main>
 {% endblock %}
