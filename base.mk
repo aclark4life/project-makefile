@@ -123,7 +123,7 @@ const UserMenu = ({ isAuthenticated }) => {
       {isAuthenticated ? (
         <button className="btn" onClick={handleLogout}>Logout</button>
       ) : (
-        <a href="/accounts/login">Login</a>
+        <a className="btn" href="/accounts/login">Login</a>
       )}
     </div>
   );
