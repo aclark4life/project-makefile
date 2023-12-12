@@ -762,6 +762,7 @@ export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export INTERNAL_IPS
 export JENKINS_FILE
+export MARKETING_BLOCK_TEMPLATE
 export NAVBAR_HTML
 export REACT_PORTAL
 export REST_FRAMEWORK
@@ -1139,6 +1140,8 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	-git add backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
+	mkdir -p home/templates/blocks
+	@echo "$$MARKETING_BLOCK_TEMPLATE" > home/templates/blocks/marketing_block.html
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
