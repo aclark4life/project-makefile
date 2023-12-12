@@ -319,6 +319,7 @@ define BASE_TEMPLATE
 
     <body class="{% block body_class %}{% endblock %}">
 
+	 	{% block navbar %}
 		<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 		  <div class="container-fluid">
 			<a class="navbar-brand" href="/">Project Makefile</a>
@@ -339,6 +340,7 @@ define BASE_TEMPLATE
 			</div>
 		  </div>
 		</nav>
+		{% endblock navbar %}
 
         {% wagtailuserbar %}
 
