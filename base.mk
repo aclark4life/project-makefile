@@ -1095,7 +1095,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$FOOTER_HTML" > backend/templates/footer.html
 	mkdir -p backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
-	-git add backend/templates/allauth/layouts/base.html
+	-git add backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
