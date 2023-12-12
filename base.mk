@@ -331,18 +331,36 @@ endef
 define HOME_PAGE_MODEL
 from django.db import models
 from wagtail.models import Page
-from wagtail.fields import RichTextField
+from wagtail.fields import RichTextField, StreamField
+from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
-from wagtailseo.models import SeoMixin
+from wagtail.images.blocks import ImageChooserBlock
 
-class HomePage(SeoMixin, Page):
-    description = models.CharField(max_length=255, help_text='A short description of the page', blank=True, null=True)
-    body = RichTextField(blank=True, null=True, help_text='The main content of the page')
+class MarketingBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=False, help_text='Enter the block title')
+    content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
+    image = ImageChooserBlock(required=False, help_text='Select an optional image for the block')
+
+    class Meta:
+        icon = 'placeholder'
+        template = 'blocks/marketing_block.html'  # Create a template for rendering the block
+
+class HomePage(Page):
+    template = 'home/home_page.html'  # Create a template for rendering the home page
+
+    # Fields for the home page
+    body = RichTextField(blank=True, help_text='Main content of the page', null=True)
+    marketing_blocks = StreamField([
+        ('marketing_block', MarketingBlock()),
+    ], blank=True, null=True, use_json_field=True)
+
     content_panels = Page.content_panels + [
-        FieldPanel('description'),
         FieldPanel('body'),
+        FieldPanel('marketing_blocks'),
     ]
-    promote_panels = SeoMixin.seo_panels
+
+    class Meta:
+        verbose_name = 'Home Page'
 endef
 
 define ALLAUTH_LAYOUT_BASE
