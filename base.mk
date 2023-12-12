@@ -566,6 +566,7 @@ lib64
 pyvenv.cfg
 node_modules/
 share/
+media/
 endef
 
 define WEBPACK_CONFIG_JS
@@ -1142,6 +1143,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
 	@echo "$$MARKETING_BLOCK_TEMPLATE" > home/templates/blocks/marketing_block.html
+	-git add home/templates/blocks
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
