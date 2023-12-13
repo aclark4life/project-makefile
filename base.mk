@@ -887,6 +887,7 @@ django-settings-default:
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
 	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
+	echo "BS_THEME = 'dark'" >> $(SETTINGS)
 
 django-shell-default:
 	python manage.py shell
