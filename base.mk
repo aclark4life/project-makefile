@@ -1275,6 +1275,7 @@ django-clean-default: wagtail-clean
 django-init-default: wagtail-init
 edit-default: readme-edit
 e-default: edit
+freeze-default: pip-freeze
 h-default: help
 init-default: wagtail-init
 install-default: pip-install
