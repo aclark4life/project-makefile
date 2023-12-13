@@ -279,7 +279,7 @@ define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="{{ BS_THEME|default:'dark' }}">
     <head>
         <meta charset="utf-8" />
         <title>
