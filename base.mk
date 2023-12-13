@@ -136,6 +136,13 @@ UserMenu.propTypes = {
 export default UserMenu;
 endef
 
+define CONTEXT_PROCESSOR
+from django.conf import settings as django_settings
+
+def settings(request):
+    return {"BS_THEME": django_settings.BS_THEME}
+endef
+
 define COMPONENT_CLOCK
 // Via ChatGPT
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -753,6 +760,7 @@ export COMPONENT_CLOCK
 export COMPONENT_ERROR
 export COMPONENT_USER_MENU
 export CONTEXT_INDEX
+export CONTEXT_PROCESSOR
 export CONTEXT_USER_PROVIDER
 export ESLINTRC
 export FOOTER_HTML
@@ -887,6 +895,7 @@ django-settings-default:
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
 	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
+	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('home.context_processors.settings')" >> $(SETTINGS)
 	echo "BS_THEME = 'dark'" >> $(SETTINGS)
 
 django-shell-default:
