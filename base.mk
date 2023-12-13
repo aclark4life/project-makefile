@@ -1159,6 +1159,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	mkdir frontend/src/context
 	@echo "$$CONTEXT_INDEX" > frontend/src/context/index.js
+	@echo "$$CONTEXT_PROCESSOR" > home/context_processors.py
 	@echo "$$CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
@@ -1166,6 +1167,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
+	-git add home
 	-git add frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
