@@ -397,6 +397,7 @@ endef
 
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
+{% load wagtailcore_tags %}
 {% block extra_css %}
     <style>
       .success {
@@ -462,7 +463,7 @@ define HOME_PAGE_TEMPLATE
         </div>
         <div class="lead mt-5">{{ page.body|default:''|safe }}</div>
 		{% for block in page.marketing_blocks %}
-		  {% include 'blocks/marketing_block.html' with block=block %}
+		  {% include_block block %}
 		{% endfor %}
         <div data-component="Clock"></div>
     </main>
