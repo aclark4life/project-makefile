@@ -1193,15 +1193,19 @@ wagtail-install-default:
         django-crispy-forms \
         django-debug-toolbar \
         django-extensions \
+        django-honeypot \
         django-imagekit \
         django-import-export \
         django-ipware \
         django-recurrence \
+        django-recaptcha \
         django-registration \
         django-rest-auth \
         django-richtextfield \
+        django-tables2 \
         django-timezone-field \
         dj-database-url \
+        dj-stripe \
         dj-rest-auth \
         mailchimp-marketing \
         mailchimp-transactional \
