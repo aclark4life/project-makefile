@@ -1129,7 +1129,7 @@ wagtail-clean-default:
 	-rm -rvf frontend/
 	-rm -vf README.rst
 
-wagtail-init-default: wagtail-install
+wagtail-init-default: db-init wagtail-install
 	wagtail start backend .
 	$(MAKE) pip-freeze
 	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; $(MAKE) django-settings
