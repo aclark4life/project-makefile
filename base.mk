@@ -1202,6 +1202,7 @@ wagtail-install-default:
         django-registration \
         django-rest-auth \
         django-richtextfield \
+        django-social-share \
         django-tables2 \
         django-timezone-field \
         dj-database-url \
