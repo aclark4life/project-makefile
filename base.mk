@@ -40,31 +40,6 @@ UNAME := $(shell uname)
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 
-define ABOUT_HTML
-<!-- myapp/templates/about.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-</head>
-<body>
-    <h1>About Us</h1>
-    <p>This is the about page for our website.</p>
-</body>
-</html>
-endef
-
-define ABOUT_VIEW
-# myapp/views.py
-from django.views.generic import TemplateView
-
-class AboutView(TemplateView):
-    template_name = 'about.html'
-
-endef
-
 define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
@@ -778,8 +753,6 @@ ErrorBoundary.propTypes = {
 export default ErrorBoundary;
 endef
 
-export ABOUT_HTML
-export ABOUT_VIEW
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -1167,8 +1140,6 @@ wagtail-init-default: db-init wagtail-install
 	-git add Dockerfile
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
-	@echo "$$ABOUT_VIEW" > home/views.py
-	@echo "$$ABOUT_TEMPLATE" > home/templates/about.html
 	@$(MAKE) django-migrations
 	-git add home
 	-git add search
