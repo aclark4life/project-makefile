@@ -1301,6 +1301,7 @@ o-default: open
 p-default: git-push
 readme-default: readme-init
 serve-default: django-serve
+shell-default: django-shell
 su-default: django-su
 s-default: serve
 u-default: usage
