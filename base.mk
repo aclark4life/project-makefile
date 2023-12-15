@@ -901,6 +901,7 @@ django-settings-default:
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('home.context_processors.settings')" >> $(SETTINGS)
 	echo "BS_THEME = 'dark'" >> $(SETTINGS)
+	echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
 
 django-shell-default:
 	python manage.py shell
