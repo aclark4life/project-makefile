@@ -888,6 +888,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DEV_SETTINGS)
 	echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
