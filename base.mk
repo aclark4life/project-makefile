@@ -1198,6 +1198,7 @@ wagtail-install-default:
         django-crispy-forms \
         django-debug-toolbar \
         django-extensions \
+        django-hijack \
         django-honeypot \
         django-imagekit \
         django-import-export \
