@@ -136,13 +136,6 @@ UserMenu.propTypes = {
 export default UserMenu;
 endef
 
-define CONTEXT_PROCESSOR
-from django.conf import settings as django_settings
-
-def settings(request):
-    return {"BS_THEME": django_settings.BS_THEME}
-endef
-
 define COMPONENT_CLOCK
 // Via ChatGPT
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -286,7 +279,7 @@ define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="{{ BS_THEME|default:'dark' }}">
+<html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="utf-8" />
         <title>
@@ -901,8 +894,6 @@ django-settings-default:
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
 	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
-	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('home.context_processors.settings')" >> $(SETTINGS)
-	echo "BS_THEME = 'dark'" >> $(SETTINGS)
 	echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
 
 django-shell-default:
@@ -1166,7 +1157,6 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	mkdir frontend/src/context
 	@echo "$$CONTEXT_INDEX" > frontend/src/context/index.js
-	@echo "$$CONTEXT_PROCESSOR" > home/context_processors.py
 	@echo "$$CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
