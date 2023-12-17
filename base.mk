@@ -126,7 +126,7 @@ const UserMenu = ({ isAuthenticated }) => {
             Dropdown button
           </button>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
           </ul>
         </div>
       ) : (
