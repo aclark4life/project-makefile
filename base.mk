@@ -174,14 +174,12 @@ const Clock = ({ color = '#fff' }) => {
   const formattedTime = date.toLocaleTimeString(undefined, {
     hour: 'numeric',
     minute: 'numeric',
-    second: 'numeric',
   });
 
   return (
-    <span style={{ color }}>
-      {formattedTime}
-      <span style={{ animation: blink ? 'blink 1s infinite' : 'none' }}>:</span>
+    <span> 
       <span style={{ animation: blink ? 'blink 1s infinite' : 'none' }}>{formattedDate}</span>
+      <div>{formattedTime}</div>
     </span>
   );
 };
