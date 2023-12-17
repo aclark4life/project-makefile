@@ -467,7 +467,6 @@ define HOME_PAGE_TEMPLATE
 		{% for block in page.marketing_blocks %}
 		  {% include_block block %}
 		{% endfor %}
-        <div data-component="Clock"></div>
     </main>
 {% endblock %}
 endef
@@ -683,6 +682,7 @@ define FOOTER_HTML
       <li class="list-inline-item"><a href="#">Terms</a></li>
       <li class="list-inline-item"><a href="#">Support</a></li>
     </ul>
+    <div data-component="Clock"></div>
   </footer>
 endef
 
