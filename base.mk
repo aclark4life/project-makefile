@@ -126,9 +126,7 @@ const UserMenu = ({ isAuthenticated }) => {
             Dropdown button
           </button>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="#">Action</a></li>
-            <li><a className="dropdown-item" href="#">Another action</a></li>
-            <li><a className="dropdown-item" href="#">Something else here</a></li>
+            <li><a className="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
           </ul>
         </div>
       ) : (
@@ -440,29 +438,6 @@ define HOME_PAGE_TEMPLATE
                 {% endfor %}
             </div>
         {% endif %}
-        <div class="bg-body-tertiary p-5 rounded">
-            <h1>{{ page.title }}</h1>
-            <p class="lead">{{ page.description|default:'' }}</p>
-            {% if user.is_authenticated %}
-                <div class="btn-group" role="group" aria-label="User Actions">
-                    <a class="btn btn-lg btn-primary"
-                       href="{% url 'account_logout' %}"
-                       role="button">Logout &raquo;</a>
-                    <a class="btn btn-lg btn-primary"
-                       href="{% url 'admin:index' %}"
-                       target="_blank"
-                       role="button">Django Admin &raquo;</a>
-                    <a class="btn btn-lg btn-primary"
-                       href="/api"
-                       target="_blank"
-                       role="button">Django REST framework &raquo;</a>
-                </div>
-            {% else %}
-                <a class="btn btn-lg btn-primary"
-                   href="{% url 'account_login' %}"
-                   role="button">Login &raquo;</a>
-            {% endif %}
-        </div>
         <div class="lead mt-5">{{ page.body|default:''|safe }}</div>
 		{% for block in page.marketing_blocks %}
 		  {% include_block block %}
