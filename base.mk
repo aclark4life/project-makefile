@@ -863,6 +863,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtailmenus')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('wagtail_modeladmin')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtailseo')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
@@ -1200,6 +1201,7 @@ wagtail-install-default:
         python-webpack-boilerplate \
         wagtail \
         wagtailmenus \
+        wagtail_modeladmin \
         wagtail-seo 
 
 # Misc
