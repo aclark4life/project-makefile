@@ -912,7 +912,6 @@ django-npm-install-save-default:
         @fortawesome/react-fontawesome \
         camelize \
         date-fns \
-        date-fns-tz \
         history \
         mapbox-gl \
         query-string \
