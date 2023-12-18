@@ -911,6 +911,7 @@ django-npm-install-save-default:
         @fortawesome/free-solid-svg-icons \
         @fortawesome/react-fontawesome \
         camelize \
+        date-fns \
         date-fns-tz \
         history \
         mapbox-gl \
