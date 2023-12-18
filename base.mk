@@ -737,12 +737,12 @@ define THEME_BLUE
   --bs-body-color: var(--bs-white);
   --bs-body-color-rgb: #{to-rgb($$white)};
   --bs-body-bg: var(--bs-blue);
-  --bs-body-bg-rgb: #{to-rgb($blue)};
-  --bs-tertiary-bg: #{$blue-600};
+  --bs-body-bg-rgb: #{to-rgb($$blue)};
+  --bs-tertiary-bg: #{$$blue-600};
 
   .dropdown-menu {
-    --bs-dropdown-bg: #{color-mix($blue-500, $blue-600)};
-    --bs-dropdown-link-active-bg: #{$blue-700};
+    --bs-dropdown-bg: #{color-mix($$blue-500, $$blue-600)};
+    --bs-dropdown-link-active-bg: #{$$blue-700};
   }
 
   .btn-secondary {
