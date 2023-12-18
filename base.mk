@@ -731,6 +731,8 @@ export default ErrorBoundary;
 endef
 
 define THEME_BLUE
+@import "~bootstrap/scss/bootstrap.scss";
+
 [data-bs-theme="blue"] {
   --bs-body-color: var(--bs-white);
   --bs-body-color-rgb: #{to-rgb($white)};
