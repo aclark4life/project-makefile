@@ -1270,6 +1270,7 @@ django-clean-default: wagtail-clean
 django-init-default: wagtail-init
 edit-default: readme-edit
 e-default: edit
+empty-default: git-commit-empty
 freeze-default: pip-freeze
 h-default: help
 init-default: wagtail-init
