@@ -195,6 +195,7 @@ define FRONTEND_APP
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import "../styles/index.scss";
+import "../styles/theme-blue.scss";
 import getDataComponents from '../dataComponents';
 import * as components from '../components';
 
@@ -729,6 +730,32 @@ ErrorBoundary.propTypes = {
 export default ErrorBoundary;
 endef
 
+define THEME_BLUE
+[data-bs-theme="blue"] {
+  --bs-body-color: var(--bs-white);
+  --bs-body-color-rgb: #{to-rgb($white)};
+  --bs-body-bg: var(--bs-blue);
+  --bs-body-bg-rgb: #{to-rgb($blue)};
+  --bs-tertiary-bg: #{$blue-600};
+
+  .dropdown-menu {
+    --bs-dropdown-bg: #{mix($blue-500, $blue-600)};
+    --bs-dropdown-link-active-bg: #{$blue-700};
+  }
+
+  .btn-secondary {
+    --bs-btn-bg: #{mix($gray-600, $blue-400, .5)};
+    --bs-btn-border-color: #{rgba($white, .25)};
+    --bs-btn-hover-bg: #{darken(mix($gray-600, $blue-400, .5), 5%)};
+    --bs-btn-hover-border-color: #{rgba($white, .25)};
+    --bs-btn-active-bg: #{darken(mix($gray-600, $blue-400, .5), 10%)};
+    --bs-btn-active-border-color: #{rgba($white, .5)};
+    --bs-btn-focus-border-color: #{rgba($white, .5)};
+    --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .2);
+  }
+}
+endef
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -752,6 +779,7 @@ export MARKETING_BLOCK_TEMPLATE
 export NAVBAR_HTML
 export REACT_PORTAL
 export REST_FRAMEWORK
+export THEME_BLUE
 export URL_PATTERNS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_JS
@@ -1149,6 +1177,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
+	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	-git add home
 	-git add frontend
 	-git commit -a -m "Add frontend"
