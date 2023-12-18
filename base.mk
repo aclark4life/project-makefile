@@ -649,12 +649,12 @@ export { default as UserMenu } from './UserMenu';
 endef
 
 define FOOTER_HTML
-  <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+  <footer class="my-5 pt-5 text-center text-small">
     <p class="mb-1">&copy; 2017–2023 Company Name</p>
     <ul class="list-inline">
-      <li class="list-inline-item"><a href="#">Privacy</a></li>
-      <li class="list-inline-item"><a href="#">Terms</a></li>
-      <li class="list-inline-item"><a href="#">Support</a></li>
+      <li class="list-inline-item"><a href="/privacy">Privacy</a></li>
+      <li class="list-inline-item"><a href="/terms-of-use">Terms</a></li>
+      <li class="list-inline-item"><a href="/support">Support</a></li>
     </ul>
     <div data-component="Clock"></div>
   </footer>
