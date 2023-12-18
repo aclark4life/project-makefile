@@ -735,7 +735,7 @@ define THEME_BLUE
 
 [data-bs-theme="blue"] {
   --bs-body-color: var(--bs-white);
-  --bs-body-color-rgb: #{to-rgb($white)};
+  --bs-body-color-rgb: #{to-rgb($$white)};
   --bs-body-bg: var(--bs-blue);
   --bs-body-bg-rgb: #{to-rgb($blue)};
   --bs-tertiary-bg: #{$blue-600};
