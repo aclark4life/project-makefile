@@ -862,6 +862,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('allauth')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('wagtailmenus')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtailseo')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
@@ -880,6 +881,7 @@ django-settings-default:
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
 	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
+	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(SETTINGS)
 	echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
 
 django-shell-default:
