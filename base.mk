@@ -745,12 +745,12 @@ define THEME_BLUE
 
   .btn-secondary {
     --bs-btn-bg: #{color-mix(\$gray-600, $blue-400, .5)};
-    --bs-btn-border-color: #{rgba(\$white, .25)};
-    --bs-btn-hover-bg: #{color-adjust(color-mix(\$gray-600, $blue-400, .5), 5%)};
-    --bs-btn-hover-border-color: #{rgba(\$white, .25)};
-    --bs-btn-active-bg: #{color-adjust(color-mix(\$gray-600, $blue-400, .5), 10%)};
-    --bs-btn-active-border-color: #{rgba(\$white, .5)};
-    --bs-btn-focus-border-color: #{rgba(\$white, .5)};
+    --bs-btn-border-color: #{rgba($$white, .25)};
+    --bs-btn-hover-bg: #{color-adjust(color-mix($$gray-600, $blue-400, .5), 5%)};
+    --bs-btn-hover-border-color: #{rgba($$white, .25)};
+    --bs-btn-active-bg: #{color-adjust(color-mix($$gray-600, $blue-400, .5), 10%)};
+    --bs-btn-active-border-color: #{rgba($$white, .5)};
+    --bs-btn-focus-border-color: #{rgba($$white, .5)};
 
     // --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, 20%);
   }
