@@ -662,6 +662,14 @@ endef
 define NAVBAR_HTML
 		{% load wagtailcore_tags %}
         {% wagtail_site as current_site %}
+		{% block extra_css %}
+        <style>
+          body {
+            min-height: 75rem;
+            padding-top: 4.5rem;
+          } 
+        </style>
+		{% endblock %}
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
           <div class="container-fluid">
             <a class="navbar-brand" href="/">Project Makefile</a>
@@ -687,7 +695,7 @@ define NAVBAR_HTML
             </div>
           </div>
         </nav>
-endef
+endef 
 
 define COMPONENT_ERROR
 import { Component } from 'react';
