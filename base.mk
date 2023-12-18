@@ -751,7 +751,7 @@ define THEME_BLUE
     --bs-btn-active-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 10%)};
     --bs-btn-active-border-color: #{rgba($white, .5)};
     --bs-btn-focus-border-color: #{rgba($white, .5)};
-    --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .2);
+    --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, 20%);
   }
 }
 endef
