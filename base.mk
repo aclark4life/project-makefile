@@ -739,16 +739,16 @@ define THEME_BLUE
   --bs-tertiary-bg: #{$blue-600};
 
   .dropdown-menu {
-    --bs-dropdown-bg: #{mix($blue-500, $blue-600)};
+    --bs-dropdown-bg: #{color-mix($blue-500, $blue-600)};
     --bs-dropdown-link-active-bg: #{$blue-700};
   }
 
   .btn-secondary {
-    --bs-btn-bg: #{mix($gray-600, $blue-400, .5)};
+    --bs-btn-bg: #{color-mix($gray-600, $blue-400, .5)};
     --bs-btn-border-color: #{rgba($white, .25)};
-    --bs-btn-hover-bg: #{darken(mix($gray-600, $blue-400, .5), 5%)};
+    --bs-btn-hover-bg: #{darken(color-mix($gray-600, $blue-400, .5), 5%)};
     --bs-btn-hover-border-color: #{rgba($white, .25)};
-    --bs-btn-active-bg: #{darken(mix($gray-600, $blue-400, .5), 10%)};
+    --bs-btn-active-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 10%)};
     --bs-btn-active-border-color: #{rgba($white, .5)};
     --bs-btn-focus-border-color: #{rgba($white, .5)};
     --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .2);
