@@ -660,17 +660,16 @@ define FOOTER_HTML
 endef
 
 define NAVBAR_HTML
+		{% load wagtailcore_tags %}
+        {% wagtail_site as current_site %}
 		{% block extra_css %}
-
         <style>
           body {
             min-height: 75rem;
             padding-top: 4.5rem;
           } 
         </style>
-
 		{% endblock %}
-
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
           <div class="container-fluid">
             <a class="navbar-brand" href="/">Project Makefile</a>
@@ -682,6 +681,11 @@ define NAVBAR_HTML
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
+                {% for child in current_site.root_page.get_children %}
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{{ child.url }}">{{ child }}</a>
+                </li>
+                {% endfor %}
               </ul>
               <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}"></div>
               <form class="d-flex" role="search">
