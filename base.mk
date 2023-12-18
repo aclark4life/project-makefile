@@ -421,7 +421,7 @@ define HOME_PAGE_TEMPLATE
     </style>
 {% endblock %}
 {% block content %}
-    <main class="container">
+    <main class="{% block main_class %}{% endblock %}">
         {% if messages %}
             <div class="messages">
                 {% for message in messages %}
