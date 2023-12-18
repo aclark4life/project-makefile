@@ -1197,6 +1197,7 @@ wagtail-install-default:
         psycopg2-binary \
         python-webpack-boilerplate \
         wagtail \
+        wagtailmenus \
         wagtail-seo 
 
 # Misc
