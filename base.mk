@@ -652,9 +652,9 @@ define FOOTER_HTML
   <footer class="my-5 pt-5 text-center text-small">
     <p class="mb-1">&copy; 2017–2023 Company Name</p>
     <ul class="list-inline">
-      <li class="list-inline-item"><a class="text-primary" href="/privacy">Privacy</a></li>
-      <li class="list-inline-item"><a class="text-primary" href="/terms-of-use">Terms</a></li>
-      <li class="list-inline-item"><a class="text-primary" href="/support">Support</a></li>
+      <li class="list-inline-item"><a class="text-secondary text-decoration-none" href="/privacy">Privacy</a></li>
+      <li class="list-inline-item"><a class="text-secondary text-decoration-none" href="/terms-of-use">Terms</a></li>
+      <li class="list-inline-item"><a class="text-secondary text-decoration-none" href="/support">Support</a></li>
     </ul>
     <div data-component="Clock"></div>
   </footer>
