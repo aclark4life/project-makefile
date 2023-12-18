@@ -285,7 +285,7 @@ define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="blue">
     <head>
         <meta charset="utf-8" />
         <title>
@@ -671,7 +671,7 @@ define NAVBAR_HTML
           } 
         </style>
 		{% endblock %}
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <nav class="navbar navbar-expand-md fixed-top">
           <div class="container-fluid">
             <a class="navbar-brand" href="/">Project Makefile</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
