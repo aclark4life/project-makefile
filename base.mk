@@ -375,7 +375,7 @@ endef
 define MARKETING_BLOCK_TEMPLATE
 {% load wagtailcore_tags %}
 
-<div class="bg-body-tertiary p-5 my-1 rounded">
+<div class="{% block block_class %}{% endblock %}">
     {% if self.title %}
         <h2>{{ self.title }}</h2>
     {% endif %}
