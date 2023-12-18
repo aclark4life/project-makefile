@@ -746,7 +746,7 @@ define THEME_BLUE
   .btn-secondary {
     --bs-btn-bg: #{color-mix($gray-600, $blue-400, .5)};
     --bs-btn-border-color: #{rgba($white, .25)};
-    --bs-btn-hover-bg: #{darken(color-mix($gray-600, $blue-400, .5), 5%)};
+    --bs-btn-hover-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 5%)};
     --bs-btn-hover-border-color: #{rgba($white, .25)};
     --bs-btn-active-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 10%)};
     --bs-btn-active-border-color: #{rgba($white, .5)};
