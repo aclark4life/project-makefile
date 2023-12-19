@@ -855,6 +855,9 @@ npm-clean-default:
 	rm -vf package-lock.json
 	rm -rvf dist/
 
+npm-start-default:
+	npm run start
+
 # Django
 
 django-graph-default:
