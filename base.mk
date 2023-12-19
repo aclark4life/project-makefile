@@ -1092,6 +1092,11 @@ pip-init-default:
 	touch requirements.txt
 	-git add requirements.txt
 
+# python
+
+python-setup-sdist-default:
+	python setup.py sdist --format=zip
+
 # README
 
 readme-init-default:
@@ -1321,6 +1326,7 @@ serve-default: django-serve
 shell-default: django-shell
 su-default: django-su
 s-default: serve
+sdist-default: python-setup-sdist
 u-default: usage
 urls-default: django-show-urls
 webpack-default: webpack-init
