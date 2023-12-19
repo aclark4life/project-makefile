@@ -1095,7 +1095,7 @@ pip-init-default:
 # python
 
 python-setup-sdist-default:
-	python setup.py sdist --format=zip
+	python3 setup.py sdist --format=zip
 
 # README
 
