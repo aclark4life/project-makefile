@@ -1311,6 +1311,7 @@ freeze-default: pip-freeze
 h-default: help
 init-default: wagtail-init
 install-default: pip-install
+install-dev-default: pip-install-dev
 i-default: install
 migrate-default: django-migrate
 migrations-default: django-migrations
