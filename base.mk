@@ -1067,6 +1067,10 @@ pip-freeze-default:
 	-git add requirements.txt
 	-git commit -a -m "Freezing requirements."
 
+pip-init-default:
+	touch requirements.txt
+	-git add requirements.txt
+
 pip-install-default:
 	$(MAKE) pip-upgrade
 	pip3 install wheel
@@ -1088,9 +1092,8 @@ pip-install-upgrade-default:
 pip-upgrade-default:
 	pip3 install -U pip
 
-pip-init-default:
-	touch requirements.txt
-	-git add requirements.txt
+pip-uninstall-default:
+	pip3 freeze | xargs pip uninstall -y
 
 # python
 
