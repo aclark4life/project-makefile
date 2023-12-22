@@ -1213,6 +1213,7 @@ wagtail-install-default:
         django-after-response \
         django-ckeditor \
         django-countries \
+        django-cors-headers \
         django-crispy-forms \
         django-debug-toolbar \
         django-extensions \
@@ -1232,6 +1233,7 @@ wagtail-install-default:
         dj-database-url \
         dj-stripe \
         dj-rest-auth \
+		icalendar \
         mailchimp-marketing \
         mailchimp-transactional \
         psycopg2-binary \
