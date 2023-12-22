@@ -1058,14 +1058,12 @@ pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
-
 # pip
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	-git add requirements.txt
-	-git commit -a -m "Freezing requirements."
 
 pip-init-default:
 	touch requirements.txt
