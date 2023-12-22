@@ -1093,7 +1093,7 @@ pip-upgrade-default:
 	pip3 install -U pip
 
 pip-uninstall-default:
-	pip3 freeze | xargs pip uninstall -y
+	pip3 freeze | xargs pip3 uninstall -y
 
 # python
 
