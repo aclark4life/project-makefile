@@ -559,6 +559,7 @@ pyvenv.cfg
 node_modules/
 share/
 media/
+.elasticbeanstalk/
 endef
 
 define WEBPACK_CONFIG_JS
