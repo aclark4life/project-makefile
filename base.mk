@@ -321,7 +321,7 @@ define BASE_TEMPLATE
 
 		<div id="app"></div>
 
-		{% include 'navbar.html' %}
+		{% include 'header.html' %}
         {% block content %}{% endblock %}
 		{% include 'footer.html' %}
 
@@ -657,7 +657,7 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
 endef
 
-define FOOTER_HTML
+define HTML_FOOTER
   <footer class="my-5 pt-5 text-center text-small">
     <p class="mb-1">&copy; 2017–2023 Company Name</p>
     <ul class="list-inline">
@@ -669,7 +669,7 @@ define FOOTER_HTML
   </footer>
 endef
 
-define NAVBAR_HTML
+define HTML_HEADER
 		{% load wagtailcore_tags %}
         {% wagtail_site as current_site %}
         <nav class="navbar navbar-expand-md">
@@ -771,16 +771,16 @@ export CONTEXT_INDEX
 export CONTEXT_PROCESSOR
 export CONTEXT_USER_PROVIDER
 export ESLINTRC
-export FOOTER_HTML
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
 export HOME_PAGE_BLOCK
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
+export HTML_HEADER
+export HTML_FOOTER
 export INTERNAL_IPS
 export JENKINS_FILE
-export NAVBAR_HTML
 export REACT_PORTAL
 export REST_FRAMEWORK
 export THEME_BLUE
@@ -1177,8 +1177,8 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
-	@echo "$$NAVBAR_HTML" > backend/templates/navbar.html
-	@echo "$$FOOTER_HTML" > backend/templates/footer.html
+	@echo "$$HTML_HEADER" > backend/templates/header.html
+	@echo "$$HTML_FOOTER" > backend/templates/footer.html
 	mkdir -p backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	-git add backend/templates/
