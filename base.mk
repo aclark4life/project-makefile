@@ -369,6 +369,7 @@ class MarketingBlock(blocks.StructBlock):
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
         classname='full title',
+		default='border vh-100',
     )
 
     class Meta:
