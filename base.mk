@@ -348,8 +348,8 @@ class CarouselBlock(blocks.StructBlock):
         blocks.StructBlock(
             [
                 ('image', ImageChooserBlock()),
-                ('caption', wagtail_blocks.CharBlock(required=False)),
-                ('link', wagtail_blocks.URLBlock(required=False)),
+                ('caption', blocks.CharBlock(required=False)),
+                ('link', blocks.URLBlock(required=False)),
             ]
         )
     )
