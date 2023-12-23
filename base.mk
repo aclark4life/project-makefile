@@ -385,7 +385,7 @@ endef
 define HOME_PAGE_BLOCK
 {% load wagtailcore_tags %}
 
-<div class="{{ self.css_class }} vh-100">
+<div class="{{ self.css_class }}">
     {% if self.title %}
         <h2>{{ self.title }}</h2>
     {% endif %}
