@@ -345,7 +345,7 @@ from wagtail.images.blocks import ImageChooserBlock
 
 class CarouselBlock(blocks.StructBlock):
     slides = blocks.ListBlock(
-        wagtail_blocks.StructBlock(
+        blocks.StructBlock(
             [
                 ('image', ImageChooserBlock()),
                 ('caption', wagtail_blocks.CharBlock(required=False)),
