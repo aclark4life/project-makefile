@@ -342,14 +342,23 @@ from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.images.blocks import ImageChooserBlock
 
+
 class MarketingBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
     image = ImageChooserBlock(required=False, help_text='Select an optional image for the block')
+    
+    # Add a new field for CSS class
+    css_class = wagtail_blocks.CharBlock(
+        required=False,
+        help_text='Enter a CSS class for styling the marketing block',
+        classname='full title',
+    )
 
     class Meta:
         icon = 'placeholder'
-        template = 'blocks/marketing_block.html'  # Create a template for rendering the block
+        template = 'blocks/marketing_block.html'
+
 
 class HomePage(Page):
     template = 'home/home_page.html'  # Create a template for rendering the home page
@@ -373,10 +382,10 @@ define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
 
-define MARKETING_BLOCK_TEMPLATE
+define HOME_PAGE_BLOCK
 {% load wagtailcore_tags %}
 
-<div class="bg-body-tertiary vh-100">
+<div class="bg-body-tertiary vh-100 {{ self.css_class }}">
     {% if self.title %}
         <h2>{{ self.title }}</h2>
     {% endif %}
@@ -392,7 +401,6 @@ define MARKETING_BLOCK_TEMPLATE
     {% endif %}
 </div>
 endef
-
 
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
@@ -774,11 +782,11 @@ export FOOTER_HTML
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
+export HOME_PAGE_BLOCK
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export INTERNAL_IPS
 export JENKINS_FILE
-export MARKETING_BLOCK_TEMPLATE
 export NAVBAR_HTML
 export REACT_PORTAL
 export REST_FRAMEWORK
@@ -1183,7 +1191,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
-	@echo "$$MARKETING_BLOCK_TEMPLATE" > home/templates/blocks/marketing_block.html
+	@echo "$$HOME_PAGE_BLOCK" > home/templates/blocks/marketing_block.html
 	-git add home/templates/blocks
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
