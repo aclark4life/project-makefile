@@ -794,7 +794,7 @@ export WEBPACK_INDEX_HTML
 
 # Export
 
-export-base-template-default:
+export-base-default:
 	@echo "$$BASE_TEMPLATE"
 
 # Elastic Beanstalk
