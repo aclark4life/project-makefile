@@ -347,7 +347,7 @@ class CarouselBlock(blocks.StructBlock):
     slides = blocks.ListBlock(
         blocks.StructBlock(
             [
-                ('image', ImageChooserBlock()),
+                ('image', ImageChooserBlock(required=False)),
                 ('caption', blocks.CharBlock(required=False)),
                 ('link', blocks.URLBlock(required=False)),
             ]
