@@ -381,12 +381,18 @@ class HomePage(Page):
 
     # Fields for the home page
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
+
+    carousel_blocks = StreamField([
+        ('carousel_block', CarouselBlock()),
+    ], blank=True, null=True, use_json_field=True)
+
     marketing_blocks = StreamField([
         ('marketing_block', MarketingBlock()),
     ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('body'),
+        FieldPanel('carousel_blocks'),
         FieldPanel('marketing_blocks'),
     ]
 
