@@ -343,6 +343,22 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.images.blocks import ImageChooserBlock
 
 
+class CarouselBlock(blocks.StructBlock):
+    slides = wagtail_blocks.ListBlock(
+        wagtail_blocks.StructBlock(
+            [
+                ('image', ImageChooserBlock()),
+                ('caption', wagtail_blocks.CharBlock(required=False)),
+                ('link', wagtail_blocks.URLBlock(required=False)),
+            ]
+        )
+    )
+
+    class Meta:
+        icon = 'image'
+        template = 'blocks/carousel_block.html'
+
+
 class MarketingBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
@@ -382,7 +398,33 @@ define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
 
-define HOME_PAGE_BLOCK
+define BLOCK_CAROUSEL
+<div id="{{ self.id }}" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        {% for slide in self.slides %}
+            <div class="carousel-item{% if forloop.first %} active{% endif %}">
+                <img src="{{ slide.image.url }}" class="d-block w-100" alt="{% if slide.caption %}{{ slide.caption }}{% endif %}">
+                {% if slide.caption or slide.link %}
+                    <div class="carousel-caption d-none d-md-block">
+                        {% if slide.caption %}<p>{{ slide.caption }}</p>{% endif %}
+                        {% if slide.link %}<a href="{{ slide.link }}">Learn More</a>{% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <a class="carousel-control-prev" href="#{{ self.id }}" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#{{ self.id }}" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+</div>
+endef
+
+define BLOCK_MARKETING
 {% load wagtailcore_tags %}
 
 <div class="{{ self.css_class }}">
@@ -774,7 +816,8 @@ export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
-export HOME_PAGE_BLOCK
+export BLOCK_CAROUSEL
+export BLOCK_MARKETING
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export HTML_HEADER
@@ -1187,7 +1230,9 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
-	@echo "$$HOME_PAGE_BLOCK" > home/templates/blocks/marketing_block.html
+	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
+	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
+	-git add home/templates/blocks
 	-git add home/templates/blocks
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
