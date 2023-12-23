@@ -680,7 +680,7 @@ define NAVBAR_HTML
           } 
         </style>
 		{% endblock %}
-        <nav class="navbar navbar-expand-md fixed-top">
+        <nav class="navbar navbar-expand-md">
           <div class="container-fluid">
             <a class="navbar-brand" href="/">Project Makefile</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
