@@ -801,6 +801,9 @@ export-base-default:
 export-home-default:
 	@echo "$$HOME_PAGE_TEMPLATE"
 
+export-header-default:
+	@echo "$$HTML_HEADER"
+
 # Elastic Beanstalk
 
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
