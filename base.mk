@@ -349,7 +349,7 @@ class MarketingBlock(blocks.StructBlock):
     image = ImageChooserBlock(required=False, help_text='Select an optional image for the block')
     
     # Add a new field for CSS class
-    css_class = wagtail_blocks.CharBlock(
+    css_class = blocks.CharBlock(
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
         classname='full title',
