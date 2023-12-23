@@ -797,6 +797,9 @@ export WEBPACK_INDEX_HTML
 export-base-default:
 	@echo "$$BASE_TEMPLATE"
 
+export-home-default:
+	@echo "$$HOME_PAGE_TEMPLATE"
+
 # Elastic Beanstalk
 
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
