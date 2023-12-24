@@ -501,6 +501,8 @@ define HOME_PAGE_TEMPLATE
                 {% endfor %}
             </div>
         {% endif %}
+		{{ page.body }}
+		{% include_block page.carousel_block %}
 		{% for block in page.marketing_blocks %}
 		  {% include_block block %}
 		{% endfor %}
