@@ -343,6 +343,10 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.images.blocks import ImageChooserBlock
 
 
+class BodyBlock(blocks.StructBlock):
+    body = blocks.RichTextBlock(required=False, help_text='Main content of the page', null=True)
+
+
 class CarouselBlock(blocks.StructBlock):
     slides = blocks.ListBlock(
         blocks.StructBlock(
@@ -381,7 +385,7 @@ class HomePage(Page):
     template = 'home/home_page.html'  # Create a template for rendering the home page
 
     # Fields for the home page
-    body = RichTextField(blank=True, help_text='Main content of the page', null=True)
+    # body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
     carousel_blocks = StreamField([
         ('carousel_block', CarouselBlock()),
@@ -391,10 +395,14 @@ class HomePage(Page):
         ('marketing_block', MarketingBlock()),
     ], blank=True, null=True, use_json_field=True)
 
+    body_blocks = StreamField([
+        ('body_block', BodyBlock(required=False)),
+    ])
+
     content_panels = Page.content_panels + [
-        FieldPanel('body'),
         FieldPanel('carousel_blocks'),
         FieldPanel('marketing_blocks'),
+        FieldPanel('body'),
     ]
 
     class Meta:
@@ -494,6 +502,9 @@ define HOME_PAGE_TEMPLATE
                 {% endfor %}
             </div>
         {% endif %}
+		{% for block in page.carousel_blocks|add:page.marketing_blocks %}
+			{% include_block block %}
+		{% endfor %}
         <div class="lead mt-5">{{ page.body|default:''|safe }}</div>
 		{% for block in page.marketing_blocks %}
 		  {% include_block block %}
