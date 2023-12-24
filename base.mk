@@ -499,14 +499,8 @@ define HOME_PAGE_TEMPLATE
                 {% endfor %}
             </div>
         {% endif %}
-		{% for block in page.carousel_blocks %}
-			{% include_block block %}
-		{% endfor %}
 		{% for block in page.marketing_blocks %}
 		  {% include_block block %}
-		{% endfor %}
-		{% for block in page.body_blocks %}
-			{% include_block block %}
 		{% endfor %}
     </main>
 {% endblock %}
