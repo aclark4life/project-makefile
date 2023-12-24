@@ -345,14 +345,6 @@ from wagtail_color_panel.fields import ColorField
 from wagtail_color_panel.edit_handlers import NativeColorPanel
 
 
-class BodyBlock(blocks.StructBlock):
-    body = blocks.RichTextBlock(required=False, help_text='Main content of the page', null=True)
-
-    class Meta:
-        icon = 'image'
-        template = 'blocks/body_block.html'
-
-
 class CarouselBlock(blocks.StructBlock):
     slides = blocks.ListBlock(
         blocks.StructBlock(
@@ -393,29 +385,24 @@ class HomePage(Page):
     # Fields for the home page
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
-    # carousel_blocks = StreamField([
-    #     ('carousel_block', CarouselBlock()),
-    # ], blank=True, null=True, use_json_field=True)
+    carousel_blocks = StreamField([
+        ('carousel_block', CarouselBlock()),
+    ], blank=True, null=True, use_json_field=True)
 
-    # marketing_blocks = StreamField([
-    #     ('marketing_block', MarketingBlock()),
-    # ], blank=True, null=True, use_json_field=True)
-
-    # body_blocks = StreamField([
-    #     ('body_block', BodyBlock()),
-    # ], blank=True, null=True, use_json_field=True)
-
-    # content_panels = Page.content_panels + [
-    #     FieldPanel('carousel_blocks'),
-    #     FieldPanel('marketing_blocks'),
-    #     FieldPanel('body_blocks'),
-    # ]
-
-    color = ColorField(blank=True, null=True)
+    marketing_blocks = StreamField([
+        ('marketing_block', MarketingBlock()),
+    ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
-        NativeColorPanel('color'),
+        FieldPanel('carousel_blocks'),
+        FieldPanel('marketing_blocks'),
     ]
+
+    # color = ColorField(blank=True, null=True)
+
+    # content_panels = Page.content_panels + [
+    #     NativeColorPanel('color'),
+    # ]
 
     class Meta:
         verbose_name = 'Home Page'
