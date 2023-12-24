@@ -341,6 +341,8 @@ from wagtail.fields import RichTextField, StreamField
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail_color_panel.fields import ColorField
+from wagtail_color_panel.edit_handlers import NativeColorPanel
 
 
 class BodyBlock(blocks.StructBlock):
@@ -385,27 +387,11 @@ class MarketingBlock(blocks.StructBlock):
         template = 'blocks/marketing_block.html'
 
 
-class ChooserBlock(blocks.ChoiceBlock):
-    choices = [
-        ('body_block', BodyBlock()),
-        ('carousel_block', CarouselBlock()),
-        ('marketing_block', MarketingBlock()),
-    ]
-
-
 class HomePage(Page):
     template = 'home/home_page.html'  # Create a template for rendering the home page
 
     # Fields for the home page
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
-
-    content_blocks = StreamField([
-        ('block_chooser', ChooserBlock()),
-    ], blank=True, null=True, use_json_field=True)
-
-    content_panels = Page.content_panels + [
-        FieldPanel('content_blocks'),
-    ]
 
     # carousel_blocks = StreamField([
     #     ('carousel_block', CarouselBlock()),
@@ -1346,7 +1332,8 @@ wagtail-install-default:
         wagtail \
         wagtailmenus \
         wagtail_modeladmin \
-        wagtail-seo 
+        wagtail-seo \
+        wagtail-color-panel
 
 # Misc
 
