@@ -413,28 +413,28 @@ define ALLAUTH_LAYOUT_BASE
 endef
 
 define BLOCK_CAROUSEL
-<div id="{{ self.id }}" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        {% for slide in self.slides %}
-            <div class="carousel-item{% if forloop.first %} active{% endif %}">
-                <img src="{{ slide.image.url }}" class="d-block w-100" alt="{% if slide.caption %}{{ slide.caption }}{% endif %}">
-                {% if slide.caption or slide.link %}
-                    <div class="carousel-caption d-none d-md-block">
-                        {% if slide.caption %}<p>{{ slide.caption }}</p>{% endif %}
-                        {% if slide.link %}<a href="{{ slide.link }}">Learn More</a>{% endif %}
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
+<div id="{{ self.id }}" class="carousel slide vh-100">
+  <div class="carousel-inner">
+    {% for slide in self.slides %}
+    <div class="carousel-item{% if forloop.first %} active{% endif %}">
+	  <img src="{{ slide.image.url }}" class="d-block w-100" alt="{% if slide.caption %}{{ slide.caption }}{% endif %}">
+      {% if slide.caption or slide.link %}
+      <div class="carousel-caption d-none d-md-block">
+        {% if slide.caption %}<p>{{ slide.caption }}</p>{% endif %}
+        {% if slide.link %}<a href="{{ slide.link }}">Learn More</a>{% endif %}
+      </div>
+      {% endif %}
     </div>
-    <a class="carousel-control-prev" href="#{{ self.id }}" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#{{ self.id }}" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    {% endfor %}
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>
 endef
 
