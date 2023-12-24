@@ -411,6 +411,12 @@ class HomePage(Page):
     #     FieldPanel('body_blocks'),
     # ]
 
+    color = ColorField()
+
+    content_panels = Page.content_panels + [
+        NativeColorPanel('color'),
+    ]
+
     class Meta:
         verbose_name = 'Home Page'
 endef
