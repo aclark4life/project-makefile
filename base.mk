@@ -385,7 +385,7 @@ class MarketingBlock(blocks.StructBlock):
         template = 'blocks/marketing_block.html'
 
 
-class BlockChooserBlock(blocks.ChoiceBlock):
+class ChooserBlock(blocks.ChoiceBlock):
     choices = [
         ('body', 'Body Block'),
         ('carousel', 'Carousel Block'),
@@ -399,12 +399,12 @@ class HomePage(Page):
     # Fields for the home page
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
-    content = StreamField([
+    content_blocks = StreamField([
         ('block_chooser', BlockChooserBlock()),
     ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
-        StreamFieldPanel('content'),
+        FieldPanel('content_blocks'),
     ]
 
     # carousel_blocks = StreamField([
