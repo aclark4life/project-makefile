@@ -387,9 +387,9 @@ class MarketingBlock(blocks.StructBlock):
 
 class ChooserBlock(blocks.ChoiceBlock):
     choices = [
-        ('body', 'Body Block'),
-        ('carousel', 'Carousel Block'),
-        ('marketing', 'Marketing Block'),
+        ('body_block', BodyBlock()),
+        ('carousel_block', CarouselBlock()),
+        ('marketing_block', MarketingBlock()),
     ]
 
 
