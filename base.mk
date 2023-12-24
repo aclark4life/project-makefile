@@ -989,6 +989,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('wagtailmenus')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtail_modeladmin')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtailseo')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('wagtail_color_panel')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DEV_SETTINGS)
