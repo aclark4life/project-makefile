@@ -385,7 +385,7 @@ class HomePage(Page):
     template = 'home/home_page.html'  # Create a template for rendering the home page
 
     # Fields for the home page
-    # body = RichTextField(blank=True, help_text='Main content of the page', null=True)
+    body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
     carousel_blocks = StreamField([
         ('carousel_block', CarouselBlock()),
