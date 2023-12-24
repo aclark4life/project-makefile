@@ -400,7 +400,7 @@ class HomePage(Page):
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
     content_blocks = StreamField([
-        ('block_chooser', BlockChooserBlock()),
+        ('block_chooser', ChooserBlock()),
     ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
