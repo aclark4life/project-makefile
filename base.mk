@@ -346,6 +346,10 @@ from wagtail.images.blocks import ImageChooserBlock
 class BodyBlock(blocks.StructBlock):
     body = blocks.RichTextBlock(required=False, help_text='Main content of the page', null=True)
 
+    class Meta:
+        icon = 'image'
+        template = 'blocks/body_block.html'
+
 
 class CarouselBlock(blocks.StructBlock):
     slides = blocks.ListBlock(
@@ -411,6 +415,12 @@ endef
 
 define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
+endef
+
+define BLOCK_BODY
+<div class="container">
+   {{ self.body }}
+</div>
 endef
 
 define BLOCK_CAROUSEL
@@ -836,6 +846,7 @@ export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
+export BLOCK_BODY
 export BLOCK_CAROUSEL
 export BLOCK_MARKETING
 export HOME_PAGE_MODEL
@@ -1250,6 +1261,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
+	@echo "$$BLOCK_BODY" > home/templates/blocks/body_block.html
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	-git add home/templates/blocks
