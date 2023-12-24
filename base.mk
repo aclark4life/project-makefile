@@ -387,7 +387,7 @@ class HomePage(Page):
 
     carousel_block = StreamField([
         ('carousel', CarouselBlock()),
-    ], blank=True, null=True)
+    ], blank=True, null=True, use_json_field=True)
 
     marketing_blocks = StreamField([
         ('marketing_block', MarketingBlock()),
