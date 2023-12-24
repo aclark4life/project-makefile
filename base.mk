@@ -385,21 +385,19 @@ class HomePage(Page):
     # Fields for the home page
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
-    carousel_blocks = StreamField([
-        ('carousel_block', CarouselBlock()),
-    ], blank=True, null=True, use_json_field=True)
+	carousel_block = CarouselBlock()
 
     marketing_blocks = StreamField([
         ('marketing_block', MarketingBlock()),
     ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('carousel_blocks'),
+        FieldPanel('body'),
+        FieldPanel('carousel_block'),
         FieldPanel('marketing_blocks'),
     ]
 
     # color = ColorField(blank=True, null=True)
-
     # content_panels = Page.content_panels + [
     #     NativeColorPanel('color'),
     # ]
@@ -410,12 +408,6 @@ endef
 
 define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
-endef
-
-define BLOCK_BODY
-<div class="container">
-   {{ self.body }}
-</div>
 endef
 
 define BLOCK_CAROUSEL
@@ -841,7 +833,6 @@ export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
-export BLOCK_BODY
 export BLOCK_CAROUSEL
 export BLOCK_MARKETING
 export HOME_PAGE_MODEL
@@ -1257,7 +1248,6 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
-	@echo "$$BLOCK_BODY" > home/templates/blocks/body_block.html
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	-git add home/templates/blocks
