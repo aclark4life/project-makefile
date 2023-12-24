@@ -130,7 +130,7 @@ const UserMenu = ({ isAuthenticated }) => {
           </ul>
         </div>
       ) : (
-        <a className="btn" href="/accounts/login">Login</a>
+        <a className="btn" href="/accounts/login">User Menu</a>
       )}
     </div>
   );
