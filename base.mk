@@ -385,7 +385,7 @@ class HomePage(Page):
     # Fields for the home page
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
-	carousel_block = CarouselBlock()
+    carousel_block = CarouselBlock()
 
     marketing_blocks = StreamField([
         ('marketing_block', MarketingBlock()),
