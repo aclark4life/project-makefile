@@ -502,12 +502,14 @@ define HOME_PAGE_TEMPLATE
                 {% endfor %}
             </div>
         {% endif %}
-		{% for block in page.carousel_blocks|add:page.marketing_blocks %}
+		{% for block in page.carousel_blocks %}
 			{% include_block block %}
 		{% endfor %}
-        <div class="lead mt-5">{{ page.body|default:''|safe }}</div>
 		{% for block in page.marketing_blocks %}
 		  {% include_block block %}
+		{% endfor %}
+		{% for block in page.body_blocks %}
+			{% include_block block %}
 		{% endfor %}
     </main>
 {% endblock %}
