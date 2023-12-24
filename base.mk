@@ -396,8 +396,8 @@ class HomePage(Page):
     ], blank=True, null=True, use_json_field=True)
 
     body_blocks = StreamField([
-        ('body_block', BodyBlock(required=False)),
-    ])
+        ('body_block', BodyBlock()),
+    ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('carousel_blocks'),
