@@ -411,7 +411,7 @@ class HomePage(Page):
     #     FieldPanel('body_blocks'),
     # ]
 
-    color = ColorField()
+    color = ColorField(blank=True, null=True)
 
     content_panels = Page.content_panels + [
         NativeColorPanel('color'),
