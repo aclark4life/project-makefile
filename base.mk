@@ -385,29 +385,45 @@ class MarketingBlock(blocks.StructBlock):
         template = 'blocks/marketing_block.html'
 
 
+class BlockChooserBlock(blocks.ChoiceBlock):
+    choices = [
+        ('body', 'Body Block'),
+        ('carousel', 'Carousel Block'),
+        ('marketing', 'Marketing Block'),
+    ]
+
+
 class HomePage(Page):
     template = 'home/home_page.html'  # Create a template for rendering the home page
 
     # Fields for the home page
     body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
-    carousel_blocks = StreamField([
-        ('carousel_block', CarouselBlock()),
-    ], blank=True, null=True, use_json_field=True)
-
-    marketing_blocks = StreamField([
-        ('marketing_block', MarketingBlock()),
-    ], blank=True, null=True, use_json_field=True)
-
-    body_blocks = StreamField([
-        ('body_block', BodyBlock()),
+    content = StreamField([
+        ('block_chooser', BlockChooserBlock()),
     ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('carousel_blocks'),
-        FieldPanel('marketing_blocks'),
-        FieldPanel('body_blocks'),
+        StreamFieldPanel('content'),
     ]
+
+    # carousel_blocks = StreamField([
+    #     ('carousel_block', CarouselBlock()),
+    # ], blank=True, null=True, use_json_field=True)
+
+    # marketing_blocks = StreamField([
+    #     ('marketing_block', MarketingBlock()),
+    # ], blank=True, null=True, use_json_field=True)
+
+    # body_blocks = StreamField([
+    #     ('body_block', BodyBlock()),
+    # ], blank=True, null=True, use_json_field=True)
+
+    # content_panels = Page.content_panels + [
+    #     FieldPanel('carousel_blocks'),
+    #     FieldPanel('marketing_blocks'),
+    #     FieldPanel('body_blocks'),
+    # ]
 
     class Meta:
         verbose_name = 'Home Page'
