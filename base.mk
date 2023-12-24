@@ -406,7 +406,7 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('carousel_blocks'),
         FieldPanel('marketing_blocks'),
-        FieldPanel('body'),
+        FieldPanel('body_blocks'),
     ]
 
     class Meta:
