@@ -119,7 +119,7 @@ function handleLogout() {
 
 const UserMenu = ({ isAuthenticated }) => {
   return (
-    <div>
+    <div className="app-usermenu">
       {isAuthenticated ? (
         <div className="dropdown">
           <button className="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
