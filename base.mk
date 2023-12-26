@@ -725,7 +725,7 @@ endef
 define HTML_HEADER
 		{% load wagtailcore_tags %}
         {% wagtail_site as current_site %}
-        <nav class="navbar navbar-expand-md">
+        <nav class="navbar navbar-expand-md app-header">
           <div class="container-fluid">
             <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -734,7 +734,7 @@ define HTML_HEADER
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/">Home</a>
+                  <a class="nav-link active" aria-current="page" href="/">{{ page.title }}</a>
                 </li>
                 {% for child in current_site.root_page.get_children %}
                 <li class="nav-item">
