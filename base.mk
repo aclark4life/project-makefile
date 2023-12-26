@@ -727,7 +727,7 @@ define HTML_HEADER
         {% wagtail_site as current_site %}
         <nav class="navbar navbar-expand-md">
           <div class="container-fluid">
-            <a class="navbar-brand" href="/">Project Makefile</a>
+            <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
