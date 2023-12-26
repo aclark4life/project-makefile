@@ -383,19 +383,17 @@ class HomePage(Page):
     template = 'home/home_page.html'  # Create a template for rendering the home page
 
     # Fields for the home page
-    body = RichTextField(blank=True, help_text='Main content of the page', null=True)
+    # body = RichTextField(blank=True, help_text='Main content of the page', null=True)
 
-    carousel_block = StreamField([
-        ('carousel', CarouselBlock()),
-    ], blank=True, null=True, use_json_field=True)
+    # carousel_block = StreamField([
+    #     ('carousel', CarouselBlock()),
+    # ], blank=True, null=True, use_json_field=True)
 
     marketing_blocks = StreamField([
         ('marketing_block', MarketingBlock()),
     ], blank=True, null=True, use_json_field=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('body'),
-        FieldPanel('carousel_block'),
         FieldPanel('marketing_blocks'),
     ]
 
