@@ -736,15 +736,12 @@ define HTML_FOOTER
 endef
 
 define HTML_OFFCANVAS
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="navbarCollapse" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-    <div>
-      Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
-    </div>
     <div class="dropdown mt-3">
       <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
         Dropdown button
@@ -768,7 +765,7 @@ define HTML_HEADER
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="collapse navbar-collapse">
               <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item">
                   <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="/">Home</a>
