@@ -713,8 +713,9 @@ export { default as UserMenu } from './UserMenu';
 endef
 
 define HTML_FOOTER
-  {% wagtail_site as current_site %}
+{% load wagtailcore_tags %}
   <footer class="my-5 pt-5 text-center text-small">
+    {% wagtail_site as current_site %}
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
     <ul class="list-inline">
       <li class="list-inline-item"><a class="text-secondary text-decoration-none" href="/privacy">Privacy</a></li>
