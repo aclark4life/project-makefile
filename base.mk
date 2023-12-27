@@ -1281,6 +1281,7 @@ wagtail-clean-default:
 	-rm -rvf home/
 	-rm -rvf search/
 	-rm -rvf backend/
+	-rm -rvf siteuser/
 	-rm -rvf frontend/
 	-rm -vf README.rst
 
