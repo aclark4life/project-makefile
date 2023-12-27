@@ -989,7 +989,7 @@ django-custom-user-default:
 	python manage.py startapp siteuser
 	@echo "$$CUSTOM_USER_MODEL" > siteuser/models.py
 	@echo "$$CUSTOM_USER_ADMIN" > siteuser/admin.py
-	@export SETTINGS=backend/settings/base.py; echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
+	export SETTINGS=backend/settings/base.py; echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	-git add siteuser/
 
 django-graph-default:
