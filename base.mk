@@ -117,7 +117,7 @@ function handleLogout() {
     window.location.href = '/accounts/logout';
 }
 
-const UserMenu = ({ isAuthenticated }) => {
+const UserMenu = ({ isAuthenticated, isSuperuser }) => {
   return (
     <div> 
       {isAuthenticated ? (
@@ -127,8 +127,12 @@ const UserMenu = ({ isAuthenticated }) => {
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
-            {% if request.user.is_superuser %}<li><a className="dropdown-item" href="/django">Django Admin</a></li>{% endif %}
-            {% if request.user.is_superuser %}<li><a className="dropdown-item" href="/wagtail">Wagtail Admin</a></li>{% endif %}
+            {isSuperuser ? (
+              <>
+                <li><a className="dropdown-item" href="/django">Django Admin</a></li>
+                <li><a className="dropdown-item" href="/wagtail">Wagtail Admin</a></li>
+              </>
+            ) : null}
           </ul>
         </li>
       ) : (
@@ -142,6 +146,7 @@ const UserMenu = ({ isAuthenticated }) => {
 
 UserMenu.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  isSuperuser: PropTypes.bool.isRequired,
 };
 
 export default UserMenu;
@@ -747,7 +752,7 @@ define HTML_HEADER
                   <a class="nav-link" aria-current="page" href="{{ child.url }}">{{ child }}</a>
                 </li>
                 {% endfor %}
-                <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}"></div>
+                <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-authenticated="{{ request.user.is_superuser }}"></div>
               </ul>
             </div>
           </div>
