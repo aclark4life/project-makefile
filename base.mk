@@ -851,6 +851,7 @@ define THEME_BLUE
 endef
 
 define CUSTOM_USER_MODEL
+from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class User(AbstractUser):
