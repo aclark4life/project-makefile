@@ -1059,7 +1059,7 @@ django-static-default:
 	python manage.py collectstatic --noinput
 
 django-su-default:
-	python manage.py shell -c "from django.contrib.auth.models import User; \
+	python manage.py shell -c "from siteuser.models import User; \
 		User.objects.create_superuser('admin', '', 'admin')"
 
 django-test-default:
