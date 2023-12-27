@@ -1380,6 +1380,7 @@ wagtail-install-default:
 		icalendar \
         mailchimp-marketing \
         mailchimp-transactional \
+        phonenumbers \
         psycopg2-binary \
         python-webpack-boilerplate \
         wagtail \
