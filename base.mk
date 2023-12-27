@@ -547,9 +547,10 @@ from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
 
-from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from dj_rest_auth.registration.views import RegisterView
+
+from siteuser.models import User
 
 urlpatterns = [
 	path('accounts/', include('allauth.urls')),
