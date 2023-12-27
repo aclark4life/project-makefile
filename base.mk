@@ -734,7 +734,7 @@ define HTML_HEADER
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="/">{{ page.title }}</a>
+                  <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
                 {% for child in current_site.root_page.get_children %}
                 <li class="nav-item">
@@ -1250,6 +1250,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	mkdir frontend/src/context
+	mkdir frontend/src/images
 	@echo "$$CONTEXT_INDEX" > frontend/src/context/index.js
 	@echo "$$CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
