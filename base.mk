@@ -753,6 +753,7 @@ define HTML_OFFCANVAS
         <a class="nav-link" href="{{ child.url }}">{{ child }}</a>
       </li>
       {% endfor %}
+      <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
     </ul>
   </div>
 </div>
