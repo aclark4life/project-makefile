@@ -854,9 +854,9 @@ define CUSTOM_USER_MODEL
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 class User(AbstractUser):
-    groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
+    groups = models.ManyToManyField(Group, related_name='siteuser_set', blank=True)
     user_permissions = models.ManyToManyField(
-        Permission, related_name='customuser_set', blank=True
+        Permission, related_name='siteuser_set', blank=True
     )
 endef
 
@@ -986,10 +986,10 @@ npm-start-default:
 # Django
 
 django-custom-user-default:
-	python manage.py startapp customuser
-	@echo "$$CUSTOM_USER_MODEL" > customeruser/models.py
-	@echo "$$CUSTOM_USER_ADMIN" > customeruser/admin.py
-	-git add customuser/
+	python manage.py startapp siteuser
+	@echo "$$CUSTOM_USER_MODEL" > siteuser/models.py
+	@echo "$$CUSTOM_USER_ADMIN" > siteuser/admin.py
+	-git add siteuser/
 
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
@@ -1033,7 +1033,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('customuser')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
