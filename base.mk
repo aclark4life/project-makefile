@@ -129,8 +129,8 @@ const UserMenu = ({ isAuthenticated, isSuperuser }) => {
             <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
             {isSuperuser ? (
               <>
-                <li><a className="dropdown-item" href="/django" target="blank">Django admin</a></li>
-                <li><a className="dropdown-item" href="/wagtail" target="blank">Wagtail admin</a></li>
+                <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
+                <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
               </>
             ) : null}
           </ul>
