@@ -746,11 +746,11 @@ define HTML_HEADER
             <div class="collapse navbar-collapse" id="navbarCollapse">
               <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="/">Home</a>
+                  <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="/">Home</a>
                 </li>
                 {% for child in current_site.root_page.get_children %}
                 <li class="nav-item">
-                  <a class="nav-link" aria-current="page" href="{{ child.url }}">{{ child }}</a>
+                  <a class="nav-link {% if request.path == child.url %}active{% endif %}" aria-current="page" href="{{ child.url }}">{{ child }}</a>
                 </li>
                 {% endfor %}
                 <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
