@@ -752,7 +752,7 @@ define HTML_HEADER
                   <a class="nav-link" aria-current="page" href="{{ child.url }}">{{ child }}</a>
                 </li>
                 {% endfor %}
-                <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-authenticated="{{ request.user.is_superuser }}"></div>
+                <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
               </ul>
             </div>
           </div>
