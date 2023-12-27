@@ -168,8 +168,9 @@ const Clock = ({ color = '#fff' }) => {
   }, [tick]);
 
   const formattedDate = date.toLocaleDateString(undefined, {
+    weekday: 'short',
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
   });
 
