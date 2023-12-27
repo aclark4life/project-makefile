@@ -736,7 +736,7 @@ define HTML_FOOTER
 endef
 
 define HTML_OFFCANVAS
-<div class="offcanvas offcanvas-start" tabindex="-1" id="navbarCollapse" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -762,7 +762,7 @@ define HTML_HEADER
         <nav class="navbar navbar-expand-md app-header">
           <div class="container-fluid navbar-wrapper">
             <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#offcanvasExample" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse">
