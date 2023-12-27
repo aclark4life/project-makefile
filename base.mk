@@ -991,7 +991,7 @@ django-custom-user-default:
 	@echo "$$CUSTOM_USER_MODEL" > siteuser/models.py
 	@echo "$$CUSTOM_USER_ADMIN" > siteuser/admin.py
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
-	@echo "AUTH_USER_MODEL = 'siteuser'" >> backend/settings/base.py
+	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> backend/settings/base.py
 	python manage.py makemigrations siteuser
 	-git add siteuser/
 
