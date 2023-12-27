@@ -989,6 +989,7 @@ django-custom-user-default:
 	python manage.py startapp siteuser
 	@echo "$$CUSTOM_USER_MODEL" > siteuser/models.py
 	@echo "$$CUSTOM_USER_ADMIN" > siteuser/admin.py
+	@export SETTINGS=backend/settings/base.py; echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	-git add siteuser/
 
 django-graph-default:
@@ -1033,7 +1034,6 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
