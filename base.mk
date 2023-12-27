@@ -44,11 +44,11 @@ define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
 
-define CONTEXT_INDEX
+define REACT_CONTEXT_INDEX
 export { UserContextProvider as default } from './UserContextProvider';
 endef
 
-define CONTEXT_USER_PROVIDER
+define REACT_CONTEXT_USER_PROVIDER
 // UserContextProvider.js
 import React, { createContext, useContext, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -850,6 +850,26 @@ define THEME_BLUE
 }
 endef
 
+define CUSTOM_USER_MODEL
+from django.contrib.auth.models import AbstractUser, Group, Permission
+
+class User(AbstractUser):
+    groups = models.ManyToManyField(Group, related_name='customuser_set', blank=True)
+    user_permissions = models.ManyToManyField(
+        Permission, related_name='customuser_set', blank=True
+    )
+endef
+
+define CUSTOM_USER_ADMIN
+from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
+
+from .models import User
+
+
+admin.site.register(User, UserAdmin)
+endef
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -857,9 +877,10 @@ export BASE_TEMPLATE
 export COMPONENT_CLOCK
 export COMPONENT_ERROR
 export COMPONENT_USER_MENU
-export CONTEXT_INDEX
-export CONTEXT_PROCESSOR
-export CONTEXT_USER_PROVIDER
+export CUSTOM_USER_MODEL
+export CUSTOM_USER_ADMIN
+export REACT_CONTEXT_INDEX
+export REACT_CONTEXT_USER_PROVIDER
 export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
@@ -964,6 +985,12 @@ npm-start-default:
 
 # Django
 
+django-custom-user-default:
+	python manage.py startapp customuser
+	@echo "$$CUSTOM_USER_MODEL" > customeruser/models.py
+	@echo "$$CUSTOM_USER_ADMIN" > customeruser/admin.py
+	-git add customuser/
+
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
@@ -1006,6 +1033,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('customuser')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
@@ -1267,6 +1295,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add Dockerfile
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
+	@$(MAKE) django-custom-user
 	@$(MAKE) django-migrations
 	-git add home
 	-git add search
@@ -1290,8 +1319,8 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	mkdir frontend/src/context
 	mkdir frontend/src/images
-	@echo "$$CONTEXT_INDEX" > frontend/src/context/index.js
-	@echo "$$CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
+	@echo "$$REACT_CONTEXT_INDEX" > frontend/src/context/index.js
+	@echo "$$REACT_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
