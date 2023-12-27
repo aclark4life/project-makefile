@@ -127,6 +127,8 @@ const UserMenu = ({ isAuthenticated }) => {
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
+            {% if request.user.is_superuser %}<li><a className="dropdown-item" href="/django">Django Admin</a></li>{% endif %}
+            {% if request.user.is_superuser %}<li><a className="dropdown-item" href="/wagtail">Wagtail Admin</a></li>{% endif %}
           </ul>
         </li>
       ) : (
