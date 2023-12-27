@@ -179,10 +179,9 @@ const Clock = ({ color = '#fff' }) => {
   });
 
   return (
-    <span> 
-      <span style={{ animation: blink ? 'blink 1s infinite' : 'none' }}>{formattedDate}</span>
-      <div>{formattedTime}</div>
-    </span>
+    <> 
+      <div style={{ animation: blink ? 'blink 1s infinite' : 'none' }}><span className='me-2'>{formattedDate}</span> {formattedTime}</div>
+    </>
   );
 };
 
