@@ -1027,6 +1027,7 @@ django-custom-user-default:
 	@echo "$$CUSTOM_USER_MODEL" > siteuser/models.py
 	@echo "$$CUSTOM_USER_ADMIN" > siteuser/admin.py
 	@echo "$$CUSTOM_USER_VIEW" > siteuser/views.py
+	@echo "$$CUSTOM_USER_URLS" > siteuser/urls.py
 	-mkdir -v siteuser/templates/
 	@echo "$$CUSTOM_USER_VIEW_TEMPLATE" > siteuser/templates/profile.html
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
@@ -1109,7 +1110,6 @@ django-user-default:
 
 django-url-patterns-default:
 	echo "$$BACKEND_URLS" > backend/$(URLS)
-	echo "$$CUSTOM_USER_URLS" > siteuser/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
