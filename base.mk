@@ -762,9 +762,9 @@ define HTML_FOOTER
     {% wagtail_site as current_site %}
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
     <ul class="list-inline">
-      <li class="list-inline-item"><a class="text-secondary text-decoration-none" href="/">Home</a></li>
+      <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
       {% for child in current_site.root_page.get_children %}
-      <li class="list-inline-item"><a class="text-secondary text-decoration-none" href="{{ child.url }}">{{ child }}</a></li>
+      <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
       {% endfor %}
     </ul>
     <div data-component="Clock"></div>
