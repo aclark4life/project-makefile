@@ -456,7 +456,7 @@ define BLOCK_MARKETING
     {% endif %}
 
     {% if self.image %}
-        <img src="{{ self.image.url }}" alt="{{ self.title }}">
+        <img src="{{ self.image.file.url }}" alt="{{ self.title }}">
     {% endif %}
 
     {% if self.content %}
