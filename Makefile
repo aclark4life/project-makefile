@@ -449,20 +449,18 @@ define BLOCK_MARKETING
             </div>
         </div>
     {% endif %}
-    {% if self.content %}
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <div class="content">
-                           {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
-                           {{ self.content|richtext }}
-                        </div>
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="content">
+                       {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
+                       {{ self.content|richtext }}
                     </div>
                 </div>
             </div>
         </div>
-    {% endif %}
+    </div>
 </div>
 endef
 
