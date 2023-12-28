@@ -373,7 +373,6 @@ class CarouselBlock(blocks.StructBlock):
 
 
 class MarketingBlock(blocks.StructBlock):
-	""" """
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
     images = blocks.ListBlock(ImageChooserBlock(), required=False, help_text="Select one or more images")
@@ -390,7 +389,6 @@ class MarketingBlock(blocks.StructBlock):
 
 
 class HomePage(Page):
-	""" """
     template = 'home/home_page.html'  # Create a template for rendering the home page
     marketing_blocks = StreamField([
         ('marketing_block', MarketingBlock()),
