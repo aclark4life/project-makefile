@@ -437,13 +437,13 @@ define BLOCK_MARKETING
         <div class="container text-center">
             <div class="row">
                 <div class="col">
-                    <div class="d-flex align-items-center justify-content-center">
+                    <div class="d-flex align-items-center justify-content-center vh-100">
                         <img class="img-thumbnail p-3" src="{{ self.image.file.url }}">
 				    </div>
                 </div>
                 <div class="col">
-                    <div class="d-flex align-items-center justify-content-center">
-					  	<h2>{{ self.title }}</h2>{{ self.description }}
+                    <div class="d-flex align-items-center justify-content-center vh-100">
+					  	<h2>{{ self.title }}</h2>{{ self.content }}
                     </div>
                 </div>
             </div>
