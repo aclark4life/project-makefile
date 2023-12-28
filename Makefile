@@ -448,7 +448,16 @@ define BLOCK_MARKETING
             </div>
         </div>
     {% endif %}
-    {% if self.content %}<div class="content">{{ self.content|richtext }}</div>{% endif %}
+    {% if self.content %}
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-center justify-content-center vh-100">
+                        <div class="content">{{ self.content|richtext }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 endef
 
@@ -1342,7 +1351,6 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
-	-git add home/templates/blocks
 	-git add home/templates/blocks
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
