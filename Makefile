@@ -359,6 +359,7 @@ from wagtail_color_panel.edit_handlers import NativeColorPanel
 class MarketingBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
+    image = ImageChooserBlock(required=False)
     images = blocks.ListBlock(ImageChooserBlock(required=False), help_text="Select one or more images")
     css_class = blocks.CharBlock(
         required=False,
@@ -393,7 +394,7 @@ define BLOCK_MARKETING
 {% load wagtailcore_tags %}
 <div class="{{ self.css_class }}">
     {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
-    {% if block.value.images|length > 2 %}
+    {% if block.value.images|length > 1 %}
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
                 {% for image in block.value.images %}
@@ -424,8 +425,6 @@ define BLOCK_MARKETING
               <span class="visually-hidden">Next</span>
             </button>
         </div>
-    {% else %}
-        {% for image in block.value.images %}<img src="{{ image.file.url }}" alt="{{ image.alt }}" />{% endfor %}
     {% endif %}
     {% if self.content %}<div class="content">{{ self.content|richtext }}</div>{% endif %}
 </div>
