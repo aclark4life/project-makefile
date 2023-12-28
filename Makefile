@@ -6,7 +6,7 @@
 
 # License
 #
-# Copyright 2016—2023 Jeffrey A. Clark (Alex)
+# Copyright 2016—2024 Jeffrey A. Clark (Alex)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -416,25 +416,35 @@ define BLOCK_MARKETING
                     </div>
                 {% endfor %}
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
+            <button class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
+            <button class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
             </button>
         </div>
     {% else %}
         <div class="container text-center">
-          <div class="row">
-            <div class="col">
-              Column
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex align-items-center justify-content-center vh-100">Column</div>
+                </div>
+                <div class="col">
+                    <div class="d-flex align-items-center justify-content-center vh-100">
+                        <div class="text-center">
+                            <img class="img-thumbnail p-3" src="{{ self.image.file.url }}">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col">
-			  <img class="img-thumbnail p-3" src="{{ self.image.file.url }}">
-            </div>
-          </div>
         </div>
     {% endif %}
     {% if self.content %}<div class="content">{{ self.content|richtext }}</div>{% endif %}
