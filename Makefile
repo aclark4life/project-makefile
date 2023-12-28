@@ -375,7 +375,7 @@ class CarouselBlock(blocks.StructBlock):
 class MarketingBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
-    images = blocks.ListBlock(ImageChooserBlock(), required=False, help_text="Select one or more images")
+    images = blocks.ListBlock(ImageChooserBlock(required=False), help_text="Select one or more images")
     css_class = blocks.CharBlock(
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
