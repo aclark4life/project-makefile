@@ -587,6 +587,7 @@ urlpatterns = [
 	path('accounts/', include('allauth.urls')),
     path('django/', admin.site.urls),
     path('wagtail/', include(wagtailadmin_urls)),
+    path('user/', include('sitesuser.urls')),
 ]
 
 if settings.DEBUG:
@@ -1108,6 +1109,7 @@ django-user-default:
 
 django-url-patterns-default:
 	echo "$$BACKEND_URLS" > backend/$(URLS)
+	echo "$$CUSTOM_USER_URLS" > siteuser/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
