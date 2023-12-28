@@ -1116,6 +1116,7 @@ django-npm-install-default:
 
 django-npm-install-save-default:
 	cd frontend; npm install \
+		@fortawesome/fontawesome-free \
         @fortawesome/fontawesome-svg-core \
         @fortawesome/free-brands-svg-icons \
         @fortawesome/free-solid-svg-icons \
