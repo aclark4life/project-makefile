@@ -356,22 +356,6 @@ from wagtail_color_panel.fields import ColorField
 from wagtail_color_panel.edit_handlers import NativeColorPanel
 
 
-class CarouselBlock(blocks.StructBlock):
-    slides = blocks.ListBlock(
-        blocks.StructBlock(
-            [
-                ('image', ImageChooserBlock(required=False)),
-                ('caption', blocks.CharBlock(required=False)),
-                ('link', blocks.URLBlock(required=False)),
-            ]
-        )
-    )
-
-    class Meta:
-        icon = 'image'
-        template = 'blocks/carousel_block.html'
-
-
 class MarketingBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
@@ -405,49 +389,45 @@ define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
 
-define BLOCK_CAROUSEL
-<div id="{{ self.id }}" class="carousel slide vh-100">
-  <div class="carousel-inner">
-    {% for slide in self.slides %}
-    <div class="carousel-item{% if forloop.first %} active{% endif %}">
-	  <img src="{{ slide.image.url }}" class="d-block w-100" alt="{% if slide.caption %}{{ slide.caption }}{% endif %}">
-      {% if slide.caption or slide.link %}
-      <div class="carousel-caption d-none d-md-block">
-        {% if slide.caption %}<p>{{ slide.caption }}</p>{% endif %}
-        {% if slide.link %}<a href="{{ slide.link }}">Learn More</a>{% endif %}
-      </div>
-      {% endif %}
-    </div>
-    {% endfor %}
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
-</div>
-endef
-
 define BLOCK_MARKETING
 {% load wagtailcore_tags %}
-
 <div class="{{ self.css_class }}">
-    {% if self.title %}
-        <h2>{{ self.title }}</h2>
-    {% endif %}
-
-    {% for image in block.value.images %}
-        <img src="{{ image.file.url }}" alt="{{ image.alt }}" />
-    {% endfor %}
-
-    {% if self.content %}
-        <div class="content">
-            {{ self.content|richtext }}
+    {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
+    {% if block.value.images|length > 2 %}
+        <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-indicators">
+                {% for image in block.value.images %}
+                    <button type="button"
+                            data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide-to="{{ forloop.counter0 }}"
+                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                            aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+                {% for image in block.value.images %}
+                    <div class="carousel-item active">
+                        <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>First slide label</h5>
+                            <p>Some representative placeholder content for the first slide.</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
         </div>
+    {% else %}
+        {% for image in block.value.images %}<img src="{{ image.file.url }}" alt="{{ image.alt }}" />{% endfor %}
     {% endif %}
+    {% if self.content %}<div class="content">{{ self.content|richtext }}</div>{% endif %}
 </div>
 endef
 
@@ -910,7 +890,6 @@ export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
-export BLOCK_CAROUSEL
 export BLOCK_MARKETING
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
@@ -1341,7 +1320,6 @@ wagtail-init-default: db-init wagtail-install
 	-git add backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
-	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	-git add home/templates/blocks
 	-git add home/templates/blocks
