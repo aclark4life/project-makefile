@@ -541,8 +541,10 @@ define CUSTOM_USER_VIEW_TEMPLATE
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container">
   <h2>User Profile</h2>
   <p>Username: {{ user.username }}</p>
+</div>
 {% endblock %}
 endef
 
