@@ -587,7 +587,7 @@ urlpatterns = [
 	path('accounts/', include('allauth.urls')),
     path('django/', admin.site.urls),
     path('wagtail/', include(wagtailadmin_urls)),
-    path('user/', include('sitesuser.urls')),
+    path('user/', include('siteuser.urls')),
 ]
 
 if settings.DEBUG:
