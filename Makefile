@@ -365,7 +365,7 @@ class MarketingBlock(blocks.StructBlock):
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
         classname='full title',
-		default='vh-100 bg-success',
+		default='vh-100 bg-white',
     )
 
     class Meta:
@@ -393,7 +393,6 @@ endef
 define BLOCK_MARKETING
 {% load wagtailcore_tags %}
 <div class="{{ self.css_class }}">
-    {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
     {% if block.value.images|length > 2 %}
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
@@ -453,7 +452,10 @@ define BLOCK_MARKETING
             <div class="row">
                 <div class="col">
                     <div class="d-flex align-items-center justify-content-center vh-100">
-                        <div class="content">{{ self.content|richtext }}</div>
+                        <div class="content">
+                           {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
+                           {{ self.content|richtext }}
+                        </div>
                     </div>
                 </div>
             </div>
