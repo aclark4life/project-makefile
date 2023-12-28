@@ -458,6 +458,7 @@ define BLOCK_MARKETING
                 </div>
             </div>
         </div>
+    {% endif %}
 </div>
 endef
 
