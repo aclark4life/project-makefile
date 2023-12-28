@@ -1137,7 +1137,6 @@ django-npm-install-save-default:
         react-image-crop \
         react-map-gl \
         react-modal \
-        react-quill \
         react-resize-detector \
         react-select \
         react-swipeable \
