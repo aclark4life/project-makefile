@@ -363,11 +363,23 @@ class MarketingBlock(blocks.StructBlock):
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
     image = ImageChooserBlock(required=False)
     images = blocks.ListBlock(ImageChooserBlock(required=False), help_text="Select one or more images")
-    css_class = blocks.CharBlock(
+    block_class = blocks.CharBlock(
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
         classname='full title',
         default='vh-100 bg-white text-dark',
+    )
+    image_class = blocks.CharBlock(
+        required=False,
+        help_text='Enter a CSS class for styling the image',
+        classname='image class',
+        default='img-thumbnail p-5',
+    )
+    image_row_class = blocks.CharBlock(
+        required=False,
+        help_text='Enter a CSS class for styling the image',
+        classname='image class',
+        default='d-flex flex-row',
     )
 
     class Meta:
@@ -394,7 +406,7 @@ endef
 
 define BLOCK_MARKETING
 {% load wagtailcore_tags %}
-<div class="{{ self.css_class }}">
+<div class="{{ self.block_class }}">
     {% if block.value.images|length > 2 %}
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
@@ -435,10 +447,10 @@ define BLOCK_MARKETING
     {% endif %}
     {% if self.image %}
         <div class="container text-center">
-            <div class="row">
+            <div class="row {{ self.image_row_class }}">
                 <div class="col">
                     <div class="d-flex align-items-center justify-content-center vh-100">
-                        <img class="img-thumbnail p-5" src="{{ self.image.file.url }}">
+                        <img class="{{ self.image_class }}" src="{{ self.image.file.url }}">
                     </div>
                 </div>
                 <div class="col">
