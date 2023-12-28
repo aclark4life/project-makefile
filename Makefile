@@ -373,12 +373,10 @@ class CarouselBlock(blocks.StructBlock):
 
 
 class MarketingBlock(blocks.StructBlock):
+	""" """
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
-    # image = ImageChooserBlock(required=False, help_text='Select an optional image for the block')
-    images = blocks.ListBlock(ImageChooserBlock(), required=True, help_text="Select one or more images")
-    
-    # Add a new field for CSS class
+    images = blocks.ListBlock(ImageChooserBlock(), required=False, help_text="Select one or more images")
     css_class = blocks.CharBlock(
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
@@ -392,27 +390,14 @@ class MarketingBlock(blocks.StructBlock):
 
 
 class HomePage(Page):
+	""" """
     template = 'home/home_page.html'  # Create a template for rendering the home page
-
-    # Fields for the home page
-    # body = RichTextField(blank=True, help_text='Main content of the page', null=True)
-
-    # carousel_block = StreamField([
-    #     ('carousel', CarouselBlock()),
-    # ], blank=True, null=True, use_json_field=True)
-
     marketing_blocks = StreamField([
         ('marketing_block', MarketingBlock()),
     ], blank=True, null=True, use_json_field=True)
-
     content_panels = Page.content_panels + [
         FieldPanel('marketing_blocks'),
     ]
-
-    # color = ColorField(blank=True, null=True)
-    # content_panels = Page.content_panels + [
-    #     NativeColorPanel('color'),
-    # ]
 
     class Meta:
         verbose_name = 'Home Page'
@@ -456,9 +441,9 @@ define BLOCK_MARKETING
         <h2>{{ self.title }}</h2>
     {% endif %}
 
-    {% if self.image %}
-        <img src="{{ self.image.file.url }}" alt="{{ self.title }}">
-    {% endif %}
+    {% for image in block.value.images %}
+        <img src="{{ image.file.url }}" alt="{{ image.alt }}" />
+    {% endfor %}
 
     {% if self.content %}
         <div class="content">
