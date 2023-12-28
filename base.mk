@@ -536,7 +536,38 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
-define URL_PATTERNS
+define CUSTOM_USER_VIEW_TEMPLATE
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>User Profile</h2>
+  <p>Username: {{ user.username }}</p>
+{% endblock %}
+endef
+
+define CUSTOM_USER_VIEW
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView
+from siteuser.models import User
+
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'profile.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+endef
+
+define CUSTOM_USER_URLS
+from django.urls import path
+from .views import UserProfileView
+
+urlpatterns = [
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
+]
+endef
+
+define BACKEND_URLS
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
@@ -875,12 +906,16 @@ endef
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
+export BACKEND_URLS
 export BASE_TEMPLATE
 export COMPONENT_CLOCK
 export COMPONENT_ERROR
 export COMPONENT_USER_MENU
 export CUSTOM_USER_MODEL
 export CUSTOM_USER_ADMIN
+export CUSTOM_USER_URLS
+export CUSTOM_USER_VIEW
+export CUSTOM_USER_VIEW_TEMPLATE
 export REACT_CONTEXT_INDEX
 export REACT_CONTEXT_USER_PROVIDER
 export ESLINTRC
@@ -899,7 +934,6 @@ export JENKINS_FILE
 export REACT_PORTAL
 export REST_FRAMEWORK
 export THEME_BLUE
-export URL_PATTERNS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_JS
 export WEBPACK_INDEX_HTML
@@ -991,6 +1025,9 @@ django-custom-user-default:
 	python manage.py startapp siteuser
 	@echo "$$CUSTOM_USER_MODEL" > siteuser/models.py
 	@echo "$$CUSTOM_USER_ADMIN" > siteuser/admin.py
+	@echo "$$CUSTOM_USER_VIEW" > siteuser/views.py
+	-mkdir siteuser/templates/
+	@echo "$$CUSTOM_USER_VIEW_TEMPLATE" > siteuser/template/profile.html
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> backend/settings/base.py
 	python manage.py makemigrations siteuser
@@ -1070,7 +1107,7 @@ django-user-default:
 		User.objects.create_user('user', '', 'user')"
 
 django-url-patterns-default:
-	echo "$$URL_PATTERNS" > backend/$(URLS)
+	echo "$$BACKEND_URLS" > backend/$(URLS)
 
 django-npm-install-default:
 	cd frontend; npm install
