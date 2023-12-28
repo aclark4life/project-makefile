@@ -319,26 +319,26 @@ define BASE_TEMPLATE
         <base target="_blank">
         {% endif %}
 
-  		{% stylesheet_pack 'app' %}
+        {% stylesheet_pack 'app' %}
 
         {% block extra_css %}
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
 
-		<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
+        <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
 
-		<div id="app"></div>
+        <div id="app"></div>
 
-		{% include 'header.html' %}
+        {% include 'header.html' %}
         {% block content %}{% endblock %}
-		{% include 'footer.html' %}
-		{% include 'offcanvas.html' %}
+        {% include 'footer.html' %}
+        {% include 'offcanvas.html' %}
 
-		{% javascript_pack 'app' %}
+        {% javascript_pack 'app' %}
 
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
@@ -367,7 +367,7 @@ class MarketingBlock(blocks.StructBlock):
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
         classname='full title',
-		default='vh-100 bg-white text-dark',
+        default='vh-100 bg-white text-dark',
     )
 
     class Meta:
@@ -438,12 +438,12 @@ define BLOCK_MARKETING
             <div class="row">
                 <div class="col">
                     <div class="d-flex align-items-center justify-content-center vh-100">
-                        <img class="img-thumbnail p-3" src="{{ self.image.file.url }}">
-				    </div>
+                        <img class="img-thumbnail p-5" src="{{ self.image.file.url }}">
+                    </div>
                 </div>
                 <div class="col">
                     <div class="d-flex align-items-center justify-content-center vh-100">
-					  	<h2>{{ self.title }}</h2>{{ self.content }}
+                        <div class="d-block"><h2>{{ self.title }}</h2>{{ self.content }}</div>
                     </div>
                 </div>
             </div>
@@ -495,9 +495,9 @@ define HOME_PAGE_TEMPLATE
                 {% endfor %}
             </div>
         {% endif %}
-		{% for block in page.marketing_blocks %}
-		  {% include_block block %}
-		{% endfor %}
+        {% for block in page.marketing_blocks %}
+           {% include_block block %}
+        {% endfor %}
     </main>
 {% endblock %}
 endef
@@ -511,7 +511,7 @@ pipeline {
                 echo ''
             }
         }
-	}
+    }
 }
 endef
 
@@ -572,7 +572,7 @@ from dj_rest_auth.registration.views import RegisterView
 from siteuser.models import User
 
 urlpatterns = [
-	path('accounts/', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
     path('django/', admin.site.urls),
     path('wagtail/', include(wagtailadmin_urls)),
     path('user/', include('siteuser.urls')),
@@ -589,7 +589,7 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
-    	path("hijack/", include("hijack.urls")),
+        path("hijack/", include("hijack.urls")),
     ]
 
 # https://www.django-rest-framework.org/#example
@@ -608,7 +608,7 @@ router.register(r'users', UserViewSet)
 urlpatterns += [
     path("api/", include(router.urls)),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
-	path("api/", include("dj_rest_auth.urls")),
+    path("api/", include("dj_rest_auth.urls")),
     path("api/register/", RegisterView.as_view(), name="register"),
 ]
 
@@ -781,7 +781,7 @@ define HTML_OFFCANVAS
 endef
 
 define HTML_HEADER
-		{% load wagtailcore_tags %}
+        {% load wagtailcore_tags %}
         {% wagtail_site as current_site %}
         <nav class="navbar navbar-expand-md app-header">
           <div class="container-fluid navbar-wrapper">
@@ -971,17 +971,17 @@ endif
 
 eb-create-default: eb-check-env
 	eb create $(ENV_NAME) \
-		-i $(INSTANCE_TYPE) \
-		-k $(SSH_KEY) \
-		-p $(PLATFORM) \
-		--elb-type $(LB_TYPE) \
-		--vpc \
-		--vpc.id $(VPC_ID) \
-		--vpc.elbpublic \
-		--vpc.ec2subnets $(VPC_SUBNET_EC2) \
-		--vpc.elbsubnets $(VPC_SUBNET_ELB) \
-		--vpc.publicip \
-		--vpc.securitygroups $(VPC_SG)
+         -i $(INSTANCE_TYPE) \
+         -k $(SSH_KEY) \
+         -p $(PLATFORM) \
+         --elb-type $(LB_TYPE) \
+         --vpc \
+         --vpc.id $(VPC_ID) \
+         --vpc.elbpublic \
+         --vpc.ec2subnets $(VPC_SUBNET_EC2) \
+         --vpc.elbsubnets $(VPC_SUBNET_ELB) \
+         --vpc.publicip \
+         --vpc.securitygroups $(VPC_SG)
 
 eb-deploy-default:
 	eb deploy
@@ -1046,7 +1046,7 @@ django-settings-default:
 	echo "ALLOWED_HOSTS = ['*']" >> $(SETTINGS)
 	echo "import dj_database_url, os" >> $(SETTINGS)
 	echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
-		'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
+         'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('rest_framework')" >> $(SETTINGS)
@@ -1086,14 +1086,14 @@ django-static-default:
 
 django-su-default:
 	python manage.py shell -c "from siteuser.models import User; \
-		User.objects.create_superuser('admin', '', 'admin')"
+        User.objects.create_superuser('admin', '', 'admin')"
 
 django-test-default:
 	python manage.py test
 
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
-		User.objects.create_user('user', '', 'user')"
+        User.objects.create_user('user', '', 'user')"
 
 django-url-patterns-default:
 	echo "$$BACKEND_URLS" > backend/$(URLS)
@@ -1103,7 +1103,7 @@ django-npm-install-default:
 
 django-npm-install-save-default:
 	cd frontend; npm install \
-		@fortawesome/fontawesome-free \
+        @fortawesome/fontawesome-free \
         @fortawesome/fontawesome-svg-core \
         @fortawesome/free-brands-svg-icons \
         @fortawesome/free-solid-svg-icons \
@@ -1389,7 +1389,7 @@ wagtail-install-default:
         django-imagekit \
         django-import-export \
         django-ipware \
-		django-phonenumber-field \
+        django-phonenumber-field \
         django-recurrence \
         django-recaptcha \
         django-registration \
@@ -1401,7 +1401,7 @@ wagtail-install-default:
         dj-database-url \
         dj-stripe \
         dj-rest-auth \
-		icalendar \
+        icalendar \
         mailchimp-marketing \
         mailchimp-transactional \
         phonenumbers \
