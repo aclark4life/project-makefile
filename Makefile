@@ -431,7 +431,8 @@ define BLOCK_MARKETING
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-    {% else %}
+    {% endif %}
+    {% if self.image %}
         <div class="container text-center">
             <div class="row">
                 <div class="col">
