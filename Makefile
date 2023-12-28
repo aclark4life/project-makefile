@@ -394,7 +394,7 @@ define BLOCK_MARKETING
 {% load wagtailcore_tags %}
 <div class="{{ self.css_class }}">
     {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
-    {% if block.value.images|length > 1 %}
+    {% if block.value.images|length > 2 %}
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
                 {% for image in block.value.images %}
@@ -424,6 +424,17 @@ define BLOCK_MARKETING
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
+        </div>
+    {% else %}
+        <div class="container text-center">
+          <div class="row">
+            <div class="col">
+              Column
+            </div>
+            <div class="col">
+			  <img class="img-thumbnail p-3" src="{{ self.image.file.url }}">
+            </div>
+          </div>
         </div>
     {% endif %}
     {% if self.content %}<div class="content">{{ self.content|richtext }}</div>{% endif %}
