@@ -436,10 +436,10 @@ define BLOCK_MARKETING
         <div class="container text-center">
             <div class="row">
                 <div class="col">
-                    <div class="d-flex align-items-center justify-content-center vh-100">Column</div>
+                    <div class="d-flex align-items-center justify-content-center">Column</div>
                 </div>
                 <div class="col">
-                    <div class="d-flex align-items-center justify-content-center vh-100">
+                    <div class="d-flex align-items-center justify-content-center">
                         <div class="text-center">
                             <img class="img-thumbnail p-3" src="{{ self.image.file.url }}">
                         </div>
@@ -452,7 +452,7 @@ define BLOCK_MARKETING
         <div class="container text-center">
             <div class="row">
                 <div class="col">
-                    <div class="d-flex align-items-center justify-content-center vh-100">
+                    <div class="d-flex align-items-center justify-content-center">
                         <div class="content">
                            {% if self.title %}<h2>{{ self.title }}</h2>{% endif %}
                            {{ self.content|richtext }}
