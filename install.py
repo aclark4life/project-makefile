@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 
-VERSION = "0.0.9"
+VERSION = "0.1.0dev"
 
 
 def main():
@@ -27,15 +27,7 @@ def main():
     os.chdir(project_dir)
     print("  - Done!")
 
-    print("- Download files")
-    subprocess.run(
-        [
-            "curl",
-            "-O",
-            "https://raw.githubusercontent.com/aclark4life/project-makefile/%s/base.mk"
-            % VERSION,
-        ]
-    )
+    print("- Download Makefile")
     subprocess.run(
         [
             "curl",
