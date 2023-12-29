@@ -372,13 +372,13 @@ class MarketingBlock(blocks.StructBlock):
     image_class = blocks.CharBlock(
         required=False,
         help_text='Enter a CSS class for styling the image',
-        classname='image class',
+        classname='full title',
         default='img-thumbnail p-5',
     )
     image_row_class = blocks.CharBlock(
         required=False,
-        help_text='Enter a CSS class for styling the image',
-        classname='image class',
+        help_text='Enter a CSS class for styling the image row',
+        classname='full title',
         default='d-flex flex-row',
     )
 
