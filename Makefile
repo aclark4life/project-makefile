@@ -406,8 +406,8 @@ endef
 
 define BLOCK_MARKETING
 {% load wagtailcore_tags %}
-<div class="{{ self.block_class }}" {% if block.value.images|length == 1 %}style="background: url({{ block.value.images.0.file.url}})"{% endif %}>
-    {% if block.value.images|length >= 3 %}
+<div class="{{ self.block_class }}">
+    {% if block.value.images.items|length > 0 %}
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
                 {% for image in block.value.images %}
@@ -445,23 +445,7 @@ define BLOCK_MARKETING
             </button>
         </div>
     {% endif %}
-    {% if self.image %}
-        <div class="container">
-            <div class="row {{ self.image_row_class }}">
-                <div class="col">
-                    <div class="d-flex align-items-center justify-content-center vh-100">
-                        <img class="{{ self.image_class }}" src="{{ self.image.file.url }}">
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="d-flex align-items-center justify-content-center vh-100">
-                        <div class="d-block"><h2>{{ self.title }}</h2>{{ self.content }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-</div>
+</div> 
 endef
 
 define HOME_PAGE_TEMPLATE
