@@ -1,7 +1,7 @@
 from setuptools import find_packages
 from setuptools import setup
 
-VERSION = "0.0.9"
+VERSION = "0.1.0-dev"
 
 setup(
     author="Jeffrey A. Clark (Alex)",
