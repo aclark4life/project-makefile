@@ -4,7 +4,7 @@ from setuptools import setup
 VERSION = "0.0.9"
 
 setup(
-    author="Alex Clark",
+    author="Jeffrey A. Clark (Alex)",
     author_email="aclark@aclark.net",
     classifiers=[],
     description="A generic makefile for projects.",
