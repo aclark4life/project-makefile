@@ -1475,6 +1475,10 @@ project-mk-default:
 	touch project.mk
 	-git add project.mk
 
+# ------------------------------------------------------------------------------  
+# More rules
+# ------------------------------------------------------------------------------  
+
 build-default: sphinx-build
 b-default: build 
 c-default: clean
