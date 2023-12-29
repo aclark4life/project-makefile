@@ -1179,7 +1179,7 @@ git-branches-default:
         git checkout -t $$i ; done
 
 git-commit-default:
-	-git commit -a -m $(GIT_MESSAGE)
+	-git commit -a -m $(GIT_COMMIT_MESSAGE)
 
 git-push-default:
 	-git push
@@ -1526,8 +1526,8 @@ webpack-default: webpack-init
 %: %-default  # https://stackoverflow.com/a/49804748
 	@ true
 
-GIT_MESSAGE := Update
-PROJECT_NAME := project
+PROJECT_NAME := project-makefile
+GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 
 PROJECT_MAKEFILE := project.mk
 ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
