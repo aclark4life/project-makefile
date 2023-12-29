@@ -361,8 +361,8 @@ from wagtail_color_panel.edit_handlers import NativeColorPanel
 class MarketingBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False, help_text='Enter the block title')
     content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
-    image = ImageChooserBlock(required=False)
-    images = blocks.ListBlock(ImageChooserBlock(required=False), help_text="Select one or more images")
+    images = blocks.ListBlock(ImageChooserBlock(required=False), help_text="Select one or two images for column display. Select three or more images for carousel.")
+    image = ImageChooserBlock(required=False, help_text="Select a single image for background.")
     block_class = blocks.CharBlock(
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
@@ -371,13 +371,13 @@ class MarketingBlock(blocks.StructBlock):
     )
     image_class = blocks.CharBlock(
         required=False,
-        help_text='Enter a CSS class for styling the image',
+        help_text='Enter a CSS class for styling the column display image(s)',
         classname='full title',
         default='img-thumbnail p-5',
     )
-    image_row_class = blocks.CharBlock(
+    layout_class = blocks.CharBlock(
         required=False,
-        help_text='Enter a CSS class for styling the image row',
+        help_text='Enter a CSS class for styling the layout.',
         classname='full title',
         default='d-flex flex-row',
     )
