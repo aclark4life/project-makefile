@@ -446,7 +446,7 @@ define BLOCK_MARKETING
         </div>
     {% endif %}
     {% if self.image %}
-        <div class="container text-center">
+        <div class="container">
             <div class="row {{ self.image_row_class }}">
                 <div class="col">
                     <div class="d-flex align-items-center justify-content-center vh-100">
