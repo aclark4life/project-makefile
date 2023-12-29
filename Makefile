@@ -777,29 +777,45 @@ define HTML_OFFCANVAS
 endef
 
 define HTML_HEADER
-        {% load wagtailcore_tags %}
-        {% wagtail_site as current_site %}
-        <nav class="navbar navbar-expand-md app-header">
-          <div class="container-fluid navbar-wrapper">
-            <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse">
-              <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+{% load wagtailcore_tags %}
+{% wagtail_site as current_site %}
+<nav class="navbar navbar-expand-md app-header">
+    <div class="container-fluid navbar-wrapper">
+        <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample"
+                aria-controls="offcanvasExample"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                  <a class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page" href="/">Home</a>
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                       aria-current="page"
+                       href="/">Home</a>
                 </li>
                 {% for child in current_site.root_page.get_children %}
-                <li class="nav-item">
-                  <a class="nav-link {% if request.path == child.url %}active{% endif %}" aria-current="page" href="{{ child.url }}">{{ child }}</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == child.url %}active{% endif %}"
+                           aria-current="page"
+                           href="{{ child.url }}">{{ child }}</a>
+                    </li>
                 {% endfor %}
-                <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
-              </ul>
-            </div>
-          </div>
-        </nav>
+                <div data-component="UserMenu"
+                     data-is-authenticated="{{ request.user.is_authenticated }}"
+                     data-is-superuser="{{ request.user.is_superuser }}"></div>
+            </ul>
+            {% if page.id and request.user.is_superuser %}
+                <a class="btn btn-outline-light ms-3"
+                   href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i> Edit {{ page }}</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
 endef 
 
 define COMPONENT_ERROR
