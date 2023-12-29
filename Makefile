@@ -40,6 +40,20 @@ UNAME := $(shell uname)
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 
+PROJECT_NAME := project-makefile
+GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
+
+PROJECT_MAKEFILE := project.mk
+ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
+    include $(PROJECT_MAKEFILE)
+endif
+
+.DEFAULT_GOAL := git-commit-push
+
+# --------------------------------------------------------------------------------
+# More variables
+# --------------------------------------------------------------------------------
+
 define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
@@ -908,6 +922,10 @@ from .models import User
 admin.site.register(User, UserAdmin)
 endef
 
+# ------------------------------------------------------------------------------  
+# Export variables
+# ------------------------------------------------------------------------------  
+
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
@@ -946,8 +964,6 @@ export WEBPACK_INDEX_HTML
 # Rules
 # ------------------------------------------------------------------------------  
 
-# Export
-
 export-base-default:
 	@echo "$$BASE_TEMPLATE"
 
@@ -956,8 +972,6 @@ export-home-default:
 
 export-header-default:
 	@echo "$$HTML_HEADER"
-
-# Elastic Beanstalk
 
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef ENV_NAME
@@ -1005,8 +1019,6 @@ eb-deploy-default:
 eb-init-default:
 	eb init
 
-# npm
-
 npm-init-default:
 	npm init -y
 	-git add package.json
@@ -1022,8 +1034,6 @@ npm-clean-default:
 
 npm-start-default:
 	npm run start
-
-# Django
 
 django-custom-user-default:
 	python manage.py startapp siteuser
@@ -1166,8 +1176,6 @@ django-npm-build-default:
 django-open-default:
 	open http://0.0.0.0:8000
 
-# Git
-
 git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	-git add .gitignore
@@ -1195,8 +1203,6 @@ git-set-upstream-default:
 
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
-
-# Lint
 
 lint-black-default:
 	-black *.py
@@ -1227,17 +1233,13 @@ lint-ruff-default:
 	-ruff backend/*/*.py
 	-git commit -a -m "A one time ruff event"
 
-# Database
-
-mysql-init-default:
+db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
 
-pg-init-default:
+db-pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
-
-# pip
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
@@ -1272,12 +1274,8 @@ pip-upgrade-default:
 pip-uninstall-default:
 	pip3 freeze | xargs pip3 uninstall -y
 
-# python
-
 python-setup-sdist-default:
 	python3 setup.py sdist --format=zip
-
-# README
 
 readme-init-default:
 	@echo "$(PROJECT_NAME)" > README.rst
@@ -1293,8 +1291,6 @@ readme-open-default:
 
 readme-build-default:
 	rst2pdf README.rst
-
-# Sphinx
 
 sphinx-init-default:
 	$(MAKE) sphinx-install
@@ -1316,8 +1312,6 @@ sphinx-build-pdf-default:
 
 sphinx-serve-default:
 	cd _build/html;python -m http.server
-
-# Wagtail
 
 wagtail-clean-default:
 	-rm -vf .dockerignore
@@ -1429,8 +1423,6 @@ wagtail-install-default:
         wagtail-seo \
         wagtail-color-panel
 
-# Misc
-
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
@@ -1490,7 +1482,7 @@ ce-default: git-commit-edit-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
 d-default: eb-deploy
-db-init-default: pg-init
+db-init-default: db-pg-init
 django-clean-default: wagtail-clean
 django-init-default: wagtail-init
 edit-default: readme-edit
@@ -1511,6 +1503,7 @@ gitignore-default: git-ignore
 open-default: django-open
 o-default: open
 p-default: git-push
+pg-init-default: db-pg-init
 readme-default: readme-init
 serve-default: django-serve
 shell-default: django-shell
@@ -1521,17 +1514,9 @@ u-default: usage
 urls-default: django-show-urls
 webpack-default: webpack-init
 
+# --------------------------------------------------------------------------------
 # Overrides
+# --------------------------------------------------------------------------------
 
 %: %-default  # https://stackoverflow.com/a/49804748
 	@ true
-
-PROJECT_NAME := project-makefile
-GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
-
-PROJECT_MAKEFILE := project.mk
-ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
-    include $(PROJECT_MAKEFILE)
-endif
-
-.DEFAULT_GOAL := git-commit-push
