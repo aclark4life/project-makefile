@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 
-VERSION = "0.1.0dev"
+VERSION = "0.1.0-dev"
 
 
 def main():
