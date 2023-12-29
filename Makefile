@@ -773,7 +773,7 @@ define HTML_OFFCANVAS
       <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
     </ul>
     {% if page.id and request.user.is_superuser %}
-        <a class="btn btn-outline-light ms-3"
+        <a class="btn btn-outline-light mt-3"
            href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i> Edit {{ page }}</a>
     {% endif %}
   </div>
