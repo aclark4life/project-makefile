@@ -229,6 +229,7 @@ import UserContextProvider from '../context';
 import * as components from '../components';
 import "../styles/index.scss";
 import "../styles/theme-blue.scss";
+import "./config";
 
 const { ErrorBoundary } = components;
 const dataComponents = getDataComponents(components);
@@ -656,6 +657,10 @@ media/
 .elasticbeanstalk/
 endef
 
+define FRONTEND_APP_CONFIG
+// Overwrite me with config
+endef
+
 define WEBPACK_CONFIG_JS
 const path = require('path');
 
@@ -943,6 +948,7 @@ export REACT_CONTEXT_INDEX
 export REACT_CONTEXT_USER_PROVIDER
 export ESLINTRC
 export FRONTEND_APP
+export FRONTEND_APP_CONFIG
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
 export BLOCK_MARKETING
@@ -1362,6 +1368,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$REACT_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
+	@echo "$$FRONTEND_APP_CONFIG" > frontend/src/application/config.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
 	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$BABELRC" > frontend/.babelrc
