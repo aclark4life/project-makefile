@@ -406,8 +406,8 @@ endef
 
 define BLOCK_MARKETING
 {% load wagtailcore_tags %}
-<div class="{{ self.block_class }}">
-    {% if block.value.images|length > 2 %}
+<div class="{{ self.block_class }}" {% if block.value.images|length == 1 %}style="background: url({{ block.value.images.0.file.url}})"{% endif %}>
+    {% if block.value.images|length >= 3 %}
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
                 {% for image in block.value.images %}
