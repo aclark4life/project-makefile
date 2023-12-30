@@ -1025,6 +1025,9 @@ eb-deploy-default:
 eb-init-default:
 	eb init
 
+eb-list-platforms:
+	aws elasticbeanstalk list-platform-versions
+
 npm-init-default:
 	npm init -y
 	-git add package.json
