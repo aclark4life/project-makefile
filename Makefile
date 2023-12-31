@@ -419,7 +419,7 @@ class MarketingBlock(blocks.StructBlock):
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
         classname='full title',
-        default='vh-100 bg-white text-dark',
+        default='vh-100 app-ribbon',
     )
     image_class = blocks.CharBlock(
         required=False,
