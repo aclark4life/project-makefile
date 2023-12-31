@@ -340,6 +340,29 @@ define BASE_TEMPLATE
         {# Override this in templates to add extra stylesheets #}
         {% endblock %}
 
+        <style>
+          .success {
+              background-color: #d4edda;
+              border-color: #c3e6cb;
+              color: #155724;
+          }
+          .info {
+              background-color: #d1ecf1;
+              border-color: #bee5eb;
+              color: #0c5460;
+          }
+          .warning {
+              background-color: #fff3cd;
+              border-color: #ffeeba;
+              color: #856404;
+          }
+          .danger {
+              background-color: #f8d7da;
+              border-color: #f5c6cb;
+              color: #721c24;
+          }
+        </style>
+
         <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
     </head>
 
@@ -349,6 +372,20 @@ define BASE_TEMPLATE
         <div id="app"></div>
 
         {% include 'header.html' %}
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible fade show"
+                         role="alert">
+                        {{ message }}
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
         {% include 'footer.html' %}
         {% include 'offcanvas.html' %}
@@ -466,46 +503,8 @@ endef
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
-{% block extra_css %}
-    <style>
-      .success {
-          background-color: #d4edda;
-          border-color: #c3e6cb;
-          color: #155724;
-      }
-      .info {
-          background-color: #d1ecf1;
-          border-color: #bee5eb;
-          color: #0c5460;
-      }
-      .warning {
-          background-color: #fff3cd;
-          border-color: #ffeeba;
-          color: #856404;
-      }
-      .danger {
-          background-color: #f8d7da;
-          border-color: #f5c6cb;
-          color: #721c24;
-      }
-    </style>
-{% endblock %}
 {% block content %}
     <main class="{% block main_class %}{% endblock %}">
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert {{ message.tags }} alert-dismissible fade show"
-                         role="alert">
-                        {{ message }}
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
         {% for block in page.marketing_blocks %}
            {% include_block block %}
         {% endfor %}
