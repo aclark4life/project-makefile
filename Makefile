@@ -1505,6 +1505,7 @@ d-default: eb-deploy
 db-init-default: db-pg-init
 django-clean-default: wagtail-clean
 django-init-default: wagtail-init
+djlint-default: lint-djlint
 edit-default: readme-edit
 e-default: edit
 empty-default: git-commit-empty
