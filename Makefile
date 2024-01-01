@@ -1497,6 +1497,7 @@ project-mk-default:
 
 build-default: sphinx-build
 b-default: build 
+black-default: lint-black
 c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
