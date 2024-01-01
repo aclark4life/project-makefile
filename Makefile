@@ -1077,6 +1077,9 @@ django-migrate-default:
 django-migrations-default:
 	python manage.py makemigrations
 
+django-migrations-show-default:
+	python manage.py showmigrations
+
 django-serve-default:
 	cd frontend; npm run watch &
 	python manage.py runserver 0.0.0.0:8000
@@ -1518,6 +1521,7 @@ install-dev-default: pip-install-dev
 i-default: install
 migrate-default: django-migrate
 migrations-default: django-migrations
+migrations-show-default: django-migrations-show
 mk-default: project-mk
 git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
