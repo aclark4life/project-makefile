@@ -770,7 +770,7 @@ endef
 
 define HTML_FOOTER
 {% load wagtailcore_tags %}
-  <footer class="pt-5 text-center text-small vh-100">
+  <footer class="pt-5 text-center text-small">
     {% wagtail_site as current_site %}
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
     <ul class="list-inline">
