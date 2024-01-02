@@ -498,10 +498,13 @@ endef
 define BLOCK_MARKETING
 {% load wagtailcore_tags %}
 <div class="{{ self.block_class }}">
-    {% if block.value.images.items|length > 0 %}
+    {% if block.value.images.0 %}
         {% include 'blocks/carousel_block.html' %}
+    {% else %}
+        {{ self.title }}
+        {{ self.content }}
     {% endif %}
-</div> 
+</div>
 endef
 
 define HOME_PAGE_TEMPLATE
