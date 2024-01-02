@@ -499,7 +499,7 @@ define BLOCK_MARKETING
 {% load wagtailcore_tags %}
 <div class="{{ self.block_class }}">
     {% if block.value.images.items|length > 0 %}
-        {% include 'carousel.html' %}
+        {% include 'blocks/carousel_block.html' %}
     {% endif %}
 </div> 
 endef
