@@ -456,10 +456,7 @@ define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
 
-define BLOCK_MARKETING
-{% load wagtailcore_tags %}
-<div class="{{ self.block_class }}">
-    {% if block.value.images.items|length > 0 %}
+define BLOCK_CAROUSEL
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
                 {% for image in block.value.images %}
@@ -496,6 +493,13 @@ define BLOCK_MARKETING
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+endef
+
+define BLOCK_MARKETING
+{% load wagtailcore_tags %}
+<div class="{{ self.block_class }}">
+    {% if block.value.images.items|length > 0 %}
+        {% include 'carousel.html' %}
     {% endif %}
 </div> 
 endef
@@ -532,7 +536,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
-define CUSTOM_USER_VIEW_TEMPLATE
+define SITEUSER_TEMPLATE
 {% extends 'base.html' %}
 
 {% block content %}
@@ -549,7 +553,7 @@ define CUSTOM_USER_VIEW_TEMPLATE
 {% endblock %}
 endef
 
-define CUSTOM_USER_VIEW
+define SITEUSER_VIEW
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import DetailView
 from siteuser.models import User
@@ -562,7 +566,7 @@ class UserProfileView(LoginRequiredMixin, DetailView):
         return self.request.user
 endef
 
-define CUSTOM_USER_URLS
+define SITEUSER_URLS
 from django.urls import path
 from .views import UserProfileView
 
@@ -911,7 +915,7 @@ define THEME_BLUE
 }
 endef
 
-define CUSTOM_USER_MODEL
+define SITEUSER_MODEL
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
@@ -922,7 +926,7 @@ class User(AbstractUser):
     )
 endef
 
-define CUSTOM_USER_ADMIN
+define SITEUSER_ADMIN
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 
@@ -941,22 +945,16 @@ export AUTHENTICATION_BACKENDS
 export BABELRC
 export BACKEND_URLS
 export BASE_TEMPLATE
+export BLOCK_CAROUSEL
+export BLOCK_MARKETING
 export COMPONENT_CLOCK
 export COMPONENT_ERROR
 export COMPONENT_USER_MENU
-export CUSTOM_USER_MODEL
-export CUSTOM_USER_ADMIN
-export CUSTOM_USER_URLS
-export CUSTOM_USER_VIEW
-export CUSTOM_USER_VIEW_TEMPLATE
-export REACT_CONTEXT_INDEX
-export REACT_CONTEXT_USER_PROVIDER
 export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_APP_CONFIG
 export FRONTEND_COMPONENTS
 export GIT_IGNORE
-export BLOCK_MARKETING
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export HTML_FOOTER
@@ -966,6 +964,13 @@ export INTERNAL_IPS
 export JENKINS_FILE
 export REACT_PORTAL
 export REST_FRAMEWORK
+export REACT_CONTEXT_INDEX
+export REACT_CONTEXT_USER_PROVIDER
+export SITEUSER_MODEL
+export SITEUSER_ADMIN
+export SITEUSER_URLS
+export SITEUSER_VIEW
+export SITEUSER_TEMPLATE
 export THEME_BLUE
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_JS
@@ -1051,15 +1056,15 @@ npm-start-default:
 
 django-custom-user-default:
 	python manage.py startapp siteuser
-	@echo "$$CUSTOM_USER_MODEL" > siteuser/models.py
-	@echo "$$CUSTOM_USER_ADMIN" > siteuser/admin.py
-	@echo "$$CUSTOM_USER_VIEW" > siteuser/views.py
-	@echo "$$CUSTOM_USER_URLS" > siteuser/urls.py
+	@echo "$$SITEUSER_MODEL" > siteuser/models.py
+	@echo "$$SITEUSER_ADMIN" > siteuser/admin.py
+	@echo "$$SITEUSER_VIEW" > siteuser/views.py
+	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	-mkdir -v siteuser/templates/
-	@echo "$$CUSTOM_USER_VIEW_TEMPLATE" > siteuser/templates/profile.html
-	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
-	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> backend/settings/base.py
-	python manage.py makemigrations siteuser
+	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
+	@echo "INSITE_APPS.append('siteuser')" >> backend/settings/base.py
+	@echo "AUSITE_MODEL = 'siteuser.User'" >> backend/settings/base.py
+	python maSITE makemigrations siteuser
 	-git add siteuser/
 
 django-graph-default:
@@ -1369,6 +1374,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
+	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	-git add home/templates/blocks
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
