@@ -1062,9 +1062,9 @@ django-custom-user-default:
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	-mkdir -v siteuser/templates/
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
-	@echo "INSITE_APPS.append('siteuser')" >> backend/settings/base.py
-	@echo "AUSITE_MODEL = 'siteuser.User'" >> backend/settings/base.py
-	python maSITE makemigrations siteuser
+	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
+	@echo "AUTH = 'siteuser.User'" >> backend/settings/base.py
+	python manage.py makemigrations siteuser
 	-git add siteuser/
 
 django-graph-default:
