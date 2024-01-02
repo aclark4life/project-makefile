@@ -794,7 +794,7 @@ define HTML_OFFCANVAS
     {% wagtail_site as current_site %}
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       <li class="nav-item">
-        <a id="home-nav" class="nav-link active" aria-current="page" href="/">Home</a>
+        <a class="nav-link active" aria-current="page" href="/">Home</a>
       </li>
       {% for child in current_site.root_page.get_children %}
       <li class="nav-item">
@@ -829,7 +829,7 @@ define HTML_HEADER
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                    <a id="home-nav" class="nav-link {% if request.path == '/' %}active{% endif %}"
                        aria-current="page"
                        href="/">Home</a>
                 </li>
