@@ -469,11 +469,10 @@ define BLOCK_CAROUSEL
             </div>
             <div class="carousel-inner">
                 {% for image in block.value.images %}
-                    <div class="carousel-item active">
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
                         <div class="carousel-caption d-none d-md-block">
-                            <h5>First slide label</h5>
-                            <p>Some representative placeholder content for the first slide.</p>
+                            <h5>{{ image.title }}</h5>
                         </div>
                     </div>
                 {% endfor %}
