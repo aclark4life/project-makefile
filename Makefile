@@ -829,7 +829,7 @@ define HTML_HEADER
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                    <a id="home-nav" class="nav-link {% if request.path == '/' %}active{% endif %}"
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
                        aria-current="page"
                        href="/">Home</a>
                 </li>
