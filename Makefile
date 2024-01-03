@@ -843,11 +843,12 @@ define HTML_HEADER
                 <div data-component="UserMenu"
                      data-is-authenticated="{{ request.user.is_authenticated }}"
                      data-is-superuser="{{ request.user.is_superuser }}"></div>
+                {% if page.id and request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i><span class="visually-hidden">Link text</span></a>
+                    </li>
+                {% endif %}
             </ul>
-            {% if page.id and request.user.is_superuser %}
-                <a class="btn btn-outline-light ms-3"
-                   href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i> Edit {{ page }}</a>
-            {% endif %}
         </div>
     </div>
 </nav>
