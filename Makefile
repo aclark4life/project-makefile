@@ -785,29 +785,80 @@ endef
 
 define HTML_OFFCANVAS
 {% load wagtailcore_tags %}
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ current_site.site_name|default:"Project Makefile" }}</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    {% wagtail_site as current_site %}
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="/">Home</a>
+      </li>
+      {% for child in current_site.root_page.get_children %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ child.url }}">{{ child }}</a>
+      </li>
+      {% endfor %}
+      <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
+    </ul>
+    {% if page.id and request.user.is_superuser %}
+        <a class="btn btn-outline-light mt-3"
+           href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i> Edit {{ page }}</a>
+    {% endif %}
+  </div>
+</div>
+endef
+
+define HTML_HEADER
+{% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
+  <div class="offcanvas-header">
 <nav class="navbar navbar-expand-md app-header">
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ current_site.site_name|default:"Project Makefile" }}</h5>
     <div class="container-fluid navbar-wrapper">
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+  </div>
         <button class="navbar-toggler"
+  <div class="offcanvas-body">
                 type="button"
+    {% wagtail_site as current_site %}
                 data-bs-toggle="offcanvas"
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 data-bs-target="#offcanvasExample"
+      <li class="nav-item">
                 aria-controls="offcanvasExample"
+        <a class="nav-link active" aria-current="page" href="/">Home</a>
                 aria-expanded="false"
+      </li>
                 aria-label="Toggle navigation">
+      {% for child in current_site.root_page.get_children %}
             <span class="navbar-toggler-icon"></span>
+      <li class="nav-item">
         </button>
+        <a class="nav-link" href="{{ child.url }}">{{ child }}</a>
         <div class="collapse navbar-collapse">
+      </li>
             <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+      {% endfor %}
                 <li class="nav-item">
+      <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
                     <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+    </ul>
                        aria-current="page"
+    {% if page.id and request.user.is_superuser %}
                        href="/">Home</a>
+        <a class="btn btn-outline-light mt-3"
                 </li>
+           href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i> Edit {{ page }}</a>
                 {% for child in current_site.root_page.get_children %}
+    {% endif %}
                     <li class="nav-item">
+  </div>
                         <a class="nav-link {% if request.path == child.url %}active{% endif %}"
+</div>
                            aria-current="page"
                            href="{{ child.url }}">{{ child }}</a>
                     </li>
@@ -821,48 +872,6 @@ define HTML_OFFCANVAS
                     </li>
                 {% endif %}
             </ul>
-        </div>
-    </div>
-</nav>
-endef
-
-define HTML_HEADER
-{% load wagtailcore_tags %}
-{% wagtail_site as current_site %}
-<nav class="navbar navbar-expand-md app-header">
-    <div class="container-fluid navbar-wrapper">
-        <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasExample"
-                aria-controls="offcanvasExample"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
-                       aria-current="page"
-                       href="/">Home</a>
-                </li>
-                {% for child in current_site.root_page.get_children %}
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == child.url %}active{% endif %}"
-                           aria-current="page"
-                           href="{{ child.url }}">{{ child }}</a>
-                    </li>
-                {% endfor %}
-                <div data-component="UserMenu"
-                     data-is-authenticated="{{ request.user.is_authenticated }}"
-                     data-is-superuser="{{ request.user.is_superuser }}"></div>
-            </ul>
-            {% if page.id and request.user.is_superuser %}
-                <a class="btn btn-outline-light ms-3"
-                   href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i> Edit {{ page }}</a>
-            {% endif %}
         </div>
     </div>
 </nav>
