@@ -785,30 +785,45 @@ endef
 
 define HTML_OFFCANVAS
 {% load wagtailcore_tags %}
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ current_site.site_name|default:"Project Makefile" }}</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    {% wagtail_site as current_site %}
-    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/">Home</a>
-      </li>
-      {% for child in current_site.root_page.get_children %}
-      <li class="nav-item">
-        <a class="nav-link" href="{{ child.url }}">{{ child }}</a>
-      </li>
-      {% endfor %}
-      <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
-    </ul>
-    {% if page.id and request.user.is_superuser %}
-        <a class="btn btn-outline-light mt-3"
-           href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i> Edit {{ page }}</a>
-    {% endif %}
-  </div>
-</div>
+{% wagtail_site as current_site %}
+<nav class="navbar navbar-expand-md app-header">
+    <div class="container-fluid navbar-wrapper">
+        <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample"
+                aria-controls="offcanvasExample"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                       aria-current="page"
+                       href="/">Home</a>
+                </li>
+                {% for child in current_site.root_page.get_children %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == child.url %}active{% endif %}"
+                           aria-current="page"
+                           href="{{ child.url }}">{{ child }}</a>
+                    </li>
+                {% endfor %}
+                <div data-component="UserMenu"
+                     data-is-authenticated="{{ request.user.is_authenticated }}"
+                     data-is-superuser="{{ request.user.is_superuser }}"></div>
+                {% if page.id and request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'wagtailadmin_pages:edit' page.id %}"><i class="fa-solid fa-edit"></i><span class="visually-hidden">Link text</span></a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
 endef
 
 define HTML_HEADER
