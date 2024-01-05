@@ -1330,7 +1330,7 @@ sphinx-build-pdf-default:
 	sphinx-build -b rinoh . _build/rinoh
 
 sphinx-serve-default:
-	cd _build/html;python -m http.server
+	cd _build/html;python3 -m http.server
 
 wagtail-clean-default:
 	-rm -vf .dockerignore
@@ -1481,7 +1481,7 @@ make-default:
 
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python -m http.server
+	python3 -m http.server
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
