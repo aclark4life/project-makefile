@@ -666,6 +666,7 @@ node_modules/
 share/
 media/
 .elasticbeanstalk/
+dist/
 endef
 
 define FRONTEND_APP_CONFIG
