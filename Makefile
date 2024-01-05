@@ -1045,7 +1045,7 @@ npm-clean-default:
 	rm -vf package-lock.json
 	rm -rvf dist/
 
-npm-start-default:
+npm-serve-default:
 	npm run start
 
 django-custom-user-default:
