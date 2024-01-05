@@ -1195,6 +1195,11 @@ django-npm-build-default:
 django-open-default:
 	open http://0.0.0.0:8000
 
+favicon-default:
+	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
+	convert favicon.png favicon.ico
+	-git add favicon.ico
+
 git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	-git add .gitignore
