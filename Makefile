@@ -1036,6 +1036,9 @@ npm-init-default:
 	npm init -y
 	-git add package.json
 
+npm-build-default:
+	npm run build
+
 npm-install-default:
 	npm install
 	-git add package-lock.json
