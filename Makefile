@@ -1202,6 +1202,9 @@ favicon-default:
 	-git add favicon.ico
 	@rm -v favicon.png
 
+gh-default:
+	gh browse
+
 git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	-git add .gitignore
