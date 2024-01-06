@@ -664,7 +664,7 @@ dist/
 endef
 
 define FRONTEND_APP_CONFIG
-// Overwrite me with config
+import '../utils/themeToggler.js';
 endef
 
 define WEBPACK_CONFIG_JS
