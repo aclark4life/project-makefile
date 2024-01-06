@@ -545,12 +545,6 @@ define SITEUSER_TEMPLATE
 <div class="container">
   <h2>User Profile</h2>
   <p>Username: {{ user.username }}</p>
-  <div class="container mt-3">
-      <div class="form-check form-switch">
-          <input class="form-check-input" type="checkbox" id="themeToggle">
-          <label class="form-check-label toggle-label" for="themeToggle">Toggle Dark Mode</label>
-      </div>
-  </div>
 </div>
 {% endblock %}
 endef
