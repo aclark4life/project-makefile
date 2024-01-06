@@ -932,6 +932,30 @@ from .models import User
 admin.site.register(User, UserAdmin)
 endef
 
+define THEME_TOGGLER
+document.addEventListener('DOMContentLoaded', function () {
+    const themeToggle = document.getElementById('theme-toggle');
+    const rootElement = document.documentElement;
+
+    // Get the theme preference from local storage
+    const savedTheme = localStorage.getItem('theme');
+
+    // Set the initial theme based on the saved preference or default to light
+    if (savedTheme) {
+        rootElement.setAttribute('data-bs-theme', savedTheme);
+    }
+
+    // Toggle the theme and save the preference on label click
+    themeToggle.addEventListener('click', function () {
+        const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+        rootElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+});
+endef
+
 # ------------------------------------------------------------------------------  
 # Export variables
 # ------------------------------------------------------------------------------  
@@ -968,6 +992,7 @@ export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_TEMPLATE
 export THEME_BLUE
+export THEME_TOGGLER
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_JS
 export WEBPACK_INDEX_HTML
@@ -1399,6 +1424,9 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
+	@-mkdir -v frontend/src/utils/
+	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
+	-git add frontend/src/utils/
 	-git add home
 	-git add frontend
 	-git commit -a -m "Add frontend"
