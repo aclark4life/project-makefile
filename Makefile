@@ -1242,7 +1242,16 @@ django-npm-build-default:
 	cd frontend; npm run build
 
 django-open-default:
+open:
+ifeq ($(UNAME), Linux)
+	@echo "Opening on Linux."
+	xdg-open http://0.0.0.0:8000
+else ifeq ($(UNAME), Darwin)
+	@echo "Opening on macOS (Darwin)."
 	open http://0.0.0.0:8000
+else
+	@echo "Unable to open on: $(UNAME)"
+endif
 
 favicon-default:
 	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
