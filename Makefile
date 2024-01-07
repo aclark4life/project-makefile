@@ -231,7 +231,7 @@ define FRONTEND_STYLES
   background-size: cover;
 }
 
-#theme-toggle:hover {
+#theme-toggler:hover {
     cursor: pointer; /* Change cursor to pointer on hover */
     color: #007bff; /* Change color on hover */
 }
@@ -854,7 +854,7 @@ define HTML_HEADER
                 <div data-component="UserMenu"
                      data-is-authenticated="{{ request.user.is_authenticated }}"
                      data-is-superuser="{{ request.user.is_superuser }}"></div>
-                <li class="nav-item" id="theme-toggle">
+                <li class="nav-item" id="theme-toggler">
                     <span class="nav-link exclude-from-hover"
                           data-bs-toggle="tooltip"
                           help="Toggle dark mode">
@@ -955,7 +955,7 @@ endef
 
 define THEME_TOGGLER
 document.addEventListener('DOMContentLoaded', function () {
-    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggle = document.getElementById('theme-toggler');
     const rootElement = document.documentElement;
 
     // Get the theme preference from local storage
