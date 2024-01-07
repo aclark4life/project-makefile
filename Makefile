@@ -857,7 +857,7 @@ define HTML_HEADER
                 <li class="nav-item" id="theme-toggler">
                     <span class="nav-link exclude-from-hover"
                           data-bs-toggle="tooltip"
-                          help="Toggle dark mode">
+                          data-bs-title="Toggle dark mode">
                         <i class="fas fa-circle-half-stroke"></i>
                     </span>
                 </li>
