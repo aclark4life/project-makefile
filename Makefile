@@ -217,6 +217,9 @@ Clock.propTypes = {
 export default Clock;
 endef
 
+define FRONTEND_STYLES
+endef
+
 define FRONTEND_APP
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -975,6 +978,7 @@ export ESLINTRC
 export FRONTEND_APP
 export FRONTEND_APP_CONFIG
 export FRONTEND_COMPONENTS
+export FRONTEND_STYLES
 export GIT_IGNORE
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
@@ -1421,6 +1425,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_APP_CONFIG" > frontend/src/application/config.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
+	# @echo "$$FRONTEND_STYLES" > frontend/src/styles/index.scss
 	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
