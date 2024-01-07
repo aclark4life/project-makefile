@@ -956,6 +956,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 endef
 
+define SITEUSER_SUPERUSER
+from siteuser.models import User
+User.objects.create_superuser('admin', '', 'admin')
+endef
+
 # ------------------------------------------------------------------------------  
 # Export variables
 # ------------------------------------------------------------------------------  
@@ -991,6 +996,7 @@ export SITEUSER_ADMIN
 export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_TEMPLATE
+export SITEUSER_SUPERUSER
 export THEME_BLUE
 export THEME_TOGGLER
 export WEBPACK_CONFIG_JS
@@ -1078,13 +1084,15 @@ npm-clean-default:
 npm-serve-default:
 	npm run start
 
-django-custom-user-default:
+django-siteuser-default:
 	python manage.py startapp siteuser
 	@echo "$$SITEUSER_MODEL" > siteuser/models.py
 	@echo "$$SITEUSER_ADMIN" > siteuser/admin.py
 	@echo "$$SITEUSER_VIEW" > siteuser/views.py
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	-mkdir -v siteuser/templates/
+	-mkdir -vp siteuser/management/commands
+	@echo "$$SITEUSER_SUPERUSER" > siteuser/management/commands/su.py
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
 	@echo "AUTH = 'siteuser.User'" >> backend/settings/base.py
@@ -1157,8 +1165,7 @@ django-static-default:
 	python manage.py collectstatic --noinput
 
 django-su-default:
-	python manage.py shell -c "from siteuser.models import User; \
-        User.objects.create_superuser('admin', '', 'admin')"
+	python manage.py su
 
 django-test-default:
 	python manage.py test
@@ -1391,7 +1398,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add Dockerfile
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
-	@$(MAKE) django-custom-user
+	@$(MAKE) django-siteuser
 	@$(MAKE) django-migrations
 	-git add home
 	-git add search
