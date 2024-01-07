@@ -1442,7 +1442,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_APP_CONFIG" > frontend/src/application/config.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
-	# @echo "$$FRONTEND_STYLES" > frontend/src/styles/index.scss
+	@echo "$$FRONTEND_STYLES" > frontend/src/styles/index.scss
 	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
