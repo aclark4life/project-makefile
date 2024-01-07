@@ -41,6 +41,7 @@ RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 
 PROJECT_NAME := project-makefile
+PROJECT_EMAIL := aclark@aclark.net
 GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 
 PROJECT_MAKEFILE := project.mk
@@ -956,19 +957,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 endef
 
-define SITEUSER_SUPERUSER
-from django.core.management.base import BaseCommand
-from siteuser.models import User
-
-class Command(BaseCommand):
-    help = "Create siteuser superuser."
-
-    def handle(self, *args, **options):
-        user = User.objects.create_user("admin", "", "admin")
-        user.save()
-        self.stdout.write(self.style.SUCCESS(f"Successfully created siteuser superuser."))
-endef
-
 # ------------------------------------------------------------------------------  
 # Export variables
 # ------------------------------------------------------------------------------  
@@ -1004,7 +992,6 @@ export SITEUSER_ADMIN
 export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_TEMPLATE
-export SITEUSER_SUPERUSER
 export THEME_BLUE
 export THEME_TOGGLER
 export WEBPACK_CONFIG_JS
@@ -1100,7 +1087,6 @@ django-siteuser-default:
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	-mkdir -v siteuser/templates/
 	-mkdir -vp siteuser/management/commands
-	@echo "$$SITEUSER_SUPERUSER" > siteuser/management/commands/su.py
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
 	@echo "AUTH = 'siteuser.User'" >> backend/settings/base.py
@@ -1173,7 +1159,7 @@ django-static-default:
 	python manage.py collectstatic --noinput
 
 django-su-default:
-	python manage.py su
+	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
 
 django-test-default:
 	python manage.py test
