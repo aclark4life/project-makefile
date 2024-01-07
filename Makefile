@@ -957,8 +957,15 @@ document.addEventListener('DOMContentLoaded', function () {
 endef
 
 define SITEUSER_SUPERUSER
+from django.core.management.base import BaseCommand
 from siteuser.models import User
-User.objects.create_superuser('admin', '', 'admin')
+
+class Command(BaseCommand):
+    help = "Create siteuser superuser."
+
+    def handle(self, *args, **options):
+        User.objects.create_user("admin", "", "admin")
+        self.stdout.write(self.style.SUCCESS(f"Successfully created siteuser superuser."))
 endef
 
 # ------------------------------------------------------------------------------  
