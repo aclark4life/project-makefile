@@ -965,7 +965,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         user = User.objects.create_user("admin", "", "admin")
-		user.save()
+        user.save()
         self.stdout.write(self.style.SUCCESS(f"Successfully created siteuser superuser."))
 endef
 
