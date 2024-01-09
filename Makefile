@@ -333,7 +333,7 @@ define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="auto">
+<html lang="en" data-bs-theme="auto" class="h-100">
     <head>
         <meta charset="utf-8" />
         <title>
@@ -386,33 +386,30 @@ define BASE_TEMPLATE
 		{% include 'favicon.html' %}
 
     </head>
-
-    <body class="{% block body_class %}{% endblock %}">
-        {% wagtailuserbar %}
-
-        <div id="app"></div>
-
-        {% include 'header.html' %}
-        {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                    <div class="alert {{ message.tags }} alert-dismissible fade show"
-                         role="alert">
-                        {{ message }}
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        {% block content %}{% endblock %}
+    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            {% wagtailuserbar %}
+            <div id="app"></div>
+            {% include 'header.html' %}
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% block content %}{% endblock %}
+		</main>
         {% include 'footer.html' %}
         {% include 'offcanvas.html' %}
-
         {% javascript_pack 'app' %}
-
         {% block extra_js %}
         {# Override this in templates to add extra javascript #}
         {% endblock %}
@@ -790,7 +787,7 @@ endef
 
 define HTML_FOOTER
 {% load wagtailcore_tags %}
-  <footer class="pt-5 text-center text-small">
+  <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
     {% wagtail_site as current_site %}
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
     <ul class="list-inline">
