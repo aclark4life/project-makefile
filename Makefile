@@ -817,6 +817,13 @@ define HTML_OFFCANVAS
       </li>
       {% endfor %}
       <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
+      <li class="nav-item" id="theme-toggler">
+          <span class="nav-link exclude-from-hover"
+                data-bs-toggle="tooltip"
+                title="Toggle dark mode">
+              <i class="fas fa-circle-half-stroke"></i>
+          </span>
+      </li>
     </ul>
   </div>
 </div>
