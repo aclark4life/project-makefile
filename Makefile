@@ -440,7 +440,7 @@ class MarketingBlock(blocks.StructBlock):
         required=False,
         help_text='Enter a CSS class for styling the marketing block',
         classname='full title',
-        default='vh-100 app-ribbon',
+        default='vh-100 bg-secondary',
     )
     image_class = blocks.CharBlock(
         required=False,
@@ -818,7 +818,7 @@ define HTML_OFFCANVAS
       {% endfor %}
       <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
       <li class="nav-item" id="theme-toggler">
-          <span class="nav-link exclude-from-hover"
+          <span class="nav-link"
                 data-bs-toggle="tooltip"
                 title="Toggle dark mode">
               <i class="fas fa-circle-half-stroke"></i>
@@ -862,7 +862,7 @@ define HTML_HEADER
                      data-is-authenticated="{{ request.user.is_authenticated }}"
                      data-is-superuser="{{ request.user.is_superuser }}"></div>
                 <li class="nav-item" id="theme-toggler">
-                    <span class="nav-link exclude-from-hover"
+                    <span class="nav-link"
                           data-bs-toggle="tooltip"
                           title="Toggle dark mode">
                         <i class="fas fa-circle-half-stroke"></i>
