@@ -780,7 +780,6 @@ export default function getPageComponents (components) {
 endef
 
 define FRONTEND_COMPONENTS
-export { default as Clock } from './Clock';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
 endef
@@ -796,7 +795,6 @@ define HTML_FOOTER
       <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
       {% endfor %}
     </ul>
-    <div data-component="Clock"></div>
   </footer>
 endef
 
