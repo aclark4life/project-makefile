@@ -383,8 +383,8 @@ define BASE_TEMPLATE
               color: #721c24;
           }
         </style>
+		{% include 'favicon.html' %}
 
-        <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
@@ -418,6 +418,11 @@ define BASE_TEMPLATE
         {% endblock %}
     </body>
 </html>
+endef
+
+define FAVICON_TEMPLATE
+{% load static %}
+<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
 endef
 
 define HOME_PAGE_MODEL
@@ -800,7 +805,8 @@ endef
 
 define HTML_OFFCANVAS
 {% load wagtailcore_tags %}
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+{% wagtail_site as current_site %}
+<div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ current_site.site_name|default:"Project Makefile" }}</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -817,13 +823,6 @@ define HTML_OFFCANVAS
       </li>
       {% endfor %}
       <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
-      <li class="nav-item" id="theme-toggler">
-          <span class="nav-link"
-                data-bs-toggle="tooltip"
-                title="Toggle dark mode">
-              <i class="fas fa-circle-half-stroke"></i>
-          </span>
-      </li>
     </ul>
   </div>
 </div>
@@ -999,6 +998,7 @@ export COMPONENT_CLOCK
 export COMPONENT_ERROR
 export COMPONENT_USER_MENU
 export ESLINTRC
+export FAVICON_TEMPLATE
 export FRONTEND_APP
 export FRONTEND_APP_CONFIG
 export FRONTEND_COMPONENTS
@@ -1436,6 +1436,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
 	@echo "$$HTML_HEADER" > backend/templates/header.html
 	@echo "$$HTML_FOOTER" > backend/templates/footer.html
 	@echo "$$HTML_OFFCANVAS" > backend/templates/offcanvas.html
