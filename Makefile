@@ -132,7 +132,7 @@ function handleLogout() {
     window.location.href = '/accounts/logout';
 }
 
-const UserMenu = ({ isAuthenticated, isSuperuser }) => {
+const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
   return (
     <div> 
       {isAuthenticated ? (
@@ -154,7 +154,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser }) => {
         </li>
       ) : (
         <li className="nav-item">
-          <a className="nav-link" href="/accounts/login">User Menu</a>
+          <a className="nav-link text-{textColor}" href="/accounts/login">User Menu</a>
         </li>
       )}
     </div>
@@ -817,7 +817,7 @@ define HTML_OFFCANVAS
         <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
       </li>
       {% endfor %}
-      <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
+      <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
     </ul>
   </div>
 </div>
