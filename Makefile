@@ -164,6 +164,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
 UserMenu.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   isSuperuser: PropTypes.bool.isRequired,
+  textColor: PropTypes.string,
 };
 
 export default UserMenu;
