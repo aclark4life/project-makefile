@@ -810,11 +810,11 @@ define HTML_OFFCANVAS
     {% wagtail_site as current_site %}
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="/">Home</a>
+        <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
       </li>
       {% for child in current_site.root_page.get_children %}
-      <li class="nav-item text-light">
-        <a class="nav-link" href="{{ child.url }}">{{ child }}</a>
+      <li class="nav-item">
+        <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
       </li>
       {% endfor %}
       <div data-component="UserMenu" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
