@@ -828,7 +828,7 @@ define HTML_HEADER
 {% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
 <nav class="navbar navbar-expand-md app-header">
-    <div class="container-fluid navbar-wrapper">
+    <div class="container-fluid">
         <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
         <button class="navbar-toggler"
                 type="button"
