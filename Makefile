@@ -154,7 +154,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
         </li>
       ) : (
         <li className="nav-item">
-          <a className="nav-link text-{textColor}" href="/accounts/login">User Menu</a>
+          <a className={`nav-link text-${textColor}`} href="/accounts/login">User Menu</a>
         </li>
       )}
     </div>
