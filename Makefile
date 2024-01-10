@@ -813,7 +813,7 @@ define HTML_OFFCANVAS
         <a class="nav-link active" aria-current="page" href="/">Home</a>
       </li>
       {% for child in current_site.root_page.get_children %}
-      <li class="nav-item">
+      <li class="nav-item text-light">
         <a class="nav-link" href="{{ child.url }}">{{ child }}</a>
       </li>
       {% endfor %}
