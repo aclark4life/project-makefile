@@ -827,46 +827,47 @@ endef
 define HTML_HEADER
 {% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
-<nav class="navbar navbar-expand-md app-header">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasExample"
-                aria-controls="offcanvasExample"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a id="home-nav" class="nav-link {% if request.path == '/' %}active{% endif %}"
-                       aria-current="page"
-                       href="/">Home</a>
-                </li>
-                {% for child in current_site.root_page.get_children %}
+<div class="app-header">
+    <div class="container py-4 app-navbar">
+        <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
+            <a class="navbar-brand me-auto" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasExample"
+                    aria-controls="offcanvasExample"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-none d-md-block text-uppercase">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == child.url %}active{% endif %}"
+                        <a id="home-nav"
+                           class="nav-link {% if request.path == '/' %}active{% endif %}"
                            aria-current="page"
-                           href="{{ child.url }}">{{ child }}</a>
+                           href="/">Home</a>
                     </li>
-                {% endfor %}
-                <div data-component="UserMenu"
-                     data-is-authenticated="{{ request.user.is_authenticated }}"
-                     data-is-superuser="{{ request.user.is_superuser }}"></div>
-                <li class="nav-item" id="theme-toggler">
-                    <span class="nav-link"
-                          data-bs-toggle="tooltip"
-                          title="Toggle dark mode">
-                        <i class="fas fa-circle-half-stroke"></i>
-                    </span>
-                </li>
-            </ul>
-        </div>
+                    {% for child in current_site.root_page.get_children %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == child.url %}active{% endif %}"
+                               aria-current="page"
+                               href="{{ child.url }}">{{ child }}</a>
+                        </li>
+                    {% endfor %}
+                    <div data-component="UserMenu"
+                         data-is-authenticated="{{ request.user.is_authenticated }}"
+                         data-is-superuser="{{ request.user.is_superuser }}"></div>
+                    <li class="nav-item" id="theme-toggler">
+                        <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
+                            <i class="fas fa-circle-half-stroke"></i>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </div>
-</nav>
+</div>
 endef 
 
 define COMPONENT_ERROR
