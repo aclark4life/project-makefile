@@ -1515,6 +1515,7 @@ wagtail-install-default:
         phonenumbers \
         psycopg2-binary \
         python-webpack-boilerplate \
+        texttable \
         wagtail \
         wagtailmenus \
         wagtail_modeladmin \
