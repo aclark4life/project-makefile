@@ -1031,39 +1031,39 @@ from .models import User
 admin.site.register(User, UserAdmin)
 endef
 
-define THEME_TOGGLER_ANONYMOUS
-document.addEventListener('DOMContentLoaded', function () {
-    const themeToggleAnon = document.getElementById('theme-toggler-anonymous');
-    const rootElementAnon = document.documentElement;
-
-    // Get the theme preference from local storage
-    const savedThemeAnon = localStorage.getItem('theme-anon');
-
-    // Set the initial theme based on the saved preference or default to light
-    if (savedThemeAnon) {
-        rootElementAnon.setAttribute('data-bs-theme', savedThemeAnon);
-    }
-
-    // Toggle the theme and save the preference on label click
-    themeToggleAnon.addEventListener('click', function () {
-        const currentThemeAnon = rootElementAnon.getAttribute('data-bs-theme') || 'light';
-        const newThemeAnon = currentThemeAnon === 'light' ? 'dark' : 'light';
-
-        rootElementAnon.setAttribute('data-bs-theme', newThemeAnon);
-        localStorage.setItem('theme-anon', newThemeAnon);
-    });
-});
-endef
-
 define THEME_TOGGLER
 document.addEventListener('DOMContentLoaded', function () {
-    const themeToggle = document.getElementById('theme-toggler');
-    const rootElement = document.documentElement;
+    // Theme toggle for anonymous users using local storage
+    const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
+    const anonRootElement = document.documentElement;
+
+    // Get the theme preference from local storage
+    const anonSavedTheme = localStorage.getItem('anon-theme');
+
+    // Set the initial theme based on the saved preference or default to light for anonymous users
+    if (anonSavedTheme) {
+        anonRootElement.setAttribute('data-bs-theme', anonSavedTheme);
+    }
+
+    // Toggle the theme and save the preference on label click for anonymous users
+    if (anonThemeToggle) {
+        anonThemeToggle.addEventListener('click', function () {
+            const currentTheme = anonRootElement.getAttribute('data-bs-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            anonRootElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('anon-theme', newTheme);
+        });
+    }
+
+    // Theme toggle for authenticated users using Django
+    const authThemeToggle = document.getElementById('theme-toggler');
+    const authRootElement = document.documentElement;
 
     // Get the CSRF token from the Django template
     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Get the theme preference from the server instead of local storage
+    // Get the theme preference from the server instead of local storage for authenticated users
     fetch('/user/get_theme_preference', {
         method: 'GET',
         headers: {
@@ -1072,40 +1072,40 @@ document.addEventListener('DOMContentLoaded', function () {
     })
     .then(response => response.json())
     .then(data => {
-        // Set the initial theme based on the server response or default to light
+        // Set the initial theme based on the server response or default to light for authenticated users
         const savedTheme = data.theme || 'light';
-        rootElement.setAttribute('data-bs-theme', savedTheme);
+        authRootElement.setAttribute('data-bs-theme', savedTheme);
     })
     .catch(error => {
         console.error('Error fetching theme preference:', error);
     });
 
-    // Check if themeToggle exists before adding the event listener
-    if (themeToggle) {
-        // Toggle the theme and save the preference on label click
-		themeToggle.addEventListener('click', function () {
-			const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
-			const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    // Check if authThemeToggle exists before adding the event listener
+    if (authThemeToggle) {
+        // Toggle the theme and save the preference on label click for authenticated users
+        authThemeToggle.addEventListener('click', function () {
+            const currentTheme = authRootElement.getAttribute('data-bs-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-			// Update the theme on the server
-			fetch('/user/update_theme_preference/', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
-				},
-				body: JSON.stringify({ theme: newTheme }),
-			})
-			.then(response => response.json())
-			.then(data => {
-				// Update the theme on the client side
-				rootElement.setAttribute('data-bs-theme', newTheme);
-			})
-			.catch(error => {
-				console.error('Error updating theme preference:', error);
-			});
-		});
-	}
+            // Update the theme on the server for authenticated users
+            fetch('/user/update_theme_preference/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
+                },
+                body: JSON.stringify({ theme: newTheme }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the theme on the client side for authenticated users
+                authRootElement.setAttribute('data-bs-theme', newTheme);
+            })
+            .catch(error => {
+                console.error('Error updating theme preference:', error);
+            });
+        });
+    }
 });
 endef
 
@@ -1150,7 +1150,6 @@ export SITEUSER_TEMPLATE
 export SITEUSER_TEMPLATE_CONTEXT
 export THEME_BLUE
 export THEME_TOGGLER
-export THEME_TOGGLER_ANONYMOUS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_JS
 export WEBPACK_INDEX_HTML
@@ -1598,7 +1597,6 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@-mkdir -v frontend/src/utils/
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
-	@echo "$$THEME_TOGGLER_ANONYMOUS" > frontend/src/utils/themeTogglerAnon.js
 	-git add frontend/src/utils/
 	-git add home
 	-git add frontend
