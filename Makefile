@@ -236,6 +236,7 @@ define FRONTEND_STYLES
     cursor: pointer; /* Change cursor to pointer on hover */
     color: #007bff; /* Change color on hover */
 }
+
 #theme-toggler-anonymous:hover {
     cursor: pointer; /* Change cursor to pointer on hover */
     color: #007bff; /* Change color on hover */
