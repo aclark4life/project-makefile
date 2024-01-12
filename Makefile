@@ -921,7 +921,7 @@ define HTML_HEADER
                     <div data-component="UserMenu"
                          data-is-authenticated="{{ request.user.is_authenticated }}"
                          data-is-superuser="{{ request.user.is_superuser }}"></div>
-                    <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler{% else %}theme-toggler-anonymouse{% endif %}">
+                    <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler{% else %}theme-toggler-anonymous{% endif %}">
                         <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
                             <i class="fas fa-circle-half-stroke"></i>
                         </span>
