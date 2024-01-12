@@ -747,6 +747,7 @@ endef
 
 define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
+import '../utils/themeTogglerAnon.js';
 endef
 
 define WEBPACK_CONFIG_JS
@@ -1141,6 +1142,7 @@ export SITEUSER_TEMPLATE
 export SITEUSER_TEMPLATE_CONTEXT
 export THEME_BLUE
 export THEME_TOGGLER
+export THEME_TOGGLER_ANONYMOUS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_JS
 export WEBPACK_INDEX_HTML
@@ -1588,6 +1590,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@-mkdir -v frontend/src/utils/
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
+	@echo "$$THEME_TOGGLER_ANONYMOUS" > frontend/src/utils/themeTogglerAnon.js
 	-git add frontend/src/utils/
 	-git add home
 	-git add frontend
