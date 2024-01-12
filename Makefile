@@ -385,7 +385,7 @@ define BASE_TEMPLATE
           }
         </style>
 		{% include 'favicon.html' %}
-
+		{% csrf_token %}
     </head>
     <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
         <main class="flex-shrink-0">
