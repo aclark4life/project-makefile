@@ -1030,21 +1030,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const themeToggle = document.getElementById('theme-toggler');
     const rootElement = document.documentElement;
 
-    // Get the theme preference from local storage
-    const savedTheme = localStorage.getItem('theme');
+    // Get the CSRF token from the Django template
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    // Set the initial theme based on the saved preference or default to light
-    if (savedTheme) {
+    // Get the theme preference from the server instead of local storage
+    fetch('/user/get_theme_preference', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Set the initial theme based on the server response or default to light
+        const savedTheme = data.theme || 'light';
         rootElement.setAttribute('data-bs-theme', savedTheme);
-    }
+    })
+    .catch(error => {
+        console.error('Error fetching theme preference:', error);
+    });
 
     // Toggle the theme and save the preference on label click
     themeToggle.addEventListener('click', function () {
         const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-        rootElement.setAttribute('data-bs-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        // Update the theme on the server
+        fetch('/user/update_theme_preference/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
+            },
+            body: JSON.stringify({ theme: newTheme }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the theme on the client side
+            rootElement.setAttribute('data-bs-theme', newTheme);
+        })
+        .catch(error => {
+            console.error('Error updating theme preference:', error);
+        });
     });
 });
 endef
