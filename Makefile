@@ -1023,12 +1023,18 @@ endef
 
 define THEME_TOGGLER
 document.addEventListener('DOMContentLoaded', function () {
-    // Theme toggle for anonymous users
-    const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
     const anonRootElement = document.documentElement;
 
+    // Theme toggle for anonymous users and authenticated users
+    const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
+    const authThemeToggle = document.getElementById('theme-toggler-authenticated');
+
+    if (authThemeToggle) {
+    	localStorage.removeItem('data-bs-theme');
+    }
+
     // Get the theme preference from local storage
-    const anonSavedTheme = localStorage.getItem('anon-theme');
+    const anonSavedTheme = localStorage.getItem('data-bs-theme');
 
     // Set the initial theme based on the saved preference or default to light for anonymous users
     if (anonSavedTheme) {
@@ -1042,13 +1048,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
             anonRootElement.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('anon-theme', newTheme);
+            localStorage.setItem('data-bs-theme', newTheme);
         });
     }
-
-    // Theme toggle for authenticated users using Django
-    const authThemeToggle = document.getElementById('theme-toggler-authenticated');
-    const authRootElement = document.documentElement;
 
     // Check if authThemeToggle exists before adding the event listener
     if (authThemeToggle) {
