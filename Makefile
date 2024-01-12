@@ -574,6 +574,7 @@ define SITEUSER_TEMPLATE
 <div class="container">
   <h2>User Profile</h2>
   <p>Username: {{ user.username }}</p>
+  <p>Theme: {{ user.user_theme_preference }}</p>
 </div>
 {% endblock %}
 endef
