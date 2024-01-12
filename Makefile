@@ -1604,6 +1604,7 @@ wagtail-install-default:
         dj-database-url \
         dj-stripe \
         dj-rest-auth \
+		enmerkar \
         icalendar \
         mailchimp-marketing \
         mailchimp-transactional \
