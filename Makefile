@@ -626,26 +626,15 @@ class UpdateThemePreferenceView(View):
 
     def http_method_not_allowed(self, request, *args, **kwargs):
         return JsonResponse({"error": "Invalid request method"}, status=405)
-
-
-class GetThemePreferenceView(View):
-    def get(self, request, *args, **kwargs):
-        # Perform the logic to retrieve the theme preference from your database or storage
-        # For demonstration purposes, we'll return a default theme if not found
-        saved_theme = "light"
-
-        response_data = {"theme": saved_theme}
-        return JsonResponse(response_data)
 endef
 
 define SITEUSER_URLS
 from django.urls import path
-from .views import UserProfileView, UpdateThemePreferenceView, GetThemePreferenceView
+from .views import UserProfileView, UpdateThemePreferenceView
 
 urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='user-profile'),
     path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
-    path('get_theme_preference', GetThemePreferenceView.as_view(), name='get_theme_preference'),
 ]
 endef
 
@@ -1056,23 +1045,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (authThemeToggle) {
         // Get the CSRF token from the Django template
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        // Get the theme preference from the server instead of local storage for authenticated users
-        fetch('/user/get_theme_preference', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Set the initial theme based on the server response or default to light for authenticated users
-            const savedTheme = data.theme || 'light';
-            rootElement.setAttribute('data-bs-theme', savedTheme);
-        })
-        .catch(error => {
-            console.error('Error fetching theme preference:', error);
-        });
 
         // Toggle the theme and save the preference on label click for authenticated users
         authThemeToggle.addEventListener('click', function () {
