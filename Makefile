@@ -338,7 +338,7 @@ define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="{{ user_theme_preference }}" class="h-100">
+<html lang="en" data-bs-theme="{% block user_theme_preference %}{% endblock %}" class="h-100">
     <head>
         <meta charset="utf-8" />
         <title>
