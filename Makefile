@@ -142,7 +142,6 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/user/profile">Profile</a></li>
-            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
             {isSuperuser ? (
               <>
                 <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
@@ -150,6 +149,8 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
                 <li><a className="dropdown-item" href="/api" target="_blank">Django REST framework</a></li>
               </>
             ) : null}
+            <li><hr className="dropdown-divider"></hr></li>
+            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
           </ul>
         </li>
       ) : (
