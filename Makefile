@@ -1033,7 +1033,7 @@ endef
 
 define THEME_TOGGLER_ANONYMOUS
 document.addEventListener('DOMContentLoaded', function () {
-    const themeToggle = document.getElementById('theme-toggler-anonymous');
+    const themeToggleAnon = document.getElementById('theme-toggler-anonymous');
     const rootElement = document.documentElement;
 
     // Get the theme preference from local storage
@@ -1045,7 +1045,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Toggle the theme and save the preference on label click
-    themeToggle.addEventListener('click', function () {
+    themeToggleAnon.addEventListener('click', function () {
         const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
