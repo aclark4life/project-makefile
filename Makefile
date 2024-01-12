@@ -1032,7 +1032,7 @@ endef
 
 define THEME_TOGGLER
 document.addEventListener('DOMContentLoaded', function () {
-    // Theme toggle for anonymous users using local storage
+    // Theme toggle for anonymous users
     const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
     const anonRootElement = document.documentElement;
 
@@ -1056,31 +1056,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Theme toggle for authenticated users using Django
-    const authThemeToggle = document.getElementById('theme-toggler');
+    const authThemeToggle = document.getElementById('theme-toggler-authenticated');
     const authRootElement = document.documentElement;
-
-    // Get the CSRF token from the Django template
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-    // Get the theme preference from the server instead of local storage for authenticated users
-    fetch('/user/get_theme_preference', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Set the initial theme based on the server response or default to light for authenticated users
-        const savedTheme = data.theme || 'light';
-        authRootElement.setAttribute('data-bs-theme', savedTheme);
-    })
-    .catch(error => {
-        console.error('Error fetching theme preference:', error);
-    });
 
     // Check if authThemeToggle exists before adding the event listener
     if (authThemeToggle) {
+        // Get the CSRF token from the Django template
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Get the theme preference from the server instead of local storage for authenticated users
+        fetch('/user/get_theme_preference', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Set the initial theme based on the server response or default to light for authenticated users
+            const savedTheme = data.theme || 'light';
+            authRootElement.setAttribute('data-bs-theme', savedTheme);
+        })
+        .catch(error => {
+            console.error('Error fetching theme preference:', error);
+        });
+
         // Toggle the theme and save the preference on label click for authenticated users
         authThemeToggle.addEventListener('click', function () {
             const currentTheme = authRootElement.getAttribute('data-bs-theme') || 'light';
