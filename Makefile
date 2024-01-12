@@ -339,7 +339,7 @@ define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
 <!DOCTYPE html>
-<html lang="en" class="h-100">
+<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
     <head>
         <meta charset="utf-8" />
         <title>
@@ -567,17 +567,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
-define SITEUSER_TEMPLATE_CONTEXT
-from .models import User  # Import your User model
-
-def user_theme_preference(request):
-    # Check if the user is authenticated before accessing the theme preference
-    if request.user.is_authenticated:
-        return {'user_theme_preference': request.user.user_theme_preference}
-    else:
-        return {'user_theme_preference': 'light'}  # Provide a default theme for non-authenticated users
-endef
-
 define SITEUSER_TEMPLATE
 {% extends 'base.html' %}
 
@@ -627,7 +616,7 @@ class UpdateThemePreferenceView(View):
             user.save()
 
             # For demonstration purposes, we'll just return the updated theme in the response
-            # response_data = {"theme": new_theme}
+            response_data = {"theme": new_theme}
 
             return JsonResponse(response_data)
         except json.JSONDecodeError as e:
@@ -1146,7 +1135,6 @@ export SITEUSER_ADMIN
 export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_TEMPLATE
-export SITEUSER_TEMPLATE_CONTEXT
 export THEME_BLUE
 export THEME_TOGGLER
 export WEBPACK_CONFIG_JS
@@ -1243,7 +1231,6 @@ django-siteuser-default:
 	-mkdir -v siteuser/templates/
 	-mkdir -vp siteuser/management/commands
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
-	@echo "$$SITEUSER_TEMPLATE_CONTEXT" > siteuser/context_processors.py
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> backend/settings/base.py
 	python manage.py makemigrations siteuser
@@ -1307,7 +1294,6 @@ django-settings-default:
 	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(SETTINGS)
-	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('siteuser.context_processors.user_theme_preference')">> $(SETTINGS)
 	echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
 
 django-shell-default:
