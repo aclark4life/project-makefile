@@ -1037,20 +1037,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const rootElementAnon = document.documentElement;
 
     // Get the theme preference from local storage
-    const savedTheme = localStorage.getItem('theme');
+    const savedThemeAnon = localStorage.getItem('theme');
 
     // Set the initial theme based on the saved preference or default to light
-    if (savedTheme) {
-        rootElementAnon.setAttribute('data-bs-theme', savedTheme);
+    if (savedThemeAnon) {
+        rootElementAnon.setAttribute('data-bs-theme', savedThemeAnon);
     }
 
     // Toggle the theme and save the preference on label click
     themeToggleAnon.addEventListener('click', function () {
-        const currentTheme = rootElementAnon.getAttribute('data-bs-theme') || 'light';
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        const currentThemeAnon = rootElementAnon.getAttribute('data-bs-theme') || 'light';
+        const newThemeAnon = currentThemeAnon === 'light' ? 'dark' : 'light';
 
-        rootElementAnon.setAttribute('data-bs-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+        rootElementAnon.setAttribute('data-bs-theme', newThemeAnon);
+        localStorage.setItem('theme', newThemeAnon);
     });
 });
 endef
