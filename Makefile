@@ -1023,7 +1023,7 @@ endef
 
 define THEME_TOGGLER
 document.addEventListener('DOMContentLoaded', function () {
-    const anonRootElement = document.documentElement;
+    const rootElement = document.documentElement;
 
     // Theme toggle for anonymous users and authenticated users
     const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
@@ -1038,16 +1038,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Set the initial theme based on the saved preference or default to light for anonymous users
     if (anonSavedTheme) {
-        anonRootElement.setAttribute('data-bs-theme', anonSavedTheme);
+        rootElement.setAttribute('data-bs-theme', anonSavedTheme);
     }
 
     // Toggle the theme and save the preference on label click for anonymous users
     if (anonThemeToggle) {
         anonThemeToggle.addEventListener('click', function () {
-            const currentTheme = anonRootElement.getAttribute('data-bs-theme') || 'light';
+            const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-            anonRootElement.setAttribute('data-bs-theme', newTheme);
+            rootElement.setAttribute('data-bs-theme', newTheme);
             localStorage.setItem('data-bs-theme', newTheme);
         });
     }
@@ -1068,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             // Set the initial theme based on the server response or default to light for authenticated users
             const savedTheme = data.theme || 'light';
-            authRootElement.setAttribute('data-bs-theme', savedTheme);
+            rootElement.setAttribute('data-bs-theme', savedTheme);
         })
         .catch(error => {
             console.error('Error fetching theme preference:', error);
@@ -1076,7 +1076,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Toggle the theme and save the preference on label click for authenticated users
         authThemeToggle.addEventListener('click', function () {
-            const currentTheme = authRootElement.getAttribute('data-bs-theme') || 'light';
+            const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
             // Update the theme on the server for authenticated users
@@ -1091,7 +1091,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 // Update the theme on the client side for authenticated users
-                authRootElement.setAttribute('data-bs-theme', newTheme);
+                rootElement.setAttribute('data-bs-theme', newTheme);
             })
             .catch(error => {
                 console.error('Error updating theme preference:', error);
