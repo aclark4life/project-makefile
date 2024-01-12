@@ -562,6 +562,17 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
+define SITEUSER_TEMPLATE_CONTEXT
+from .models import User  # Import your User model
+
+def user_theme_preference(request):
+    # Check if the user is authenticated before accessing the theme preference
+    if request.user.is_authenticated:
+        return {'user_theme_preference': request.user.user_theme_preference}
+    else:
+        return {'user_theme_preference': 'default_theme'}  # Provide a default theme for non-authenticated users
+endef
+
 define SITEUSER_TEMPLATE
 {% extends 'base.html' %}
 
@@ -574,24 +585,71 @@ define SITEUSER_TEMPLATE
 endef
 
 define SITEUSER_VIEW
+import json
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView
+
 from siteuser.models import User
+
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     model = User
-    template_name = 'profile.html'
+    template_name = "profile.html"
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UpdateThemePreferenceView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            new_theme = data.get("theme")
+
+            # Perform the logic to update the theme preference in your database or storage
+
+            # Assuming you have a logged-in user, get the user instance
+            user = request.user
+
+            # Update the user's theme preference
+            user.user_theme_preference = new_theme
+            user.save()
+
+            # For demonstration purposes, we'll just return the updated theme in the response
+            # response_data = {"theme": new_theme}
+
+            return JsonResponse(response_data)
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": e}, status=400)
+
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+class GetThemePreferenceView(View):
+    def get(self, request, *args, **kwargs):
+        # Perform the logic to retrieve the theme preference from your database or storage
+        # For demonstration purposes, we'll return a default theme if not found
+        saved_theme = "light"
+
+        response_data = {"theme": saved_theme}
+        return JsonResponse(response_data)
 endef
 
 define SITEUSER_URLS
 from django.urls import path
-from .views import UserProfileView
+from .views import UserProfileView, UpdateThemePreferenceView, GetThemePreferenceView
 
 urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='user-profile'),
+    path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
+    path('get_theme_preference', GetThemePreferenceView.as_view(), name='get_theme_preference'),
 ]
 endef
 
@@ -938,12 +996,15 @@ endef
 define SITEUSER_MODEL
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.conf import settings
 
 class User(AbstractUser):
     groups = models.ManyToManyField(Group, related_name='siteuser_set', blank=True)
     user_permissions = models.ManyToManyField(
         Permission, related_name='siteuser_set', blank=True
     )
+    
+    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
 endef
 
 define SITEUSER_ADMIN
@@ -1017,6 +1078,7 @@ export SITEUSER_ADMIN
 export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_TEMPLATE
+export SITEUSER_TEMPLATE_CONTEXT
 export THEME_BLUE
 export THEME_TOGGLER
 export WEBPACK_CONFIG_JS
@@ -1113,6 +1175,7 @@ django-siteuser-default:
 	-mkdir -v siteuser/templates/
 	-mkdir -vp siteuser/management/commands
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
+	@echo "$$SITEUSER_TEMPLATE_CONTEXT" > siteuser/context_processors.py
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
 	@echo "AUTH = 'siteuser.User'" >> backend/settings/base.py
 	python manage.py makemigrations siteuser
