@@ -232,7 +232,7 @@ define FRONTEND_STYLES
   background-size: cover;
 }
 
-#theme-toggler:hover {
+#theme-toggler-authenticated:hover {
     cursor: pointer; /* Change cursor to pointer on hover */
     color: #007bff; /* Change color on hover */
 }
