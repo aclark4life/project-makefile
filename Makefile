@@ -894,7 +894,7 @@ define HTML_HEADER
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="d-none d-md-block text-uppercase">
+            <div class="d-none d-md-block">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a id="home-nav"
