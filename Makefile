@@ -1007,6 +1007,14 @@ class User(AbstractUser):
     user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
 endef
 
+define SETTINGS_THEMES
+THEMES = [
+    ('light', 'Light Theme'),
+    ('dark', 'Dark Theme'),
+    # Add more themes as needed
+]
+endef
+
 define SITEUSER_ADMIN
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
@@ -1073,6 +1081,7 @@ export REACT_PORTAL
 export REST_FRAMEWORK
 export REACT_CONTEXT_INDEX
 export REACT_CONTEXT_USER_PROVIDER
+export SETTINGS_THEMES
 export SITEUSER_MODEL
 export SITEUSER_ADMIN
 export SITEUSER_URLS
@@ -1232,6 +1241,7 @@ django-settings-default:
 	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
 	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
 	echo "$$REST_FRAMEWORK" >> $(SETTINGS)
+	echo "$$SETTINGS_THEMES" >> $(SETTINGS)
 	echo "$$INTERNAL_IPS" >> $(DEV_SETTINGS)
 	echo "LOGIN_REDIRECT_URL = '/'" >> $(SETTINGS)
 	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
