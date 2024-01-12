@@ -916,7 +916,7 @@ define HTML_HEADER
                     <div data-component="UserMenu"
                          data-is-authenticated="{{ request.user.is_authenticated }}"
                          data-is-superuser="{{ request.user.is_superuser }}"></div>
-                    <li class="nav-item" id="theme-toggler">
+                    <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler{% else %}theme-toggler-anonymouse{% endif %}">
                         <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
                             <i class="fas fa-circle-half-stroke"></i>
                         </span>
@@ -1023,6 +1023,30 @@ from .models import User
 
 
 admin.site.register(User, UserAdmin)
+endef
+
+define THEME_TOGGLER_ANONYMOUS
+document.addEventListener('DOMContentLoaded', function () {
+    const themeToggle = document.getElementById('theme-toggler-anonymous');
+    const rootElement = document.documentElement;
+
+    // Get the theme preference from local storage
+    const savedTheme = localStorage.getItem('theme');
+
+    // Set the initial theme based on the saved preference or default to light
+    if (savedTheme) {
+        rootElement.setAttribute('data-bs-theme', savedTheme);
+    }
+
+    // Toggle the theme and save the preference on label click
+    themeToggle.addEventListener('click', function () {
+        const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+        rootElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+});
 endef
 
 define THEME_TOGGLER
