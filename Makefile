@@ -1245,7 +1245,7 @@ django-siteuser-default:
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
 	@echo "$$SITEUSER_TEMPLATE_CONTEXT" > siteuser/context_processors.py
 	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
-	@echo "AUTH = 'siteuser.User'" >> backend/settings/base.py
+	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> backend/settings/base.py
 	python manage.py makemigrations siteuser
 	-git add siteuser/
 
