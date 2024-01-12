@@ -752,7 +752,6 @@ endef
 
 define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
-import '../utils/themeTogglerAnon.js';
 endef
 
 define WEBPACK_CONFIG_JS
