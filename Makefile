@@ -1037,7 +1037,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const rootElementAnon = document.documentElement;
 
     // Get the theme preference from local storage
-    const savedThemeAnon = localStorage.getItem('theme');
+    const savedThemeAnon = localStorage.getItem('theme-anon');
 
     // Set the initial theme based on the saved preference or default to light
     if (savedThemeAnon) {
@@ -1050,7 +1050,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const newThemeAnon = currentThemeAnon === 'light' ? 'dark' : 'light';
 
         rootElementAnon.setAttribute('data-bs-theme', newThemeAnon);
-        localStorage.setItem('theme', newThemeAnon);
+        localStorage.setItem('theme-anon', newThemeAnon);
     });
 });
 endef
