@@ -1080,29 +1080,32 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error fetching theme preference:', error);
     });
 
-    // Toggle the theme and save the preference on label click
-    themeToggle.addEventListener('click', function () {
-        const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    // Check if themeToggle exists before adding the event listener
+    if (themeToggle) {
+        // Toggle the theme and save the preference on label click
+		themeToggle.addEventListener('click', function () {
+			const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
+			const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-        // Update the theme on the server
-        fetch('/user/update_theme_preference/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
-            },
-            body: JSON.stringify({ theme: newTheme }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Update the theme on the client side
-            rootElement.setAttribute('data-bs-theme', newTheme);
-        })
-        .catch(error => {
-            console.error('Error updating theme preference:', error);
-        });
-    });
+			// Update the theme on the server
+			fetch('/user/update_theme_preference/', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
+				},
+				body: JSON.stringify({ theme: newTheme }),
+			})
+			.then(response => response.json())
+			.then(data => {
+				// Update the theme on the client side
+				rootElement.setAttribute('data-bs-theme', newTheme);
+			})
+			.catch(error => {
+				console.error('Error updating theme preference:', error);
+			});
+		});
+	}
 });
 endef
 
