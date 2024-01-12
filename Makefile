@@ -1034,22 +1034,22 @@ endef
 define THEME_TOGGLER_ANONYMOUS
 document.addEventListener('DOMContentLoaded', function () {
     const themeToggleAnon = document.getElementById('theme-toggler-anonymous');
-    const rootElement = document.documentElement;
+    const rootElementAnon = document.documentElement;
 
     // Get the theme preference from local storage
     const savedTheme = localStorage.getItem('theme');
 
     // Set the initial theme based on the saved preference or default to light
     if (savedTheme) {
-        rootElement.setAttribute('data-bs-theme', savedTheme);
+        rootElementAnon.setAttribute('data-bs-theme', savedTheme);
     }
 
     // Toggle the theme and save the preference on label click
     themeToggleAnon.addEventListener('click', function () {
-        const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
+        const currentTheme = rootElementAnon.getAttribute('data-bs-theme') || 'light';
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-        rootElement.setAttribute('data-bs-theme', newTheme);
+        rootElementAnon.setAttribute('data-bs-theme', newTheme);
         localStorage.setItem('theme', newTheme);
     });
 });
