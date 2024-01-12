@@ -570,7 +570,7 @@ def user_theme_preference(request):
     if request.user.is_authenticated:
         return {'user_theme_preference': request.user.user_theme_preference}
     else:
-        return {'user_theme_preference': 'default_theme'}  # Provide a default theme for non-authenticated users
+        return {'user_theme_preference': 'light'}  # Provide a default theme for non-authenticated users
 endef
 
 define SITEUSER_TEMPLATE
