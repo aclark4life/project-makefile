@@ -1030,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const authThemeToggle = document.getElementById('theme-toggler-authenticated');
 
     if (authThemeToggle) {
-    	localStorage.removeItem('data-bs-theme');
+        localStorage.removeItem('data-bs-theme');
     }
 
     // Get the theme preference from local storage
