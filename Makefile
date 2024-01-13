@@ -865,9 +865,7 @@ define HTML_FOOTER
     <ul class="list-inline">
       <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
       {% for child in current_site.root_page.get_children %}
-        {% if child.show_in_menus %}
           <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
-        {% endif %}
       {% endfor %}
     </ul>
   </footer>
@@ -923,11 +921,12 @@ define HTML_HEADER
                            href="/">Home</a>
                     </li>
                     {% for child in current_site.root_page.get_children %}
-                        <li class="nav-item">
-                            <a class="nav-link {% if request.path == child.url %}active{% endif %}"
-                               aria-current="page"
-                               href="{{ child.url }}">{{ child }}</a>
-                        </li>
+                        {% if child.show_in_menus %}
+			                <li class="nav-item">
+                                <a class="nav-link {% if request.path == child.url %}active{% endif %}" aria-current="page"
+                                    href="{{ child.url }}">{{ child }}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                     <div data-component="UserMenu"
                          data-is-authenticated="{{ request.user.is_authenticated }}"
