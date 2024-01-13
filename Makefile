@@ -429,6 +429,34 @@ define FAVICON_TEMPLATE
 <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
 endef
 
+define PRIVACY_PAGE_MODEL
+from wagtail.models import Page
+from wagtail.admin.panels import FieldPanel
+from wagtailmarkdown.fields import MarkdownField
+
+
+class PrivacyPage(Page):
+    """
+    A Wagtail Page model for the Privacy Policy page.
+    """
+
+    template = "privacy_page.html"
+
+    body = MarkdownField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body", classname="full"),
+    ]
+
+    class Meta:
+        verbose_name = "Privacy Page"
+endef
+
+define PRIVACY_PAGE_TEMPLATE
+{% extends 'base.html' %}
+{% block content %}<div class="container">{{ page.body|safe }}</div>{% endblock %}
+endef
+
 define HOME_PAGE_MODEL
 from django.db import models
 from wagtail.models import Page
@@ -1101,10 +1129,13 @@ export HTML_HEADER
 export HTML_OFFCANVAS
 export INTERNAL_IPS
 export JENKINS_FILE
+export PRIVACY_PAGE_MODEL
 export REACT_PORTAL
 export REST_FRAMEWORK
 export REACT_CONTEXT_INDEX
 export REACT_CONTEXT_USER_PROVIDER
+export PRIVACY_PAGE_MODEL
+export PRIVACY_PAGE_TEMPLATE
 export SETTINGS_THEMES
 export SITEUSER_MODEL
 export SITEUSER_ADMIN
@@ -1499,6 +1530,15 @@ sphinx-build-pdf-default:
 sphinx-serve-default:
 	cd _build/html;python3 -m http.server
 
+wagtail-privacy-default:
+	python manage.py startapp privacy
+	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
+	mkdir privacy/templates
+	@echo "$$PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
+	@echo "INSTALLED_APPS.append('privacy')" >> backend/settings/base.py
+	python manage.py makemigrations privacy
+	-git add privacy/
+
 wagtail-clean-default:
 	-rm -vf .dockerignore
 	-rm -vf Dockerfile
@@ -1508,6 +1548,7 @@ wagtail-clean-default:
 	-rm -rvf search/
 	-rm -rvf backend/
 	-rm -rvf siteuser/
+	-rm -rvf privacy/
 	-rm -rvf frontend/
 	-rm -vf README.rst
 
@@ -1523,6 +1564,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
 	@$(MAKE) django-siteuser
+	@$(MAKE) wagtail-privacy
 	@$(MAKE) django-migrations
 	-git add home
 	-git add search
