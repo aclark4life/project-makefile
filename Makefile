@@ -1248,6 +1248,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtailmenus')" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('wagtailmarkdown')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtail_modeladmin')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtailseo')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('wagtail_color_panel')" >> $(SETTINGS)
@@ -1592,6 +1593,7 @@ wagtail-install-default:
         django-imagekit \
         django-import-export \
         django-ipware \
+	 	django-multiselectfield \
         django-phonenumber-field \
         django-recurrence \
         django-recaptcha \
@@ -1611,12 +1613,14 @@ wagtail-install-default:
         phonenumbers \
         psycopg2-binary \
         python-webpack-boilerplate \
+		reportlab \
         texttable \
         wagtail \
         wagtailmenus \
         wagtail_modeladmin \
         wagtail-seo \
-        wagtail-color-panel
+        wagtail-color-panel \
+		xhtml2pdf 
 
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
