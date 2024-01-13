@@ -1647,7 +1647,6 @@ webpack-init-default: npm-init
 	-git add index.html
 
 make-default:
-	-git add base.mk
 	-git add Makefile
 	-git commit -a -m "Add/update project-makefile files"
 	-git push
