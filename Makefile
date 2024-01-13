@@ -453,8 +453,9 @@ class PrivacyPage(Page):
 endef
 
 define PRIVACY_PAGE_TEMPLATE
+{% load wagtailmarkdown %}
 {% extends 'base.html' %}
-{% block content %}<div class="container">{{ page.body|safe }}</div>{% endblock %}
+{% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
 endef
 
 define HOME_PAGE_MODEL
