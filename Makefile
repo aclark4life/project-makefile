@@ -1661,6 +1661,7 @@ wagtail-install-default:
         texttable \
         wagtail \
         wagtailmenus \
+        wagtail-markdown \
         wagtail_modeladmin \
         wagtail-seo \
         wagtail-color-panel \
