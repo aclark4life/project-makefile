@@ -49,6 +49,8 @@ ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
 endif
 
+REVIEW_EDITOR := subl
+
 .DEFAULT_GOAL := git-commit-push
 
 # --------------------------------------------------------------------------------
@@ -1709,7 +1711,7 @@ rand-default:
 
 review-default:
 ifeq ($(UNAME), Darwin)
-	@open -a $(REVIEW_EDITOR) `find backend -name \*.py | grep -v migrations` `find backend -name \*.html` `find $(PROJECT_NAME) -name \*.js`
+	$(REVIEW_EDITOR) `find backend/ -name \*.py` `find backend/ -name \*.html` `find frontend/ -name \*.js` `find frontend/ -name \*.js`
 else
 	@echo "Unsupported"
 endif
