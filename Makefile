@@ -892,6 +892,11 @@ define HTML_OFFCANVAS
         <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
       </li>
       {% endfor %}
+      <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+          <span class="nav-link text-light" data-bs-toggle="tooltip" title="Toggle dark mode">
+              <i class="fas fa-circle-half-stroke"></i>
+          </span>
+      </li>
       <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
     </ul>
   </div>
