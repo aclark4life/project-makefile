@@ -1737,10 +1737,8 @@ c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
-d-default:
-	$(MAKE) eb-deploy
-deploy-default:
-	$(MAKE) eb-deploy
+d-default: deploy
+deploy-default: eb-deploy
 db-init-default: db-pg-init
 django-clean-default: wagtail-clean
 django-init-default: wagtail-init
