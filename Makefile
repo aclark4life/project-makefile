@@ -90,6 +90,39 @@ define CONTACT_PAGE_TEMPLATE
 {% endblock %}
 endef
 
+define CONTACT_PAGE_FORM
+from django import forms
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV3
+
+
+class ContactUsForm(forms.Form):
+    name = forms.CharField(
+        label="Name", widget=forms.TextInput(attrs={"class": "bg-light border"})
+    )
+    email = forms.CharField(
+        label="Email", widget=forms.TextInput(attrs={"class": "bg-light border"})
+    )
+    message = forms.CharField(
+        label="How can we help?",
+        widget=forms.Textarea(attrs={"class": "bg-light border"}),
+    )
+    captcha = ReCaptchaField(label="Protected by reCAPTCHA v3", widget=ReCaptchaV3)
+endef
+
+define CONTACT_PAGE_MODEL
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+
+class ContactPage(AbstractEmailForm, Page):
+    template = "contact_page.html"
+    form = ContactPageForm()
+
+class ContactPageFormField(AbstractFormField):
+    page = models.ForeignKey(
+        ContactPage, related_name="form_fields", on_delete=models.CASCADE
+    )
+endef
+
 define CONTACT_PAGE_REPLY_TEMPLATE
 {% extends 'base.html' %}
 {% block content %}<h1>Thank you!</h1>{% endblock %}
@@ -1278,6 +1311,8 @@ npm-serve-default:
 
 django-contactpage-default:
 	python manage.py startapp contactpage
+	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
+	@echo "$$CONTACT_PAGE_FORM" > contactpage/forms.py
 
 django-siteuser-default:
 	python manage.py startapp siteuser
@@ -1600,6 +1635,7 @@ wagtail-clean-default:
 	-rm -rvf siteuser/
 	-rm -rvf privacy/
 	-rm -rvf frontend/
+	-rm -rvf contactpage/
 	-rm -vf README.rst
 
 wagtail-init-default: db-init wagtail-install
