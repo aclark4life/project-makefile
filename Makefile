@@ -1300,8 +1300,8 @@ wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
 	-mkdir -vp contactpage/templates/contactpage/
-	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/form_page.html
-	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/form_page_landing.html
+	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
+	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
 	python manage.py makemigrations contactpage
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
