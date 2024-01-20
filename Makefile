@@ -112,6 +112,7 @@ endef
 
 define CONTACT_PAGE_MODEL
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.models import Page
 
 class ContactPage(AbstractEmailForm, Page):
     template = "contact_page.html"
