@@ -71,9 +71,6 @@ define CONTACT_PAGE_TEMPLATE
                         <button class="btn btn-light block text-center border my-3" type="submit">Submit</button>
                     </form>
                 </div>
-                <div class="col-md-5">
-                  <i class="fa fa-users fa-5x"></i>
-                </div>
             </div>
         </div>
     </div>
