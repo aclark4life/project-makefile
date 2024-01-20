@@ -72,17 +72,7 @@ define CONTACT_PAGE_TEMPLATE
                     </form>
                 </div>
                 <div class="col-md-5">
-                    <a target="_blank"
-                       href="https://www.flickr.com/photos/lorax4096/3954596894">
-                        <img class="img-fluid img-thumbnail d-none d-md-inline"
-                             src="{% static 'img/bethesda-fountain.jpg' %}"
-                             style="width: 100%">
-                        <span class="visually-hidden">Link text</span>
-                    </a>
-                    <div class="text-center my-3 mt-sm-5">
-                        <h5>ACLARK.NET, LLC</h5>
-                        <h5>Bethesda, MD, USA</h5>
-                    </div>
+                  <i class="fa fa-users fa-5x"></i>
                 </div>
             </div>
         </div>
