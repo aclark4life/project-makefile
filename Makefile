@@ -115,7 +115,7 @@ class ContactPageFormField(AbstractFormField):
     )
 endef
 
-define CONTACT_PAGE_TEMPLATE_REPLY
+define CONTACT_PAGE_LANDING
 {% extends 'base.html' %}
 {% block content %}<h1>Thank you!</h1>{% endblock %}
 endef
@@ -1190,7 +1190,7 @@ export COMPONENT_USER_MENU
 export CONTACT_PAGE_FORM
 export CONTACT_PAGE_MODEL
 export CONTACT_PAGE_TEMPLATE
-export CONTACT_PAGE_TEMPLATE_REPLY
+export CONTACT_PAGE_LANDING
 export ESLINTRC
 export FAVICON_TEMPLATE
 export FRONTEND_APP
@@ -1311,7 +1311,7 @@ wagtail-contactpage-default:
 	@echo "$$CONTACT_PAGE_FORM" > contactpage/forms.py
 	-mkdir -v contactpage/templates/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contact_page.html
-	@echo "$$CONTACT_PAGE_TEMPLATE_REPLY" > contactpage/templates/contact_page_reply.html
+	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contact_page_landing.html
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
 	python manage.py makemigrations contactpage
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
