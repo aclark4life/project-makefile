@@ -99,20 +99,21 @@ class ContactPageForm(forms.Form):
 endef
 
 define CONTACT_PAGE_VIEW
-from django.views.generic.edit import FormView
+from wagtail.contrib.forms.views import FormPageView
 from django.urls import reverse_lazy
 from .forms import ContactForm
 from .models import ContactFormPage
 
-class ContactFormView(FormView):
-    template_name = 'your_template.html'
-    form_class = ContactForm
-    success_url = reverse_lazy('success_page')
+class ContactFormView(FormPageView):
+    # template_name = 'your_template.html'
+    # success_url = reverse_lazy('success_page')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page'] = ContactFormPage.objects.get(id=self.kwargs['page_id'])
-        return context
+    form_class = ContactForm
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['page'] = ContactFormPage.objects.get(id=self.kwargs['page_id'])
+    #     return context
 
     def form_valid(self, form):
         # Save the form data (customize based on your requirements)
