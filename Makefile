@@ -57,6 +57,44 @@ REVIEW_EDITOR := subl
 # More variables
 # --------------------------------------------------------------------------------
 
+define CONTACT_PAGE_TEMPLATE
+{% extends 'base.html' %}
+{% load static crispy_forms_tags %}
+{% block content %}
+    <div class="app-iphone-block" id="contact-us">
+        <div class="container">
+            <div class="row align-items-center my-5">
+                <div class="col-md-6 col-sm-12 me-auto border rounded">
+                    <h5 class="text-uppercase text-center my-5">Contact Us</h5>
+                    <form action="" method="post">
+                        {% csrf_token %}{{ page.form|crispy }}
+                        <button class="btn btn-light block text-center border my-3" type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="col-md-5">
+                    <a target="_blank"
+                       href="https://www.flickr.com/photos/lorax4096/3954596894">
+                        <img class="img-fluid img-thumbnail d-none d-md-inline"
+                             src="{% static 'img/bethesda-fountain.jpg' %}"
+                             style="width: 100%">
+                        <span class="visually-hidden">Link text</span>
+                    </a>
+                    <div class="text-center my-3 mt-sm-5">
+                        <h5>ACLARK.NET, LLC</h5>
+                        <h5>Bethesda, MD, USA</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+endef
+
+define CONTACT_PAGE_REPLY_TEMPLATE
+{% extends 'base.html' %}
+{% block content %}<h1>Thank you!</h1>{% endblock %}
+endef
+
 define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
@@ -1034,7 +1072,6 @@ define SETTINGS_THEMES
 THEMES = [
     ('light', 'Light Theme'),
     ('dark', 'Dark Theme'),
-    # Add more themes as needed
 ]
 endef
 
