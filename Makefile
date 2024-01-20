@@ -1312,11 +1312,11 @@ wagtail-contactpage-default:
 	-mkdir -v contactpage/templates/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contact_page.html
 	@echo "$$CONTACT_PAGE_TEMPLATE_REPLY" > contactpage/templates/contact_page_reply.html
-	-git add contactpage/
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
 	python manage.py makemigrations contactpage
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
 	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
+	-git add contactpage/
 
 django-siteuser-default:
 	python manage.py startapp siteuser
