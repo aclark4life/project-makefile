@@ -71,59 +71,6 @@ define CONTACT_PAGE_TEMPLATE
 {% endblock %}
 endef
 
-define CONTACT_PAGE_FORM
-from django import forms
-from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV3
-
-
-class ContactPageForm(forms.Form):
-    name = forms.CharField(
-        label="Name", widget=forms.TextInput(attrs={"class": "bg-light border"})
-    )
-    email = forms.CharField(
-        label="Email", widget=forms.TextInput(attrs={"class": "bg-light border"})
-    )
-    message = forms.CharField(
-        label="How can we help?",
-        widget=forms.Textarea(attrs={"class": "bg-light border"}),
-    )
-    captcha = ReCaptchaField(label="Protected by reCAPTCHA v3", widget=ReCaptchaV3)
-
-endef
-
-define CONTACT_PAGE_VIEW
-from wagtail.contrib.forms.views import FormPageView
-from django.urls import reverse_lazy
-from .forms import ContactForm
-from .models import ContactFormPage
-
-class ContactFormView(FormPageView):
-    # template_name = 'your_template.html'
-    # success_url = reverse_lazy('success_page')
-
-    form_class = ContactForm
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['page'] = ContactFormPage.objects.get(id=self.kwargs['page_id'])
-    #     return context
-
-    def form_valid(self, form):
-        # Save the form data (customize based on your requirements)
-        name = form.cleaned_data['name']
-        email = form.cleaned_data['email']
-        message = form.cleaned_data['message']
-
-        # Handle the form data as needed (e.g., save to a database)
-        # ...
-
-        # You may want to add a success message or redirect to a thank you page
-        # ...
-
-        return super().form_valid(form)
-endef
-
 define CONTACT_PAGE_MODEL
 from django.db import models
 from modelcluster.fields import ParentalKey
@@ -136,10 +83,10 @@ from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 
 
 class FormField(AbstractFormField):
-    page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
+    page = ParentalKey('ContactPage', on_delete=models.CASCADE, related_name='form_fields')
 
 
-class FormPage(AbstractEmailForm):
+class ContactPage(AbstractEmailForm):
     intro = RichTextField(blank=True)
     thank_you_text = RichTextField(blank=True)
 
@@ -1229,11 +1176,9 @@ export BLOCK_MARKETING
 export COMPONENT_CLOCK
 export COMPONENT_ERROR
 export COMPONENT_USER_MENU
-export CONTACT_PAGE_FORM
 export CONTACT_PAGE_MODEL
 export CONTACT_PAGE_TEMPLATE
 export CONTACT_PAGE_LANDING
-export CONTACT_PAGE_VIEW
 export ESLINTRC
 export FAVICON_TEMPLATE
 export FRONTEND_APP
@@ -1351,11 +1296,9 @@ npm-serve-default:
 wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
-	@echo "$$CONTACT_PAGE_FORM" > contactpage/forms.py
 	-mkdir -vp contactpage/templates/contactpage/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/form_page.html
-	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contact_page_landing.html
-	@echo "$$CONTACT_PAGE_VIEW" > contactpage/views.py
+	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/form_page_landing.html
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
 	python manage.py makemigrations contactpage
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
