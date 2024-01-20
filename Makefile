@@ -1313,11 +1313,11 @@ wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
 	@echo "$$CONTACT_PAGE_FORM" > contactpage/forms.py
-	-mkdir -v siteuser/templates/
+	-mkdir -v contactpage/templates/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contact_page.html
 	@echo "$$CONTACT_PAGE_TEMPLATE_REPLY" > contactpage/templates/contact_page_reply.html
 	python manage.py makemigrations contactpage
-	-git add siteuser/
+	-git add contactpage/
 	@echo "INSTALLED_APPS.append('contactpage')" >> backend/settings/base.py
 
 django-siteuser-default:
