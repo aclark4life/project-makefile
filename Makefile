@@ -1276,6 +1276,9 @@ npm-clean-default:
 npm-serve-default:
 	npm run start
 
+django-contactpage-default:
+	python manage.py startapp contactpage
+
 django-siteuser-default:
 	python manage.py startapp siteuser
 	@echo "$$SITEUSER_MODEL" > siteuser/models.py
