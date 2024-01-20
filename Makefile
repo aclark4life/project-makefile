@@ -1352,8 +1352,8 @@ wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
 	@echo "$$CONTACT_PAGE_FORM" > contactpage/forms.py
-	-mkdir -v contactpage/templates/
-	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contact_page.html
+	-mkdir -vp contactpage/templates/contactpage/
+	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/form_page.html
 	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contact_page_landing.html
 	@echo "$$CONTACT_PAGE_VIEW" > contactpage/views.py
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
