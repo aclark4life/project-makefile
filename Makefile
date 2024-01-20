@@ -59,21 +59,15 @@ REVIEW_EDITOR := subl
 
 define CONTACT_PAGE_TEMPLATE
 {% extends 'base.html' %}
-{% load static crispy_forms_tags %}
+{% load crispy_forms_tags static wagtailcore_tags %}
 {% block content %}
-    <div class="app-iphone-block" id="contact-us">
-        <div class="container">
-            <div class="row align-items-center my-5">
-                <div class="col-md-6 col-sm-12 me-auto border rounded">
-                    <h5 class="text-uppercase text-center my-5">Contact Us</h5>
-                    <form action="" method="post">
-                        {% csrf_token %}{{ page.form|crispy }}
-                        <button class="btn btn-light block text-center border my-3" type="submit">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+        <h1>{{ page.title }}</h1>
+        {{ page.intro|richtext }}
+        <form action="{% pageurl page %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit">
+        </form>
 {% endblock %}
 endef
 
@@ -132,19 +126,35 @@ endef
 
 define CONTACT_PAGE_MODEL
 from django.db import models
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import (
+    FieldPanel, FieldRowPanel,
+    InlinePanel, MultiFieldPanel
+)
+from wagtail.fields import RichTextField
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-from wagtail.models import Page
 
-from .forms import ContactPageForm
 
-class ContactPage(AbstractEmailForm, Page):
-    template = "contact_page.html"
-    form = ContactPageForm()
+class FormField(AbstractFormField):
+    page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
 
-class ContactPageFormField(AbstractFormField):
-    page = models.ForeignKey(
-        ContactPage, related_name="form_fields", on_delete=models.CASCADE
-    )
+
+class FormPage(AbstractEmailForm):
+    intro = RichTextField(blank=True)
+    thank_you_text = RichTextField(blank=True)
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label="Form fields"),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel('subject'),
+        ], "Email"),
+    ]
 endef
 
 define CONTACT_PAGE_LANDING
