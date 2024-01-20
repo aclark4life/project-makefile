@@ -1223,6 +1223,7 @@ export CONTACT_PAGE_FORM
 export CONTACT_PAGE_MODEL
 export CONTACT_PAGE_TEMPLATE
 export CONTACT_PAGE_LANDING
+export CONTACT_PAGE_VIEW
 export ESLINTRC
 export FAVICON_TEMPLATE
 export FRONTEND_APP
@@ -1344,6 +1345,7 @@ wagtail-contactpage-default:
 	-mkdir -v contactpage/templates/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contact_page.html
 	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contact_page_landing.html
+	@echo "$$CONTACT_PAGE_VIEW" > contactpage/views.py
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
 	python manage.py makemigrations contactpage
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
