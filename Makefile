@@ -94,10 +94,9 @@ define CONTACT_PAGE_FORM
 from django import forms
 from django_recaptcha.fields import ReCaptchaField
 from django_recaptcha.widgets import ReCaptchaV3
-from wagtail.contrib.forms.models import AbstractFormField
 
 
-class ContactUsForm(forms.Form):
+class ContactPageForm(forms.Form):
     name = forms.CharField(
         label="Name", widget=forms.TextInput(attrs={"class": "bg-light border"})
     )
@@ -110,21 +109,22 @@ class ContactUsForm(forms.Form):
     )
     captcha = ReCaptchaField(label="Protected by reCAPTCHA v3", widget=ReCaptchaV3)
 
-class ContactPageFormField(AbstractFormField):
-    page = models.ForeignKey(
-        ContactPage, related_name="form_fields", on_delete=models.CASCADE
-    )
 endef
 
 define CONTACT_PAGE_MODEL
-from wagtail.contrib.forms.models import AbstractEmailForm
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.models import Page
 
-from .forms import ContactPageForm, ContactPageFormField
+from .forms import ContactPageForm
 
 class ContactPage(AbstractEmailForm, Page):
     template = "contact_page.html"
     form = ContactPageForm()
+
+class ContactPageFormField(AbstractFormField):
+    page = models.ForeignKey(
+        ContactPage, related_name="form_fields", on_delete=models.CASCADE
+    )
 endef
 
 define CONTACT_PAGE_TEMPLATE_REPLY
