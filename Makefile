@@ -102,6 +102,9 @@ class ContactPage(AbstractEmailForm):
             FieldPanel('subject'),
         ], "Email"),
     ]
+
+    class Meta:
+        verbose_name = "Contact Page"
 endef
 
 define CONTACT_PAGE_LANDING
