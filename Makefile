@@ -1326,8 +1326,10 @@ wagtail-contactpage-default:
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contact_page.html
 	@echo "$$CONTACT_PAGE_TEMPLATE_REPLY" > contactpage/templates/contact_page_reply.html
 	-git add contactpage/
-	@echo "INSTALLED_APPS.append('contactpage')" >> backend/settings/base.py
+	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
 	python manage.py makemigrations contactpage
+	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
+	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5' >> $(SETTINGS)
 
 django-siteuser-default:
 	python manage.py startapp siteuser
@@ -1338,8 +1340,8 @@ django-siteuser-default:
 	-mkdir -v siteuser/templates/
 	-mkdir -vp siteuser/management/commands
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
-	@echo "INSTALLED_APPS.append('siteuser')" >> backend/settings/base.py
-	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> backend/settings/base.py
+	@echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
+	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(SETTINGS)
 	python manage.py makemigrations siteuser
 	-git add siteuser/
 
@@ -1635,7 +1637,7 @@ wagtail-privacy-default:
 	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
 	mkdir privacy/templates
 	@echo "$$PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
-	@echo "INSTALLED_APPS.append('privacy')" >> backend/settings/base.py
+	@echo "INSTALLED_APPS.append('privacy')" >> $(SETTINGS)
 	python manage.py makemigrations privacy
 	-git add privacy/
 
@@ -1665,8 +1667,8 @@ wagtail-init-default: db-init wagtail-install
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
 	@$(MAKE) django-siteuser
-	@$(MAKE) wagtail-privacy
-	@$(MAKE) wagtail-contactpage
+	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
+	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
 	@$(MAKE) django-migrations
 	-git add home
 	-git add search
