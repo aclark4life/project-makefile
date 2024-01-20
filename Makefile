@@ -1666,7 +1666,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add Dockerfile
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
-	@$(MAKE) django-siteuser
+	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
 	@$(MAKE) django-migrations
