@@ -117,7 +117,7 @@ endef
 
 define CONTACT_PAGE_LANDING
 {% extends 'base.html' %}
-{% block content %}<h1>Thank you!</h1>{% endblock %}
+{% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
 endef
 
 define INTERNAL_IPS
