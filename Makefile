@@ -123,7 +123,7 @@ class ContactPageFormField(AbstractFormField):
     )
 endef
 
-define CONTACT_PAGE_REPLY_TEMPLATE
+define CONTACT_PAGE_TEMPLATE_REPLY
 {% extends 'base.html' %}
 {% block content %}<h1>Thank you!</h1>{% endblock %}
 endef
@@ -1309,10 +1309,16 @@ npm-clean-default:
 npm-serve-default:
 	npm run start
 
-django-contactpage-default:
+wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
 	@echo "$$CONTACT_PAGE_FORM" > contactpage/forms.py
+	-mkdir -v siteuser/templates/
+	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contact_page.html
+	@echo "$$CONTACT_PAGE_TEMPLATE_REPLY" > contactpage/templates/contact_page_reply.html
+	python manage.py makemigrations contactpage
+	-git add siteuser/
+	@echo "INSTALLED_APPS.append('contactpage')" >> backend/settings/base.py
 
 django-siteuser-default:
 	python manage.py startapp siteuser
@@ -1651,6 +1657,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
 	@$(MAKE) django-siteuser
 	@$(MAKE) wagtail-privacy
+	@$(MAKE) wagtail-contactpage
 	@$(MAKE) django-migrations
 	-git add home
 	-git add search
