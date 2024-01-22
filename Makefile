@@ -1740,10 +1740,11 @@ wagtail-install-default:
         texttable \
         wagtail \
         wagtailmenus \
+        wagtail-color-panel \
+        wagtail-django-recaptcha \
         wagtail-markdown \
         wagtail_modeladmin \
         wagtail-seo \
-        wagtail-color-panel \
         whitenoise \
 		xhtml2pdf 
 
