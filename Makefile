@@ -1744,6 +1744,7 @@ wagtail-install-default:
         wagtail_modeladmin \
         wagtail-seo \
         wagtail-color-panel \
+        whitenoise \
 		xhtml2pdf 
 
 help-default:
