@@ -1272,7 +1272,7 @@ eb-deploy-default:
 	eb deploy
 
 eb-restart-default:
-	sudo systemctl restart web
+	systemctl restart web
 
 eb-init-default:
 	eb init
@@ -1843,6 +1843,7 @@ o-default: open
 p-default: git-push
 pg-init-default: db-pg-init
 readme-default: readme-init
+restart: eb-restart
 secret: django-secret
 serve-default: django-serve
 shell-default: django-shell
