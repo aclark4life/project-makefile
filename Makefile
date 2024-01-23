@@ -1840,6 +1840,7 @@ o-default: open
 p-default: git-push
 pg-init-default: db-pg-init
 readme-default: readme-init
+secret: django-secret
 serve-default: django-serve
 shell-default: django-shell
 su-default: django-su
