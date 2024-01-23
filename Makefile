@@ -1843,12 +1843,13 @@ o-default: open
 p-default: git-push
 pg-init-default: db-pg-init
 readme-default: readme-init
-restart: eb-restart
-secret: django-secret
+restart-default: eb-restart
+secret-default: django-secret
 serve-default: django-serve
 shell-default: django-shell
 su-default: django-su
 s-default: serve
+static-default: django-static
 sdist-default: python-setup-sdist
 u-default: usage
 urls-default: django-show-urls
