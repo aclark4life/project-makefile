@@ -1308,6 +1308,9 @@ wagtail-contactpage-default:
 	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
 	-git add contactpage/
 
+django-secret-default:
+	python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
+
 django-siteuser-default:
 	python manage.py startapp siteuser
 	@echo "$$SITEUSER_MODEL" > siteuser/models.py
