@@ -1271,6 +1271,9 @@ eb-create-default: eb-check-env
 eb-deploy-default:
 	eb deploy
 
+eb-restart-default:
+	sudo systemctl restart web
+
 eb-init-default:
 	eb init
 
