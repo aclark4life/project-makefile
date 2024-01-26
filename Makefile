@@ -1707,6 +1707,7 @@ wagtail-init-default: db-init wagtail-install
 wagtail-install-default:
 	pip3 install \
         Faker \
+		boto3 \
         crispy-bootstrap5 \
         djangorestframework \
         django-allauth \
