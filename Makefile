@@ -759,7 +759,6 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
-        path("hijack/", include("hijack.urls")),
     ]
 
 # https://www.django-rest-framework.org/#example
@@ -780,6 +779,10 @@ urlpatterns += [
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
     path("api/", include("dj_rest_auth.urls")),
     path("api/register/", RegisterView.as_view(), name="register"),
+]
+
+urlpatterns += [
+	path("hijack/", include("hijack.urls")),
 ]
 
 urlpatterns += [
