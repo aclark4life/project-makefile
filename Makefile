@@ -1856,7 +1856,7 @@ ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
 endif
 
-PROJECT_NAME := project-makefile
+PROJECT_NAME = project-makefile
 GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 REVIEW_EDITOR := subl
 

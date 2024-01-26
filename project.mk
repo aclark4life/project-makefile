@@ -1,1 +1,1 @@
-PROJECT_NAME := test
+PROJECT_NAME = test
