@@ -1851,13 +1851,13 @@ webpack-default: webpack-init
 	@ true
 
 PROJECT_EMAIL := aclark@aclark.net
-GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 PROJECT_MAKEFILE := project.mk
 ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
 endif
 
 PROJECT_NAME := project-makefile
+GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 REVIEW_EDITOR := subl
 
 .DEFAULT_GOAL := git-commit-push
