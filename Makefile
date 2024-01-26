@@ -30,16 +30,28 @@
 # Variables
 # --------------------------------------------------------------------------------
 
-GIT_BRANCHES = `git branch -a \
-	| grep remote  \
-	| grep -v HEAD \
-	| grep -v main \
-	| grep -v master`
+.DEFAULT_GOAL := git-commit-push
 
 UNAME := $(shell uname)
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 
+PROJECT_EMAIL := aclark@aclark.net
+PROJECT_MAKEFILE := project.mk
+PROJECT_NAME = project-makefile
+
+ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
+    include $(PROJECT_MAKEFILE)
+endif
+
+GIT_BRANCHES = `git branch -a \
+	| grep remote  \
+	| grep -v HEAD \
+	| grep -v main \
+	| grep -v master`
+GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
+
+REVIEW_EDITOR := subl
 
 # --------------------------------------------------------------------------------
 # More variables
@@ -1849,15 +1861,3 @@ webpack-default: webpack-init
 
 %: %-default  # https://stackoverflow.com/a/49804748
 	@ true
-
-PROJECT_EMAIL := aclark@aclark.net
-PROJECT_MAKEFILE := project.mk
-ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
-    include $(PROJECT_MAKEFILE)
-endif
-
-PROJECT_NAME = project-makefile
-GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
-REVIEW_EDITOR := subl
-
-.DEFAULT_GOAL := git-commit-push
