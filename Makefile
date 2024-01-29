@@ -1834,6 +1834,7 @@ h-default: help
 init-default: wagtail-init
 install-default: pip-install
 install-dev-default: pip-install-dev
+install-test-default: pip-install-test
 i-default: install
 migrate-default: django-migrate
 migrations-default: django-migrations
