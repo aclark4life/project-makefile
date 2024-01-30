@@ -1852,6 +1852,7 @@ restart-default: eb-restart
 secret-default: django-secret
 serve-default: django-serve
 shell-default: django-shell
+show-urls-default: django-show-urls
 su-default: django-su
 s-default: serve
 static-default: django-static
