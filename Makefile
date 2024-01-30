@@ -50,6 +50,7 @@ GIT_BRANCHES = `git branch -a \
 	| grep -v main \
 	| grep -v master`
 GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
+GIT_REV := `git rev-parse --short HEAD`
 
 REVIEW_EDITOR := subl
 
