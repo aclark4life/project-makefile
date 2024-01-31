@@ -1858,6 +1858,7 @@ su-default: django-su
 s-default: serve
 static-default: django-static
 sdist-default: python-setup-sdist
+test-default: django-test
 u-default: usage
 urls-default: django-show-urls
 webpack-default: webpack-init
