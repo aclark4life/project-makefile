@@ -44,6 +44,8 @@ ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
 endif
 
+REVIEW_EDITOR := subl
+
 GIT_BRANCHES = `git branch -a \
 	| grep remote  \
 	| grep -v HEAD \
@@ -52,11 +54,23 @@ GIT_BRANCHES = `git branch -a \
 GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 GIT_REV := `git rev-parse --short HEAD`
 
-REVIEW_EDITOR := subl
-
 # --------------------------------------------------------------------------------
 # More variables
 # --------------------------------------------------------------------------------
+
+define GIT_IGNORE
+bin/
+__pycache__
+lib/
+lib64
+pyvenv.cfg
+node_modules/
+share/
+static/
+media/
+.elasticbeanstalk/
+dist/
+endef
 
 define CONTACT_PAGE_TEMPLATE
 {% extends 'base.html' %}
@@ -808,18 +822,6 @@ REST_FRAMEWORK = {
 }
 endef
 
-define GIT_IGNORE
-bin/
-__pycache__
-lib/
-lib64
-pyvenv.cfg
-node_modules/
-share/
-media/
-.elasticbeanstalk/
-dist/
-endef
 
 define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
