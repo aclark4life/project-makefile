@@ -1955,7 +1955,6 @@ gitignore-default: git-ignore
 open-default: django-open
 o-default: open
 p-default: git-push
-pack-default: webpack-init
 pg-init-default: db-pg-init
 readme-default: readme-init
 restart-default: eb-restart
