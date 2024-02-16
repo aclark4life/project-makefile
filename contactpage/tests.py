@@ -1,5 +1,5 @@
 from django.test import TestCase
-from wagtail.tests.utils import WagtailPageTestCase
+from wagtail.test.utils import WagtailPageTestCase
 from wagtail.core.models import Page
 
 from your_app.models import ContactPage, FormField
