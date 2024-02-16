@@ -2,10 +2,11 @@ from wagtail.models import Page, Site
 from wagtail.rich_text import RichText
 from wagtail.test.utils import WagtailPageTestCase
 
-from home.models import HomePage, MyPage
+from home.models import HomePage
+from contactpage.models import ContactPage 
 
 
-class MyPageTest(WagtailPageTestCase):
+class ContactPageTest(WagtailPageTestCase):
     @classmethod
     def setUpTestData(cls):
         root = Page.get_first_root_node()
@@ -17,9 +18,9 @@ class MyPageTest(WagtailPageTestCase):
         )
         home = HomePage(title="Home")
         root.add_child(instance=home)
-        cls.page = MyPage(
-            title="My Page",
-            slug="mypage",
+        cls.page = ContactPage(
+            title="Contact Us",
+            slug="contact-us",
         )
         home.add_child(instance=cls.page)
 
