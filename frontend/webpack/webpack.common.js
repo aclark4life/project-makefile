@@ -23,6 +23,7 @@ const getEntryObject = () => {
 
 module.exports = {
   entry: getEntryObject(),
+  devtool: 'eval-source-map',
   output: {
     path: Path.join(__dirname, "../build"),
     filename: "js/[name].js",
