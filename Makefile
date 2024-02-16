@@ -1587,8 +1587,8 @@ favicon-default:
 gh-default:
 	gh browse
 
-git-ignore:
-	echo "$$GIT_IGNORE" > $@
+git-ignore-default:
+	echo "$$GIT_IGNORE" > .gitignore
 	-git add .gitignore
 	-git commit -a -m "Add .gitignore"
 	-git push
