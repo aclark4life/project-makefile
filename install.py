@@ -8,7 +8,6 @@ VERSION = "0.1.0-dev"
 
 
 def main():
-
     print("Project Makefile")
     if len(sys.argv) != 2:
         print("Usage: project-makefile <project_dir>")
