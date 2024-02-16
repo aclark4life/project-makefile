@@ -708,7 +708,7 @@ define BLOCK_MARKETING
 </div>
 endef
 
-define HOME_PAGE_TEST
+define CONTACT_PAGE_TEST
 from wagtail.models import Page, Site
 from wagtail.rich_text import RichText
 from wagtail.test.utils import WagtailPageTestCase
@@ -1300,7 +1300,6 @@ export FRONTEND_STYLES
 export GIT_IGNORE
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
-export HOME_PAGE_TEST
 export HTML_FOOTER
 export HTML_HEADER
 export HTML_OFFCANVAS
@@ -1759,7 +1758,6 @@ wagtail-init-default: db-init wagtail-install
 	-git add Dockerfile
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
-	@echo "$$HOME_PAGE_TEST" > home/tests.py
 	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
