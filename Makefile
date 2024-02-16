@@ -86,6 +86,76 @@ define CONTACT_PAGE_TEMPLATE
 {% endblock %}
 endef
 
+define CONTACT_PAGE_TEST
+from django.test import TestCase
+from wagtail.tests.utils import WagtailPageTests
+from wagtail.core.models import Page
+
+from your_app.models import ContactPage, FormField
+
+class ContactPageTest(TestCase, WagtailPageTests):
+    def test_contact_page_creation(self):
+        # Create a ContactPage instance
+        contact_page = ContactPage(
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
+        )
+
+        # Save the ContactPage instance
+        self.assertEqual(contact_page.save_revision().publish().get_latest_revision_as_page(), contact_page)
+
+    def test_form_field_creation(self):
+        # Create a ContactPage instance
+        contact_page = ContactPage(
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
+        )
+        # Save the ContactPage instance
+        contact_page_revision = contact_page.save_revision()
+        contact_page_revision.publish()
+
+        # Create a FormField associated with the ContactPage
+        form_field = FormField(
+            page=contact_page,
+            label='Your Name',
+            field_type='singleline',
+            required=True
+        )
+        form_field.save()
+
+        # Retrieve the ContactPage from the database
+        contact_page_from_db = Page.objects.get(id=contact_page.id).specific
+
+        # Check if the FormField is associated with the ContactPage
+        self.assertEqual(contact_page_from_db.form_fields.first(), form_field)
+
+    def test_contact_page_form_submission(self):
+        # Create a ContactPage instance
+        contact_page = ContactPage(
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
+        )
+        # Save the ContactPage instance
+        contact_page_revision = contact_page.save_revision()
+        contact_page_revision.publish()
+
+        # Simulate a form submission
+        form_data = {
+            'your_name': 'John Doe',
+            # Add other form fields as needed
+        }
+
+        response = self.client.post(contact_page.url, form_data)
+
+        # Check if the form submission is successful (assuming a 302 redirect)
+        self.assertEqual(response.status_code, 302)
+        
+        # You may add more assertions based on your specific requirements
+endef
+
 define CONTACT_PAGE_MODEL
 from django.db import models
 from modelcluster.fields import ParentalKey
@@ -1188,6 +1258,7 @@ export COMPONENT_USER_MENU
 export CONTACT_PAGE_MODEL
 export CONTACT_PAGE_TEMPLATE
 export CONTACT_PAGE_LANDING
+export CONTACT_PAGE_TEST
 export ESLINTRC
 export FAVICON_TEMPLATE
 export FRONTEND_APP
@@ -1308,6 +1379,7 @@ npm-serve-default:
 wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
+	@echo "$$CONTACT_PAGE_TEST" > contactpage/tests.py
 	-mkdir -vp contactpage/templates/contactpage/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
 	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
