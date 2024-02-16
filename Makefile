@@ -1508,7 +1508,7 @@ django-static-default:
 django-su-default:
 	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
 
-django-test-default:
+django-test-default: django-npm-build
 	python manage.py test
 
 django-user-default:
