@@ -4,15 +4,13 @@ from wagtail.models import Page
 
 from contactpage.models import ContactPage, FormField
 
-class ContactPageTest(WagtailPageTestCase):
+class ContactPageTest(TestCase, WagtailPageTestCase):
     def test_contact_page_creation(self):
         # Create a ContactPage instance
         contact_page = ContactPage(
             title='Contact',
             intro='Welcome to our contact page!',
-            thank_you_text='Thank you for reaching out.',
-            path=1,
-            depth=1,  
+            thank_you_text='Thank you for reaching out.'
         )
 
         # Save the ContactPage instance
