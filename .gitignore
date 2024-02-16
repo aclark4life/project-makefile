@@ -1,6 +1,11 @@
 bin/
-lib/
-pyvenv.cfg
-project_makefile.egg-info/
 __pycache__
+lib/
+lib64
+pyvenv.cfg
+node_modules/
+share/
+static/
+media/
+.elasticbeanstalk/
 dist/
