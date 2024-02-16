@@ -88,12 +88,12 @@ endef
 
 define CONTACT_PAGE_TEST
 from django.test import TestCase
-from wagtail.tests.utils import WagtailPageTests
+from wagtail.tests.utils import WagtailPageTestCase
 from wagtail.core.models import Page
 
 from your_app.models import ContactPage, FormField
 
-class ContactPageTest(TestCase, WagtailPageTests):
+class ContactPageTest(TestCase, WagtailPageTestCase):
     def test_contact_page_creation(self):
         # Create a ContactPage instance
         contact_page = ContactPage(
