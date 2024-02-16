@@ -708,6 +708,37 @@ define BLOCK_MARKETING
 </div>
 endef
 
+define HOME_PAGE_TEST
+from wagtail.models import Page, Site
+from wagtail.rich_text import RichText
+from wagtail.test.utils import WagtailPageTestCase
+
+from home.models import HomePage, MyPage
+
+
+class MyPageTest(WagtailPageTestCase):
+    @classmethod
+    def setUpTestData(cls):
+        root = Page.get_first_root_node()
+        Site.objects.create(
+            hostname="testserver",
+            root_page=root,
+            is_default_site=True,
+            site_name="testserver",
+        )
+        home = HomePage(title="Home")
+        root.add_child(instance=home)
+        cls.page = MyPage(
+            title="My Page",
+            slug="mypage",
+        )
+        home.add_child(instance=cls.page)
+
+    def test_get(self):
+        response = self.client.get(self.page.url)
+        self.assertEqual(response.status_code, 200)
+endef
+
 define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
@@ -1268,6 +1299,7 @@ export FRONTEND_STYLES
 export GIT_IGNORE
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
+export HOME_PAGE_TEST
 export HTML_FOOTER
 export HTML_HEADER
 export HTML_OFFCANVAS
@@ -1726,6 +1758,7 @@ wagtail-init-default: db-init wagtail-install
 	-git add Dockerfile
 	-git add .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
+	@echo "$$HOME_PAGE_TEST" > home/tests.py
 	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
