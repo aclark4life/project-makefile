@@ -58,12 +58,13 @@ GIT_REV := `git rev-parse --short HEAD`
 # More variables
 # --------------------------------------------------------------------------------
 
-define DOCKERFILE
+define DOCKER_FILE
 FROM python:3.12.2-slim-bookworm
 RUN useradd wagtail
 EXPOSE 8000
 ENV PYTHONUNBUFFERED=1 \
     PORT=8000
+RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash - 
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
     libpq-dev \
@@ -79,7 +80,6 @@ RUN pip install -r /requirements.txt
 WORKDIR /app
 RUN chown wagtail:wagtail /app
 COPY --chown=wagtail:wagtail . .
-USER wagtail
 RUN make django-npm-install django-npm-build
 RUN python manage.py collectstatic --noinput --clear
 CMD set -xe; python manage.py migrate --noinput; gunicorn backend.wsgi:application
