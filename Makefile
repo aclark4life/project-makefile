@@ -1328,6 +1328,9 @@ export WEBPACK_INDEX_HTML
 # Rules
 # ------------------------------------------------------------------------------  
 
+docker-build-default:
+	docker build -t $(PROJECT_NAME) .
+
 export-base-default:
 	@echo "$$BASE_TEMPLATE"
 
@@ -1921,7 +1924,7 @@ project-mk-default:
 # More rules
 # ------------------------------------------------------------------------------  
 
-build-default: sphinx-build
+build-default: docker-build
 b-default: build 
 black-default: lint-black
 c-default: clean
