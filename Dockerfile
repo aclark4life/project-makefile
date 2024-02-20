@@ -3,7 +3,7 @@ RUN useradd wagtail
 EXPOSE 8000
 ENV PYTHONUNBUFFERED=1 \
     PORT=8000
-RUN curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - && sudo apt-get install -y nodejs
+RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash - && apt-get install -y nodejs
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
     build-essential \
     libpq-dev \
