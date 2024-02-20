@@ -58,6 +58,33 @@ GIT_REV := `git rev-parse --short HEAD`
 # More variables
 # --------------------------------------------------------------------------------
 
+define DOCKERFILE
+FROM python:3.12.2-slim-bookworm
+RUN useradd wagtail
+EXPOSE 8000
+ENV PYTHONUNBUFFERED=1 \
+    PORT=8000
+RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    libjpeg62-turbo-dev \
+    zlib1g-dev \
+    libwebp-dev \
+    nodejs \
+ && rm -rf /var/lib/apt/lists/*
+RUN python -m pip install "gunicorn==20.0.4"
+RUN pip install -U pip
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
+WORKDIR /app
+RUN chown wagtail:wagtail /app
+COPY --chown=wagtail:wagtail . .
+USER wagtail
+RUN make django-npm-install django-npm-build
+RUN python manage.py collectstatic --noinput --clear
+CMD set -xe; python manage.py migrate --noinput; gunicorn backend.wsgi:application
+endef
+
 define GIT_IGNORE
 bin/
 __pycache__
@@ -1291,6 +1318,7 @@ export CONTACT_PAGE_MODEL
 export CONTACT_PAGE_TEMPLATE
 export CONTACT_PAGE_LANDING
 export CONTACT_PAGE_TEST
+export DOCKER_FILE
 export ESLINTRC
 export FAVICON_TEMPLATE
 export FRONTEND_APP
