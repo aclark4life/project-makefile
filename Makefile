@@ -1359,6 +1359,9 @@ export WEBPACK_INDEX_HTML
 docker-build-default:
 	docker build -t $(PROJECT_NAME) .
 
+docker-serve-default:
+	docker run -p 8000:8000 $(PROJECT_NAME)
+
 export-base-default:
 	@echo "$$BASE_TEMPLATE"
 
