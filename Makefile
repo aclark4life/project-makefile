@@ -74,7 +74,6 @@ RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-r
     libwebp-dev \
     nodejs \
  && rm -rf /var/lib/apt/lists/*
-RUN python -m pip install "gunicorn==20.0.4"
 RUN pip install -U pip
 COPY requirements.txt /
 RUN pip install -r /requirements.txt
@@ -1883,6 +1882,7 @@ wagtail-install-default:
         dj-stripe \
         dj-rest-auth \
 		enmerkar \
+		gunicorn \
         icalendar \
         mailchimp-marketing \
         mailchimp-transactional \

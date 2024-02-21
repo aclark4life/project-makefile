@@ -71,6 +71,7 @@ draftjs-exporter==5.0.0
 enmerkar==0.7.1
 et-xmlfile==1.1.0
 filetype==1.2.0
+gunicorn==21.2.0
 html5lib==1.1
 icalendar==5.0.11
 idna==3.6
