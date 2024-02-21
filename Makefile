@@ -1956,7 +1956,7 @@ project-mk-default:
 # More rules
 # ------------------------------------------------------------------------------  
 
-build-default: docker-build
+build-default: pip-install
 b-default: build 
 black-default: lint-black
 c-default: clean
