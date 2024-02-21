@@ -59,7 +59,8 @@ GIT_REV := `git rev-parse --short HEAD`
 # --------------------------------------------------------------------------------
 
 define DOCKER_FILE
-FROM python:3.12.2-slim-bookworm
+FROM node:20-alpine as build-node
+FROM python:3.12-bullseye as build-python
 RUN useradd wagtail
 EXPOSE 8000
 ENV PYTHONUNBUFFERED=1 \
