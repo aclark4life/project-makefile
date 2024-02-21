@@ -54,6 +54,8 @@ GIT_BRANCHES = `git branch -a \
 GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 GIT_REV := `git rev-parse --short HEAD`
 
+ENV_NAME ?= $(PROJECT_NAME)-$(GIT_REV)
+
 # --------------------------------------------------------------------------------
 # More variables
 # --------------------------------------------------------------------------------
@@ -1372,23 +1374,6 @@ export-header-default:
 	@echo "$$HTML_HEADER"
 
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
-ifndef ENV_NAME
-	$(info ENV_NAME is undefined, using default value)
-	ENV_NAME := $(PROJECT_NAME)-$(GIT_REV)
-	export ENV_NAME
-endif
-ifndef INSTANCE_TYPE
-	$(info INSTANCT_TYPE is undefined, using default value)
-	INSTANCE_TYPE := t4g
-endif
-ifndef LB_TYPE
-	$(info LB_TYPE is undefined, using default value)
-	LB_TYPE := application
-endif
-ifndef PLATFORM
-	$(info PLATFORM is undefined, using default value)
-	PLATFORM := Python 3.11 running on 64bit Amazon Linux 2023
-endif
 ifndef SSH_KEY
 	$(error SSH_KEY is undefined)
 endif
