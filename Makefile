@@ -1373,13 +1373,16 @@ export-header-default:
 
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef ENV_NAME
-	$(error ENV_NAME is undefined)
+	$(info ENV_NAME is undefined, using default value)
+	ENV_NAME := $(PROJECT_NAME)-$(GIT_REV)
 endif
 ifndef INSTANCE_TYPE
-	$(error INSTANCE_TYPE is undefined)
+	$(info INSTANCT_TYPE is undefined, using default value)
+	INSTANCE_TYPE := t4g
 endif
 ifndef LB_TYPE
-	$(error LB_TYPE is undefined)
+	$(info LB_TYPE is undefined, using default value)
+	LB_TYPE := application
 endif
 ifndef SSH_KEY
 	$(error SSH_KEY is undefined)
