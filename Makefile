@@ -1375,6 +1375,7 @@ eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef ENV_NAME
 	$(info ENV_NAME is undefined, using default value)
 	ENV_NAME := $(PROJECT_NAME)-$(GIT_REV)
+	export ENV_NAME
 endif
 ifndef INSTANCE_TYPE
 	$(info INSTANCT_TYPE is undefined, using default value)
