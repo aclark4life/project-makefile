@@ -1404,7 +1404,6 @@ eb-create-default: eb-check-env
          --vpc.elbpublic \
          --vpc.ec2subnets $(VPC_SUBNET_EC2) \
          --vpc.elbsubnets $(VPC_SUBNET_ELB) \
-		 --vpc.publicip false \
          --vpc.securitygroups $(VPC_SG)
 
 eb-deploy-default:
