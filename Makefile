@@ -57,6 +57,7 @@ GIT_REV := `git rev-parse --short HEAD`
 ENV_NAME ?= $(PROJECT_NAME)-$(GIT_REV)
 INSTANCE_TYPE ?= t4g.small
 PLATFORM ?= Python 3.11 running on 64bit Amazon Linux 2023
+LB_TYPE ?= application
 
 # --------------------------------------------------------------------------------
 # More variables
