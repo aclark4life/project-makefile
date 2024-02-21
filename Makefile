@@ -1384,6 +1384,10 @@ ifndef LB_TYPE
 	$(info LB_TYPE is undefined, using default value)
 	LB_TYPE := application
 endif
+ifndef PLATFORM
+	$(info PLATFORM is undefined, using default value)
+	PLATFORM := Python 3.11 running on 64bit Amazon Linux 2023
+endif
 ifndef SSH_KEY
 	$(error SSH_KEY is undefined)
 endif
@@ -1411,7 +1415,6 @@ eb-create-default: eb-check-env
          --vpc.elbpublic \
          --vpc.ec2subnets $(VPC_SUBNET_EC2) \
          --vpc.elbsubnets $(VPC_SUBNET_ELB) \
-         --vpc.publicip \
          --vpc.securitygroups $(VPC_SG)
 
 eb-deploy-default:
