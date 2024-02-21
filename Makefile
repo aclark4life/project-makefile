@@ -55,6 +55,7 @@ GIT_COMMIT_MESSAGE := "Update $(PROJECT_NAME)"
 GIT_REV := `git rev-parse --short HEAD`
 
 ENV_NAME ?= $(PROJECT_NAME)-$(GIT_REV)
+INSTANCE_TYPE ?= t4g.small
 
 # --------------------------------------------------------------------------------
 # More variables
