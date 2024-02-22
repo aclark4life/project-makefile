@@ -1638,8 +1638,8 @@ gh-default:
 git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	$(GIT_ADD) .gitignore
-	git commit -a -m "Add .gitignore"
-	$(GIT_PUSH)
+	-@git commit -a -m "Add .gitignore"
+	-@$(GIT_PUSH)
 
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
