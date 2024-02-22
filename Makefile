@@ -872,6 +872,12 @@ class UpdateThemePreferenceView(View):
 endef
 
 define SEARCH_URLS
+from django.urls import path
+from .views import search
+
+urlpatterns = [
+	path("", search, {})
+]
 endef
 
 define SITEUSER_URLS
