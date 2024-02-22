@@ -51,7 +51,7 @@ GIT_BRANCHES = `git branch -a \
 	| grep -v HEAD \
 	| grep -v main \
 	| grep -v master`
-GIT_MESSAGE = Update $(PROJECT_NAME)
+GIT_MESSAGE = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
 GIT_PUSH = git push
 GIT_REV := `git rev-parse --short HEAD`
