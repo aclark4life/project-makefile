@@ -1801,12 +1801,12 @@ wagtail-init-default: db-init wagtail-install
 	$(GIT_ADD) Dockerfile
 	$(GIT_ADD) .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
-	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
-	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
-	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
 	$(GIT_ADD) home
 	$(MAKE) wagtail-search-urls
 	$(GIT_ADD) search
+	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
+	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
+	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
 	$(MAKE) django-migrations
 	$(MAKE) django-migrate
 	$(MAKE) su
