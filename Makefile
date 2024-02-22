@@ -1446,9 +1446,9 @@ npm-install-default:
 	$(GIT_ADD) package-lock.json
 
 npm-clean-default:
-	rm -rvf node_modules/
-	rm -vf package-lock.json
-	rm -rvf dist/
+	$(DEL_DIR) dist/
+	$(DEL_DIR) node_modules/
+	$(DEL_FILE) package-lock.json
 
 npm-serve-default:
 	npm run start
@@ -1628,7 +1628,7 @@ favicon-default:
 	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
 	convert favicon.png favicon.ico
 	$(GIT_ADD) favicon.ico
-	@rm -v favicon.png
+	$(DEL_FILE) favicon.png
 
 gh-default:
 	gh browse
@@ -1783,18 +1783,18 @@ wagtail-privacy-default:
 	$(GIT_ADD) privacy/
 
 wagtail-clean-default:
-	-rm -vf .dockerignore
-	-rm -vf Dockerfile
-	-rm -vf manage.py
-	-rm -vf requirements.txt
-	-rm -rvf home/
-	-rm -rvf search/
-	-rm -rvf backend/
-	-rm -rvf siteuser/
-	-rm -rvf privacy/
-	-rm -rvf frontend/
-	-rm -rvf contactpage/
-	-rm -vf README.rst
+	$(DEL_DIR) home/
+	$(DEL_DIR) search/
+	$(DEL_DIR) backend/
+	$(DEL_DIR) siteuser/
+	$(DEL_DIR) privacy/
+	$(DEL_DIR) frontend/
+	$(DEL_DIR) contactpage/
+	$(DEL_FILE) README.rst
+	$(DEL_FILE) .dockerignore
+	$(DEL_FILE) Dockerfile
+	$(DEL_FILE) manage.py
+	$(DEL_FILE) requirements.txt
 
 wagtail-init-default: db-init wagtail-install
 	wagtail start backend .
