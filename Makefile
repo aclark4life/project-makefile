@@ -1785,13 +1785,13 @@ wagtail-privacy-default:
 	$(GIT_ADD) privacy/
 
 wagtail-clean-default:
-	-$(DEL_DIR) home/
-	-$(DEL_DIR) search/
-	-$(DEL_DIR) backend/
-	-$(DEL_DIR) siteuser/
-	-$(DEL_DIR) privacy/
-	-$(DEL_DIR) frontend/
-	-$(DEL_DIR) contactpage/
+	-$(DEL_DIR) home
+	-$(DEL_DIR) search
+	-$(DEL_DIR) backend
+	-$(DEL_DIR) siteuser
+	-$(DEL_DIR) privacy
+	-$(DEL_DIR) frontend
+	-$(DEL_DIR) contactpage
 	-$(DEL_FILE) README.rst
 	-$(DEL_FILE) .dockerignore
 	-$(DEL_FILE) Dockerfile
