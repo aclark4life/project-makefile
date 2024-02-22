@@ -1700,6 +1700,9 @@ db-pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
+db-pg-dump-default:
+	eb ssh
+
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -1983,6 +1986,7 @@ cp-default: git-commit-push
 d-default: deploy
 deploy-default: eb-deploy
 db-init-default: db-pg-init
+db-dump-default: db-pg-dump
 django-clean-default: wagtail-clean
 django-init-default: wagtail-init
 djlint-default: lint-djlint
