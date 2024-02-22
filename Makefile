@@ -871,6 +871,9 @@ class UpdateThemePreferenceView(View):
         return JsonResponse({"error": "Invalid request method"}, status=405)
 endef
 
+define SEARCH_URLS
+endef
+
 define SITEUSER_URLS
 from django.urls import path
 from .views import UserProfileView, UpdateThemePreferenceView
