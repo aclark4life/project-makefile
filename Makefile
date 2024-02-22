@@ -890,8 +890,6 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from search import views as search_views
-
 from rest_framework import routers, serializers, viewsets
 from dj_rest_auth.registration.views import RegisterView
 
@@ -902,6 +900,7 @@ urlpatterns = [
     path('django/', admin.site.urls),
     path('wagtail/', include(wagtailadmin_urls)),
     path('user/', include('siteuser.urls')),
+    path('search/', include('search.urls')),
 ]
 
 if settings.DEBUG:
@@ -1356,6 +1355,7 @@ export SETTINGS_THEMES
 export SITEUSER_MODEL
 export SITEUSER_ADMIN
 export SITEUSER_URLS
+export SEARCH_URLS
 export SITEUSER_VIEW
 export SITEUSER_TEMPLATE
 export THEME_BLUE
@@ -1427,14 +1427,14 @@ eb-list-platforms:
 
 npm-init-default:
 	npm init -y
-	-git add package.json
+	$(GIT_ADD) package.json
 
 npm-build-default:
 	npm run build
 
 npm-install-default:
 	npm install
-	-git add package-lock.json
+	$(GIT_ADD) package-lock.json
 
 npm-clean-default:
 	rm -rvf node_modules/
@@ -1455,7 +1455,7 @@ wagtail-contactpage-default:
 	python manage.py makemigrations contactpage
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
 	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
-	-git add contactpage/
+	$(GIT_ADD) contactpage/
 
 django-secret-default:
 	python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -1472,7 +1472,7 @@ django-siteuser-default:
 	@echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(SETTINGS)
 	python manage.py makemigrations siteuser
-	-git add siteuser/
+	$(GIT_ADD) siteuser/
 
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
@@ -1618,7 +1618,7 @@ endif
 favicon-default:
 	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
 	convert favicon.png favicon.ico
-	-git add favicon.ico
+	$(GIT_ADD) favicon.ico
 	@rm -v favicon.png
 
 gh-default:
@@ -1626,7 +1626,7 @@ gh-default:
 
 git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
-	-git add .gitignore
+	$(GIT_ADD) .gitignore
 	-git commit -a -m "Add .gitignore"
 	-git push
 
@@ -1692,11 +1692,11 @@ db-pg-init-default:
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	-git add requirements.txt
+	$(GIT_ADD) requirements.txt
 
 pip-init-default:
 	touch requirements.txt
-	-git add requirements.txt
+	$(GIT_ADD) requirements.txt
 
 pip-install-default:
 	$(MAKE) pip-upgrade
@@ -1750,7 +1750,7 @@ sphinx-install-default:
 	echo "Sphinx\n" > requirements.txt
 	@$(MAKE) pip-install
 	@$(MAKE) pip-freeze
-	-git add requirements.txt
+	$(GIT_ADD) requirements.txt
 
 sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
@@ -1761,6 +1761,9 @@ sphinx-build-pdf-default:
 sphinx-serve-default:
 	cd _build/html;python3 -m http.server
 
+wagtail-search-urls:
+	@echo "$$SEARCH_URLS" > search/urls.py
+
 wagtail-privacy-default:
 	python manage.py startapp privacy
 	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
@@ -1768,7 +1771,7 @@ wagtail-privacy-default:
 	@echo "$$PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
 	@echo "INSTALLED_APPS.append('privacy')" >> $(SETTINGS)
 	python manage.py makemigrations privacy
-	-git add privacy/
+	$(GIT_ADD) privacy/
 
 wagtail-clean-default:
 	-rm -vf .dockerignore
@@ -1789,18 +1792,19 @@ wagtail-init-default: db-init wagtail-install
 	$(MAKE) pip-freeze
 	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; $(MAKE) django-settings
 	export URLS=urls.py; $(MAKE) django-url-patterns
-	-git add backend
-	-git add requirements.txt
-	-git add manage.py
-	-git add Dockerfile
-	-git add .dockerignore
+	$(GIT_ADD) backend
+	$(GIT_ADD) requirements.txt
+	$(GIT_ADD) manage.py
+	$(GIT_ADD) Dockerfile
+	$(GIT_ADD) .dockerignore
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
 	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
 	@$(MAKE) django-migrations
-	-git add home
-	-git add search
+	$(GIT_ADD) home
+	$(MAKE) wagtail-search-urls
+	$(GIT_ADD) search
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
@@ -1810,12 +1814,12 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$HTML_OFFCANVAS" > backend/templates/offcanvas.html
 	mkdir -p backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
-	-git add backend/templates/
+	$(GIT_ADD) backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	mkdir -p home/templates/blocks
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
-	-git add home/templates/blocks
+	$(GIT_ADD) home/templates/blocks
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
@@ -1834,9 +1838,9 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@-mkdir -v frontend/src/utils/
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
-	-git add frontend/src/utils/
-	-git add home
-	-git add frontend
+	$(GIT_ADD) frontend/src/utils/
+	$(GIT_ADD) home
+	$(GIT_ADD) frontend
 	-git commit -a -m "Add frontend"
 	@$(MAKE) django-npm-install
 	@$(MAKE) django-npm-install-save
@@ -1923,16 +1927,16 @@ jenkins-init-default:
 
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
-	-git add webpack.config.js
+	$(GIT_ADD) webpack.config.js
 	npm install --save-dev webpack webpack-cli
 	-mkdir -v src/
 	@echo "$$WEBPACK_INDEX_JS" > src/index.js
-	-git add src/index.js
+	$(GIT_ADD) src/index.js
 	@echo "$$WEBPACK_INDEX_HTML" > index.html
-	-git add index.html
+	$(GIT_ADD) index.html
 
 make-default:
-	-git add Makefile
+	$(GIT_ADD) Makefile
 	-git commit -a -m "Add/update project-makefile files"
 	-git push
 
@@ -1952,7 +1956,7 @@ endif
 
 project-mk-default:
 	touch project.mk
-	-git add project.mk
+	$(GIT_ADD) project.mk
 
 # ------------------------------------------------------------------------------  
 # More rules
