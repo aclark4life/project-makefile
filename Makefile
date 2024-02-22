@@ -59,11 +59,11 @@ INSTANCE_TYPE ?= t4g.small
 PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
 LB_TYPE ?= application
 
-ADD_DIR := mkdir -p
+ADD_DIR := mkdir -pv
 COPY_DIR := cp -rv
 COPY_FILE := cp -v
-DEL_DIR := rm -rvf
-DEL_FILE := rm -vf
+DEL_DIR := rm -rv
+DEL_FILE := rm -v
 GIT_ADD := git add
 
 # --------------------------------------------------------------------------------
@@ -1457,7 +1457,7 @@ wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
 	@echo "$$CONTACT_PAGE_TEST" > contactpage/tests.py
-	-mkdir -vp contactpage/templates/contactpage/
+	$(ADD_DIR) contactpage/templates/contactpage/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
 	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
@@ -1475,8 +1475,8 @@ django-siteuser-default:
 	@echo "$$SITEUSER_ADMIN" > siteuser/admin.py
 	@echo "$$SITEUSER_VIEW" > siteuser/views.py
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
-	-mkdir -v siteuser/templates/
-	-mkdir -vp siteuser/management/commands
+	$(ADD_DIR) siteuser/templates/
+	$(ADD_DIR) siteuser/management/commands
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
 	@echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(SETTINGS)
@@ -1776,7 +1776,7 @@ wagtail-search-urls:
 wagtail-privacy-default:
 	python manage.py startapp privacy
 	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
-	mkdir privacy/templates
+	$(ADD_DIR) privacy/templates
 	@echo "$$PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
 	@echo "INSTALLED_APPS.append('privacy')" >> $(SETTINGS)
 	python manage.py makemigrations privacy
@@ -1821,19 +1821,19 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$HTML_HEADER" > backend/templates/header.html
 	@echo "$$HTML_FOOTER" > backend/templates/footer.html
 	@echo "$$HTML_OFFCANVAS" > backend/templates/offcanvas.html
-	mkdir -p backend/templates/allauth/layouts
+	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	$(GIT_ADD) backend/templates/
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
-	mkdir -p home/templates/blocks
+	$(ADD_DIR) home/templates/blocks
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	$(GIT_ADD) home/templates/blocks
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
-	mkdir frontend/src/context
-	mkdir frontend/src/images
+	$(ADD_DIR) frontend/src/context
+	$(ADD_DIR) frontend/src/images
 	@echo "$$REACT_CONTEXT_INDEX" > frontend/src/context/index.js
 	@echo "$$REACT_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
@@ -1845,7 +1845,7 @@ wagtail-init-default: db-init wagtail-install
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
-	@-mkdir -v frontend/src/utils/
+	$(ADD_DIR) frontend/src/utils/
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	$(GIT_ADD) frontend/src/utils/
 	$(GIT_ADD) home
@@ -1938,7 +1938,7 @@ webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
 	$(GIT_ADD) webpack.config.js
 	npm install --save-dev webpack webpack-cli
-	-mkdir -v src/
+	$(ADD_DIR) src/
 	@echo "$$WEBPACK_INDEX_JS" > src/index.js
 	$(GIT_ADD) src/index.js
 	@echo "$$WEBPACK_INDEX_HTML" > index.html
