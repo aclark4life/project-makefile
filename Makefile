@@ -1646,10 +1646,10 @@ git-branches-default:
         git checkout -t $$i ; done
 
 git-commit-default:
-	$(GIT_COMMIT)
+	-$(GIT_COMMIT)
 
 git-push-default:
-	-git push
+	-$(GIT_PUSH)
 
 git-commit-edit-default:
 	-git commit -a
