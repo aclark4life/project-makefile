@@ -1804,12 +1804,12 @@ wagtail-init-default: db-init wagtail-install
 	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
 	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
-	@$(MAKE) django-migrations
 	$(GIT_ADD) home
 	$(MAKE) wagtail-search-urls
 	$(GIT_ADD) search
-	@$(MAKE) django-migrate
-	@$(MAKE) su
+	$(MAKE) django-migrations
+	$(MAKE) django-migrate
+	$(MAKE) su
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
 	@echo "$$HTML_HEADER" > backend/templates/header.html
