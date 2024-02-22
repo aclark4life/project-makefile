@@ -1994,6 +1994,7 @@ install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
+lint: lint-djlint
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
