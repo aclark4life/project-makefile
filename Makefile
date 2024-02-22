@@ -51,9 +51,10 @@ GIT_BRANCHES = `git branch -a \
 	| grep -v HEAD \
 	| grep -v main \
 	| grep -v master`
-GIT_MESSAGE = "Update $(PROJECT_NAME)"
-GIT_REV := `git rev-parse --short HEAD`
+GIT_MESSAGE = Update $(PROJECT_NAME)
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
+GIT_PUSH = git push
+GIT_REV := `git rev-parse --short HEAD`
 
 ENV_NAME ?= $(PROJECT_NAME)-$(GIT_REV)
 INSTANCE_TYPE ?= t4g.small
@@ -1635,11 +1636,10 @@ gh-default:
 	gh browse
 
 git-ignore-default:
-	GIT_MESSAGE="Add .gitignore"
 	echo "$$GIT_IGNORE" > .gitignore
 	$(GIT_ADD) .gitignore
-	$(GIT_COMMIT)
-	-git push
+	git commit -a -m "Add .gitignore"
+	$(GIT_PUSH)
 
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
