@@ -59,6 +59,13 @@ INSTANCE_TYPE ?= t4g.small
 PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
 LB_TYPE ?= application
 
+ADD_DIR := mkdir -p
+COPY_DIR := cp -rv
+COPY_FILE := cp -v
+DEL_DIR := rm -rvf
+DEL_FILE := rm -vf
+GIT_ADD := git add
+
 # --------------------------------------------------------------------------------
 # More variables
 # --------------------------------------------------------------------------------
