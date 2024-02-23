@@ -635,7 +635,7 @@ define BASE_TEMPLATE
             <div id="app"></div>
             {% include 'header.html' %}
             {% if messages %}
-                <div class="messages">
+                <div class="messages container">
                     {% for message in messages %}
                         <div class="alert {{ message.tags }} alert-dismissible fade show"
                              role="alert">
@@ -1209,6 +1209,21 @@ define HTML_HEADER
                         <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
                             <i class="fas fa-circle-half-stroke"></i>
                         </span>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form" action="{% url 'search' %}">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input class="form-control"
+                                           type="search"
+                                           name="query"
+                                           {% if search_query %}value="{{ search_query }}"{% endif %}>
+                                </div>
+                                <div class="col-4">
+                                    <input type="submit" value="Search" class="form-control">
+                                </div>
+                            </div>
+                        </form>
                     </li>
                 </ul>
             </div>
@@ -1850,6 +1865,9 @@ wagtail-privacy-default:
 
 wagtail-base-default:
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
+
+wagtail-header-default:
+	@echo "$$HTML_HEADER" > backend/templates/header.html
 
 wagtail-clean-default:
 	-$(DEL_DIR) home

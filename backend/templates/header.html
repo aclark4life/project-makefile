@@ -37,6 +37,21 @@
                             <i class="fas fa-circle-half-stroke"></i>
                         </span>
                     </li>
+                    <li class="nav-item">
+                        <form class="form" action="{% url 'search' %}">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input class="form-control"
+                                           type="search"
+                                           name="query"
+                                           {% if search_query %}value="{{ search_query }}"{% endif %}>
+                                </div>
+                                <div class="col-4">
+                                    <input type="submit" value="Search" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </nav>
