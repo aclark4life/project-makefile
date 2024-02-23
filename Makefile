@@ -68,9 +68,16 @@ DEL_DIR := rm -rv
 DEL_FILE := rm -v
 GIT_ADD := git add
 
+
 # --------------------------------------------------------------------------------
 # More variables
 # --------------------------------------------------------------------------------
+
+define DATABASE_URL
+source /opt/elasticbeanstalk/deployment/custom_env_var; \
+	env | \
+	grep DATABASE_URL
+endef
 
 define DOCKER_FILE
 FROM node:20-alpine as build-node
@@ -1701,7 +1708,7 @@ db-pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-pg-dump-default:
-	eb ssh
+	eb ssh -c $(DATABASE_URL)
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
