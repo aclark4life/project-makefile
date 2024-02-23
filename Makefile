@@ -1757,7 +1757,7 @@ db-pg-dump-default:
 	@echo "Wrote $(DATABASE_NAME).sql"
 
 db-pg-import-default:
-	psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
+	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
