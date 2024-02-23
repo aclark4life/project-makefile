@@ -1485,8 +1485,11 @@ eb-restart-default:
 eb-init-default:
 	eb init
 
-eb-list-platforms:
+eb-list-platforms-default:
 	aws elasticbeanstalk list-platform-versions
+
+eb-logs-default:
+	eb ssh -c "cat /var/log/eb-engine.log"
 
 npm-init-default:
 	npm init -y
