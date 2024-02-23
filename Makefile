@@ -1708,7 +1708,7 @@ db-pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-pg-dump-default:
-	eb ssh -c $(DATABASE_URL)
+	eb ssh -c "$(DATABASE_URL)"
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
