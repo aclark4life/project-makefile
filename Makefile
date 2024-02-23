@@ -92,6 +92,34 @@ DATABASE_NAME := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_
 	url = dj_database_url.parse(url); \
 	print(url["NAME"])'`
 
+# EB_SSH_COMMAND := "eb ssh -c \"source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL\""
+# 
+# DATABASE_INFO := $(shell $(EB_SSH_COMMAND) | awk -F\= '{print $$2}')
+# 
+# DATABASE_HOST := $(shell echo $(DATABASE_INFO) | python -c 'import dj_database_url; url = input(); \
+#                     url = dj_database_url.parse(url); print(url["HOST"])')
+# 
+# DATABASE_PASSWORD := $(shell echo $(DATABASE_INFO) | python -c 'import dj_database_url; url = input(); \
+#                         url = dj_database_url.parse(url); print(url["PASSWORD"])')
+# 
+# DATABASE_USER := $(shell echo $(DATABASE_INFO) | python -c 'import dj_database_url; url = input(); \
+#                     url = dj_database_url.parse(url); print(url["USER"])')
+# 
+# DATABASE_NAME := $(shell echo $(DATABASE_INFO) | python -c 'import dj_database_url; url = input(); \
+#                     url = dj_database_url.parse(url); print(url["NAME"])')
+
+
+# EB_SSH_COMMAND := eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL"
+# DATABASE_INFO := $(shell $(EB_SSH_COMMAND))
+# 
+# DATABASE_HOST := $(shell echo $(DATABASE_INFO) | awk -F '=' '{print $$2}' | xargs python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["HOST"])')
+# 
+# DATABASE_PASSWORD := $(shell echo $(DATABASE_INFO) | awk -F '=' '{print $$2}' | xargs python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
+# 
+# DATABASE_USER := $(shell echo $(DATABASE_INFO) | awk -F '=' '{print $$2}' | xargs python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
+# 
+# DATABASE_NAME := $(shell echo $(DATABASE_INFO) | awk -F '=' '{print $$2}' | xargs python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
+
 # --------------------------------------------------------------------------------
 # More variables
 # --------------------------------------------------------------------------------
@@ -1725,7 +1753,7 @@ db-pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-pg-dump-default:
-	@eb ssh -c "export PGPASSWORD=$(DATABASE_PASSWORD); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)"
+	@eb ssh -c "export PGPASSWORD=$(DATABASE_PASSWORD); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > @$.sql
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
