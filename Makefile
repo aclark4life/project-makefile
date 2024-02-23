@@ -68,18 +68,33 @@ DEL_DIR := rm -rv
 DEL_FILE := rm -v
 GIT_ADD := git add
 
+DATABASE_HOST := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+	awk -F\= '{print $$2}' | \
+	python -c 'import dj_database_url; url = input(); \
+	url = dj_database_url.parse(url); \
+	print(url["HOST"])'`
+
+DATABASE_PASSWORD := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+	awk -F\= '{print $$2}' | \
+	python -c 'import dj_database_url; url = input(); \
+	url = dj_database_url.parse(url); \
+	print(url["PASSWORD"])'`
+
+DATABASE_USER := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+	awk -F\= '{print $$2}' | \
+	python -c 'import dj_database_url; url = input(); \
+	url = dj_database_url.parse(url); \
+	print(url["USER"])'`
+
+DATABASE_NAME := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+	awk -F\= '{print $$2}' | \
+	python -c 'import dj_database_url; url = input(); \
+	url = dj_database_url.parse(url); \
+	print(url["NAME"])'`
 
 # --------------------------------------------------------------------------------
 # More variables
 # --------------------------------------------------------------------------------
-
-define DATABASE_URL
-source /opt/elasticbeanstalk/deployment/custom_env_var; \
-	env | \
-	grep DATABASE_URL | \
-	awk -F\= '{print \\$$2}'
-	# python -c 'import dj_database_url; dj_database_url.parse(print(input()))'
-endef
 
 define DOCKER_FILE
 FROM node:20-alpine as build-node
@@ -1710,7 +1725,7 @@ db-pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-pg-dump-default:
-	eb ssh -c "$(DATABASE_URL)"
+	eb ssh -c "export PGPASSWORD=$(DATABASE_PASSWORD); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)"
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
@@ -1733,7 +1748,7 @@ pip-install-test-default:
 	pip3 install -r requirements-test.txt
 
 pip-install-upgrade-default:
-	cat requirements.txt | awk -F \= '{print $$1}' > $(TMPDIR)/requirements.txt
+	cat requirements.txt | awk -F\= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	pip3 install -U -r requirements.txt
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
