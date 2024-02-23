@@ -2041,7 +2041,7 @@ clean-default: wagtail-clean
 cp-default: git-commit-push
 d-default: deploy
 deploy-default: eb-deploy
-db-dump-default: db-pg-export
+db-export-default: db-pg-export
 db-import-default: db-pg-import
 db-init-default: db-pg-init
 django-clean-default: wagtail-clean
