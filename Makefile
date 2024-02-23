@@ -76,7 +76,8 @@ GIT_ADD := git add
 define DATABASE_URL
 source /opt/elasticbeanstalk/deployment/custom_env_var; \
 	env | \
-	grep DATABASE_URL
+	grep DATABASE_URL | \
+	python -c 'print(input())'
 endef
 
 define DOCKER_FILE
