@@ -77,8 +77,8 @@ define DATABASE_URL
 source /opt/elasticbeanstalk/deployment/custom_env_var; \
 	env | \
 	grep DATABASE_URL | \
-	awk -F\= '{print $$2}' | \
-	python -c 'import dj_database_url; dj_database_url.parse(print(input()))'
+	awk -F\= '{print $$2}'
+	# python -c 'import dj_database_url; dj_database_url.parse(print(input()))'
 endef
 
 define DOCKER_FILE
