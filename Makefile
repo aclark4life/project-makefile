@@ -648,7 +648,9 @@ define BASE_TEMPLATE
                     {% endfor %}
                 </div>
             {% endif %}
-            {% block content %}{% endblock %}
+			<div class="container">
+            	{% block content %}{% endblock %}
+			</div>
 		</main>
         {% include 'footer.html' %}
         {% include 'offcanvas.html' %}
@@ -1845,6 +1847,9 @@ wagtail-privacy-default:
 	@echo "INSTALLED_APPS.append('privacy')" >> $(SETTINGS)
 	python manage.py makemigrations privacy
 	$(GIT_ADD) privacy/
+
+wagtail-base-default:
+	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
 
 wagtail-clean-default:
 	-$(DEL_DIR) home
