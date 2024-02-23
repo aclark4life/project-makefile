@@ -1725,7 +1725,7 @@ db-pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-pg-dump-default:
-	eb ssh -c "export PGPASSWORD=$(DATABASE_PASSWORD); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)"
+	@eb ssh -c "export PGPASSWORD=$(DATABASE_PASSWORD); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)"
 
 pip-freeze-default:
 	pip3 freeze | sort > $(TMPDIR)/requirements.txt
