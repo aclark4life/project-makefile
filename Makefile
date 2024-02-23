@@ -648,9 +648,7 @@ define BASE_TEMPLATE
                     {% endfor %}
                 </div>
             {% endif %}
-			<div class="container">
-            	{% block content %}{% endblock %}
-			</div>
+            {% block content %}{% endblock %}
 		</main>
         {% include 'footer.html' %}
         {% include 'offcanvas.html' %}
