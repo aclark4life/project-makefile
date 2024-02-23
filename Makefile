@@ -2061,6 +2061,7 @@ install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
 lint: lint-djlint
+logs: eg-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
