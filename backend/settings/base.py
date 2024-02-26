@@ -220,3 +220,6 @@ INSTALLED_APPS.append('siteuser')
 AUTH_USER_MODEL = 'siteuser.User'
 INSTALLED_APPS.append('privacy')
 INSTALLED_APPS.append('contactpage')
+INSTALLED_APPS.append('defaultpage')
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
