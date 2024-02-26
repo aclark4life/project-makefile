@@ -837,7 +837,7 @@ define HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
 {% block content %}
-    <main class="{% block main_class %}{% endblock %}">
+    <main class="container {% block main_class %}{% endblock %}">
         {% for block in page.marketing_blocks %}
            {% include_block block %}
         {% endfor %}
