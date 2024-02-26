@@ -9,3 +9,5 @@ class User(AbstractUser):
     )
     
     user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
+    
+    bio = models.TextField(blank=True, null=True)
