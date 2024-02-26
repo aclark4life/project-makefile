@@ -1519,9 +1519,16 @@ wagtail-contactpage-default:
 	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
 	python manage.py makemigrations contactpage
-	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
-	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
 	$(GIT_ADD) contactpage/
+
+wagtail-basicpage-default:
+	python manage.py startapp basicpage
+	@echo "$$BASIC_PAGE_MODEL" > basicpage/models.py
+	$(ADD_DIR) basicpage/templates/basicpage/
+	@echo "$$BASIC_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
+	@echo "INSTALLED_APPS.append('basicpage')" >> $(SETTINGS)
+	python manage.py makemigrations basicpage
+	$(GIT_ADD) basicpage/
 
 django-secret-default:
 	python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -1867,7 +1874,7 @@ wagtail-clean-default:
 	-$(DEL_FILE) manage.py
 	-$(DEL_FILE) requirements.txt
 
-wagtail-homepage-app-default:
+wagtail-homepage-default:
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
 	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	$(ADD_DIR) home/templates/blocks
@@ -1909,6 +1916,10 @@ django-frontend-app-default:
 	$(GIT_ADD) frontend
 	-git commit -a -m "Add frontend"
 
+django-crispy-default:
+	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
+	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
+
 wagtail-init-default: db-init wagtail-install
 	wagtail start backend .
 	$(MAKE) pip-freeze
@@ -1921,7 +1932,7 @@ wagtail-init-default: db-init wagtail-install
 	$(GIT_ADD) manage.py
 	$(GIT_ADD) Dockerfile
 	$(GIT_ADD) .dockerignore
-	$(MAKE) wagtail-homepage-app
+	$(MAKE) wagtail-homepage
 	$(MAKE) wagtail-search-urls
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
@@ -1929,6 +1940,10 @@ wagtail-init-default: db-init wagtail-install
 		$(MAKE) wagtail-privacy
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) wagtail-contactpage
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) wagtail-basicpage
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-crispy
 	$(MAKE) django-migrations
 	$(MAKE) django-migrate
 	$(MAKE) su
