@@ -626,8 +626,8 @@ define BASE_TEMPLATE
               color: #721c24;
           }
         </style>
-		{% include 'favicon.html' %}
-		{% csrf_token %}
+        {% include 'favicon.html' %}
+        {% csrf_token %}
     </head>
     <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
         <main class="flex-shrink-0">
@@ -649,9 +649,9 @@ define BASE_TEMPLATE
                 </div>
             {% endif %}
             <div class="container">
-				{% block content %}{% endblock %}
-			</div>
-		</main>
+                {% block content %}{% endblock %}
+            </div>
+        </main>
         {% include 'footer.html' %}
         {% include 'offcanvas.html' %}
         {% javascript_pack 'app' %}
