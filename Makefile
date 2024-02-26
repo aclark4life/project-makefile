@@ -218,15 +218,15 @@ define BASE_TEMPLATE
 </html>
 endef
 
-define SITE_PAGE_MODEL
+define STANDARD_PAGE_MODEL
 from wagtail.models import Page
 
 
-class SitePage(Page):
-    template = "sitepage/site_page.html"
+class StandardPage(Page):
+    template = "standardpage/standard_page.html"
 
     class Meta:
-        verbose_name = "Site Page"
+        verbose_name = "Standard Page"
 endef
 
 define BLOCK_CAROUSEL
@@ -1309,7 +1309,7 @@ from .models import User
 admin.site.register(User, UserAdmin)
 endef
 
-define SITE_PAGE_TEMPLATE
+define STANDARD_PAGE_TEMPLATE
 {% extends 'base.html' %}
 {% block content %}
     <h1>{{ page.title }}</h1>
@@ -1420,8 +1420,8 @@ export REACT_CONTEXT_USER_PROVIDER
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
 export SETTINGS_THEMES
-export SITE_PAGE_MODEL
-export SITE_PAGE_TEMPLATE
+export STANDARD_PAGE_MODEL
+export STANDARD_PAGE_TEMPLATE
 export SITEUSER_MODEL
 export SITEUSER_ADMIN
 export SITEUSER_URLS
@@ -1528,14 +1528,14 @@ wagtail-contactpage-default:
 	python manage.py makemigrations contactpage
 	$(GIT_ADD) contactpage/
 
-wagtail-sitepage-default:
-	python manage.py startapp sitepage
-	@echo "$$SITE_PAGE_MODEL" > sitepage/models.py
-	$(ADD_DIR) sitepage/templates/sitepage/
-	@echo "$$SITE_PAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
-	@echo "INSTALLED_APPS.append('sitepage')" >> $(SETTINGS)
-	python manage.py makemigrations sitepage
-	$(GIT_ADD) sitepage/
+wagtail-standardpage-default:
+	python manage.py startapp standardpage
+	@echo "$$STANDARD_PAGE_MODEL" > standardpage/models.py
+	$(ADD_DIR) standardpage/templates/standardpage/
+	@echo "$$STANDARD_PAGE_TEMPLATE" > standardpage/templates/standardpage/standard_page.html
+	@echo "INSTALLED_APPS.append('standardpage')" >> $(SETTINGS)
+	python manage.py makemigrations standardpage
+	$(GIT_ADD) standardpage/
 
 django-secret-default:
 	python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -1948,7 +1948,7 @@ wagtail-init-default: db-init wagtail-install
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) wagtail-contactpage
 	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) wagtail-sitepage
+		$(MAKE) wagtail-standardpage
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-crispy
 	$(MAKE) django-migrations
