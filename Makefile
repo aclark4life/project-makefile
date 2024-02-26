@@ -218,7 +218,7 @@ define BASE_TEMPLATE
 </html>
 endef
 
-define BASIC_PAGE_MODEL
+define DEFAULT_PAGE_MODEL
 from wagtail.models import Page
 
 
@@ -1381,8 +1381,6 @@ export AUTHENTICATION_BACKENDS
 export BABELRC
 export BACKEND_URLS
 export BASE_TEMPLATE
-export BASIC_PAGE_MODEL
-export BASIC_PAGE_TEMPLATE
 export BLOCK_CAROUSEL
 export BLOCK_MARKETING
 export COMPONENT_CLOCK
@@ -1392,6 +1390,8 @@ export CONTACT_PAGE_MODEL
 export CONTACT_PAGE_TEMPLATE
 export CONTACT_PAGE_LANDING
 export CONTACT_PAGE_TEST
+export DEFAULT_PAGE_MODEL
+export DEFAULT_PAGE_TEMPLATE
 export DOCKER_FILE
 export ESLINTRC
 export FAVICON_TEMPLATE
@@ -1523,9 +1523,9 @@ wagtail-contactpage-default:
 
 wagtail-defaultpage-default:
 	python manage.py startapp defaultpage
-	@echo "$$BASIC_PAGE_MODEL" > defaultpage/models.py
+	@echo "$$DEFAULT_PAGE_MODEL" > defaultpage/models.py
 	$(ADD_DIR) defaultpage/templates/defaultpage/
-	@echo "$$BASIC_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
+	@echo "$$DEFAULT_PAGE_TEMPLATE" > defaultpage/templates/defaultpage/default_page.html
 	@echo "INSTALLED_APPS.append('defaultpage')" >> $(SETTINGS)
 	python manage.py makemigrations defaultpage
 	$(GIT_ADD) defaultpage/
