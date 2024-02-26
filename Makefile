@@ -855,6 +855,11 @@ define SITEUSER_TEMPLATE
 
 {% block content %}
 <h2>User Profile</h2>
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'user-edit' pk= {{ user.id }}%}">Edit</a>
+  </li>
+</ul>
 <p>Username: {{ user.username }}</p>
 <p>Theme: {{ user.user_theme_preference }}</p>
 {% endblock %}
@@ -930,11 +935,12 @@ endef
 
 define SITEUSER_URLS
 from django.urls import path
-from .views import UserProfileView, UpdateThemePreferenceView
+from .views import UserProfileView, UpdateThemePreferenceView, UserEditView
 
 urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='user-profile'),
     path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
+    path('<int:pk>/edit/', UserEditView.as_view(), name='user-edit'),
 ]
 endef
 
@@ -1438,9 +1444,9 @@ export SITE_PAGE_TEMPLATE
 export SITEUSER_MODEL
 export SITEUSER_ADMIN
 export SITEUSER_URLS
-export SEARCH_URLS
 export SITEUSER_VIEW
 export SITEUSER_TEMPLATE
+export SEARCH_URLS
 export THEME_BLUE
 export THEME_TOGGLER
 export WEBPACK_CONFIG_JS
