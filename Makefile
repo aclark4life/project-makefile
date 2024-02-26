@@ -857,7 +857,7 @@ define SITEUSER_TEMPLATE
 <h2>User Profile</h2>
 <ul class="nav justify-content-end">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'user-edit' pk= {{ user.id }}%}">Edit</a>
+    <a class="nav-link active" aria-current="page" href="{% url 'user-edit' pk={{ user.id }} %}">Edit</a>
   </li>
 </ul>
 <p>Username: {{ user.username }}</p>
