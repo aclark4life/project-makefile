@@ -246,6 +246,67 @@ define BASE_TEMPLATE
 </html>
 endef
 
+define BASIC_PAGE_MODEL
+from wagtail.models import Page
+
+
+class BasicPage(Page):
+    template = "basicpage/basic_page.html"
+
+    class Meta:
+        verbose_name = "Basic Page"
+endef
+
+define BLOCK_CAROUSEL
+        <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-indicators">
+                {% for image in block.value.images %}
+                    <button type="button"
+                            data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide-to="{{ forloop.counter0 }}"
+                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                            aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+                {% for image in block.value.images %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>{{ image.title }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+endef
+
+define BLOCK_MARKETING
+{% load wagtailcore_tags %}
+<div class="{{ self.block_class }}">
+    {% if block.value.images.0 %}
+        {% include 'blocks/carousel_block.html' %}
+    {% else %}
+        {{ self.title }}
+        {{ self.content }}
+    {% endif %}
+</div>
+endef
+
 define DOCKER_FILE
 FROM node:20-alpine as build-node
 FROM python:3.12-bullseye as build-python
@@ -707,17 +768,6 @@ define PRIVACY_PAGE_TEMPLATE
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
 endef
 
-define BASIC_PAGE_MODEL
-from wagtail.models import Page
-
-
-class BasicPage(Page):
-    template = "basicpage/basic_page.html"
-
-    class Meta:
-        verbose_name = "Basic Page"
-endef
-
 define HOME_PAGE_MODEL
 from django.db import models
 from wagtail.models import Page
@@ -781,56 +831,6 @@ define HOME_PAGE_TEMPLATE
         {% endfor %}
     </main>
 {% endblock %}
-endef
-
-define BLOCK_CAROUSEL
-        <div id="carouselExampleCaptions" class="carousel slide">
-            <div class="carousel-indicators">
-                {% for image in block.value.images %}
-                    <button type="button"
-                            data-bs-target="#carouselExampleCaptions"
-                            data-bs-slide-to="{{ forloop.counter0 }}"
-                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
-                            aria-label="Slide {{ forloop.counter }}"></button>
-                {% endfor %}
-            </div>
-            <div class="carousel-inner">
-                {% for image in block.value.images %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>{{ image.title }}</h5>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <button class="carousel-control-prev"
-                    type="button"
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next"
-                    type="button"
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-endef
-
-define BLOCK_MARKETING
-{% load wagtailcore_tags %}
-<div class="{{ self.block_class }}">
-    {% if block.value.images.0 %}
-        {% include 'blocks/carousel_block.html' %}
-    {% else %}
-        {{ self.title }}
-        {{ self.content }}
-    {% endif %}
-</div>
 endef
 
 define CONTACT_PAGE_TEST
