@@ -1309,6 +1309,13 @@ from .models import User
 admin.site.register(User, UserAdmin)
 endef
 
+define SITE_PAGE_TEMPLATE
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ page.title }}</h1>
+{% endblock %}
+endef
+
 define THEME_TOGGLER
 document.addEventListener('DOMContentLoaded', function () {
     const rootElement = document.documentElement;
