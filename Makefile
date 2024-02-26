@@ -850,7 +850,20 @@ pipeline {
 }
 endef
 
-define SITEUSER_TEMPLATE
+define SITEUSER_EDIT_TEMPLATE
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Edit User</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save changes</button>
+  </form>
+{% endblock %}
+endef
+
+define SITEUSER_VIEW_TEMPLATE
 {% extends 'base.html' %}
 
 {% block content %}
@@ -1445,7 +1458,8 @@ export SITEUSER_MODEL
 export SITEUSER_ADMIN
 export SITEUSER_URLS
 export SITEUSER_VIEW
-export SITEUSER_TEMPLATE
+export SITEUSER_VIEW_TEMPLATE
+export SITEUSER_EDIT_TEMPLATE
 export SEARCH_URLS
 export THEME_BLUE
 export THEME_TOGGLER
@@ -1567,7 +1581,8 @@ django-siteuser-default:
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	$(ADD_DIR) siteuser/templates/
 	$(ADD_DIR) siteuser/management/commands
-	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/profile.html
+	@echo "$$SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
+	@echo "$$SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
 	@echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(SETTINGS)
 	python manage.py makemigrations siteuser
