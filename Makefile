@@ -373,7 +373,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
       {isAuthenticated ? (
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            User Menu
+          	<i class="fa-solid fa-user"></i>
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/user/profile">Profile</a></li>
