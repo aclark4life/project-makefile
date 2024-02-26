@@ -173,56 +173,62 @@ WAGTAILSEARCH_BACKENDS = {
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 WAGTAILADMIN_BASE_URL = "http://example.com"
 # project-makefile
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 import os
 
 import dj_database_url
 
-DATABASE_URL = os.environ.get('DATABASE_URL',          'postgres://:@:/project-makefile')
-DATABASES['default'] = dj_database_url.parse(DATABASE_URL)
-INSTALLED_APPS.append('webpack_boilerplate')
-INSTALLED_APPS.append('rest_framework')
-INSTALLED_APPS.append('rest_framework.authtoken')
-INSTALLED_APPS.append('allauth')
-INSTALLED_APPS.append('allauth.account')
-INSTALLED_APPS.append('allauth.socialaccount')
-INSTALLED_APPS.append('wagtailmenus')
-INSTALLED_APPS.append('wagtailmarkdown')
-INSTALLED_APPS.append('wagtail_modeladmin')
-INSTALLED_APPS.append('wagtailseo')
-INSTALLED_APPS.append('wagtail_color_panel')
-INSTALLED_APPS.append('wagtail.contrib.settings')
-INSTALLED_APPS.append('django_extensions')
-INSTALLED_APPS.append('crispy_forms')
-INSTALLED_APPS.append('crispy_bootstrap5')
-INSTALLED_APPS.append('django_recaptcha')
-MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')
-STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))
-WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/project-makefile")
+DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
+INSTALLED_APPS.append("webpack_boilerplate")
+INSTALLED_APPS.append("rest_framework")
+INSTALLED_APPS.append("rest_framework.authtoken")
+INSTALLED_APPS.append("allauth")
+INSTALLED_APPS.append("allauth.account")
+INSTALLED_APPS.append("allauth.socialaccount")
+INSTALLED_APPS.append("wagtailmenus")
+INSTALLED_APPS.append("wagtailmarkdown")
+INSTALLED_APPS.append("wagtail_modeladmin")
+INSTALLED_APPS.append("wagtailseo")
+INSTALLED_APPS.append("wagtail_color_panel")
+INSTALLED_APPS.append("wagtail.contrib.settings")
+INSTALLED_APPS.append("django_extensions")
+INSTALLED_APPS.append("crispy_forms")
+INSTALLED_APPS.append("crispy_bootstrap5")
+INSTALLED_APPS.append("django_recaptcha")
+MIDDLEWARE.append("allauth.account.middleware.AccountMiddleware")
+STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
+WEBPACK_LOADER = {
+    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ]
 }
 THEMES = [
-    ('light', 'Light Theme'),
-    ('dark', 'Dark Theme'),
+    ("light", "Light Theme"),
+    ("dark", "Dark Theme"),
 ]
-LOGIN_REDIRECT_URL = '/'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_REDIRECT_URL = "/"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
-TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')
-TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')
-SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
-INSTALLED_APPS.append('siteuser')
-AUTH_USER_MODEL = 'siteuser.User'
-INSTALLED_APPS.append('privacy')
-INSTALLED_APPS.append('contactpage')
-INSTALLED_APPS.append('standardpage')
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
-CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+    "wagtail.contrib.settings.context_processors.settings"
+)
+TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+    "wagtailmenus.context_processors.wagtailmenus"
+)
+SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
+INSTALLED_APPS.append("siteuser")
+AUTH_USER_MODEL = "siteuser.User"
+INSTALLED_APPS.append("privacy")
+INSTALLED_APPS.append("contactpage")
+INSTALLED_APPS.append("standardpage")
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
