@@ -854,11 +854,9 @@ define SITEUSER_TEMPLATE
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container">
-  <h2>User Profile</h2>
-  <p>Username: {{ user.username }}</p>
-  <p>Theme: {{ user.user_theme_preference }}</p>
-</div>
+<h2>User Profile</h2>
+<p>Username: {{ user.username }}</p>
+<p>Theme: {{ user.user_theme_preference }}</p>
 {% endblock %}
 endef
 
