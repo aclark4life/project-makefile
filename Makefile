@@ -1836,6 +1836,7 @@ sphinx-serve-default:
 
 wagtail-search-urls:
 	@echo "$$SEARCH_URLS" > search/urls.py
+	$(GIT_ADD) search
 
 wagtail-privacy-default:
 	python manage.py startapp privacy
@@ -1866,26 +1867,15 @@ wagtail-clean-default:
 	-$(DEL_FILE) manage.py
 	-$(DEL_FILE) requirements.txt
 
-wagtail-init-default: db-init wagtail-install
-	wagtail start backend .
-	$(MAKE) pip-freeze
-	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; $(MAKE) django-settings
-	export URLS=urls.py; $(MAKE) django-url-patterns
-	$(GIT_ADD) backend
-	$(GIT_ADD) requirements.txt
-	$(GIT_ADD) manage.py
-	$(GIT_ADD) Dockerfile
-	$(GIT_ADD) .dockerignore
+wagtail-homepage-app-default:
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
+	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
+	$(ADD_DIR) home/templates/blocks
+	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
+	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	$(GIT_ADD) home
-	$(MAKE) wagtail-search-urls
-	$(GIT_ADD) search
-	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
-	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-privacy
-	export SETTINGS=backend/settings/base.py; $(MAKE) wagtail-contactpage
-	$(MAKE) django-migrations
-	$(MAKE) django-migrate
-	$(MAKE) su
+
+wagtail-backend-templates-default:
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
 	@echo "$$HTML_HEADER" > backend/templates/header.html
@@ -1894,11 +1884,8 @@ wagtail-init-default: db-init wagtail-install
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	$(GIT_ADD) backend/templates/
-	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
-	$(ADD_DIR) home/templates/blocks
-	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
-	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
-	$(GIT_ADD) home/templates/blocks
+
+django-frontend-app-default:
 	python manage.py webpack_init --no-input
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
@@ -1921,13 +1908,37 @@ wagtail-init-default: db-init wagtail-install
 	$(GIT_ADD) home
 	$(GIT_ADD) frontend
 	-git commit -a -m "Add frontend"
+
+wagtail-init-default: db-init wagtail-install
+	wagtail start backend .
+	$(MAKE) pip-freeze
+	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
+		$(MAKE) django-settings
+	export URLS=urls.py; \
+		$(MAKE) django-url-patterns
+	$(GIT_ADD) backend
+	$(GIT_ADD) requirements.txt
+	$(GIT_ADD) manage.py
+	$(GIT_ADD) Dockerfile
+	$(GIT_ADD) .dockerignore
+	$(MAKE) wagtail-homepage-app
+	$(MAKE) wagtail-search-urls
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-siteuser
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) wagtail-privacy
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) wagtail-contactpage
+	$(MAKE) django-migrations
+	$(MAKE) django-migrate
+	$(MAKE) su
+	$(MAKE) wagtail-backend-templates
+	@$(MAKE) django-frontend-app
 	@$(MAKE) django-npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
-	@$(MAKE) cp
 	@$(MAKE) lint-isort
 	@$(MAKE) lint-black
-	@$(MAKE) cp
 	@$(MAKE) lint-flake
 	@$(MAKE) readme
 	@$(MAKE) gitignore
