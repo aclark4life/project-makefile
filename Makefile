@@ -93,7 +93,7 @@ DATABASE_NAME := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_
 	print(url["NAME"])'`
 
 # --------------------------------------------------------------------------------
-# More variables
+# Multi-line variables
 # --------------------------------------------------------------------------------
 
 define ALLAUTH_LAYOUT_BASE
