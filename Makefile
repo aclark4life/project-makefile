@@ -307,6 +307,103 @@ define BLOCK_MARKETING
 </div>
 endef
 
+define COMPONENT_USER_MENU
+// UserMenu.js
+import React from 'react';
+import PropTypes from 'prop-types';
+
+function handleLogout() {
+    window.location.href = '/accounts/logout';
+}
+
+const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
+  return (
+    <div> 
+      {isAuthenticated ? (
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i className="fa-solid fa-circle-user"></i>
+          </a>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" href="/user/profile">Profile</a></li>
+            {isSuperuser ? (
+              <>
+                <li><hr className="dropdown-divider"></hr></li>
+                <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
+                <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
+                <li><a className="dropdown-item" href="/api" target="_blank">Django REST framework</a></li>
+              </>
+            ) : null}
+            <li><hr className="dropdown-divider"></hr></li>
+            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
+          </ul>
+        </li>
+      ) : (
+        <li className="nav-item">
+          <a className={`nav-link text-$${textColor}`} href="/accounts/login"><i className="fa-solid fa-circle-user"></i></a>
+        </li>
+      )}
+    </div>
+  );
+};
+
+UserMenu.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  isSuperuser: PropTypes.bool.isRequired,
+  textColor: PropTypes.string,
+};
+
+export default UserMenu;
+endef
+
+define COMPONENT_CLOCK
+// Via ChatGPT
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
+
+const Clock = ({ color = '#fff' }) => {
+  const [date, setDate] = useState(new Date());
+  const [blink, setBlink] = useState(true);
+  const timerID = useRef();
+
+  const tick = useCallback(() => {
+    setDate(new Date());
+    setBlink(prevBlink => !prevBlink);
+  }, []);
+
+  useEffect(() => {
+    timerID.current = setInterval(() => tick(), 1000);
+
+    // Return a cleanup function to be run on component unmount
+    return () => clearInterval(timerID.current);
+  }, [tick]);
+
+  const formattedDate = date.toLocaleDateString(undefined, {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  const formattedTime = date.toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+
+  return (
+    <> 
+      <div style={{ animation: blink ? 'blink 1s infinite' : 'none' }}><span className='me-2'>{formattedDate}</span> {formattedTime}</div>
+    </>
+  );
+};
+
+Clock.propTypes = {
+  color: PropTypes.string,
+};
+
+export default Clock;
+endef
+
 define DOCKER_FILE
 FROM node:20-alpine as build-node
 FROM python:3.12-bullseye as build-python
@@ -540,103 +637,6 @@ useUserContext.propTypes = {
 };
 endef
 
-
-define COMPONENT_USER_MENU
-// UserMenu.js
-import React from 'react';
-import PropTypes from 'prop-types';
-
-function handleLogout() {
-    window.location.href = '/accounts/logout';
-}
-
-const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
-  return (
-    <div> 
-      {isAuthenticated ? (
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i className="fa-solid fa-circle-user"></i>
-          </a>
-          <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="/user/profile">Profile</a></li>
-            {isSuperuser ? (
-              <>
-                <li><hr className="dropdown-divider"></hr></li>
-                <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
-                <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
-                <li><a className="dropdown-item" href="/api" target="_blank">Django REST framework</a></li>
-              </>
-            ) : null}
-            <li><hr className="dropdown-divider"></hr></li>
-            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
-          </ul>
-        </li>
-      ) : (
-        <li className="nav-item">
-          <a className={`nav-link text-$${textColor}`} href="/accounts/login"><i className="fa-solid fa-circle-user"></i></a>
-        </li>
-      )}
-    </div>
-  );
-};
-
-UserMenu.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  isSuperuser: PropTypes.bool.isRequired,
-  textColor: PropTypes.string,
-};
-
-export default UserMenu;
-endef
-
-define COMPONENT_CLOCK
-// Via ChatGPT
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import PropTypes from 'prop-types';
-
-const Clock = ({ color = '#fff' }) => {
-  const [date, setDate] = useState(new Date());
-  const [blink, setBlink] = useState(true);
-  const timerID = useRef();
-
-  const tick = useCallback(() => {
-    setDate(new Date());
-    setBlink(prevBlink => !prevBlink);
-  }, []);
-
-  useEffect(() => {
-    timerID.current = setInterval(() => tick(), 1000);
-
-    // Return a cleanup function to be run on component unmount
-    return () => clearInterval(timerID.current);
-  }, [tick]);
-
-  const formattedDate = date.toLocaleDateString(undefined, {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
-  const formattedTime = date.toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-
-  return (
-    <> 
-      <div style={{ animation: blink ? 'blink 1s infinite' : 'none' }}><span className='me-2'>{formattedDate}</span> {formattedTime}</div>
-    </>
-  );
-};
-
-Clock.propTypes = {
-  color: PropTypes.string,
-};
-
-export default Clock;
-endef
 
 define FRONTEND_STYLES
 // If you comment out code below, bootstrap will use red as primary color
