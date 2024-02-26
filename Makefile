@@ -223,10 +223,10 @@ from wagtail.models import Page
 
 
 class BasicPage(Page):
-    template = "basicpage/basic_page.html"
+    template = "defaultpage/default_page.html"
 
     class Meta:
-        verbose_name = "Basic Page"
+        verbose_name = "Default Page"
 endef
 
 define BLOCK_CAROUSEL
@@ -1521,14 +1521,14 @@ wagtail-contactpage-default:
 	python manage.py makemigrations contactpage
 	$(GIT_ADD) contactpage/
 
-wagtail-basicpage-default:
-	python manage.py startapp basicpage
-	@echo "$$BASIC_PAGE_MODEL" > basicpage/models.py
-	$(ADD_DIR) basicpage/templates/basicpage/
+wagtail-defaultpage-default:
+	python manage.py startapp defaultpage
+	@echo "$$BASIC_PAGE_MODEL" > defaultpage/models.py
+	$(ADD_DIR) defaultpage/templates/defaultpage/
 	@echo "$$BASIC_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
-	@echo "INSTALLED_APPS.append('basicpage')" >> $(SETTINGS)
-	python manage.py makemigrations basicpage
-	$(GIT_ADD) basicpage/
+	@echo "INSTALLED_APPS.append('defaultpage')" >> $(SETTINGS)
+	python manage.py makemigrations defaultpage
+	$(GIT_ADD) defaultpage/
 
 django-secret-default:
 	python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -1941,7 +1941,7 @@ wagtail-init-default: db-init wagtail-install
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) wagtail-contactpage
 	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) wagtail-basicpage
+		$(MAKE) wagtail-defaultpage
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-crispy
 	$(MAKE) django-migrations
