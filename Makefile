@@ -124,6 +124,128 @@ DATABASE_NAME := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_
 # More variables
 # --------------------------------------------------------------------------------
 
+define ALLAUTH_LAYOUT_BASE
+{% extends 'base.html' %}
+endef
+
+define AUTHENTICATION_BACKENDS
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+endef
+
+define BABELRC
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "3.0.0"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-class-properties"
+  ]
+}
+endef
+
+define BASE_TEMPLATE
+{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
+
+<!DOCTYPE html>
+<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% wagtail_site as current_site %}
+            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        {% if page.search_description %}
+        <meta name="description" content="{{ page.search_description }}" />
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+        <base target="_blank">
+        {% endif %}
+
+        {% stylesheet_pack 'app' %}
+
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+
+        <style>
+          .success {
+              background-color: #d4edda;
+              border-color: #c3e6cb;
+              color: #155724;
+          }
+          .info {
+              background-color: #d1ecf1;
+              border-color: #bee5eb;
+              color: #0c5460;
+          }
+          .warning {
+              background-color: #fff3cd;
+              border-color: #ffeeba;
+              color: #856404;
+          }
+          .danger {
+              background-color: #f8d7da;
+              border-color: #f5c6cb;
+              color: #721c24;
+          }
+        </style>
+        {% include 'favicon.html' %}
+        {% csrf_token %}
+    </head>
+    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            {% wagtailuserbar %}
+            <div id="app"></div>
+            {% include 'header.html' %}
+            {% if messages %}
+                <div class="messages container">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        {% include 'footer.html' %}
+        {% include 'offcanvas.html' %}
+        {% javascript_pack 'app' %}
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
+endef
+
 define DOCKER_FILE
 FROM node:20-alpine as build-node
 FROM python:3.12-bullseye as build-python
@@ -509,27 +631,6 @@ const App = () => (
 root.render(<App />);
 endef
 
-define BABELRC
-{
-  "presets": [
-    [
-      "@babel/preset-react",
-    ],
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "usage",
-        "corejs": "3.0.0"
-      }
-    ]
-  ],
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-class-properties"
-  ]
-}
-endef
-
 define ESLINTRC
 {
     "env": {
@@ -572,96 +673,6 @@ define ESLINTRC
 }
 endef
 
-define BASE_TEMPLATE
-{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
-
-<!DOCTYPE html>
-<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
-    <head>
-        <meta charset="utf-8" />
-        <title>
-            {% block title %}
-            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
-            {% endblock %}
-            {% block title_suffix %}
-            {% wagtail_site as current_site %}
-            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
-            {% endblock %}
-        </title>
-        {% if page.search_description %}
-        <meta name="description" content="{{ page.search_description }}" />
-        {% endif %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request.in_preview_panel %}
-        <base target="_blank">
-        {% endif %}
-
-        {% stylesheet_pack 'app' %}
-
-        {% block extra_css %}
-        {# Override this in templates to add extra stylesheets #}
-        {% endblock %}
-
-        <style>
-          .success {
-              background-color: #d4edda;
-              border-color: #c3e6cb;
-              color: #155724;
-          }
-          .info {
-              background-color: #d1ecf1;
-              border-color: #bee5eb;
-              color: #0c5460;
-          }
-          .warning {
-              background-color: #fff3cd;
-              border-color: #ffeeba;
-              color: #856404;
-          }
-          .danger {
-              background-color: #f8d7da;
-              border-color: #f5c6cb;
-              color: #721c24;
-          }
-        </style>
-        {% include 'favicon.html' %}
-        {% csrf_token %}
-    </head>
-    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
-        <main class="flex-shrink-0">
-            {% wagtailuserbar %}
-            <div id="app"></div>
-            {% include 'header.html' %}
-            {% if messages %}
-                <div class="messages container">
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show"
-                             role="alert">
-                            {{ message }}
-                            <button type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="container">
-                {% block content %}{% endblock %}
-            </div>
-        </main>
-        {% include 'footer.html' %}
-        {% include 'offcanvas.html' %}
-        {% javascript_pack 'app' %}
-        {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
-        {% endblock %}
-    </body>
-</html>
-endef
-
 define FAVICON_TEMPLATE
 {% load static %}
 <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
@@ -694,6 +705,17 @@ define PRIVACY_PAGE_TEMPLATE
 {% extends 'base.html' %}
 {% load wagtailmarkdown %}
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
+endef
+
+define BASIC_PAGE_MODEL
+from wagtail.models import Page
+
+
+class BasicPage(Page):
+    template = "basicpage/basic_page.html"
+
+    class Meta:
+        verbose_name = "Basic Page"
 endef
 
 define HOME_PAGE_MODEL
@@ -749,8 +771,16 @@ class HomePage(Page):
         verbose_name = 'Home Page'
 endef
 
-define ALLAUTH_LAYOUT_BASE
-{% extends 'base.html' %}
+define HOME_PAGE_TEMPLATE
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+        {% for block in page.marketing_blocks %}
+           {% include_block block %}
+        {% endfor %}
+    </main>
+{% endblock %}
 endef
 
 define BLOCK_CAROUSEL
@@ -835,18 +865,6 @@ class ContactPageTest(WagtailPageTestCase):
         self.assertEqual(response.status_code, 200)
 endef
 
-define HOME_PAGE_TEMPLATE
-{% extends "base.html" %}
-{% load wagtailcore_tags %}
-{% block content %}
-    <main class="{% block main_class %}{% endblock %}">
-        {% for block in page.marketing_blocks %}
-           {% include_block block %}
-        {% endfor %}
-    </main>
-{% endblock %}
-endef
-
 define JENKINS_FILE
 pipeline {
     agent any
@@ -858,13 +876,6 @@ pipeline {
         }
     }
 }
-endef
-
-define AUTHENTICATION_BACKENDS
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
 endef
 
 define SITEUSER_TEMPLATE
@@ -1400,6 +1411,8 @@ export AUTHENTICATION_BACKENDS
 export BABELRC
 export BACKEND_URLS
 export BASE_TEMPLATE
+export BASIC_PAGE_MODEL
+export BASIC_PAGE_TEMPLATE
 export BLOCK_CAROUSEL
 export BLOCK_MARKETING
 export COMPONENT_CLOCK
