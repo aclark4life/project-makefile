@@ -37,7 +37,6 @@
      toolbar: 'bold italic | bullist numlist | link emoticons',
      skin: false,
      content_css: false,
-     content_style: contentUiCss.toString() + '
-' + contentCss.toString(),
+     content_style: contentUiCss.toString() + ' ' + contentCss.toString(),
    });
- };
+ }
