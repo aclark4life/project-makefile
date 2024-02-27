@@ -1167,6 +1167,18 @@ define PRIVACY_PAGE_TEMPLATE
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
 endef
 
+define SITEUSER_FORM
+from django import forms
+from django.contrib.auth.forms import UserChangeForm
+from .models import User
+
+class SiteUserForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = User
+
+    # Override the widget for the bio field
+    bio = forms.CharField(widget=forms.Textarea(attrs={'id': 'editor'}))
+endef
 
 define SITEUSER_MODEL
 from django.db import models
@@ -1242,7 +1254,8 @@ from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 
-from siteuser.models import User
+from .models import User
+from .forms import SiteUserForm
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
@@ -1284,6 +1297,7 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'user_edit.html'  # Create this template in your templates folder
     fields = ['username', 'email', 'user_theme_preference', 'bio']  # Specify the fields you want to edit
+	form_class = SiteUserForm
 
     def get_success_url(self):
         # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
@@ -1472,6 +1486,7 @@ export PRIVACY_PAGE_TEMPLATE
 export SETTINGS_THEMES
 export SITEPAGE_MODEL
 export SITEPAGE_TEMPLATE
+export SITEUSER_FORM
 export SITEUSER_MODEL
 export SITEUSER_ADMIN
 export SITEUSER_URLS
@@ -1594,6 +1609,7 @@ django-secret-default:
 
 django-siteuser-default:
 	python manage.py startapp siteuser
+	@echo "$$SITEUSER_FORM" > siteuser/forms.py
 	@echo "$$SITEUSER_MODEL" > siteuser/models.py
 	@echo "$$SITEUSER_ADMIN" > siteuser/admin.py
 	@echo "$$SITEUSER_VIEW" > siteuser/views.py
