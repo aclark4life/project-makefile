@@ -218,16 +218,6 @@ define BASE_TEMPLATE
 </html>
 endef
 
-define SITE_PAGE_MODEL
-from wagtail.models import Page
-
-
-class SitePage(Page):
-    template = "sitepage/site_page.html"
-
-    class Meta:
-        verbose_name = "Site Page"
-endef
 
 define BLOCK_CAROUSEL
         <div id="carouselExampleCaptions" class="carousel slide">
@@ -734,95 +724,17 @@ pipeline {
 }
 endef
 
-define SITEUSER_EDIT_TEMPLATE
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
+define SITEPAGE_MODEL
+from wagtail.models import Page
 
-{% block content %}
-  <h2>Edit User</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit">Save changes</button>
-  </form>
-{% endblock %}
+
+class SitePage(Page):
+    template = "sitepage/site_page.html"
+
+    class Meta:
+        verbose_name = "Site Page"
 endef
 
-define SITEUSER_VIEW_TEMPLATE
-{% extends 'base.html' %}
-
-{% block content %}
-<h2>User Profile</h2>
-<ul class="nav justify-content-end">
-  <li class="nav-item">
-    <a class="nav-link active border rounded" aria-current="page" href="{% url 'user-edit' pk=user.id %}">Edit</a>
-  </li>
-</ul>
-<p>Username: {{ user.username }}</p>
-<p>Theme: {{ user.user_theme_preference }}</p>
-<p>Bio: {{ user.bio|default:"" }}</p>
-{% endblock %}
-endef
-
-define SITEUSER_VIEW
-import json
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import DetailView
-from django.views.generic.edit import UpdateView
-from django.urls import reverse_lazy
-
-from siteuser.models import User
-
-
-class UserProfileView(LoginRequiredMixin, DetailView):
-    model = User
-    template_name = "profile.html"
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-
-@method_decorator(csrf_exempt, name="dispatch")
-class UpdateThemePreferenceView(View):
-    def post(self, request, *args, **kwargs):
-        try:
-            data = json.loads(request.body.decode("utf-8"))
-            new_theme = data.get("theme")
-
-            # Perform the logic to update the theme preference in your database or storage
-
-            # Assuming you have a logged-in user, get the user instance
-            user = request.user
-
-            # Update the user's theme preference
-            user.user_theme_preference = new_theme
-            user.save()
-
-            # For demonstration purposes, we'll just return the updated theme in the response
-            response_data = {"theme": new_theme}
-
-            return JsonResponse(response_data)
-        except json.JSONDecodeError as e:
-            return JsonResponse({"error": e}, status=400)
-
-    def http_method_not_allowed(self, request, *args, **kwargs):
-        return JsonResponse({"error": "Invalid request method"}, status=405)
-
-
-class UserEditView(LoginRequiredMixin, UpdateView):
-    model = User
-    template_name = 'user_edit.html'  # Create this template in your templates folder
-    fields = ['username', 'email', 'user_theme_preference', 'bio']  # Specify the fields you want to edit
-
-    def get_success_url(self):
-        # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
-        return reverse_lazy('user-profile')
-endef
 
 define SEARCH_URLS
 from django.urls import path
@@ -1282,7 +1194,97 @@ from .models import User
 admin.site.register(User, UserAdmin)
 endef
 
-define SITE_PAGE_TEMPLATE
+define SITEUSER_EDIT_TEMPLATE
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2>Edit User</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit">Save changes</button>
+  </form>
+{% endblock %}
+endef
+
+define SITEUSER_VIEW_TEMPLATE
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>User Profile</h2>
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link active border rounded" aria-current="page" href="{% url 'user-edit' pk=user.id %}">Edit</a>
+  </li>
+</ul>
+<p>Username: {{ user.username }}</p>
+<p>Theme: {{ user.user_theme_preference }}</p>
+<p>Bio: {{ user.bio|default:"" }}</p>
+{% endblock %}
+endef
+
+define SITEUSER_VIEW
+import json
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import DetailView
+from django.views.generic.edit import UpdateView
+from django.urls import reverse_lazy
+
+from siteuser.models import User
+
+
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "profile.html"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UpdateThemePreferenceView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            new_theme = data.get("theme")
+
+            # Perform the logic to update the theme preference in your database or storage
+
+            # Assuming you have a logged-in user, get the user instance
+            user = request.user
+
+            # Update the user's theme preference
+            user.user_theme_preference = new_theme
+            user.save()
+
+            # For demonstration purposes, we'll just return the updated theme in the response
+            response_data = {"theme": new_theme}
+
+            return JsonResponse(response_data)
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": e}, status=400)
+
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+class UserEditView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'user_edit.html'  # Create this template in your templates folder
+    fields = ['username', 'email', 'user_theme_preference', 'bio']  # Specify the fields you want to edit
+
+    def get_success_url(self):
+        # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
+        return reverse_lazy('user-profile')
+endef
+
+define SITEPAGE_TEMPLATE
 {% extends 'base.html' %}
 {% block content %}
     <h1>{{ page.title }}</h1>
@@ -1436,8 +1438,8 @@ export FRONTEND_CONTEXT_USER_PROVIDER
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
 export SETTINGS_THEMES
-export SITE_PAGE_MODEL
-export SITE_PAGE_TEMPLATE
+export SITEPAGE_MODEL
+export SITEPAGE_TEMPLATE
 export SITEUSER_MODEL
 export SITEUSER_ADMIN
 export SITEUSER_URLS
@@ -1547,9 +1549,9 @@ wagtail-contactpage-default:
 
 wagtail-sitepage-default:
 	python manage.py startapp sitepage
-	@echo "$$SITE_PAGE_MODEL" > sitepage/models.py
+	@echo "$$SITEPAGE_MODEL" > sitepage/models.py
 	$(ADD_DIR) sitepage/templates/sitepage/
-	@echo "$$SITE_PAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
+	@echo "$$SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
 	@echo "INSTALLED_APPS.append('sitepage')" >> $(SETTINGS)
 	python manage.py makemigrations sitepage
 	$(GIT_ADD) sitepage/
