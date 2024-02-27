@@ -609,7 +609,6 @@ useUserContext.propTypes = {
 };
 endef
 
-
 define FRONTEND_STYLES
 // If you comment out code below, bootstrap will use red as primary color
 // and btn-primary will become red
@@ -1046,37 +1045,6 @@ define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
 endef
 
-define WEBPACK_CONFIG_JS
-const path = require('path');
-
-module.exports = {
-  mode: 'development',
-  entry: './src/index.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-};
-endef
-
-define WEBPACK_INDEX_JS
-const message = "Hello, World!";
-console.log(message);
-endef
-
-define WEBPACK_INDEX_HTML
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello, Webpack!</title>
-</head>
-<body>
-  <script src="dist/bundle.js"></script>
-</body>
-</html>
-endef
 
 define REACT_PORTAL
 // Via pwellever
@@ -1282,35 +1250,6 @@ ErrorBoundary.propTypes = {
 export default ErrorBoundary;
 endef
 
-define THEME_BLUE
-@import "~bootstrap/scss/bootstrap.scss";
-
-[data-bs-theme="blue"] {
-  --bs-body-color: var(--bs-white);
-  --bs-body-color-rgb: #{to-rgb($$white)};
-  --bs-body-bg: var(--bs-blue);
-  --bs-body-bg-rgb: #{to-rgb($$blue)};
-  --bs-tertiary-bg: #{$$blue-600};
-
-  .dropdown-menu {
-    --bs-dropdown-bg: #{color-mix($$blue-500, $$blue-600)};
-    --bs-dropdown-link-active-bg: #{$$blue-700};
-  }
-
-  .btn-secondary {
-    --bs-btn-bg: #{color-mix($gray-600, $blue-400, .5)};
-    --bs-btn-border-color: #{rgba($$white, .25)};
-    --bs-btn-hover-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 5%)};
-    --bs-btn-hover-border-color: #{rgba($$white, .25)};
-    --bs-btn-active-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 10%)};
-    --bs-btn-active-border-color: #{rgba($$white, .5)};
-    --bs-btn-focus-border-color: #{rgba($$white, .5)};
-
-    // --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, 20%);
-  }
-}
-endef
-
 define SITEUSER_MODEL
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
@@ -1340,7 +1279,6 @@ from django.contrib import admin
 
 from .models import User
 
-
 admin.site.register(User, UserAdmin)
 endef
 
@@ -1351,48 +1289,60 @@ define SITE_PAGE_TEMPLATE
 {% endblock %}
 endef
 
+define THEME_BLUE
+@import "~bootstrap/scss/bootstrap.scss";
+
+[data-bs-theme="blue"] {
+  --bs-body-color: var(--bs-white);
+  --bs-body-color-rgb: #{to-rgb($$white)};
+  --bs-body-bg: var(--bs-blue);
+  --bs-body-bg-rgb: #{to-rgb($$blue)};
+  --bs-tertiary-bg: #{$$blue-600};
+
+  .dropdown-menu {
+    --bs-dropdown-bg: #{color-mix($$blue-500, $$blue-600)};
+    --bs-dropdown-link-active-bg: #{$$blue-700};
+  }
+
+  .btn-secondary {
+    --bs-btn-bg: #{color-mix($gray-600, $blue-400, .5)};
+    --bs-btn-border-color: #{rgba($$white, .25)};
+    --bs-btn-hover-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 5%)};
+    --bs-btn-hover-border-color: #{rgba($$white, .25)};
+    --bs-btn-active-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 10%)};
+    --bs-btn-active-border-color: #{rgba($$white, .5)};
+    --bs-btn-focus-border-color: #{rgba($$white, .5)};
+
+    // --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, 20%);
+  }
+}
+endef
+
 define THEME_TOGGLER
 document.addEventListener('DOMContentLoaded', function () {
     const rootElement = document.documentElement;
-
-    // Theme toggle for anonymous users and authenticated users
     const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
     const authThemeToggle = document.getElementById('theme-toggler-authenticated');
-
     if (authThemeToggle) {
         localStorage.removeItem('data-bs-theme');
     }
-
-    // Get the theme preference from local storage
     const anonSavedTheme = localStorage.getItem('data-bs-theme');
-
-    // Set the initial theme based on the saved preference or default to light for anonymous users
     if (anonSavedTheme) {
         rootElement.setAttribute('data-bs-theme', anonSavedTheme);
     }
-
-    // Toggle the theme and save the preference on label click for anonymous users
     if (anonThemeToggle) {
         anonThemeToggle.addEventListener('click', function () {
             const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
             rootElement.setAttribute('data-bs-theme', newTheme);
             localStorage.setItem('data-bs-theme', newTheme);
         });
     }
-
-    // Check if authThemeToggle exists before adding the event listener
     if (authThemeToggle) {
-        // Get the CSRF token from the Django template
         const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        // Toggle the theme and save the preference on label click for authenticated users
         authThemeToggle.addEventListener('click', function () {
             const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-            // Update the theme on the server for authenticated users
             fetch('/user/update_theme_preference/', {
                 method: 'POST',
                 headers: {
@@ -1403,7 +1353,6 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(response => response.json())
             .then(data => {
-                // Update the theme on the client side for authenticated users
                 rootElement.setAttribute('data-bs-theme', newTheme);
             })
             .catch(error => {
@@ -1412,6 +1361,38 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+endef
+
+define WEBPACK_CONFIG_JS
+const path = require('path');
+
+module.exports = {
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+endef
+
+define WEBPACK_INDEX_HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello, Webpack!</title>
+</head>
+<body>
+  <script src="dist/bundle.js"></script>
+</body>
+</html>
+endef
+
+define WEBPACK_INDEX_JS
+const message = "Hello, World!";
+console.log(message);
 endef
 
 # ------------------------------------------------------------------------------  
@@ -1467,8 +1448,8 @@ export SEARCH_URLS
 export THEME_BLUE
 export THEME_TOGGLER
 export WEBPACK_CONFIG_JS
-export WEBPACK_INDEX_JS
 export WEBPACK_INDEX_HTML
+export WEBPACK_INDEX_JS
 
 # ------------------------------------------------------------------------------  
 # Rules
