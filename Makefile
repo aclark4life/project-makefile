@@ -852,7 +852,7 @@ endef
 
 define SITEUSER_EDIT_TEMPLATE
 {% extends 'base.html' %}
-{% load crispy_form_tags %}
+{% load crispy_forms_tags %}
 
 {% block content %}
   <h2>Edit User</h2>
