@@ -848,6 +848,7 @@ endef
 
 define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
+import '../utils/tinymce.js';
 endef
 
 define FRONTEND_PORTAL
