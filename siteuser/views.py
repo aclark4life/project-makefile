@@ -9,7 +9,8 @@ from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 
-from siteuser.models import User
+from .models import User
+from .forms import SiteUserForm
 
 
 class UserProfileView(LoginRequiredMixin, DetailView):
@@ -51,6 +52,7 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'user_edit.html'  # Create this template in your templates folder
     fields = ['username', 'email', 'user_theme_preference', 'bio']  # Specify the fields you want to edit
+	form_class = SiteUserForm
 
     def get_success_url(self):
         # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
