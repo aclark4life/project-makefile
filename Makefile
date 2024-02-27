@@ -376,47 +376,6 @@ Clock.propTypes = {
 export default Clock;
 endef
 
-define DOCKER_FILE
-FROM node:20-alpine as build-node
-FROM python:3.12-bullseye as build-python
-RUN useradd wagtail
-EXPOSE 8000
-ENV PYTHONUNBUFFERED=1 \
-    PORT=8000
-RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash - 
-RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    libjpeg62-turbo-dev \
-    zlib1g-dev \
-    libwebp-dev \
-    nodejs \
- && rm -rf /var/lib/apt/lists/*
-RUN pip install -U pip
-COPY requirements.txt /
-RUN pip install -r /requirements.txt
-WORKDIR /app
-RUN chown wagtail:wagtail /app
-COPY --chown=wagtail:wagtail . .
-RUN make django-npm-install django-npm-build
-RUN python manage.py collectstatic --noinput --clear
-CMD set -xe; python manage.py migrate --noinput; gunicorn backend.wsgi:application
-endef
-
-define GIT_IGNORE
-bin/
-__pycache__
-lib/
-lib64
-pyvenv.cfg
-node_modules/
-share/
-static/
-media/
-.elasticbeanstalk/
-dist/
-endef
-
 define CONTACT_PAGE_TEMPLATE
 {% extends 'base.html' %}
 {% load crispy_forms_tags static wagtailcore_tags %}
@@ -542,126 +501,52 @@ define CONTACT_PAGE_LANDING
 {% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
 endef
 
+define DOCKER_FILE
+FROM node:20-alpine as build-node
+FROM python:3.12-bullseye as build-python
+RUN useradd wagtail
+EXPOSE 8000
+ENV PYTHONUNBUFFERED=1 \
+    PORT=8000
+RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash - 
+RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    libjpeg62-turbo-dev \
+    zlib1g-dev \
+    libwebp-dev \
+    nodejs \
+ && rm -rf /var/lib/apt/lists/*
+RUN pip install -U pip
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
+WORKDIR /app
+RUN chown wagtail:wagtail /app
+COPY --chown=wagtail:wagtail . .
+RUN make django-npm-install django-npm-build
+RUN python manage.py collectstatic --noinput --clear
+CMD set -xe; python manage.py migrate --noinput; gunicorn backend.wsgi:application
+endef
+
+define GIT_IGNORE
+bin/
+__pycache__
+lib/
+lib64
+pyvenv.cfg
+node_modules/
+share/
+static/
+media/
+.elasticbeanstalk/
+dist/
+endef
+
+
 define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
 
-define REACT_CONTEXT_INDEX
-export { UserContextProvider as default } from './UserContextProvider';
-endef
-
-define REACT_CONTEXT_USER_PROVIDER
-// UserContextProvider.js
-import React, { createContext, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-
-const UserContext = createContext();
-
-export const UserContextProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const login = () => {
-    try {
-      // Add logic to handle login, set isAuthenticated to true
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Login error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  const logout = () => {
-    try {
-      // Add logic to handle logout, set isAuthenticated to false
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  return (
-    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-UserContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export const useUserContext = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error('useUserContext must be used within a UserContextProvider');
-  }
-
-  return context;
-};
-
-// Add PropTypes for the return value of useUserContext
-useUserContext.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-};
-endef
-
-define FRONTEND_STYLES
-// If you comment out code below, bootstrap will use red as primary color
-// and btn-primary will become red
-
-// $primary: red;
-
-@import "~bootstrap/scss/bootstrap.scss";
-
-.jumbotron {
-  // should be relative path of the entry scss file
-  background-image: url("../../vendors/images/sample.jpg");
-  background-size: cover;
-}
-
-#theme-toggler-authenticated:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-
-#theme-toggler-anonymous:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-endef
-
-define FRONTEND_APP
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import 'bootstrap';
-import '@fortawesome/fontawesome-free/js/fontawesome';
-import '@fortawesome/fontawesome-free/js/solid';
-import '@fortawesome/fontawesome-free/js/regular';
-import '@fortawesome/fontawesome-free/js/brands';
-import getDataComponents from '../dataComponents';
-import UserContextProvider from '../context';
-import * as components from '../components';
-import "../styles/index.scss";
-import "../styles/theme-blue.scss";
-import "./config";
-
-const { ErrorBoundary } = components;
-const dataComponents = getDataComponents(components);
-const container = document.getElementById('app');
-const root = createRoot(container);
-const App = () => (
-    <ErrorBoundary>
-      <UserContextProvider>
-        {dataComponents}
-      </UserContextProvider>
-    </ErrorBoundary>
-)
-root.render(<App />);
-endef
 
 define ESLINTRC
 {
@@ -1106,6 +991,123 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
 endef
 
+define FRONTEND_CONTEXT_INDEX
+export { UserContextProvider as default } from './UserContextProvider';
+endef
+
+define FRONTEND_CONTEXT_USER_PROVIDER
+// UserContextProvider.js
+import React, { createContext, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
+
+const UserContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = () => {
+    try {
+      // Add logic to handle login, set isAuthenticated to true
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Login error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  const logout = () => {
+    try {
+      // Add logic to handle logout, set isAuthenticated to false
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  return (
+    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+UserContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const useUserContext = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error('useUserContext must be used within a UserContextProvider');
+  }
+
+  return context;
+};
+
+// Add PropTypes for the return value of useUserContext
+useUserContext.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+endef
+
+define FRONTEND_STYLES
+// If you comment out code below, bootstrap will use red as primary color
+// and btn-primary will become red
+
+// $primary: red;
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+.jumbotron {
+  // should be relative path of the entry scss file
+  background-image: url("../../vendors/images/sample.jpg");
+  background-size: cover;
+}
+
+#theme-toggler-authenticated:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+
+#theme-toggler-anonymous:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+endef
+
+define FRONTEND_APP
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import 'bootstrap';
+import '@fortawesome/fontawesome-free/js/fontawesome';
+import '@fortawesome/fontawesome-free/js/solid';
+import '@fortawesome/fontawesome-free/js/regular';
+import '@fortawesome/fontawesome-free/js/brands';
+import getDataComponents from '../dataComponents';
+import UserContextProvider from '../context';
+import * as components from '../components';
+import "../styles/index.scss";
+import "../styles/theme-blue.scss";
+import "./config";
+
+const { ErrorBoundary } = components;
+const dataComponents = getDataComponents(components);
+const container = document.getElementById('app');
+const root = createRoot(container);
+const App = () => (
+    <ErrorBoundary>
+      <UserContextProvider>
+        {dataComponents}
+      </UserContextProvider>
+    </ErrorBoundary>
+)
+root.render(<App />);
+endef
+
 define HTML_FOOTER
 {% load wagtailcore_tags %}
   <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
@@ -1429,8 +1431,8 @@ export INTERNAL_IPS
 export JENKINS_FILE
 export PRIVACY_PAGE_MODEL
 export REST_FRAMEWORK
-export REACT_CONTEXT_INDEX
-export REACT_CONTEXT_USER_PROVIDER
+export FRONTEND_CONTEXT_INDEX
+export FRONTEND_CONTEXT_USER_PROVIDER
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
 export SETTINGS_THEMES
@@ -1922,8 +1924,8 @@ django-frontend-app-default:
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
-	@echo "$$REACT_CONTEXT_INDEX" > frontend/src/context/index.js
-	@echo "$$REACT_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
+	@echo "$$FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
+	@echo "$$FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_APP_CONFIG" > frontend/src/application/config.js
