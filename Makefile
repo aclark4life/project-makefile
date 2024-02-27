@@ -1391,7 +1391,8 @@ export function render () {
     toolbar: 'bold italic | bullist numlist | link emoticons',
     skin: false,
     content_css: false,
-    content_style: contentUiCss.toString() + '\\n' + contentCss.toString(),
+
+    // content_style: contentUiCss.toString() + '\\n' + contentCss.toString(),
   });
 }
 endef
