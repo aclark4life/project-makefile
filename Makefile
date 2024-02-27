@@ -1399,18 +1399,15 @@ import 'tinymce/plugins/emoticons/js/emojis';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/table';
+import 'tinymce/models/dom';
 
-export function render () {
-  tinymce.init({
-    selector: 'textarea#editor',
-    plugins: 'advlist code emoticons link lists table',
-    toolbar: 'bold italic | bullist numlist | link emoticons',
-    skin: false,
-    content_css: false,
-
-    // content_style: contentUiCss.toString() + '\\n' + contentCss.toString(),
-  });
-}
+tinymce.init({
+  selector: 'textarea#editor',
+  plugins: 'advlist code emoticons link lists table',
+  toolbar: 'bold italic | bullist numlist | link emoticons',
+  skin: false,
+  content_css: false,
+});
 endef
 
 define WEBPACK_CONFIG_JS
