@@ -1222,6 +1222,7 @@ define SITEUSER_EDIT_TEMPLATE
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit">Save changes</button>
+    <a href="/profile">Cancel</a> 
   </form>
 {% endblock %}
 endef
