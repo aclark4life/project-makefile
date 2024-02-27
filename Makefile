@@ -1221,8 +1221,10 @@ define SITEUSER_EDIT_TEMPLATE
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit">Save changes</button>
-    <a href="/profile">Cancel</a> 
+    <div class="d-flex">
+      <button type="submit">Save changes</button>
+      <a class="text-decoration-none" href="/user/profile">Cancel</a>
+    </div>
   </form>
 {% endblock %}
 endef
