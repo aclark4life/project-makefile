@@ -4,7 +4,7 @@ from .base import *
 DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#o@)p4-6bi64$8xifimbb1*5cindr*r5n%pm*l6u&s%gib7p-_"
+SECRET_KEY = "django-insecure-bi$ox6)vo4h-(rmfb4$o)&^hm^81yoxwh-2xsn=umg*qij+(43"
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["*"]
@@ -16,9 +16,7 @@ try:
     from .local import *
 except ImportError:
     pass
-INSTALLED_APPS.append("debug_toolbar")
-MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
-MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+INSTALLED_APPS.append('debug_toolbar')
+MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')
+INTERNAL_IPS = ["127.0.0.1",]

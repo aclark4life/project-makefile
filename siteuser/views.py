@@ -53,4 +53,4 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     fields = ['username', 'email', 'user_theme_preference', 'bio']  # Specify the fields you want to edit
 
     def get_success_url(self):
-        return reverse_lazy('user-detail', kwargs={'pk': self.object.pk})
+        return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
