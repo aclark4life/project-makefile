@@ -875,6 +875,7 @@ define SITEUSER_VIEW_TEMPLATE
 </ul>
 <p>Username: {{ user.username }}</p>
 <p>Theme: {{ user.user_theme_preference }}</p>
+<p>Bio: {{ user.bio }}</p>
 {% endblock %}
 endef
 
