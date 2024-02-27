@@ -269,6 +269,90 @@ define BLOCK_MARKETING
 </div>
 endef
 
+define COMPONENT_CLOCK
+// Via ChatGPT
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
+
+const Clock = ({ color = '#fff' }) => {
+  const [date, setDate] = useState(new Date());
+  const [blink, setBlink] = useState(true);
+  const timerID = useRef();
+
+  const tick = useCallback(() => {
+    setDate(new Date());
+    setBlink(prevBlink => !prevBlink);
+  }, []);
+
+  useEffect(() => {
+    timerID.current = setInterval(() => tick(), 1000);
+
+    // Return a cleanup function to be run on component unmount
+    return () => clearInterval(timerID.current);
+  }, [tick]);
+
+  const formattedDate = date.toLocaleDateString(undefined, {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  const formattedTime = date.toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+
+  return (
+    <> 
+      <div style={{ animation: blink ? 'blink 1s infinite' : 'none' }}><span className='me-2'>{formattedDate}</span> {formattedTime}</div>
+    </>
+  );
+};
+
+Clock.propTypes = {
+  color: PropTypes.string,
+};
+
+export default Clock;
+endef
+
+define COMPONENT_ERROR
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+
+class ErrorBoundary extends Component {
+  constructor (props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError () {
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    const { onError } = this.props;
+    console.error(error);
+    onError && onError(error, info);
+  }
+
+  render () {
+    const { children = null } = this.props;
+    const { hasError } = this.state;
+
+    return hasError ? null : children;
+  }
+}
+
+ErrorBoundary.propTypes = {
+  onError: PropTypes.func,
+  children: PropTypes.node,
+};
+
+export default ErrorBoundary;
+endef
+
 define COMPONENT_USER_MENU
 // UserMenu.js
 import React from 'react';
@@ -318,53 +402,6 @@ UserMenu.propTypes = {
 export default UserMenu;
 endef
 
-define COMPONENT_CLOCK
-// Via ChatGPT
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import PropTypes from 'prop-types';
-
-const Clock = ({ color = '#fff' }) => {
-  const [date, setDate] = useState(new Date());
-  const [blink, setBlink] = useState(true);
-  const timerID = useRef();
-
-  const tick = useCallback(() => {
-    setDate(new Date());
-    setBlink(prevBlink => !prevBlink);
-  }, []);
-
-  useEffect(() => {
-    timerID.current = setInterval(() => tick(), 1000);
-
-    // Return a cleanup function to be run on component unmount
-    return () => clearInterval(timerID.current);
-  }, [tick]);
-
-  const formattedDate = date.toLocaleDateString(undefined, {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
-  const formattedTime = date.toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-
-  return (
-    <> 
-      <div style={{ animation: blink ? 'blink 1s infinite' : 'none' }}><span className='me-2'>{formattedDate}</span> {formattedTime}</div>
-    </>
-  );
-};
-
-Clock.propTypes = {
-  color: PropTypes.string,
-};
-
-export default Clock;
-endef
 
 define CONTACT_PAGE_TEMPLATE
 {% extends 'base.html' %}
@@ -1126,41 +1163,6 @@ define HTML_HEADER
 </div>
 endef 
 
-define COMPONENT_ERROR
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-
-class ErrorBoundary extends Component {
-  constructor (props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError () {
-    return { hasError: true };
-  }
-
-  componentDidCatch (error, info) {
-    const { onError } = this.props;
-    console.error(error);
-    onError && onError(error, info);
-  }
-
-  render () {
-    const { children = null } = this.props;
-    const { hasError } = this.state;
-
-    return hasError ? null : children;
-  }
-}
-
-ErrorBoundary.propTypes = {
-  onError: PropTypes.func,
-  children: PropTypes.node,
-};
-
-export default ErrorBoundary;
-endef
 
 define SITEUSER_MODEL
 from django.db import models
