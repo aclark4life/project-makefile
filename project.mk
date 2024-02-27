@@ -1,0 +1,2 @@
+edit:
+	vi Makefile
