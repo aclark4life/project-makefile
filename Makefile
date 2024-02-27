@@ -68,25 +68,27 @@ DEL_DIR := rm -rv
 DEL_FILE := rm -v
 GIT_ADD := git add
 
-DATABASE_HOST := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+DATABASE_ENV_VAR = "DATABASE_URL"
+
+DATABASE_HOST := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep $(DATABASE_ENV_VAR)" | \
 	awk -F\= '{print $$2}' | \
 	python -c 'import dj_database_url; url = input(); \
 	url = dj_database_url.parse(url); \
 	print(url["HOST"])'`
 
-DATABASE_PASSWORD := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+DATABASE_PASSWORD := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep $(DATABASE_ENV_VAR)" | \
 	awk -F\= '{print $$2}' | \
 	python -c 'import dj_database_url; url = input(); \
 	url = dj_database_url.parse(url); \
 	print(url["PASSWORD"])'`
 
-DATABASE_USER := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+DATABASE_USER := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep $(DATABASE_ENV_VAR)" | \
 	awk -F\= '{print $$2}' | \
 	python -c 'import dj_database_url; url = input(); \
 	url = dj_database_url.parse(url); \
 	print(url["USER"])'`
 
-DATABASE_NAME := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | \
+DATABASE_NAME := `eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep $(DATABASE_ENV_VAR)" | \
 	awk -F\= '{print $$2}' | \
 	python -c 'import dj_database_url; url = input(); \
 	url = dj_database_url.parse(url); \
