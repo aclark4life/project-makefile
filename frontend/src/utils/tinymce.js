@@ -9,7 +9,7 @@ import 'tinymce/plugins/emoticons/js/emojis';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/lists';
 import 'tinymce/plugins/table';
-import 'tinymce/models/dom'
+import 'tinymce/models/dom';
 
 tinymce.init({
   selector: 'textarea#editor',
@@ -17,6 +17,4 @@ tinymce.init({
   toolbar: 'bold italic | bullist numlist | link emoticons',
   skin: false,
   content_css: false,
-
-  // content_style: contentUiCss.toString() + '\n' + contentCss.toString(),
 });
