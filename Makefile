@@ -1717,6 +1717,7 @@ django-npm-install-save-default:
         react-swipeable \
         snakeize \
         striptags \
+        tinymce \
         url-join \
         viewport-mercator-project
 
