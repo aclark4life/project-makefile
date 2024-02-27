@@ -852,12 +852,13 @@ endef
 
 define SITEUSER_EDIT_TEMPLATE
 {% extends 'base.html' %}
+{% load crispy_form_tags %}
 
 {% block content %}
   <h2>Edit User</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <button type="submit">Save changes</button>
   </form>
 {% endblock %}
