@@ -1040,13 +1040,11 @@ REST_FRAMEWORK = {
 }
 endef
 
-
 define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
 endef
 
-
-define REACT_PORTAL
+define FRONTEND_PORTAL
 // Via pwellever
 import React from 'react';
 import { createPortal } from 'react-dom';
@@ -1419,6 +1417,7 @@ export FAVICON_TEMPLATE
 export FRONTEND_APP
 export FRONTEND_APP_CONFIG
 export FRONTEND_COMPONENTS
+export FRONTEND_PORTAL
 export FRONTEND_STYLES
 export GIT_IGNORE
 export HOME_PAGE_MODEL
@@ -1429,7 +1428,6 @@ export HTML_OFFCANVAS
 export INTERNAL_IPS
 export JENKINS_FILE
 export PRIVACY_PAGE_MODEL
-export REACT_PORTAL
 export REST_FRAMEWORK
 export REACT_CONTEXT_INDEX
 export REACT_CONTEXT_USER_PROVIDER
@@ -1930,8 +1928,8 @@ django-frontend-app-default:
 	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$FRONTEND_APP_CONFIG" > frontend/src/application/config.js
 	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
+	@echo "$$FRONTEND_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$FRONTEND_STYLES" > frontend/src/styles/index.scss
-	@echo "$$REACT_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
