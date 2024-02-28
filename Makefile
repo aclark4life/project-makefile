@@ -68,7 +68,7 @@ DEL_DIR := rm -rv
 DEL_FILE := rm -v
 GIT_ADD := git add
 
-DATABASE_URL := "eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL"
+DATABASE_URL := eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL"
 DATABASE_HOST := $(shell $(DATABASE_URL) | awk -F\= '{print $$2}' | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["HOST"])')
 DATABASE_NAME := $(shell $(DATABASE_URL) | awk -F\= '{print $$2}' | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
 DATABASE_PASSWORD := $(shell $(DATABASE_URL) | awk -F\= '{print $$2}' | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
