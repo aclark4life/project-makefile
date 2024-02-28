@@ -46,17 +46,14 @@ endif
 
 REVIEW_EDITOR := subl
 
-GIT_BRANCHES = `git branch -a \
-	| grep remote  \
-	| grep -v HEAD \
-	| grep -v main \
-	| grep -v master`
+GIT_BRANCHES = $(shell git branch -a | grep remote | grep -v HEAD | grep -v main | grep -v master)
 GIT_MESSAGE = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
 GIT_PUSH = git push
-GIT_REV := `git rev-parse --short HEAD`
+GIT_REV := $(shell git rev-parse --short HEAD)
+GIT_BRANCH := $(shell git branch)
 
-ENV_NAME ?= $(PROJECT_NAME)-$(GIT_REV)
+ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
 INSTANCE_TYPE ?= t4g.small
 PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
 LB_TYPE ?= application
