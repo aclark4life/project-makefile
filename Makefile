@@ -1822,13 +1822,9 @@ db-pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-pg-export-default:
-ifdef AWS_PROFILE
 	@echo "Environment variable is set: $(AWS_PROFILE)"
-	eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
+	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
 	@echo "Wrote $(DATABASE_NAME).sql"
-else
-	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
-endif
 
 db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
