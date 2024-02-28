@@ -1528,6 +1528,7 @@ eb-create-default: eb-check-env
          --vpc \
          --vpc.id $(VPC_ID) \
          --vpc.elbpublic \
+         --vpc.publicip \
          --vpc.ec2subnets $(VPC_SUBNET_EC2) \
          --vpc.elbsubnets $(VPC_SUBNET_ELB) \
          --vpc.securitygroups $(VPC_SG)
