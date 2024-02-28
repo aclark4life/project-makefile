@@ -46,7 +46,8 @@ endif
 
 REVIEW_EDITOR := subl
 
-GIT_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v main | grep -v master`
+# GIT_BRANCHES = `git branch -a | grep remote | grep -v HEAD | grep -v main | grep -v master`
+
 GIT_MESSAGE = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
 GIT_PUSH = git push
