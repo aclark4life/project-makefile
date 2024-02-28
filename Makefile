@@ -1487,20 +1487,20 @@ export WEBPACK_INDEX_JS
 # Rules
 # ------------------------------------------------------------------------------  
 
+aws-ssm-default:
+ifdef AWS_PROFILE
+	@echo "Environment variable is set: $(AWS_PROFILE)"
+	aws ssm describeparameters | cat
+	@echo "Get parameter values with: aws ssm getparameter --name <Name>."
+else
+	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
+endif
+
 docker-build-default:
 	docker build -t $(PROJECT_NAME) .
 
 docker-serve-default:
 	docker run -p 8000:8000 $(PROJECT_NAME)
-
-export-base-default:
-	@echo "$$BASE_TEMPLATE"
-
-export-home-default:
-	@echo "$$HOME_PAGE_TEMPLATE"
-
-export-header-default:
-	@echo "$$HTML_HEADER"
 
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef SSH_KEY
@@ -1821,9 +1821,14 @@ db-pg-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
-db-pg-export-default:
+aws-ssm-default:
+ifdef AWS_PROFILE
+    @echo "Environment variable is set: $(AWS_PROFILE)"
 	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
 	@echo "Wrote $(DATABASE_NAME).sql"
+else
+	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
+endif
 
 db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
