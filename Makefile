@@ -71,9 +71,9 @@ GIT_ADD := git add
 DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL"
 DATABASE_AWK = awk -F\= '{print $$2}'
 DATABASE_HOST = $(shell $(DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["HOST"])')
-DATABASE_NAME = $(shell $(DATABASE_URL) | awk -F\= '{print $$2}' | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
-DATABASE_PASSWORD = $(shell $(DATABASE_URL) | awk -F\= '{print $$2}' | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
-DATABASE_USER = $(shell $(DATABASE_URL) | awk -F\= '{print $$2}' | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
+DATABASE_NAME = $(shell $(DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
+DATABASE_PASS = $(shell $(DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
+DATABASE_USER = $(shell $(DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 
 # --------------------------------------------------------------------------------
 # Multi-line variables
@@ -1822,7 +1822,7 @@ db-pg-init-default:
 	-createdb $(PROJECT_NAME)
 
 db-pg-export-default:
-	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASSWORD); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
+	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
 	@echo "Wrote $(DATABASE_NAME).sql"
 
 db-pg-import-default:
