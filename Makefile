@@ -1200,7 +1200,7 @@ define SITEUSER_EDIT_TEMPLATE
   <h2>Edit User</h2>
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {{ form }}
     <div class="d-flex">
       <button type="submit">Save changes</button>
       <a class="text-decoration-none" href="/user/profile">Cancel</a>
