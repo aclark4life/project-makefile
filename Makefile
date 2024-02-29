@@ -1155,8 +1155,8 @@ from .models import User
 class SiteUserForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
+		fields = ("username", "user_theme_preference", "bio", "rate")
 
-    # Override the widget for the bio field
     bio = forms.CharField(widget=forms.Textarea(attrs={'id': 'editor'}))
 endef
 
