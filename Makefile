@@ -1174,6 +1174,7 @@ class User(AbstractUser):
     user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
     
     bio = models.TextField(blank=True, null=True)
+    rate = models.FloatField(blank=True, null=True)
 endef
 
 define SETTINGS_THEMES
@@ -1220,6 +1221,7 @@ define SITEUSER_VIEW_TEMPLATE
 <p>Username: {{ user.username }}</p>
 <p>Theme: {{ user.user_theme_preference }}</p>
 <p>Bio: {{ user.bio|default:"" }}</p>
+<p>Rate: {{ user.rate|default:"" }}</p>
 {% endblock %}
 endef
 
