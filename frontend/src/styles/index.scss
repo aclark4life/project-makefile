@@ -1,0 +1,22 @@
+// If you comment out code below, bootstrap will use red as primary color
+// and btn-primary will become red
+
+// rimary: red;
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+.jumbotron {
+  // should be relative path of the entry scss file
+  background-image: url("../../vendors/images/sample.jpg");
+  background-size: cover;
+}
+
+#theme-toggler-authenticated:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+
+#theme-toggler-anonymous:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
