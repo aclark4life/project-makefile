@@ -1195,7 +1195,6 @@ endef
 
 define SITEUSER_EDIT_TEMPLATE
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 
 {% block content %}
   <h2>Edit User</h2>
@@ -1216,11 +1215,11 @@ define SITEUSER_VIEW_TEMPLATE
 {% block content %}
 <h2>User Profile</h2>
 <div class="d-flex justify-content-end">
-	<a class="btn btn-outline-primary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
+	<a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
 </div>
 <p>Username: {{ user.username }}</p>
 <p>Theme: {{ user.user_theme_preference }}</p>
-<p>Bio: {{ user.bio|default:"" }}</p>
+<p>Bio: {{ user.bio|default:""|safe }}</p>
 <p>Rate: {{ user.rate|default:"" }}</p>
 {% endblock %}
 endef
@@ -1255,19 +1254,10 @@ class UpdateThemePreferenceView(View):
         try:
             data = json.loads(request.body.decode("utf-8"))
             new_theme = data.get("theme")
-
-            # Perform the logic to update the theme preference in your database or storage
-
-            # Assuming you have a logged-in user, get the user instance
             user = request.user
-
-            # Update the user's theme preference
             user.user_theme_preference = new_theme
             user.save()
-
-            # For demonstration purposes, we'll just return the updated theme in the response
             response_data = {"theme": new_theme}
-
             return JsonResponse(response_data)
         except json.JSONDecodeError as e:
             return JsonResponse({"error": e}, status=400)
