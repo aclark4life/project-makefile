@@ -2028,8 +2028,9 @@ wagtail-install-default:
         django-allauth \
         django-after-response \
         django-ckeditor \
-        django-countries \
+        django-colorful \
         django-cors-headers \
+        django-countries \
         django-crispy-forms \
         django-debug-toolbar \
         django-extensions \
