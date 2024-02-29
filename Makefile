@@ -1828,7 +1828,7 @@ db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 pip-freeze-default:
-	pip3 freeze | sort > $(TMPDIR)/requirements.txt
+	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	$(GIT_ADD) requirements.txt
 
@@ -1838,27 +1838,27 @@ pip-init-default:
 
 pip-install-default:
 	$(MAKE) pip-upgrade
-	pip3 install wheel
-	pip3 install -r requirements.txt
+	pip install wheel
+	pip install -r requirements.txt
 
 pip-install-dev-default:
-	pip3 install -r requirements-dev.txt
+	pip install -r requirements-dev.txt
 
 pip-install-test-default:
-	pip3 install -r requirements-test.txt
+	pip install -r requirements-test.txt
 
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F\= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	pip3 install -U -r requirements.txt
-	pip3 freeze | sort > $(TMPDIR)/requirements.txt
+	pip install -U -r requirements.txt
+	pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 
 pip-upgrade-default:
-	pip3 install -U pip
+	pip install -U pip
 
 pip-uninstall-default:
-	pip3 freeze | xargs pip3 uninstall -y
+	pip freeze | xargs pip uninstall -y
 
 python-setup-sdist-default:
 	python3 setup.py sdist --format=zip
@@ -2020,7 +2020,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) serve
 
 wagtail-install-default:
-	pip3 install \
+	pip install \
         Faker \
 		boto3 \
         crispy-bootstrap5 \
