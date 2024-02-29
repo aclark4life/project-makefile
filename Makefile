@@ -2055,12 +2055,14 @@ wagtail-install-default:
         dj-rest-auth \
 		enmerkar \
 		gunicorn \
+		html2docx \
         icalendar \
         mailchimp-marketing \
         mailchimp-transactional \
         phonenumbers \
         psycopg2-binary \
         python-webpack-boilerplate \
+        python-docx \
 		reportlab \
         texttable \
         wagtail \
@@ -2070,6 +2072,7 @@ wagtail-install-default:
         wagtail-markdown \
         wagtail_modeladmin \
         wagtail-seo \
+		weasyprint \
         whitenoise \
 		xhtml2pdf 
 
