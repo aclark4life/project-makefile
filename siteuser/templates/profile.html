@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>User Profile</h2>
+<ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link active border rounded" aria-current="page" href="{% url 'user-edit' pk=user.id %}">Edit</a>
+  </li>
+</ul>
+<p>Username: {{ user.username }}</p>
+<p>Theme: {{ user.user_theme_preference }}</p>
+<p>Bio: {{ user.bio|default:"" }}</p>
+{% endblock %}
