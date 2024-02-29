@@ -1157,7 +1157,7 @@ class SiteUserForm(UserChangeForm):
         model = User
         fields = ("username", "user_theme_preference", "bio", "rate")
 
-    bio = forms.CharField(widget=forms.Textarea(attrs={'id': 'editor'}))
+    bio = forms.CharField(widget=forms.Textarea(attrs={"id": "editor"}), required=False)
 endef
 
 define SITEUSER_MODEL
