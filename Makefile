@@ -1979,9 +1979,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) django-npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
-	@$(MAKE) lint-isort
-	@$(MAKE) lint-black
-	@$(MAKE) lint-flake
+	@$(MAKE) lint
 	@$(MAKE) readme
 	@$(MAKE) gitignore
 	@$(MAKE) serve
