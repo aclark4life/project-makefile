@@ -1,8 +1,11 @@
+from django.db import models
 from wagtail.models import Page
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail import blocks
 from wagtail.admin.panels import FieldPanel
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail_color_panel.fields import ColorField
+from wagtail_color_panel.edit_handlers import NativeColorPanel
 
 
 class MarketingBlock(blocks.StructBlock):
