@@ -41,9 +41,9 @@ class UpdateThemePreferenceView(View):
 
 class UserEditView(LoginRequiredMixin, UpdateView):
     model = User
-    template_name = 'user_edit.html'  # Create this template in your templates folder
+    template_name = "user_edit.html"  # Create this template in your templates folder
     form_class = SiteUserForm
 
     def get_success_url(self):
         # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
-        return reverse_lazy('user-profile')
+        return reverse_lazy("user-profile")

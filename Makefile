@@ -1776,7 +1776,7 @@ git-commit-empty-default:
 
 lint-default:
 	@for dir in $(DIR_LIST); do \
-        ruff check --fix $$dir/*.py; \
+        ruff check --show-files --fix $$dir/*.py; \
     done
 
 db-mysql-init-default:
