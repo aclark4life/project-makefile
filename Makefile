@@ -730,7 +730,7 @@ from django.urls import path
 from .views import search
 
 urlpatterns = [
-	path("", search, name="search")
+    path("", search, name="search")
 ]
 endef
 
@@ -801,7 +801,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-	path("hijack/", include("hijack.urls")),
+    path("hijack/", include("hijack.urls")),
 ]
 
 urlpatterns += [
@@ -1052,7 +1052,7 @@ define HTML_HEADER
                     </li>
                     {% for child in current_site.root_page.get_children %}
                         {% if child.show_in_menus %}
-			                <li class="nav-item">
+                            <li class="nav-item">
                                 <a class="nav-link {% if request.path == child.url %}active{% endif %}" aria-current="page"
                                     href="{{ child.url }}">{{ child }}</a>
                             </li>
@@ -1215,7 +1215,7 @@ define SITEUSER_VIEW_TEMPLATE
 {% block content %}
 <h2>User Profile</h2>
 <div class="d-flex justify-content-end">
-	<a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
+    <a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
 </div>
 <p>Username: {{ user.username }}</p>
 <p>Theme: {{ user.user_theme_preference }}</p>
@@ -2011,7 +2011,7 @@ wagtail-init-default: db-init wagtail-install
 wagtail-install-default:
 	pip install \
         Faker \
-		boto3 \
+        boto3 \
         crispy-bootstrap5 \
         djangorestframework \
         django-allauth \
@@ -2028,7 +2028,7 @@ wagtail-install-default:
         django-imagekit \
         django-import-export \
         django-ipware \
-	 	django-multiselectfield \
+        django-multiselectfield \
         django-phonenumber-field \
         django-recurrence \
         django-recaptcha \
@@ -2043,9 +2043,9 @@ wagtail-install-default:
         dj-database-url \
         dj-stripe \
         dj-rest-auth \
-		enmerkar \
-		gunicorn \
-		html2docx \
+        enmerkar \
+        gunicorn \
+        html2docx \
         icalendar \
         mailchimp-marketing \
         mailchimp-transactional \
@@ -2053,7 +2053,7 @@ wagtail-install-default:
         psycopg2-binary \
         python-webpack-boilerplate \
         python-docx \
-		reportlab \
+        reportlab \
         texttable \
         wagtail \
         wagtailmenus \
@@ -2062,9 +2062,9 @@ wagtail-install-default:
         wagtail-markdown \
         wagtail_modeladmin \
         wagtail-seo \
-		weasyprint \
+        weasyprint \
         whitenoise \
-		xhtml2pdf 
+        xhtml2pdf
 
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
