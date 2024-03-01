@@ -72,7 +72,7 @@ DATABASE_NAME = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 
-DIR_LIST = backend backend/settings home
+DIR_LIST = backend home siteuser siteuser
 
 # --------------------------------------------------------------------------------
 # Multi-line variables
