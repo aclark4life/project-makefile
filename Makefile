@@ -72,8 +72,7 @@ DATABASE_NAME = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 
-DIR_LIST = backend home
-
+DIR_LIST = backend backend/settings home
 
 # --------------------------------------------------------------------------------
 # Multi-line variables
@@ -1621,7 +1620,7 @@ django-serve-default:
 django-settings-default:
 	echo "# $(PROJECT_NAME)" >> $(SETTINGS)
 	echo "ALLOWED_HOSTS = ['*']" >> $(SETTINGS)
-	echo "import dj_database_url, os" >> $(SETTINGS)
+	echo "import dj_database_url  # noqa" >> $(SETTINGS)
 	echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
          'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
 	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)

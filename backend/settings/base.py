@@ -174,9 +174,8 @@ WAGTAILSEARCH_BACKENDS = {
 WAGTAILADMIN_BASE_URL = "http://example.com"
 # project-makefile
 ALLOWED_HOSTS = ["*"]
-import os
 
-import dj_database_url
+import dj_database_url # noqa
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/project-makefile")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
