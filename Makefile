@@ -72,6 +72,9 @@ DATABASE_NAME = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 
+DIR_LIST = backend home
+
+
 # --------------------------------------------------------------------------------
 # Multi-line variables
 # --------------------------------------------------------------------------------
@@ -1772,34 +1775,10 @@ git-set-upstream-default:
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
-lint-black-default:
-	-black *.py
-	-black backend/*.py
-	-black backend/*/*.py
-	-git commit -a -m "A one time black event"
-
-lint-djlint-default:
-	-djlint --reformat *.html
-	-djlint --reformat backend/*.html
-	-djlint --reformat backend/*/*.html
-	-git commit -a -m "A one time djlint event"
-
-lint-flake-default:
-	-flake8 *.py
-	-flake8 backend/*.py
-	-flake8 backend/*/*.py
-
-lint-isort-default:
-	-isort *.py
-	-isort backend/*.py
-	-isort backend/*/*.py
-	-git commit -a -m "A one time isort event"
-
-lint-ruff-default:
-	-ruff *.py
-	-ruff backend/*.py
-	-ruff backend/*/*.py
-	-git commit -a -m "A one time ruff event"
+lint-default:
+	@for dir in $(DIR_LIST); do \
+        ruff check --fix $$dir/*.py; \
+    done
 
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
@@ -2123,7 +2102,6 @@ project-mk-default:
 
 build-default: pip-install
 b-default: build 
-black-default: lint-black
 c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
@@ -2146,7 +2124,6 @@ install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
-lint-default: lint-djlint
 logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
