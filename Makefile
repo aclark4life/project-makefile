@@ -39,6 +39,7 @@ TMPDIR := $(shell mktemp -d)
 PROJECT_EMAIL := aclark@aclark.net
 PROJECT_MAKEFILE := project.mk
 PROJECT_NAME = project-makefile
+PROJECT_DIRS = backend contactpage home privacy siteuser
 
 ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
@@ -71,8 +72,6 @@ DATABASE_HOST = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 DATABASE_NAME = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
 DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
-
-DIR_LIST = backend home siteuser siteuser
 
 # --------------------------------------------------------------------------------
 # Multi-line variables
@@ -1775,8 +1774,8 @@ git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
 lint-default:
-	@for dir in $(DIR_LIST); do \
-        ruff check --show-files --fix $$dir/*.py; \
+	@for dir in $(PROJECT_DIRS); do \
+        ruff check --fix; \
         ruff format; \
     done
 
