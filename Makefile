@@ -2053,6 +2053,7 @@ wagtail-install-default:
         python-webpack-boilerplate \
         python-docx \
 		reportlab \
+		sendgrid \
         texttable \
         wagtail \
         wagtailmenus \
