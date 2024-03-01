@@ -2035,6 +2035,7 @@ wagtail-install-default:
         django-registration \
         django-rest-auth \
         django-richtextfield \
+        django-sendgrid-v5 \
         django-social-share \
         django-storages \
         django-tables2 \
@@ -2053,7 +2054,6 @@ wagtail-install-default:
         python-webpack-boilerplate \
         python-docx \
 		reportlab \
-		sendgrid-django	\
         texttable \
         wagtail \
         wagtailmenus \
