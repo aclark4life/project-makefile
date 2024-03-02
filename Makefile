@@ -73,6 +73,8 @@ DATABASE_NAME = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 
+ENSURE_PIP := python -m ensurepip
+
 # --------------------------------------------------------------------------------
 # Multi-line variables
 # --------------------------------------------------------------------------------
@@ -1796,6 +1798,7 @@ db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 pip-freeze-default:
+	$(ENSURE_PIP)
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	$(GIT_ADD) requirements.txt
@@ -1805,27 +1808,33 @@ pip-init-default:
 	$(GIT_ADD) requirements.txt
 
 pip-install-default:
+	$(ENSURE_PIP)
 	$(MAKE) pip-upgrade
 	python -m pip install wheel
 	python -m pip install -r requirements.txt
 
 pip-install-dev-default:
+	$(ENSURE_PIP)
 	python -m pip install -r requirements-dev.txt
 
 pip-install-test-default:
+	$(ENSURE_PIP)
 	python -m pip install -r requirements-test.txt
 
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F\= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
+	$(ENSURE_PIP)
 	python -m pip install -U -r requirements.txt
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 
 pip-upgrade-default:
+	$(ENSURE_PIP)
 	python -m pip install -U pip
 
 pip-uninstall-default:
+	$(ENSURE_PIP)
 	python -m pip freeze | xargs python -m pip uninstall -y
 
 python-setup-sdist-default:
@@ -1986,6 +1995,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) serve
 
 wagtail-install-default:
+	$(ENSURE_PIP)
 	python -m pip install \
         Faker \
         boto3 \
