@@ -1530,7 +1530,7 @@ eb-restart-default:
 	eb ssh -c "systemctl restart web"
 
 eb-upgrade-default:
-	eb update
+	eb upgrade
 
 eb-init-default:
 	eb init
