@@ -1775,7 +1775,8 @@ git-commit-empty-default:
 
 lint-default:
 	@for dir in $(PROJECT_DIRS); do \
-        ruff check --fix; \
+		echo "=== $$dir ===\n"; \
+        ruff check --show-files --fix $$dir/*.py; \
         ruff format; \
     done
 
@@ -1795,7 +1796,7 @@ db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 pip-freeze-default:
-	pip freeze | sort > $(TMPDIR)/requirements.txt
+	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	$(GIT_ADD) requirements.txt
 
@@ -1805,27 +1806,27 @@ pip-init-default:
 
 pip-install-default:
 	$(MAKE) pip-upgrade
-	pip install wheel
-	pip install -r requirements.txt
+	python -m pip install wheel
+	python -m pip install -r requirements.txt
 
 pip-install-dev-default:
-	pip install -r requirements-dev.txt
+	python -m pip install -r requirements-dev.txt
 
 pip-install-test-default:
-	pip install -r requirements-test.txt
+	python -m pip install -r requirements-test.txt
 
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F\= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	pip install -U -r requirements.txt
-	pip freeze | sort > $(TMPDIR)/requirements.txt
+	python -m pip install -U -r requirements.txt
+	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 
 pip-upgrade-default:
-	pip install -U pip
+	python -m pip install -U pip
 
 pip-uninstall-default:
-	pip freeze | xargs pip uninstall -y
+	python -m pip freeze | xargs python -m pip uninstall -y
 
 python-setup-sdist-default:
 	python3 setup.py sdist --format=zip
@@ -1985,7 +1986,7 @@ wagtail-init-default: db-init wagtail-install
 	@$(MAKE) serve
 
 wagtail-install-default:
-	pip install \
+	python -m pip install \
         Faker \
         boto3 \
         crispy-bootstrap5 \

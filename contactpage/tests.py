@@ -1,5 +1,4 @@
 from wagtail.models import Page, Site
-from wagtail.rich_text import RichText
 from wagtail.test.utils import WagtailPageTestCase
 
 from home.models import HomePage
