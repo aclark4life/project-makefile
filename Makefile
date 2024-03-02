@@ -2030,6 +2030,7 @@ wagtail-install-default:
         django-storages \
         django-tables2 \
         django-timezone-field \
+		django-widget-tweaks \
         dj-database-url \
         dj-stripe \
         dj-rest-auth \
