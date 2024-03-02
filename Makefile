@@ -1527,7 +1527,10 @@ eb-deploy-default:
 	eb deploy
 
 eb-restart-default:
-	systemctl restart web
+	eb ssh -c "systemctl restart web"
+
+eb-upgrade-default:
+	eb update
 
 eb-init-default:
 	eb init
@@ -2157,6 +2160,7 @@ static-default: django-static
 sdist-default: python-setup-sdist
 test-default: django-test
 u-default: usage
+up-default: eb-upgrade
 urls-default: django-show-urls
 webpack-default: webpack-init
 
