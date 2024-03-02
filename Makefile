@@ -1536,7 +1536,7 @@ eb-list-platforms-default:
 	aws elasticbeanstalk list-platform-versions
 
 eb-logs-default:
-	eb ssh -c "cat /var/log/eb-engine.log"
+	eb logs
 
 npm-init-default:
 	npm init -y
