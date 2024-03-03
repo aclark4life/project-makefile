@@ -216,10 +216,3 @@ AUTHENTICATION_BACKENDS = [
 TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')
 TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')
 SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
-INSTALLED_APPS.append('siteuser')
-AUTH_USER_MODEL = 'siteuser.User'
-INSTALLED_APPS.append('privacy')
-INSTALLED_APPS.append('contactpage')
-INSTALLED_APPS.append('sitepage')
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
-CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'

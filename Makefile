@@ -1919,7 +1919,7 @@ wagtail-homepage-default:
 	$(ADD_DIR) home/templates/blocks
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
-	$(GIT_ADD) home
+	-$(GIT_ADD) home
 
 wagtail-backend-templates-default:
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
