@@ -10,3 +10,4 @@ media/
 .elasticbeanstalk/
 dist/
 frontend/
+home/

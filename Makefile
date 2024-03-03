@@ -1948,12 +1948,10 @@ django-frontend-app-default:
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
-	$(ADD_DIR) frontend/src/utils/
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	@echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
-	$(GIT_ADD) frontend/src/utils/
-	$(GIT_ADD) home
-	$(GIT_ADD) frontend
+	-$(GIT_ADD) home
+	-$(GIT_ADD) frontend
 	-git commit -a -m "Add frontend"
 
 django-crispy-default:
