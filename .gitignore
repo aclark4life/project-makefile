@@ -9,3 +9,4 @@ static/
 media/
 .elasticbeanstalk/
 dist/
+frontend/
