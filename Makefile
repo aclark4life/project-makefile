@@ -1922,21 +1922,22 @@ wagtail-homepage-default:
 	-$(GIT_ADD) home
 
 wagtail-backend-templates-default:
+	$(ADD_DIR) backend/templates/allauth/layouts
+	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
 	@echo "$$HTML_HEADER" > backend/templates/header.html
 	@echo "$$HTML_FOOTER" > backend/templates/footer.html
 	@echo "$$HTML_OFFCANVAS" > backend/templates/offcanvas.html
-	$(ADD_DIR) backend/templates/allauth/layouts
-	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	$(GIT_ADD) backend/templates/
 
 django-frontend-app-default:
 	python manage.py webpack_init --no-input
-	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
-	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
+	$(ADD_DIR) frontend/src/utils
+	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
+	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
 	@echo "$$FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
 	@echo "$$FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
