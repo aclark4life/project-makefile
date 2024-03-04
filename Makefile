@@ -27,7 +27,7 @@
 # SOFTWARE.
 
 # --------------------------------------------------------------------------------
-# Variables
+# Variables (override)
 # --------------------------------------------------------------------------------
 
 .DEFAULT_GOAL := git-commit-push
@@ -41,16 +41,24 @@ PROJECT_MAKEFILE := project.mk
 PROJECT_NAME = project-makefile
 PROJECT_DIRS = backend contactpage home privacy siteuser
 
+WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage
+WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt
+
 ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
 endif
 
-REVIEW_EDITOR := subl
+REVIEW_EDITOR = subl
 
 GIT_BRANCHES = $(shell git branch -a | grep remote | grep -v HEAD | grep -v main | grep -v master)
 GIT_MESSAGE = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
 GIT_PUSH = git push
+
+# --------------------------------------------------------------------------------
+# Variables (no override)
+# --------------------------------------------------------------------------------
+
 GIT_REV := $(shell git rev-parse --short HEAD)
 GIT_BRANCH := $(shell git branch --show-current)
 
@@ -1903,19 +1911,14 @@ wagtail-header-default:
 	@echo "$$HTML_HEADER" > backend/templates/header.html
 
 wagtail-clean-default:
-	-$(DEL_DIR) home
-	-$(DEL_DIR) search
-	-$(DEL_DIR) backend
-	-$(DEL_DIR) sitepage
-	-$(DEL_DIR) siteuser
-	-$(DEL_DIR) privacy
-	-$(DEL_DIR) frontend
-	-$(DEL_DIR) contactpage
-	-$(DEL_FILE) README.rst
-	-$(DEL_FILE) .dockerignore
-	-$(DEL_FILE) Dockerfile
-	-$(DEL_FILE) manage.py
-	-$(DEL_FILE) requirements.txt
+	@echo "$(WAGTAIL_CLEAN_DIRS)"
+	@echo "$(PROJECT_NAME)"
+	# @for dir in "$(WAGTAIL_CLEAN_DIRS)"; do \
+	# 	$(DEL_DIR) $$dir; \
+	# done
+	# @for file in "$(WAGTAIL_CLEAN_FILES)"; do \
+	# 	$(DEL_FILE) $$file; \
+	# done
 
 wagtail-homepage-default:
 	@echo "$$HOME_PAGE_MODEL" > home/models.py
