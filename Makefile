@@ -1753,8 +1753,6 @@ gh-default:
 git-ignore-default:
 	echo "$$GIT_IGNORE" > .gitignore
 	$(GIT_ADD) .gitignore
-	-@git commit -a -m "Add .gitignore"
-	-@$(GIT_PUSH)
 
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
@@ -1847,7 +1845,6 @@ readme-init-default:
 	@echo "$(PROJECT_NAME)" > README.rst
 	@echo "================================================================================" >> README.rst
 	-@git add README.rst
-	-git commit -a -m "Add readme"
 
 readme-edit-default:
 	vi README.rst
@@ -1953,7 +1950,6 @@ django-frontend-app-default:
 	@echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
 	-$(GIT_ADD) home
 	-$(GIT_ADD) frontend
-	-git commit -a -m "Add frontend"
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
