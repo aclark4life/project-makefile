@@ -1955,9 +1955,10 @@ django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
 	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
 
-wagtail-init-default: db-init wagtail-install
+wagtail-start-default:
 	wagtail start backend .
-	$(MAKE) pip-freeze
+
+wagtail-init-default: db-init wagtail-install wagtail-start
 	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
 		$(MAKE) django-settings
 	export URLS=urls.py; \
