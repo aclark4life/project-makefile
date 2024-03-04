@@ -3,7 +3,7 @@ from wagtail.rich_text import RichText
 from wagtail.test.utils import WagtailPageTestCase
 
 from home.models import HomePage
-from contactpage.models import ContactPage 
+from contactpage.models import ContactPage
 
 
 class ContactPageTest(WagtailPageTestCase):
