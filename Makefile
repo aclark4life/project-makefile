@@ -1838,8 +1838,15 @@ pip-uninstall-default:
 	$(ENSURE_PIP)
 	python -m pip freeze | xargs python -m pip uninstall -y
 
+python-serve-default:
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	python3 -m http.server
+
 python-setup-sdist-default:
 	python3 setup.py sdist --format=zip
+
+python-webpack-init-default:
+	python manage.py webpack_init --no-input
 
 readme-init-default:
 	@echo "$(PROJECT_NAME)" > README.rst
@@ -1928,8 +1935,7 @@ wagtail-backend-templates-default:
 	@echo "$$HTML_OFFCANVAS" > backend/templates/offcanvas.html
 	$(GIT_ADD) backend/templates/
 
-django-frontend-app-default:
-	python manage.py webpack_init --no-input
+django-frontend-app-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
 	$(ADD_DIR) frontend/src/utils
@@ -2084,10 +2090,6 @@ make-default:
 	$(GIT_ADD) Makefile
 	-git commit -a -m "Add/update project-makefile files"
 	-git push
-
-python-serve-default:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python3 -m http.server
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
