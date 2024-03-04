@@ -1911,10 +1911,10 @@ wagtail-header-default:
 	@echo "$$HTML_HEADER" > backend/templates/header.html
 
 wagtail-clean-default:
-	@for dir in "$(WAGTAIL_CLEAN_DIRS)"; do \
+	-@for dir in "$(WAGTAIL_CLEAN_DIRS)"; do \
 		$(DEL_DIR) $$dir; \
 	done
-	@for file in "$(WAGTAIL_CLEAN_FILES)"; do \
+	-@for file in "$(WAGTAIL_CLEAN_FILES)"; do \
 		$(DEL_FILE) $$file; \
 	done
 
