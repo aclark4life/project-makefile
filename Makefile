@@ -44,10 +44,6 @@ PROJECT_DIRS = backend contactpage home privacy siteuser
 WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage
 WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt
 
-ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
-    include $(PROJECT_MAKEFILE)
-endif
-
 REVIEW_EDITOR = subl
 
 GIT_BRANCHES = $(shell git branch -a | grep remote | grep -v HEAD | grep -v main | grep -v master)
@@ -62,17 +58,22 @@ DATABASE_NAME = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 
+ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
+INSTANCE_TYPE ?= t4g.small
+PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
+LB_TYPE ?= application
+SSH_KEY ?= aclarknet
+
+ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
+    include $(PROJECT_MAKEFILE)
+endif
+
 # --------------------------------------------------------------------------------
 # Variables (no override)
 # --------------------------------------------------------------------------------
 
 GIT_REV := $(shell git rev-parse --short HEAD)
 GIT_BRANCH := $(shell git branch --show-current)
-
-ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
-INSTANCE_TYPE ?= t4g.small
-PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
-LB_TYPE ?= application
 
 ADD_DIR := mkdir -pv
 COPY_DIR := cp -rv
