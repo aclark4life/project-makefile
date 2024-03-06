@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>User Profile</h2>
+<div class="d-flex justify-content-end">
+    <a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
+</div>
+<p>Username: {{ user.username }}</p>
+<p>Theme: {{ user.user_theme_preference }}</p>
+<p>Bio: {{ user.bio|default:""|safe }}</p>
+<p>Rate: {{ user.rate|default:"" }}</p>
+{% endblock %}

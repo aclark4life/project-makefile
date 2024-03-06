@@ -1816,6 +1816,10 @@ pip-init-default:
 	touch requirements.txt
 	$(GIT_ADD) requirements.txt
 
+pip-init-test-default:
+	touch requirements-test.txt
+	$(GIT_ADD) requirements-test.txt
+
 pip-install-default:
 	$(ENSURE_PIP)
 	$(MAKE) pip-upgrade
@@ -1995,6 +1999,7 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 	@$(MAKE) django-npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
+	@$(MAKE) pip-init-test
 	@$(MAKE) readme
 	@$(MAKE) gitignore
 	@$(MAKE) serve
