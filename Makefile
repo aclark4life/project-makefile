@@ -1158,6 +1158,20 @@ define PRIVACY_PAGE_TEMPLATE
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
 endef
 
+define REQUIREMENTS_TEST
+pytest
+pytest-runner
+coverage
+pytest-mock
+pytest-cov
+hypothesis
+selenium
+pytest-django
+factory-boy
+flake8
+tox
+endef
+
 define SITEUSER_FORM
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
@@ -1463,6 +1477,7 @@ export FRONTEND_CONTEXT_INDEX
 export FRONTEND_CONTEXT_USER_PROVIDER
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
+export REQUIREMENTS_TEST
 export SETTINGS_THEMES
 export SITEPAGE_MODEL
 export SITEPAGE_TEMPLATE
@@ -1817,7 +1832,7 @@ pip-init-default:
 	$(GIT_ADD) requirements.txt
 
 pip-init-test-default:
-	touch requirements-test.txt
+	@echo "$$REQUIREMENTS_TEST" > requirements-test.txt
 	$(GIT_ADD) requirements-test.txt
 
 pip-install-default:
