@@ -62,7 +62,6 @@ ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
 INSTANCE_TYPE ?= t4g.small
 PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
 LB_TYPE ?= application
-SSH_KEY ?= aclarknet
 
 ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
