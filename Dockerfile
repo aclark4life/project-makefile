@@ -24,7 +24,7 @@ ENV PYTHONUNBUFFERED=1 \
 #     zlib1g-dev \
 #     libwebp-dev \
 #  && rm -rf /var/lib/apt/lists/*
-RUN dnf install python3.11 python3.11-pip
+RUN dnf install -y python3.11 python3.11-pip
 
 # Install the project requirements.
 COPY requirements.txt /
@@ -37,16 +37,16 @@ WORKDIR /app
 # Set this directory to be owned by the "wagtail" user. This Wagtail project
 # uses SQLite, the folder needs to be owned by the user that
 # will be writing to the database file.
-RUN chown wagtail:wagtail /app
+# RUN chown wagtail:wagtail /app
 
 # Copy the source code of the project into the container.
-COPY --chown=wagtail:wagtail . .
+# COPY --chown=wagtail:wagtail . .
 
 # Use user "wagtail" to run the build commands below and the server itself.
-USER wagtail
+# USER wagtail
 
 # Collect static files.
-RUN python manage.py collectstatic --noinput --clear
+RUN python3.11 manage.py collectstatic --noinput --clear
 
 # Runtime command that executes when "docker run" is called, it does the
 # following:
