@@ -60,6 +60,7 @@ DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 
 ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
 INSTANCE_TYPE ?= t4g.small
+INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
 PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
 LB_TYPE ?= application
 
@@ -1538,6 +1539,7 @@ eb-create-default: eb-check-env
          -i $(INSTANCE_TYPE) \
          -k $(SSH_KEY) \
          -p $(PLATFORM) \
+         -ip $(INSTANCE_PROFILE) \
          --elb-type $(LB_TYPE) \
          --vpc \
          --vpc.id $(VPC_ID) \
