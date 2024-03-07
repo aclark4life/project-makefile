@@ -59,6 +59,8 @@ DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'impor
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 
 ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
+INSTANCE_MAX ?= 1
+INSTANCE_MIN ?= 1
 INSTANCE_TYPE ?= t4g.small
 INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
 PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
@@ -1536,10 +1538,12 @@ endif
 
 eb-create-default: eb-check-env
 	eb create $(ENV_NAME) \
+         -im $(INSTANCE_MIN) \
+         -ix $(INSTANCE_MAX) \
+         -ip $(INSTANCE_PROFILE) \
          -i $(INSTANCE_TYPE) \
          -k $(SSH_KEY) \
          -p $(PLATFORM) \
-         -ip $(INSTANCE_PROFILE) \
          --elb-type $(LB_TYPE) \
          --vpc \
          --vpc.id $(VPC_ID) \
