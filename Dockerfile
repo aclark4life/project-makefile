@@ -46,7 +46,7 @@ WORKDIR /app
 # USER wagtail
 
 # Collect static files.
-RUN python3.11 manage.py collectstatic --noinput --clear
+RUN python3.11 /app/manage.py collectstatic --noinput --clear
 
 # Runtime command that executes when "docker run" is called, it does the
 # following:
