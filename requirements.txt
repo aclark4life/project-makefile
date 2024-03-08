@@ -145,7 +145,7 @@ wagtail-modeladmin==2.0.0
 wagtail-seo==2.5.0
 wagtail==6.0.1
 wagtailmenus==4.0
-weasyprint==61.1
+weasyprint==61.2
 webencodings==0.5.1
 whitenoise==6.6.0
 xhtml2pdf==0.2.15
