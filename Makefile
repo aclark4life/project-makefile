@@ -1806,11 +1806,17 @@ git-set-upstream-default:
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
-lint-check-default:
+lint-check-diff-default:
 	ruff check --diff
 
-lint-format-default:
+lint-format-diff-default:
 	ruff format --diff
+
+lint-check-default:
+	ruff check
+
+lint-format-default:
+	ruff format
 
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
@@ -2160,7 +2166,7 @@ install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
-lint-default: lint-check lint-format
+lint-default: lint-check-diff lint-format-diff
 l-default: lint
 logs-default: eb-logs
 migrate-default: django-migrate
