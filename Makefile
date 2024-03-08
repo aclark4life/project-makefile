@@ -2161,6 +2161,7 @@ install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
 lint-default: lint-check lint-format
+l-default: lint
 logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
