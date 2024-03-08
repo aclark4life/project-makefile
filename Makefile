@@ -1806,12 +1806,11 @@ git-set-upstream-default:
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
-lint-default:
-	@for dir in $(PROJECT_DIRS); do \
-		echo "=== $$dir ===\n"; \
-        ruff check --show-files --fix $$dir/*.py; \
-        ruff format; \
-    done
+lint-check-default:
+	ruff check --diff
+
+lint-format-default:
+	ruff format --diff
 
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
@@ -2161,6 +2160,7 @@ install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
+lint-default: lint-check lint-format
 logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
