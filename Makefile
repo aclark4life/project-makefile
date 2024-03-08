@@ -1807,16 +1807,16 @@ git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
 lint-check-diff-default:
-	ruff check --diff
+	ruff check -v --diff
 
 lint-format-diff-default:
-	ruff format --diff
+	ruff format -v --diff
 
 lint-check-default:
-	ruff check
+	ruff check -v
 
 lint-format-default:
-	ruff format
+	ruff format -v
 
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
