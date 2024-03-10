@@ -2163,6 +2163,7 @@ init-default: wagtail-init
 install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
+l-default: lint
 logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
