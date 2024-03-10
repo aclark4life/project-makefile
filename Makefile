@@ -1590,25 +1590,20 @@ npm-clean-default:
 npm-serve-default:
 	npm run start
 
-wagtail-contactpage-default:
-	python manage.py startapp contactpage
-	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
-	@echo "$$CONTACT_PAGE_TEST" > contactpage/tests.py
-	$(ADD_DIR) contactpage/templates/contactpage/
-	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
-	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
-	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
-	python manage.py makemigrations contactpage
-	$(GIT_ADD) contactpage/
+db-mysql-init-default:
+	-mysqladmin -u root drop $(PROJECT_NAME)
+	-mysqladmin -u root create $(PROJECT_NAME)
 
-wagtail-sitepage-default:
-	python manage.py startapp sitepage
-	@echo "$$SITEPAGE_MODEL" > sitepage/models.py
-	$(ADD_DIR) sitepage/templates/sitepage/
-	@echo "$$SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
-	@echo "INSTALLED_APPS.append('sitepage')" >> $(SETTINGS)
-	python manage.py makemigrations sitepage
-	$(GIT_ADD) sitepage/
+db-pg-init-default:
+	-dropdb $(PROJECT_NAME)
+	-createdb $(PROJECT_NAME)
+
+db-pg-export-default:
+	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
+	@echo "Wrote $(DATABASE_NAME).sql"
+
+db-pg-import-default:
+	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 django-secret-default:
 	python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -1689,6 +1684,10 @@ django-settings-default:
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
 	echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(SETTINGS)
 	echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
+
+django-crispy-default:
+	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
+	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
 
 django-shell-default:
 	python manage.py shell
@@ -1806,20 +1805,13 @@ git-set-upstream-default:
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
-db-mysql-init-default:
-	-mysqladmin -u root drop $(PROJECT_NAME)
-	-mysqladmin -u root create $(PROJECT_NAME)
-
-db-pg-init-default:
-	-dropdb $(PROJECT_NAME)
-	-createdb $(PROJECT_NAME)
-
-db-pg-export-default:
-	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
-	@echo "Wrote $(DATABASE_NAME).sql"
-
-db-pg-import-default:
-	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
+help-default:
+	@for makefile in $(MAKEFILE_LIST); do \
+        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
+            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
+            | xargs | tr ' ' '\n' \
+            | awk '{printf "%s\n", $$0}' ; done | less # http://stackoverflow.com/a/26339924
 
 pip-freeze-default:
 	$(ENSURE_PIP)
@@ -1977,10 +1969,6 @@ django-frontend-app-default: python-webpack-init
 	-$(GIT_ADD) home
 	-$(GIT_ADD) frontend
 
-django-crispy-default:
-	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
-	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
-
 wagtail-start-default:
 	wagtail start backend .
 
@@ -2079,13 +2067,6 @@ wagtail-install-default:
         whitenoise \
         xhtml2pdf
 
-help-default:
-	@for makefile in $(MAKEFILE_LIST); do \
-        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
-            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
-            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
-            | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | less # http://stackoverflow.com/a/26339924 Given a base.mk, Makefile and project.mk, and base.mk and project.mk included from Makefile, print target names from all makefiles.
 
 usage-default:
 	@echo "Project Makefile 🤷"
@@ -2125,6 +2106,26 @@ endif
 project-mk-default:
 	touch project.mk
 	$(GIT_ADD) project.mk
+
+wagtail-contactpage-default:
+	python manage.py startapp contactpage
+	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
+	@echo "$$CONTACT_PAGE_TEST" > contactpage/tests.py
+	$(ADD_DIR) contactpage/templates/contactpage/
+	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
+	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
+	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
+	python manage.py makemigrations contactpage
+	$(GIT_ADD) contactpage/
+
+wagtail-sitepage-default:
+	python manage.py startapp sitepage
+	@echo "$$SITEPAGE_MODEL" > sitepage/models.py
+	$(ADD_DIR) sitepage/templates/sitepage/
+	@echo "$$SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
+	@echo "INSTALLED_APPS.append('sitepage')" >> $(SETTINGS)
+	python manage.py makemigrations sitepage
+	$(GIT_ADD) sitepage/
 
 # ------------------------------------------------------------------------------  
 # More rules
