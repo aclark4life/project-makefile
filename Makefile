@@ -1812,11 +1812,15 @@ lint-check-diff-default:
 lint-format-diff-default:
 	ruff format -v --diff
 
+lint-diff: lint-check-diff lint-format-diff
+
 lint-check-fix-default:
 	ruff check -v --fix
 
 lint-format-fix-default:
 	ruff format -v --fix
+
+lint-fix: lint-check-fix lint-format-fix
 
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
@@ -2166,9 +2170,6 @@ install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
-lint-diff-default: lint-check-diff lint-format-diff
-lint-fix-default: lint-check-fix lint-format-fix
-l-default: lint-diff
 logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
