@@ -1816,7 +1816,7 @@ help-default:
 lint-default:
 	-ruff check -v --fix
 	-ruff format -v
-	djlint --reformat .
+	djlint --reformat --format-css --format-js .
 
 pip-freeze-default:
 	$(ENSURE_PIP)
