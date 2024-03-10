@@ -1812,10 +1812,10 @@ lint-check-diff-default:
 lint-format-diff-default:
 	ruff format -v --diff
 
-lint-check-default:
+lint-check-fix-default:
 	ruff check -v
 
-lint-format-default:
+lint-format-fix-default:
 	ruff format -v
 
 db-mysql-init-default:
@@ -2166,8 +2166,9 @@ install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 i-default: install
-lint-default: lint-check-diff lint-format-diff
-l-default: lint
+lint-diff-default: lint-check-diff lint-format-diff
+lint-fix-default: lint-check-fix lint-format-fix
+l-default: lint-diff
 logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
