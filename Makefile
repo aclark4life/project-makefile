@@ -1813,10 +1813,10 @@ lint-format-diff-default:
 	ruff format -v --diff
 
 lint-check-fix-default:
-	ruff check -v
+	ruff check -v --fix
 
 lint-format-fix-default:
-	ruff format -v
+	ruff format -v --fix
 
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
