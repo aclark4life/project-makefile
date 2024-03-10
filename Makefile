@@ -2131,53 +2131,53 @@ wagtail-sitepage-default:
 # More rules
 # ------------------------------------------------------------------------------  
 
+b-default: build
 build-default: pip-install
-b-default: build 
 c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
 d-default: deploy
-deploy-default: eb-deploy
 db-export-default: db-pg-export
 db-import-default: db-pg-import
 db-init-default: db-pg-init
+deploy-default: eb-deploy
 django-clean-default: wagtail-clean
 django-init-default: wagtail-init
 djlint-default: lint-djlint
-edit-default: readme-edit
 e-default: edit
+edit-default: readme-edit
 empty-default: git-commit-empty
 freeze-default: pip-freeze
+git-commit-edit-push-default: git-commit-edit git-push
+git-commit-push-default: git-commit git-push
+gitignore-default: git-ignore
 h-default: help
+i-default: install
 init-default: wagtail-init
 install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
-i-default: install
 logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
 mk-default: project-mk
-git-commit-edit-push-default: git-commit-edit git-push
-git-commit-push-default: git-commit git-push
-gitignore-default: git-ignore
-open-default: django-open
 o-default: open
+open-default: django-open
 p-default: git-push
 pack-default: django-npm-build
 pg-init-default: db-pg-init
 readme-default: readme-init
 restart-default: eb-restart
+s-default: serve
+sdist-default: python-setup-sdist
 secret-default: django-secret
 serve-default: django-serve
 shell-default: django-shell
 show-urls-default: django-show-urls
-su-default: django-su
-s-default: serve
 static-default: django-static
-sdist-default: python-setup-sdist
+su-default: django-su
 test-default: django-test
 u-default: usage
 up-default: eb-upgrade
