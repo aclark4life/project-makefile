@@ -1806,22 +1806,6 @@ git-set-upstream-default:
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
-lint-check-diff-default:
-	ruff check -v --diff
-
-lint-format-diff-default:
-	ruff format -v --diff
-
-lint-diff: lint-check-diff lint-format-diff
-
-lint-check-fix-default:
-	ruff check -v --fix
-
-lint-format-fix-default:
-	ruff format -v --fix
-
-lint-fix: lint-check-fix lint-format-fix
-
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
