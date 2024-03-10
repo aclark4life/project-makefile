@@ -1813,6 +1813,11 @@ help-default:
             | xargs | tr ' ' '\n' \
             | awk '{printf "%s\n", $$0}' ; done | less # http://stackoverflow.com/a/26339924
 
+lint-default:
+	-ruff check -v --fix
+	-ruff format -v
+	djlint --reformat .
+
 pip-freeze-default:
 	$(ENSURE_PIP)
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
