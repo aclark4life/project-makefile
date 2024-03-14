@@ -4,28 +4,24 @@ from wagtail.models import Page
 
 from contactpage.models import ContactPage, FormField
 
-
 class ContactPageTest(TestCase, WagtailPageTestCase):
     def test_contact_page_creation(self):
         # Create a ContactPage instance
         contact_page = ContactPage(
-            title="Contact",
-            intro="Welcome to our contact page!",
-            thank_you_text="Thank you for reaching out.",
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
         )
 
         # Save the ContactPage instance
-        self.assertEqual(
-            contact_page.save_revision().publish().get_latest_revision_as_page(),
-            contact_page,
-        )
+        self.assertEqual(contact_page.save_revision().publish().get_latest_revision_as_page(), contact_page)
 
     def test_form_field_creation(self):
         # Create a ContactPage instance
         contact_page = ContactPage(
-            title="Contact",
-            intro="Welcome to our contact page!",
-            thank_you_text="Thank you for reaching out.",
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
         )
         # Save the ContactPage instance
         contact_page_revision = contact_page.save_revision()
@@ -33,7 +29,10 @@ class ContactPageTest(TestCase, WagtailPageTestCase):
 
         # Create a FormField associated with the ContactPage
         form_field = FormField(
-            page=contact_page, label="Your Name", field_type="singleline", required=True
+            page=contact_page,
+            label='Your Name',
+            field_type='singleline',
+            required=True
         )
         form_field.save()
 
@@ -46,9 +45,9 @@ class ContactPageTest(TestCase, WagtailPageTestCase):
     def test_contact_page_form_submission(self):
         # Create a ContactPage instance
         contact_page = ContactPage(
-            title="Contact",
-            intro="Welcome to our contact page!",
-            thank_you_text="Thank you for reaching out.",
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
         )
         # Save the ContactPage instance
         contact_page_revision = contact_page.save_revision()
@@ -56,7 +55,7 @@ class ContactPageTest(TestCase, WagtailPageTestCase):
 
         # Simulate a form submission
         form_data = {
-            "your_name": "John Doe",
+            'your_name': 'John Doe',
             # Add other form fields as needed
         }
 
@@ -64,5 +63,5 @@ class ContactPageTest(TestCase, WagtailPageTestCase):
 
         # Check if the form submission is successful (assuming a 302 redirect)
         self.assertEqual(response.status_code, 302)
-
+        
         # You may add more assertions based on your specific requirements

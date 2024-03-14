@@ -739,6 +739,43 @@ class SitePage(Page):
         verbose_name = "Site Page"
 endef
 
+define SEARCH_TEMPLATE
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% block body_class %}template-searchresults{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text"
+               name="query"
+               {% if search_query %}value="{{ search_query }}"{% endif %}>
+        <input type="submit" value="Search" class="button">
+    </form>
+    {% if search_results %}
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <h4>
+                        <a href="{% pageurl result %}">{{ result }}</a>
+                    </h4>
+                    {% if result.search_description %}{{ result.search_description }}{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        No results found
+	{% else %}
+		No results found. Try a <a href="?query=test">test query</a>?
+    {% endif %}
+{% endblock %}
+endef
 
 define SEARCH_URLS
 from django.urls import path
@@ -1492,6 +1529,7 @@ export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_VIEW_TEMPLATE
 export SITEUSER_EDIT_TEMPLATE
+export SEARCH_TEMPLATE
 export SEARCH_URLS
 export THEME_BLUE
 export THEME_TOGGLER
@@ -1911,6 +1949,9 @@ wagtail-search-urls:
 	@echo "$$SEARCH_URLS" > search/urls.py
 	$(GIT_ADD) search
 
+wagtail-search-template:
+	@echo "$$SEARCH_TEMPLATE" > search/templates/search/search.html
+
 wagtail-privacy-default:
 	python manage.py startapp privacy
 	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
@@ -1988,6 +2029,7 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 	$(GIT_ADD) Dockerfile
 	$(GIT_ADD) .dockerignore
 	$(MAKE) wagtail-homepage
+	$(MAKE) wagtail-search-template
 	$(MAKE) wagtail-search-urls
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
