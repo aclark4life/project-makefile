@@ -29,6 +29,7 @@ GIT_BRANCHES = $(shell git branch -a | grep remote | grep -v HEAD | grep -v main
 GIT_MESSAGE = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
 GIT_PUSH = git push
+GIT_PUSH_FORCE = git push --force-with-lease
 
 GET_DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var;\
     env | grep DATABASE_URL"
@@ -2085,6 +2086,9 @@ git-commit-default:
 git-push-default:
 	-@$(GIT_PUSH)
 
+git-push-force-default:
+	-@$(GIT_PUSH_FORCE)
+
 git-commit-edit-default:
 	-git commit -a
 
@@ -2491,6 +2495,7 @@ djlint-default: lint-djlint
 e-default: edit
 edit-default: readme-edit-md
 empty-default: git-commit-empty
+force-push-default: git-push-force
 freeze-default: pip-freeze
 git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
