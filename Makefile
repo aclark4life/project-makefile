@@ -1815,6 +1815,9 @@ eb-init-default:
 eb-list-platforms-default:
 	aws elasticbeanstalk list-platform-versions
 
+eb-list-databases-default:
+	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); psql -l -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)"
+
 eb-logs-default:
 	eb logs
 
