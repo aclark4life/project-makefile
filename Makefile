@@ -2096,6 +2096,9 @@ git-branches-default:
 git-commit-default:
 	-@$(GIT_COMMIT)
 
+git-commit-empty-default:
+	git commit --allow-empty -m "Empty-Commit"
+
 git-push-default:
 	-@$(GIT_PUSH)
 
@@ -2111,8 +2114,8 @@ git-prune-default:
 git-set-upstream-default:
 	git push --set-upstream origin main
 
-git-commit-empty-default:
-	git commit --allow-empty -m "Empty-Commit"
+git-short-default:
+	@echo $(GIT_REV)
 
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
