@@ -1760,6 +1760,9 @@ endif
 docker-build-default:
 	podman build -t $(PROJECT_NAME) .
 
+docker-shell-default:
+	podman run -it $(PROJECT_NAME) /bin/bash
+
 docker-compose-default:
 	podman compose up
 
