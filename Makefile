@@ -1763,6 +1763,10 @@ docker-build-default:
 docker-shell-default:
 	podman run -it $(PROJECT_NAME) /bin/bash
 
+docker-list-default:
+	podman containers list --all
+	podman images list --all
+
 docker-compose-default:
 	podman compose up
 
