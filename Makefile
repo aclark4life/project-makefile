@@ -1765,7 +1765,7 @@ docker-shell-default:
 
 docker-list-default:
 	podman container list --all
-	podman images list --all
+	podman images --all
 
 docker-compose-default:
 	podman compose up
