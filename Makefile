@@ -2526,6 +2526,8 @@ git-commit-push-default: git-commit git-push
 gitignore-default: git-ignore
 h-default: help
 i-default: install
+index-default: html-index
+error-default: html-error
 init-default: wagtail-init
 install-default: pip-install
 install-dev-default: pip-install-dev
