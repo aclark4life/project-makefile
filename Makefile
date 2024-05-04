@@ -708,8 +708,12 @@ define HOME_PAGE_TEMPLATE
 {% endblock %}
 endef
 
-define INDEX_HTML
+define HTML_INDEX
 <h1>Hello world</h1>
+endef
+
+define HTML_ERROR
+<h1>500</h1>
 endef
 
 define JENKINS_FILE
@@ -1696,12 +1700,13 @@ export FRONTEND_COMPONENTS
 export FRONTEND_PORTAL
 export FRONTEND_STYLES
 export GIT_IGNORE
+export HTML_ERROR
+export HTML_INDEX
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
 export HTML_FOOTER
 export HTML_HEADER
 export HTML_OFFCANVAS
-export INDEX_HTML
 export INTERNAL_IPS
 export JENKINS_FILE
 export MODEL_FORM_TEST_ADMIN
@@ -2125,8 +2130,11 @@ help-default:
             | xargs | tr ' ' '\n' \
             | awk '{printf "%s\n", $$0}' ; done | less # http://stackoverflow.com/a/26339924
 
-index-default:
-	@echo "$$INDEX_HTML" > index.html
+html-index-default:
+	@echo "$$HTML_INDEX" > index.html
+
+html-error-default:
+	@echo "$$HTML_ERROR" > error.html
 
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
