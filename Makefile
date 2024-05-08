@@ -2552,6 +2552,7 @@ secret-default: django-secret
 serve-default: django-serve
 shell-default: django-shell
 show-urls-default: django-show-urls
+show-migrations-default: migrations-show
 ssm-list-default: aws-ssm-describe-parameters
 static-default: django-static
 su-default: django-su
