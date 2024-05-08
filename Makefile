@@ -1060,7 +1060,7 @@ const App = () => (
         {dataComponents}
       </UserContextProvider>
     </ErrorBoundary>
-)
+);
 root.render(<App />);
 endef
 
