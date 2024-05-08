@@ -808,7 +808,7 @@ from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from rest_framework import routers, serializers, viewsets
-# from dj_rest_auth.registration.views import RegisterView
+from dj_rest_auth.registration.views import RegisterView
 
 from siteuser.models import User
 
@@ -819,6 +819,7 @@ urlpatterns = [
     path('user/', include('siteuser.urls')),
     path('search/', include('search.urls')),
     path('modelformtest/', include('modelformtest.urls')),
+    path('explorer/', include('explorer.urls')),
 ]
 
 if settings.DEBUG:
@@ -2428,6 +2429,7 @@ wagtail-install-default:
         django-richtextfield \
         django-sendgrid-v5 \
         django-social-share \
+        django-sql-explorer \
         django-storages \
         django-tables2 \
         django-timezone-field \
