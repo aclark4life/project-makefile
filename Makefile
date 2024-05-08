@@ -851,7 +851,7 @@ router.register(r'users', UserViewSet)
 urlpatterns += [
     path("api/", include(router.urls)),
     path("api/", include("rest_framework.urls", namespace="rest_framework")),
-    # path("api/", include("dj_rest_auth.urls")),
+    path("api/", include("dj_rest_auth.urls")),
     # path("api/register/", RegisterView.as_view(), name="register"),
 ]
 
@@ -2435,6 +2435,7 @@ wagtail-install-default:
         django-timezone-field \
 		django-widget-tweaks \
         dj-database-url \
+        dj-rest-auth \
         dj-stripe \
         enmerkar \
         gunicorn \
