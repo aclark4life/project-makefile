@@ -2031,6 +2031,7 @@ django-npm-install-save-default:
         @fortawesome/free-brands-svg-icons \
         @fortawesome/free-solid-svg-icons \
         @fortawesome/react-fontawesome \
+		bootstrap \
         camelize \
         date-fns \
         history \
