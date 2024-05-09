@@ -1820,7 +1820,7 @@ eb-create-default: eb-check-env
 eb-deploy-default:
 	eb deploy
 
-eb-export-default:
+eb-pg-export-default:
 	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
 	@echo "Wrote $(DATABASE_NAME).sql"
 
@@ -2519,6 +2519,7 @@ clean-default: wagtail-clean
 cp-default: git-commit-push
 d-default: deploy
 db-import-default: db-pg-import
+db-export-default: eb-pg-export
 db-init-default: db-pg-init
 db-init-test-default: db-pg-init-test
 deploy-default: eb-deploy
