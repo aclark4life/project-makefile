@@ -72,6 +72,8 @@ GIT_ADD := -git add
 
 ENSURE_PIP := python -m ensurepip
 
+EB_DIR = .elasticbeanstalk
+
 # --------------------------------------------------------------------------------
 # Multi-line variables
 # --------------------------------------------------------------------------------
@@ -1821,8 +1823,19 @@ eb-deploy-default:
 	eb deploy
 
 eb-pg-export-default:
-	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql
-	@echo "Wrote $(DATABASE_NAME).sql"
+	@if [ ! -d $(EB_DIR) ]; then \
+        echo "Directory $(EB_DIR) does not exist"; \
+    else \
+        echo "Directory $(EB_DIR) does exist!"; \
+        eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql; \
+    fi
+
+#     @if [ ! -d .elasticbeanstalk ]; then \
+#         echo "Sorry, no .elasticbeanstalk/ found. Please run `eb init`." \
+#     else \
+#         eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql;
+#         echo "Wrote $(DATABASE_NAME).sql" \
+#     fi
 
 eb-restart-default:
 	eb ssh -c "systemctl restart web"
