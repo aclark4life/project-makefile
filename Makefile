@@ -2446,6 +2446,7 @@ wagtail-install-default:
         mailchimp-transactional \
         phonenumbers \
         psycopg2-binary \
+        pydotplus \
         python-webpack-boilerplate \
         python-docx \
         reportlab \
