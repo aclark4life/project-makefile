@@ -836,7 +836,9 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
+		path("django/doc/"', include("django.contrib.admindocs.urls")),
     ]
+
 
 # https://www.django-rest-framework.org/#example
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -1999,6 +2001,7 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
+	echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
