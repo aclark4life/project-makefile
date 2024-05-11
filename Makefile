@@ -2464,6 +2464,7 @@ wagtail-install-default:
         dj-database-url \
         dj-rest-auth \
         dj-stripe \
+        docutils \
         enmerkar \
         gunicorn \
         html2docx \
