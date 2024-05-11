@@ -836,7 +836,7 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
-		path("django/doc/"', include("django.contrib.admindocs.urls")),
+		path("django/doc/", include("django.contrib.admindocs.urls")),
     ]
 
 
