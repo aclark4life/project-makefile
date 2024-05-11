@@ -110,6 +110,104 @@ define BABELRC
 }
 endef
 
+define BACKEND_ADMIN
+from django.contrib import admin
+
+
+class BackendAdminSite(admin.AdminSite):
+	"""
+	"""
+endef
+
+define BACKEND_APPS
+from django.contrib.admin.apps import AdminConfig
+
+class BackendAdminConfig(AdminConfig):
+    default_site = "backend.admin.BackendAdminSite"
+endef
+
+define BACKEND_URLS
+from django.conf import settings
+from django.urls import include, path
+from django.contrib import admin
+
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail import urls as wagtail_urls
+from wagtail.documents import urls as wagtaildocs_urls
+
+from rest_framework import routers, serializers, viewsets
+from dj_rest_auth.registration.views import RegisterView
+
+from siteuser.models import User
+
+urlpatterns = []
+
+if settings.DEBUG:
+	urlpatterns += [
+		path("django/doc/", include("django.contrib.admindocs.urls")),
+	]
+
+urlpatterns += [
+    path('accounts/', include('allauth.urls')),
+    path('django/', admin.site.urls),
+    path('wagtail/', include(wagtailadmin_urls)),
+    path('user/', include('siteuser.urls')),
+    path('search/', include('search.urls')),
+    path('modelformtest/', include('modelformtest.urls')),
+    path('explorer/', include('explorer.urls')),
+]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+    # Serve static and media files from development server
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    import debug_toolbar
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]
+
+
+# https://www.django-rest-framework.org/#example
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'is_staff']
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+
+urlpatterns += [
+    path("api/", include(router.urls)),
+    path("api/", include("rest_framework.urls", namespace="rest_framework")),
+    path("api/", include("dj_rest_auth.urls")),
+    # path("api/register/", RegisterView.as_view(), name="register"),
+]
+
+urlpatterns += [
+    path("hijack/", include("hijack.urls")),
+]
+
+urlpatterns += [
+    # For anything not caught by a more specific rule above, hand over to
+    # Wagtail's page serving mechanism. This should be the last pattern in
+    # the list:
+    path("", include(wagtail_urls)),
+
+    # Alternatively, if you want Wagtail pages to be served from a subpath
+    # of your site, rather than the site root:
+    #    path("pages/", include(wagtail_urls)),
+]
+endef
+
+
 define BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 
@@ -798,87 +896,6 @@ urlpatterns = [
     path('profile/', UserProfileView.as_view(), name='user-profile'),
     path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
     path('<int:pk>/edit/', UserEditView.as_view(), name='user-edit'),
-]
-endef
-
-define BACKEND_URLS
-from django.conf import settings
-from django.urls import include, path
-from django.contrib import admin
-
-from wagtail.admin import urls as wagtailadmin_urls
-from wagtail import urls as wagtail_urls
-from wagtail.documents import urls as wagtaildocs_urls
-
-from rest_framework import routers, serializers, viewsets
-from dj_rest_auth.registration.views import RegisterView
-
-from siteuser.models import User
-
-urlpatterns = []
-
-if settings.DEBUG:
-	urlpatterns += [
-		path("django/doc/", include("django.contrib.admindocs.urls")),
-	]
-
-urlpatterns += [
-    path('accounts/', include('allauth.urls')),
-    path('django/', admin.site.urls),
-    path('wagtail/', include(wagtailadmin_urls)),
-    path('user/', include('siteuser.urls')),
-    path('search/', include('search.urls')),
-    path('modelformtest/', include('modelformtest.urls')),
-    path('explorer/', include('explorer.urls')),
-]
-
-if settings.DEBUG:
-    from django.conf.urls.static import static
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-    # Serve static and media files from development server
-    urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-    import debug_toolbar
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
-
-
-# https://www.django-rest-framework.org/#example
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'is_staff']
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-
-urlpatterns += [
-    path("api/", include(router.urls)),
-    path("api/", include("rest_framework.urls", namespace="rest_framework")),
-    path("api/", include("dj_rest_auth.urls")),
-    # path("api/register/", RegisterView.as_view(), name="register"),
-]
-
-urlpatterns += [
-    path("hijack/", include("hijack.urls")),
-]
-
-urlpatterns += [
-    # For anything not caught by a more specific rule above, hand over to
-    # Wagtail's page serving mechanism. This should be the last pattern in
-    # the list:
-    path("", include(wagtail_urls)),
-
-    # Alternatively, if you want Wagtail pages to be served from a subpath
-    # of your site, rather than the site root:
-    #    path("pages/", include(wagtail_urls)),
 ]
 endef
 
@@ -1691,6 +1708,8 @@ endef
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
+export BACKEND_ADMIN
+export BACKEND_APPS
 export BACKEND_URLS
 export BASE_TEMPLATE
 export BLOCK_CAROUSEL
@@ -1904,6 +1923,10 @@ db-pg-init-test-default:
 db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
+django-custom-admin-default:
+	echo "$$BACKEND_ADMIN" > backend/admin.py
+	echo "$$BACKEND_APPS" > backend/apps.py
+
 django-frontend-app-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
@@ -2008,6 +2031,8 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
 	echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
+	echo "INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']"
+	echo "INSTALLED_APPS.append('backend.apps.BackendAdminConfig')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
@@ -2395,6 +2420,7 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 		$(MAKE) django-model-form-test
 	export URLS=urls.py; \
 		$(MAKE) django-url-patterns
+	$(MAKE) django-custom-admin
 	$(GIT_ADD) backend
 	$(GIT_ADD) requirements.txt
 	$(GIT_ADD) manage.py
