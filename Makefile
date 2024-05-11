@@ -2031,8 +2031,8 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
 	echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
-	echo "INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']"
-	echo "INSTALLED_APPS.append('backend.apps.BackendAdminConfig')" >> $(SETTINGS)
+	echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
+	echo "# INSTALLED_APPS.append('backend.apps.BackendAdminConfig')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
