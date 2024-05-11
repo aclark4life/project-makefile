@@ -815,7 +815,14 @@ from dj_rest_auth.registration.views import RegisterView
 
 from siteuser.models import User
 
-urlpatterns = [
+urlpatterns = []
+
+if settings.DEBUG:
+	urlpatterns += [
+		path("django/doc/", include("django.contrib.admindocs.urls")),
+	]
+
+urlpatterns += [
     path('accounts/', include('allauth.urls')),
     path('django/', admin.site.urls),
     path('wagtail/', include(wagtailadmin_urls)),
@@ -836,7 +843,6 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
-		path("django/doc/", include("django.contrib.admindocs.urls")),
     ]
 
 
