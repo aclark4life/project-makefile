@@ -2248,6 +2248,10 @@ pip-uninstall-default:
 	$(ENSURE_PIP)
 	python -m pip freeze | xargs python -m pip uninstall -y
 
+plone-init-default:
+	$(ENSURE_PIP)
+	python -m pip install plone
+
 project-mk-default:
 	touch project.mk
 	$(GIT_ADD) project.mk
