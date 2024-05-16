@@ -2248,6 +2248,9 @@ pip-uninstall-default:
 	$(ENSURE_PIP)
 	python -m pip freeze | xargs python -m pip uninstall -y
 
+plone-clean-default:
+	$(DEL_DIR) $(PROJECT_NAME)
+
 plone-init-default:
 	$(ENSURE_PIP)
 	python -m pip install plone
