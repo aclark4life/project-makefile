@@ -2256,7 +2256,7 @@ plone-init-default:
 	$(MAKE) plone-serve
 
 plone-serve-default:
-	runwsgi $(PROJECT_NAME)/etc/zope.init
+	runwsgi $(PROJECT_NAME)/etc/zope.ini
 
 project-mk-default:
 	touch project.mk
