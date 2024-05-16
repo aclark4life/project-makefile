@@ -2251,6 +2251,8 @@ pip-uninstall-default:
 plone-init-default:
 	$(ENSURE_PIP)
 	python -m pip install plone
+	mkwsgiinstance -d $(PROJECT_NAME) -u admin:admin
+	@echo "Created $(PROJECT_NAME)!"
 
 project-mk-default:
 	touch project.mk
