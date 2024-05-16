@@ -2253,6 +2253,10 @@ plone-init-default:
 	python -m pip install plone
 	mkwsgiinstance -d $(PROJECT_NAME) -u admin:admin
 	@echo "Created $(PROJECT_NAME)!"
+	$(MAKE) plone-serve
+
+plone-serve-default:
+	runwsgi $(PROJECT_NAME)/etc/zope.init
 
 project-mk-default:
 	touch project.mk
