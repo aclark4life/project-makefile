@@ -20,7 +20,7 @@ PROJECT_NAME = project-makefile
 PROJECT_DIRS = backend contactpage home privacy siteuser
 
 WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage modelformtest
-WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt
+WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml
 
 REVIEW_EDITOR = subl
 
