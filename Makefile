@@ -2273,7 +2273,8 @@ python-setup-sdist-default:
 	python3 setup.py sdist --format=zip
 
 python-webpack-init-default:
-	python manage.py webpack_init --no-input
+	# python manage.py webpack_init --no-input
+	python manage.py webpack_init
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
