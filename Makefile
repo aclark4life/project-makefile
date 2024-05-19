@@ -110,20 +110,11 @@ define BABELRC
 }
 endef
 
-define BACKEND_ADMIN
-from django.contrib import admin
-
-
-class BackendAdminSite(admin.AdminSite):
-	"""
-	"""
-endef
-
 define BACKEND_APPS
 from django.contrib.admin.apps import AdminConfig
 
-class BackendAdminConfig(AdminConfig):
-    default_site = "backend.admin.BackendAdminSite"
+class CustomAdminConfig(AdminConfig):
+    default_site = "backend.admin.CustomAdminSite"
 endef
 
 define BACKEND_URLS
@@ -640,6 +631,18 @@ endef
 define CONTACT_PAGE_LANDING
 {% extends 'base.html' %}
 {% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
+endef
+
+define CUSTOM_ADMIN
+# admin.py
+from django.contrib.admin import AdminSite
+
+class CustomAdminSite(AdminSite):
+    site_header = 'Custom Admin'
+    site_title = 'Custom Admin Portal'
+    index_title = 'Welcome to the Custom Admin'
+
+custom_admin_site = CustomAdminSite(name='custom_admin')
 endef
 
 define DOCKERFILE
@@ -1708,7 +1711,6 @@ endef
 export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
-export BACKEND_ADMIN
 export BACKEND_APPS
 export BACKEND_URLS
 export BASE_TEMPLATE
@@ -1721,6 +1723,7 @@ export CONTACT_PAGE_MODEL
 export CONTACT_PAGE_TEMPLATE
 export CONTACT_PAGE_LANDING
 export CONTACT_PAGE_TEST
+export CUSTOM_ADMIN
 export DOCKERFILE
 export DOCKERCOMPOSE
 export ESLINTRC
@@ -1924,7 +1927,7 @@ db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 django-custom-admin-default:
-	echo "$$BACKEND_ADMIN" > backend/admin.py
+	echo "$$CUSTOM_ADMIN" > backend/admin.py
 	echo "$$BACKEND_APPS" > backend/apps.py
 
 django-frontend-app-default: python-webpack-init
@@ -2031,8 +2034,8 @@ django-settings-default:
 	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
 	echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
 	echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
-	echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
-	echo "# INSTALLED_APPS.append('backend.apps.BackendAdminConfig')" >> $(SETTINGS)
+	echo "INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
+	echo "INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
