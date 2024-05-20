@@ -2264,6 +2264,9 @@ plone-init-default:
 plone-serve-default:
 	runwsgi $(PROJECT_NAME)/etc/zope.ini
 
+plone-build-default:
+	buildout
+
 project-mk-default:
 	touch project.mk
 	$(GIT_ADD) project.mk
