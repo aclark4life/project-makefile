@@ -19,7 +19,7 @@ PROJECT_MAKEFILE := project.mk
 PROJECT_NAME = project-makefile
 PROJECT_DIRS = backend contactpage home privacy siteuser
 
-WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage modelformtest
+WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo
 WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml
 
 REVIEW_EDITOR = subl
@@ -144,7 +144,7 @@ urlpatterns += [
     path('wagtail/', include(wagtailadmin_urls)),
     path('user/', include('siteuser.urls')),
     path('search/', include('search.urls')),
-    path('modelformtest/', include('modelformtest.urls')),
+    path('model_form_demo/', include('model_form_demo.urls')),
     path('explorer/', include('explorer.urls')),
 ]
 
@@ -475,7 +475,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/user/profile">Profile</a></li>
-            <li><a className="dropdown-item" href="/modelformtest/test-models">Model Form Test</a></li>
+            <li><a className="dropdown-item" href="/model_form_demo/test-models">Model Form Test</a></li>
             {isSuperuser ? (
               <>
                 <li><hr className="dropdown-divider"></hr></li>
@@ -1212,7 +1212,7 @@ define HTML_OFFCANVAS
 </div>
 endef
 
-define MODEL_FORM_TEST_MODEL
+define MODEL_FORM_DEMO_MODEL
 from django.db import models
 from django.shortcuts import reverse
 
@@ -1227,10 +1227,10 @@ class TestModel(models.Model):
         return self.name or f"test-model-{self.pk}"
 
     def get_absolute_url(self):
-        return reverse('test_model_detail', kwargs={'pk': self.pk})
+        return reverse('model_form_demo_detail', kwargs={'pk': self.pk})
 endef
 
-define MODEL_FORM_TEST_ADMIN
+define MODEL_FORM_DEMO_ADMIN
 from django.contrib import admin
 from .models import TestModel
 
@@ -1239,7 +1239,7 @@ class TestModelAdmin(admin.ModelAdmin):
     pass
 endef
 
-define MODEL_FORM_TEST_VIEWS
+define MODEL_FORM_DEMO_VIEWS
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import TestModel
 from .forms import TestModelForm
@@ -1247,14 +1247,14 @@ from .forms import TestModelForm
 
 class TestModelListView(ListView):
     model = TestModel
-    template_name = "test_model_list.html"
-    context_object_name = "test_models"
+    template_name = "model_form_demo_list.html"
+    context_object_name = "model_form_demos"
 
 
 class TestModelCreateView(CreateView):
     model = TestModel
     form_class = TestModelForm
-    template_name = "test_model_form.html"
+    template_name = "model_form_demo_form.html"
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
@@ -1264,16 +1264,16 @@ class TestModelCreateView(CreateView):
 class TestModelUpdateView(UpdateView):
     model = TestModel
     form_class = TestModelForm
-    template_name = "test_model_form.html"
+    template_name = "model_form_demo_form.html"
 
 
 class TestModelDetailView(DetailView):
     model = TestModel
-    template_name = "test_model_detail.html"
-    context_object_name = "test_model"
+    template_name = "model_form_demo_detail.html"
+    context_object_name = "model_form_demo"
 endef
 
-define MODEL_FORM_TEST_FORMS
+define MODEL_FORM_DEMO_FORMS
 from django import forms
 from .models import TestModel
 
@@ -1283,7 +1283,7 @@ class TestModelForm(forms.ModelForm):
         fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
 endef
 
-define MODEL_FORM_TEST_TEMPLATE_FORM
+define MODEL_FORM_DEMO_TEMPLATE_FORM
 {% extends 'base.html' %}
 {% block content %}
     <h1>{% if form.instance.pk %}Update Test Model{% else %}Create Test Model{% endif %}</h1>
@@ -1295,33 +1295,33 @@ define MODEL_FORM_TEST_TEMPLATE_FORM
 {% endblock %}
 endef
 
-define MODEL_FORM_TEST_TEMPLATE_DETAIL
+define MODEL_FORM_DEMO_TEMPLATE_DETAIL
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Test Model Detail: {{ test_model.name }}</h1>
-    <p>Name: {{ test_model.name }}</p>
-    <p>Email: {{ test_model.email }}</p>
-    <p>Age: {{ test_model.age }}</p>
-    <p>Active: {{ test_model.is_active }}</p>
-    <p>Created At: {{ test_model.created_at }}</p>
-    <a href="{% url 'test_model_update' test_model.pk %}">Edit Test Model</a>
+    <h1>Test Model Detail: {{ model_form_demo.name }}</h1>
+    <p>Name: {{ model_form_demo.name }}</p>
+    <p>Email: {{ model_form_demo.email }}</p>
+    <p>Age: {{ model_form_demo.age }}</p>
+    <p>Active: {{ model_form_demo.is_active }}</p>
+    <p>Created At: {{ model_form_demo.created_at }}</p>
+    <a href="{% url 'model_form_demo_update' model_form_demo.pk %}">Edit Test Model</a>
 {% endblock %}
 endef
 
-define MODEL_FORM_TEST_TEMPLATE_LIST
+define MODEL_FORM_DEMO_TEMPLATE_LIST
 {% extends 'base.html' %}
 {% block content %}
     <h1>Test Models List</h1>
     <ul>
-        {% for test_model in test_models %}
-            <li><a href="{% url 'test_model_detail' test_model.pk %}">{{ test_model.name }}</a></li>
+        {% for model_form_demo in model_form_demos %}
+            <li><a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a></li>
         {% endfor %}
     </ul>
-    <a href="{% url 'test_model_create' %}">Create New Test Model</a>
+    <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
 {% endblock %}
 endef
 
-define MODEL_FORM_TEST_URLS
+define MODEL_FORM_DEMO_URLS
 from django.urls import path
 from .views import (
     TestModelListView,
@@ -1331,10 +1331,10 @@ from .views import (
 )
 
 urlpatterns = [
-    path('test-models/', TestModelListView.as_view(), name='test_model_list'),
-    path('test-models/create/', TestModelCreateView.as_view(), name='test_model_create'),
-    path('test-models/<int:pk>/update/', TestModelUpdateView.as_view(), name='test_model_update'),
-    path('test-models/<int:pk>/', TestModelDetailView.as_view(), name='test_model_detail'),
+    path('test-models/', TestModelListView.as_view(), name='model_form_demo_list'),
+    path('test-models/create/', TestModelCreateView.as_view(), name='model_form_demo_create'),
+    path('test-models/<int:pk>/update/', TestModelUpdateView.as_view(), name='model_form_demo_update'),
+    path('test-models/<int:pk>/', TestModelDetailView.as_view(), name='model_form_demo_detail'),
 ]
 endef
 
@@ -1743,14 +1743,14 @@ export HTML_HEADER
 export HTML_OFFCANVAS
 export INTERNAL_IPS
 export JENKINS_FILE
-export MODEL_FORM_TEST_ADMIN
-export MODEL_FORM_TEST_FORMS
-export MODEL_FORM_TEST_MODEL
-export MODEL_FORM_TEST_URLS
-export MODEL_FORM_TEST_VIEWS
-export MODEL_FORM_TEST_TEMPLATE_DETAIL
-export MODEL_FORM_TEST_TEMPLATE_FORM
-export MODEL_FORM_TEST_TEMPLATE_LIST
+export MODEL_FORM_DEMO_ADMIN
+export MODEL_FORM_DEMO_FORMS
+export MODEL_FORM_DEMO_MODEL
+export MODEL_FORM_DEMO_URLS
+export MODEL_FORM_DEMO_VIEWS
+export MODEL_FORM_DEMO_TEMPLATE_DETAIL
+export MODEL_FORM_DEMO_TEMPLATE_FORM
+export MODEL_FORM_DEMO_TEMPLATE_LIST
 export PRIVACY_PAGE_MODEL
 export REST_FRAMEWORK
 export FRONTEND_CONTEXT_INDEX
@@ -1989,20 +1989,20 @@ django-migrations-default:
 django-migrations-show-default:
 	python manage.py showmigrations
 
-django-model-form-test-default:
-	python manage.py startapp modelformtest
-	@echo "$$MODEL_FORM_TEST_ADMIN" > modelformtest/admin.py
-	@echo "$$MODEL_FORM_TEST_FORMS" > modelformtest/forms.py
-	@echo "$$MODEL_FORM_TEST_MODEL" > modelformtest/models.py
-	@echo "$$MODEL_FORM_TEST_URLS" > modelformtest/urls.py
-	@echo "$$MODEL_FORM_TEST_VIEWS" > modelformtest/views.py
-	$(ADD_DIR) modelformtest/templates/modelformtest
-	@echo "$$MODEL_FORM_TEST_TEMPLATE_DETAIL" > modelformtest/templates/test_model_detail.html
-	@echo "$$MODEL_FORM_TEST_TEMPLATE_FORM" > modelformtest/templates/test_model_form.html
-	@echo "$$MODEL_FORM_TEST_TEMPLATE_LIST" > modelformtest/templates/modelformtest/testmodel_list.html
-	@echo "INSTALLED_APPS.append('modelformtest')" >> $(SETTINGS)
+django-model-form-demo-default:
+	python manage.py startapp model_form_demo
+	@echo "$$MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
+	@echo "$$MODEL_FORM_DEMO_FORMS" > model_form_demo/forms.py
+	@echo "$$MODEL_FORM_DEMO_MODEL" > model_form_demo/models.py
+	@echo "$$MODEL_FORM_DEMO_URLS" > model_form_demo/urls.py
+	@echo "$$MODEL_FORM_DEMO_VIEWS" > model_form_demo/views.py
+	$(ADD_DIR) model_form_demo/templates/model_form_demo
+	@echo "$$MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
+	@echo "$$MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
+	@echo "$$MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo/model_form_demo_list.html
+	@echo "INSTALLED_APPS.append('model_form_demo')" >> $(SETTINGS)
 	python manage.py makemigrations
-	$(GIT_ADD) modelformtest
+	$(GIT_ADD) model_form_demo
 
 django-serve-default:
 	cd frontend; npm run watch &
@@ -2434,7 +2434,7 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
 		$(MAKE) django-settings
 	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-model-form-test
+		$(MAKE) django-model-form-demo
 	export URLS=urls.py; \
 		$(MAKE) django-url-patterns
 	$(MAKE) django-custom-admin
