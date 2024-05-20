@@ -1277,7 +1277,7 @@ define MODEL_FORM_DEMO_FORMS
 from django import forms
 from .models import ModelFormDemo
 
-class ModelFormDemo(forms.ModelForm):
+class ModelFormDemoForm(forms.ModelForm):
     class Meta:
         model = ModelFormDemo
         fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
