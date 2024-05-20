@@ -475,7 +475,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
           </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/user/profile">Profile</a></li>
-            <li><a className="dropdown-item" href="/model_form_demo/test-models">Model Form Test</a></li>
+            <li><a className="dropdown-item" href="/model_form_demo/test-models">Model Form Demo</a></li>
             {isSuperuser ? (
               <>
                 <li><hr className="dropdown-divider"></hr></li>
