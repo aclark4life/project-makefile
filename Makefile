@@ -474,8 +474,8 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
               <i className="fa-solid fa-circle-user"></i>
           </a>
           <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="/user/profile">Profile</a></li>
-            <li><a className="dropdown-item" href="/model_form_demo/test-models">Model Form Demo</a></li>
+            <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
+            <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
             {isSuperuser ? (
               <>
                 <li><hr className="dropdown-divider"></hr></li>
@@ -1331,10 +1331,10 @@ from .views import (
 )
 
 urlpatterns = [
-    path('model_form_demo/', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
-    path('model_form_demo/create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
-    path('model_form_demo/<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
-    path('model_form_demo/<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
+    path('model-form-demo/', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
+    path('model-form-demo/create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
+    path('model-form-demo/<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
+    path('model-form-demo/<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
 ]
 endef
 
