@@ -1996,10 +1996,10 @@ django-model-form-demo-default:
 	@echo "$$MODEL_FORM_DEMO_MODEL" > model_form_demo/models.py
 	@echo "$$MODEL_FORM_DEMO_URLS" > model_form_demo/urls.py
 	@echo "$$MODEL_FORM_DEMO_VIEWS" > model_form_demo/views.py
-	$(ADD_DIR) model_form_demo/templates/model_form_demo
+	$(ADD_DIR) model_form_demo/templates
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
-	@echo "$$MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo/model_form_demo_list.html
+	@echo "$$MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
 	@echo "INSTALLED_APPS.append('model_form_demo')" >> $(SETTINGS)
 	python manage.py makemigrations
 	$(GIT_ADD) model_form_demo
