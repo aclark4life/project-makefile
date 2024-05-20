@@ -1216,7 +1216,7 @@ define MODEL_FORM_DEMO_MODEL
 from django.db import models
 from django.shortcuts import reverse
 
-class TestModel(models.Model):
+class ModelFormDemo(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     age = models.IntegerField(blank=True, null=True)
@@ -1232,28 +1232,28 @@ endef
 
 define MODEL_FORM_DEMO_ADMIN
 from django.contrib import admin
-from .models import TestModel
+from .models import ModelFormDemo
 
-@admin.register(TestModel)
-class TestModelAdmin(admin.ModelAdmin):
+@admin.register(ModelFormDemo)
+class ModelFormDemoAdmin(admin.ModelAdmin):
     pass
 endef
 
 define MODEL_FORM_DEMO_VIEWS
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
-from .models import TestModel
-from .forms import TestModelForm
+from .models import ModelFormDemo
+from .forms import ModelFormDemoForm
 
 
-class TestModelListView(ListView):
-    model = TestModel
+class ModelFormDemoListView(ListView):
+    model = ModelFormDemo
     template_name = "model_form_demo_list.html"
     context_object_name = "model_form_demos"
 
 
-class TestModelCreateView(CreateView):
-    model = TestModel
-    form_class = TestModelForm
+class ModelFormDemoCreateView(CreateView):
+    model = ModelFormDemo
+    form_class = ModelFormDemoForm
     template_name = "model_form_demo_form.html"
 
     def form_valid(self, form):
@@ -1261,25 +1261,25 @@ class TestModelCreateView(CreateView):
         return super().form_valid(form)
 
 
-class TestModelUpdateView(UpdateView):
-    model = TestModel
-    form_class = TestModelForm
+class ModelFormDemoUpdateView(UpdateView):
+    model = ModelFormDemo
+    form_class = ModelFormDemoForm
     template_name = "model_form_demo_form.html"
 
 
-class TestModelDetailView(DetailView):
-    model = TestModel
+class ModelFormDemoDetailView(DetailView):
+    model = ModelFormDemo
     template_name = "model_form_demo_detail.html"
     context_object_name = "model_form_demo"
 endef
 
 define MODEL_FORM_DEMO_FORMS
 from django import forms
-from .models import TestModel
+from .models import ModelFormDemo
 
-class TestModelForm(forms.ModelForm):
+class ModelFormDemo(forms.ModelForm):
     class Meta:
-        model = TestModel
+        model = ModelFormDemo
         fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
 endef
 
@@ -1324,17 +1324,17 @@ endef
 define MODEL_FORM_DEMO_URLS
 from django.urls import path
 from .views import (
-    TestModelListView,
-    TestModelCreateView,
-    TestModelUpdateView,
-    TestModelDetailView,
+    ModelFormDemoListView,
+    ModelFormDemoCreateView,
+    ModelFormDemoUpdateView,
+    ModelFormDemoDetailView,
 )
 
 urlpatterns = [
-    path('test-models/', TestModelListView.as_view(), name='model_form_demo_list'),
-    path('test-models/create/', TestModelCreateView.as_view(), name='model_form_demo_create'),
-    path('test-models/<int:pk>/update/', TestModelUpdateView.as_view(), name='model_form_demo_update'),
-    path('test-models/<int:pk>/', TestModelDetailView.as_view(), name='model_form_demo_detail'),
+    path('model_form_demo/', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
+    path('model_form_demo/create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
+    path('model_form_demo/<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
+    path('model_form_demo/<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
 ]
 endef
 
