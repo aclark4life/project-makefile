@@ -144,7 +144,7 @@ urlpatterns += [
     path('wagtail/', include(wagtailadmin_urls)),
     path('user/', include('siteuser.urls')),
     path('search/', include('search.urls')),
-    path('model_form_demo/', include('model_form_demo.urls')),
+    path('model-form-demo/', include('model_form_demo.urls')),
     path('explorer/', include('explorer.urls')),
 ]
 
@@ -1331,10 +1331,10 @@ from .views import (
 )
 
 urlpatterns = [
-    path('model-form-demo/', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
-    path('model-form-demo/create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
-    path('model-form-demo/<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
-    path('model-form-demo/<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
+    path('', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
+    path('create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
+    path('<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
+    path('<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
 ]
 endef
 
