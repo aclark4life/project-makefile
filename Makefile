@@ -2579,7 +2579,7 @@ wagtail-sitepage-default:
 
 zope-init-default:  # Zope 4 on Python 2
 	$(ENSURE_PIP)
-	python -m pip install Zope -r https://zopefoundation.github.io/Zope/releases/4.6.3/requirements-full.txt
+	python -m pip install -r https://zopefoundation.github.io/Zope/releases/4.6.3/requirements-full.txt
 	mkwsgiinstance -d $(PROJECT_NAME) -u admin:admin
 	@echo "Created $(PROJECT_NAME)!"
 	$(MAKE) plone-serve
