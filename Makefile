@@ -1796,6 +1796,14 @@ else
 	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
 endif
 
+aws-subnet-default:
+ifdef AWS_PROFILE
+	@echo "Environment variable is set: $(AWS_PROFILE)"
+	aws ec2 describe-subnets | cat
+else
+	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
+endif
+
 aws-vpc-default:
 ifdef AWS_PROFILE
 	@echo "Environment variable is set: $(AWS_PROFILE)"
