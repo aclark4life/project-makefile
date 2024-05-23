@@ -1784,8 +1784,9 @@ export WEBPACK_REVEAL_INDEX_JS
 # Rules
 # ------------------------------------------------------------------------------  
 
-aws-ssm-describe-parameters-default:
-	@aws ssm describe-parameters | cat
+aws-secret-default:
+	@SECRET_KEY=$$(openssl rand -base64 48); \
+    aws ssm put-parameter --name "SECRET_KEY" --value "$$SECRET_KEY" --type String
 
 aws-ssm-default:
 ifdef AWS_PROFILE
@@ -1901,10 +1902,6 @@ eb-list-databases-default:
 
 eb-logs-default:
 	eb logs
-
-eb-secret-default:
-	@SECRET_KEY=$$(openssl rand -base64 48); \
-    aws ssm put-parameter --name "SECRET_KEY" --value "$$SECRET_KEY" --type String
 
 npm-init-default:
 	npm init -y
