@@ -1788,6 +1788,9 @@ aws-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef AWS_PROFILE
 	$(error AWS_PROFILE is undefined)
 endif
+ifndef AWS_REGION
+	$(error AWS_REGION is undefined)
+endif
 
 aws-secret-default: aws-check-env
 	@SECRET_KEY=$$(openssl rand -base64 48); \
