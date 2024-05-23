@@ -1784,42 +1784,27 @@ export WEBPACK_REVEAL_INDEX_JS
 # Rules
 # ------------------------------------------------------------------------------  
 
-aws-secret-default:
+aws-check-env-default:  # https://stackoverflow.com/a/4731504/185820
+ifndef AWS_PROFILE
+	$(error AWS_PROFILE is undefined)
+endif
+
+aws-secret-default: aws-check-env
 	@SECRET_KEY=$$(openssl rand -base64 48); \
     aws ssm put-parameter --name "SECRET_KEY" --value "$$SECRET_KEY" --type String
 
-aws-ssm-default:
-ifdef AWS_PROFILE
-	@echo "Environment variable is set: $(AWS_PROFILE)"
+aws-sg-default: aws-check-env
+	aws ec2 describe-security-groups | cat
+
+aws-ssm-default: aws-check-env
 	aws ssm describe-parameters | cat
 	@echo "Get parameter values with: aws ssm getparameter --name <Name>."
-else
-	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
-endif
 
-aws-sg-default:
-ifdef AWS_PROFILE
-	@echo "Environment variable is set: $(AWS_PROFILE)"
-	aws ec2 describe-security-groups | cat
-else
-	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
-endif
-
-aws-subnet-default:
-ifdef AWS_PROFILE
-	@echo "Environment variable is set: $(AWS_PROFILE)"
+aws-subnet-default: aws-check-env
 	aws ec2 describe-subnets | cat
-else
-	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
-endif
 
-aws-vpc-default:
-ifdef AWS_PROFILE
-	@echo "Environment variable is set: $(AWS_PROFILE)"
+aws-vpc-default: aws-check-env
 	aws ec2 describe-vpcs | cat
-else
-	@echo "Environment variable not set. Set AWS_PROFILE before running this target."
-endif
 
 docker-build-default:
 	podman build -t $(PROJECT_NAME) .
