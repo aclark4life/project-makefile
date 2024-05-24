@@ -1908,8 +1908,10 @@ eb-create-default: eb-check-env
 eb-custom-env-default:
 	$(ADD_DIR) .ebextensions
 	echo "$$CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
+	$(GIT_ADD) .ebextensions/bash.config
 	$(ADD_DIR) .platform/hooks/postdeploy
 	echo "$$CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
+	$(GIT_ADD) .platform/hooks/postdeploy/setenv.sh
 
 eb-deploy-default:
 	eb deploy
