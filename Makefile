@@ -645,6 +645,47 @@ class CustomAdminSite(AdminSite):
 custom_admin_site = CustomAdminSite(name='custom_admin')
 endef
 
+define CUSTOM_ENV_EC2_USER
+files:
+    "/home/ec2-user/.bashrc":
+        mode: "000644"
+        owner: ec2-user
+        group: ec2-user
+        content: |
+            # .bashrc
+
+            # Source global definitions
+            if [ -f /etc/bashrc ]; then
+                    . /etc/bashrc
+            fi
+
+            # User specific aliases and functions
+            set -o vi
+
+            source <(sed -E -n 's/[^#]+/export &/ p' /opt/elasticbeanstalk/deployment/custom_env_var)
+endef
+
+define CUSTOM_ENV_VAR_FILE
+#!/bin/bash
+
+# Via https://aws.amazon.com/premiumsupport/knowledge-center/elastic-beanstalk-env-variables-linux2/
+
+#Create a copy of the environment variable file.
+cat /opt/elasticbeanstalk/deployment/env | perl -p -e 's/(.*)=(.*)/export $1="$2"/;' > /opt/elasticbeanstalk/deployment/custom_env_var
+
+#Set permissions to the custom_env_var file so this file can be accessed by any user on the instance. You can restrict permissions as per your requirements.
+chmod 644 /opt/elasticbeanstalk/deployment/custom_env_var
+
+# add the virtual env path in. 
+VENV=/var/app/venv/`ls /var/app/venv`
+cat <<EOF >> /opt/elasticbeanstalk/deployment/custom_env_var
+VENV=$VENV
+EOF
+
+#Remove duplicate files upon deployment.
+rm -f /opt/elasticbeanstalk/deployment/*.bak
+endef
+
 define DOCKERFILE
 FROM amazonlinux:2023
 RUN dnf install -y shadow-utils python3.11 python3.11-pip make nodejs20-npm nodejs postgresql15 postgresql15-server
@@ -1724,6 +1765,8 @@ export CONTACT_PAGE_TEMPLATE
 export CONTACT_PAGE_LANDING
 export CONTACT_PAGE_TEST
 export CUSTOM_ADMIN
+export CUSTOM_ENV_EC2_USER
+export CUSTOM_ENV_VAR_FILE
 export DOCKERFILE
 export DOCKERCOMPOSE
 export ESLINTRC
@@ -1861,6 +1904,12 @@ eb-create-default: eb-check-env
          --vpc.ec2subnets $(VPC_SUBNET_EC2) \
          --vpc.elbsubnets $(VPC_SUBNET_ELB) \
          --vpc.securitygroups $(VPC_SG)
+
+eb-custom-env-default:
+	$(ADD_DIR) .ebextensions
+	echo "$$CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
+	$(ADD_DIR) .platform/hooks/postdeploy
+	echo "$$CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
 
 eb-deploy-default:
 	eb deploy
