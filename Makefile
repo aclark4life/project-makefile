@@ -1,8 +1,8 @@
 # Project Makefile
 #
-# A generic makefile for projects.
+# A generic makefile for Python projects
 #
-# https://github.com/project-makefile/project-makefile
+# https://github.com/aclark4life/project-makefile
 
 # --------------------------------------------------------------------------------
 # Variables (override)
