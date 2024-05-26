@@ -1967,13 +1967,6 @@ eb-pg-export-default:
         echo "Wrote $(DATABASE_NAME).sql"; \
     fi
 
-#     @if [ ! -d .elasticbeanstalk ]; then \
-#         echo "Sorry, no .elasticbeanstalk/ found. Please run `eb init`." \
-#     else \
-#         eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql;
-#         echo "Wrote $(DATABASE_NAME).sql" \
-#     fi
-
 eb-restart-default:
 	eb ssh -c "systemctl restart web"
 
