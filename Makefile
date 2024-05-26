@@ -146,6 +146,7 @@ urlpatterns += [
     path('search/', include('search.urls')),
     path('model-form-demo/', include('model_form_demo.urls')),
     path('explorer/', include('explorer.urls')),
+    path('logging-demo/', include('logging_demo.urls')),
 ]
 
 if settings.DEBUG:
@@ -1260,9 +1261,18 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-def hello_world(request):
+def logging_demo(request):
     logger.debug('Hello, world!')
     return HttpResponse("Hello, world!")
+endef
+
+define LOGGING_DEMO_URLS
+from django.urls import path
+from .views import loggin_demo
+
+urlpatterns = [
+    path('loggin-demo/', logging_demo, name='logging_demo'),
+]
 endef
 
 define MODEL_FORM_DEMO_MODEL
@@ -1798,6 +1808,8 @@ export HTML_HEADER
 export HTML_OFFCANVAS
 export INTERNAL_IPS
 export JENKINS_FILE
+export LOGGING_DEMO_VIEWS
+export LOGGING_DEMO_URLS
 export MODEL_FORM_DEMO_ADMIN
 export MODEL_FORM_DEMO_FORMS
 export MODEL_FORM_DEMO_MODEL
@@ -2079,6 +2091,7 @@ django-model-form-demo-default:
 django-logging-demo-default:
 	python manage.py startapp logging_demo
 	@echo "$$LOGGING_DEMO_VIEWS" > logging_demo/views.py
+	@echo "$$LOGGING_DEMO_URLS" > logging_demo/urls.py
 	@echo "INSTALLED_APPS.append('logging_demo')" >> $(SETTINGS)
 	$(GIT_ADD) logging_demo
 
