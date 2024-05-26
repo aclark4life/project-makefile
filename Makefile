@@ -1253,6 +1253,18 @@ define HTML_OFFCANVAS
 </div>
 endef
 
+define LOGGING_DEMO_VIEWS
+from django.http import HttpResponse
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+def hello_world(request):
+    logger.debug('Hello, world!')
+    return HttpResponse("Hello, world!")
+endef
+
 define MODEL_FORM_DEMO_MODEL
 from django.db import models
 from django.shortcuts import reverse
@@ -2064,6 +2076,12 @@ django-model-form-demo-default:
 	python manage.py makemigrations
 	$(GIT_ADD) model_form_demo
 
+django-logging-demo-default:
+	python manage.py startapp logging_demo
+	@echo "$$LOGGING_DEMO_VIEWS" > logging_demo/views.py
+	@echo "INSTALLED_APPS.append('logging_demo')" >> $(SETTINGS)
+	$(GIT_ADD) logging_demo
+
 django-serve-default:
 	cd frontend; npm run watch &
 	python manage.py runserver 0.0.0.0:8000
@@ -2498,6 +2516,8 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 		$(MAKE) django-settings
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-model-form-demo
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-logging-demo
 	export URLS=urls.py; \
 		$(MAKE) django-url-patterns
 	$(MAKE) django-custom-admin
