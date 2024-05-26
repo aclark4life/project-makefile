@@ -1268,10 +1268,10 @@ endef
 
 define LOGGING_DEMO_URLS
 from django.urls import path
-from .views import loggin_demo
+from .views import logging_demo
 
 urlpatterns = [
-    path('loggin-demo/', logging_demo, name='logging_demo'),
+    path('logging-demo/', logging_demo, name='logging_demo'),
 ]
 endef
 
