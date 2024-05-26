@@ -477,6 +477,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
             <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
+            <li><a className="dropdown-item" href="/logging-demo/">Logging Demo</a></li>
             {isSuperuser ? (
               <>
                 <li><hr className="dropdown-divider"></hr></li>
@@ -1275,6 +1276,22 @@ urlpatterns = [
 ]
 endef
 
+define LOGGING_DEMO_SETTINGS
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+endef
+
 define MODEL_FORM_DEMO_MODEL
 from django.db import models
 from django.shortcuts import reverse
@@ -1810,6 +1827,7 @@ export INTERNAL_IPS
 export JENKINS_FILE
 export LOGGING_DEMO_VIEWS
 export LOGGING_DEMO_URLS
+export LOGGING_DEMO_SETTINGS
 export MODEL_FORM_DEMO_ADMIN
 export MODEL_FORM_DEMO_FORMS
 export MODEL_FORM_DEMO_MODEL
@@ -2092,6 +2110,7 @@ django-logging-demo-default:
 	python manage.py startapp logging_demo
 	@echo "$$LOGGING_DEMO_VIEWS" > logging_demo/views.py
 	@echo "$$LOGGING_DEMO_URLS" > logging_demo/urls.py
+	@echo "$$LOGGING_DEMO_SETTINGS" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('logging_demo')" >> $(SETTINGS)
 	$(GIT_ADD) logging_demo
 
