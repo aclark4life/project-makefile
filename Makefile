@@ -2623,6 +2623,7 @@ wagtail-install-default:
         mailchimp-marketing \
         mailchimp-transactional \
         phonenumbers \
+        pipdeptree \
         psycopg2-binary \
         pydotplus \
         python-webpack-boilerplate \
