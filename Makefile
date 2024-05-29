@@ -1985,6 +1985,9 @@ eb-list-databases-default:
 eb-logs-default:
 	eb logs
 
+eb-print-env-default:
+	eb printenv
+
 npm-init-default:
 	npm init -y
 	$(GIT_ADD) package.json
