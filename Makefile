@@ -2346,6 +2346,9 @@ pip-install-upgrade-default:
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 
+pip-deps-default:
+	pipdeptree
+
 pip-upgrade-default:
 	$(ENSURE_PIP)
 	python -m pip install -U pip
