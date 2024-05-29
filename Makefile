@@ -2744,7 +2744,7 @@ serve-default: django-serve
 shell-default: django-shell
 show-urls-default: django-show-urls
 show-migrations-default: migrations-show
-ssm-list-default: aws-ssm-describe-parameters
+ssm-list-default: aws-ssm
 static-default: django-static
 su-default: django-su
 test-default: django-test
