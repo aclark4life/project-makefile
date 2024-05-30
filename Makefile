@@ -59,6 +59,8 @@ endif
 # Variables (no override)
 # --------------------------------------------------------------------------------
 
+AWS_OPTS := --no-cli-pager --output table
+
 GIT_REV := $(shell git rev-parse --short HEAD)
 GIT_BRANCH := $(shell git branch --show-current)
 
@@ -1882,17 +1884,17 @@ aws-secret-default: aws-check-env
     aws ssm put-parameter --name "SECRET_KEY" --value "$$SECRET_KEY" --type String
 
 aws-sg-default: aws-check-env
-	aws ec2 describe-security-groups | cat
+	aws ec2 describe-security-groups $(AWS_OPTS)
 
 aws-ssm-default: aws-check-env
-	aws ssm describe-parameters | cat
+	aws ssm describe-parameters $(AWS_OPTS)
 	@echo "Get parameter values with: aws ssm getparameter --name <Name>."
 
 aws-subnet-default: aws-check-env
-	aws ec2 describe-subnets | cat
+	aws ec2 describe-subnets $(AWS_OPTS)
 
 aws-vpc-default: aws-check-env
-	aws ec2 describe-vpcs | cat
+	aws ec2 describe-vpcs $(AWS_OPTS)
 
 docker-build-default:
 	podman build -t $(PROJECT_NAME) .
