@@ -2719,6 +2719,7 @@ django-init-default: wagtail-init
 djlint-default: lint-djlint
 e-default: edit
 eb-env-default: eb-print-env
+eb-export-default: eb-pg-export
 edit-default: readme-edit-md
 empty-default: git-commit-empty
 force-push-default: git-push-force
