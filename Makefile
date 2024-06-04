@@ -2691,13 +2691,6 @@ wagtail-sitepage-default:
 	python manage.py makemigrations sitepage
 	$(GIT_ADD) sitepage/
 
-zope-init-default:  # Zope 4 on Python 2
-	$(ENSURE_PIP)
-	python -m pip install -r https://zopefoundation.github.io/Zope/releases/4.6.3/requirements-full.txt
-	mkwsgiinstance -d $(PROJECT_NAME) -u admin:admin
-	@echo "Created $(PROJECT_NAME)!"
-	$(MAKE) plone-serve
-
 # ------------------------------------------------------------------------------  
 # More rules
 # ------------------------------------------------------------------------------  
