@@ -1871,17 +1871,13 @@ export WEBPACK_REVEAL_INDEX_JS
 # Rules
 # ------------------------------------------------------------------------------  
 
-aws-check-env-profile-default:  # https://stackoverflow.com/a/4731504/185820
+aws-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef AWS_PROFILE
 	$(error AWS_PROFILE is undefined)
 endif
-
-aws-check-env-region-default:
 ifndef AWS_REGION
 	$(error AWS_REGION is undefined)
 endif
-
-aws-check-env-default: aws-check-env-profile aws-check-env-region
 
 aws-secret-default: aws-check-env
 	@SECRET_KEY=$$(openssl rand -base64 48); \
