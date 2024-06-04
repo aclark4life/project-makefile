@@ -1932,7 +1932,7 @@ ifndef VPC_SUBNET_ELB
 	$(error VPC_SUBNET_ELB is undefined)
 endif
 
-eb-create-default: eb-check-env
+eb-create-default: aws-check-env eb-check-env
 	eb create $(ENV_NAME) \
          -im $(INSTANCE_MIN) \
          -ix $(INSTANCE_MAX) \
