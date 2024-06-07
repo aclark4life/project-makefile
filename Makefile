@@ -2051,6 +2051,15 @@ django-frontend-app-default: python-webpack-init
 	@echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
 	-$(GIT_ADD) home
 	-$(GIT_ADD) frontend
+	-$(GIT_ADD) .babelrc
+	-$(GIT_ADD) .browserslistrc
+	-$(GIT_ADD) .eslintrc
+	-$(GIT_ADD) .nvmrc
+	-$(GIT_ADD) .stylelintrc.json
+	-$(GIT_ADD) docker-compose.yml
+	-$(GIT_ADD) package-lock.json
+	-$(GIT_ADD) package.json
+	-$(GIT_ADD) postcss.config.js
 
 django-secret-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
