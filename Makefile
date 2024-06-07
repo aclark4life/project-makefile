@@ -705,7 +705,7 @@ WORKDIR /app
 RUN chown wagtail:wagtail /app
 COPY --chown=wagtail:wagtail . .
 USER wagtail
-RUN cd frontend; npm-20 install; npm-20 run build
+RUN npm-20 install; npm-20 run build
 RUN python3.11 manage.py collectstatic --noinput --clear
 CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
 endef
@@ -2113,7 +2113,7 @@ django-logging-demo-default:
 	$(GIT_ADD) logging_demo
 
 django-serve-default:
-	cd frontend; npm run watch &
+	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
 django-settings-default:
@@ -2186,10 +2186,10 @@ django-url-patterns-default:
 	echo "$$BACKEND_URLS" > backend/$(URLS)
 
 django-npm-install-default:
-	cd frontend; npm install
+	npm install
 
 django-npm-install-save-default:
-	cd frontend; npm install \
+	npm install \
         @fortawesome/fontawesome-free \
         @fortawesome/fontawesome-svg-core \
         @fortawesome/free-brands-svg-icons \
@@ -2221,7 +2221,7 @@ django-npm-install-save-default:
         viewport-mercator-project
 
 django-npm-install-save-dev-default:
-	cd frontend; npm install \
+	npm install \
         eslint-plugin-react \
         eslint-config-standard \
         eslint-config-standard-jsx \
@@ -2231,10 +2231,10 @@ django-npm-install-save-dev-default:
         --save-dev
 
 django-npm-test-default:
-	cd frontend; npm run test
+	npm run test
 
 django-npm-build-default:
-	cd frontend; npm run build
+	npm run build
 
 django-open-default:
 ifeq ($(UNAME), Linux)
@@ -2390,8 +2390,7 @@ python-setup-sdist-default:
 	python3 setup.py sdist --format=zip
 
 python-webpack-init-default:
-	# python manage.py webpack_init --no-input
-	python manage.py webpack_init
+	python manage.py webpack_init --no-input
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
