@@ -149,6 +149,7 @@ urlpatterns += [
     path('model-form-demo/', include('model_form_demo.urls')),
     path('explorer/', include('explorer.urls')),
     path('logging-demo/', include('logging_demo.urls')),
+    path('payment/', include('payment.urls')),
 ]
 
 if settings.DEBUG:
@@ -1442,21 +1443,143 @@ define PAYMENT_ADMIN
 endef
 
 define PAYMENT_FORM
+# forms.py
+
+from django import forms
+
+class PaymentForm(forms.Form):
+    stripeToken = forms.CharField(widget=forms.HiddenInput())
+    amount = forms.DecimalField(max_digits=10, decimal_places=2)
 endef
 
 define PAYMENT_MODEL
+# models.py
+
+from django.db import models
+
+class Payment(models.Model):
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    stripe_charge_id = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Payment of {self.amount} with charge ID {self.stripe_charge_id}"
 endef
 
 define PAYMENT_URLS
+# urls.py
+
+from django.urls import path
+from .views import PaymentView
+
+urlpatterns = [
+    path('', PaymentView.as_view(), name='payment'),
+    path('success/', TemplateView.as_view(template_name='payment_success.html'), name='payment_success'),
+]
 endef
 
 define PAYMENT_VIEW
+# views.py
+
+import stripe
+from django.conf import settings
+from django.shortcuts import render, redirect
+from django.views import View
+from .forms import PaymentForm
+from .models import Payment
+
+class PaymentView(View):
+    def get(self, request):
+        form = PaymentForm()
+        return render(request, 'payment.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+
+    def post(self, request):
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            token = form.cleaned_data['stripeToken']
+            amount = int(form.cleaned_data['amount'] * 100)  # Stripe uses cents
+
+            try:
+                charge = stripe.Charge.create(
+                    amount=amount,
+                    currency='usd',
+                    description='Example charge',
+                    source=token,
+                )
+
+                # Save the payment in the database
+                payment = Payment.objects.create(
+                    amount=form.cleaned_data['amount'],
+                    stripe_charge_id=charge.id
+                )
+
+                return redirect('payment_success')  # Redirect to a success page
+
+            except stripe.error.StripeError as e:
+                # Handle error
+                return render(request, 'payment.html', {'form': form, 'error': str(e), 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+
+        return render(request, 'payment.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
 endef
 
 define PAYMENT_VIEW_TEMPLATE
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Make a Payment</h1>
+    <form method="post" id="payment-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Pay</button>
+    </form>
+    <script>
+        var stripe = Stripe('{{ stripe_publishable_key }}');
+        var elements = stripe.elements();
+
+        var card = elements.create('card');
+        card.mount('#card-element');
+
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createToken(card).then(function(result) {
+                if (result.error) {
+                    // Inform the customer that there was an error.
+                } else {
+                    // Send the token to your server.
+                    var hiddenInput = document.createElement('input');
+                    hiddenInput.setAttribute('type', 'hidden');
+                    hiddenInput.setAttribute('name', 'stripeToken');
+                    hiddenInput.setAttribute('value', result.token.id);
+                    form.appendChild(hiddenInput);
+
+                    // Submit the form
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
 endef
 
 define PAYMENT_VIEW_TEMPLATE_SUCCESS
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Success</title>
+</head>
+<body>
+    <h1>Payment Successful</h1>
+    <p>Thank you for your payment!</p>
+</body>
+</html>
 endef
 
 define REQUIREMENTS_TEST
