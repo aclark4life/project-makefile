@@ -936,17 +936,6 @@ urlpatterns = [
 ]
 endef
 
-define SITEUSER_URLS
-from django.urls import path
-from .views import UserProfileView, UpdateThemePreferenceView, UserEditView
-
-urlpatterns = [
-    path('profile/', UserProfileView.as_view(), name='user-profile'),
-    path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
-    path('<int:pk>/edit/', UserEditView.as_view(), name='user-edit'),
-]
-endef
-
 define REST_FRAMEWORK
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -1449,6 +1438,27 @@ define PRIVACY_PAGE_TEMPLATE
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
 endef
 
+define PAYMENT_ADMIN
+endef
+
+define PAYMENT_EDIT_TEMPLATE
+endef
+
+define PAYMENT_FORM
+endef
+
+define PAYMENT_MODEL
+endef
+
+define PAYMENT_URLS
+endef
+
+define PAYMENT_VIEW_TEMPLATE
+endef
+
+define PAYMENT_VIEW
+endef
+
 define REQUIREMENTS_TEST
 pytest
 pytest-runner
@@ -1461,36 +1471,6 @@ pytest-django
 factory-boy
 flake8
 tox
-endef
-
-define SITEUSER_FORM
-from django import forms
-from django.contrib.auth.forms import UserChangeForm
-from .models import User
-
-class SiteUserForm(UserChangeForm):
-    class Meta(UserChangeForm.Meta):
-        model = User
-        fields = ("username", "user_theme_preference", "bio", "rate")
-
-    bio = forms.CharField(widget=forms.Textarea(attrs={"id": "editor"}), required=False)
-endef
-
-define SITEUSER_MODEL
-from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
-from django.conf import settings
-
-class User(AbstractUser):
-    groups = models.ManyToManyField(Group, related_name='siteuser_set', blank=True)
-    user_permissions = models.ManyToManyField(
-        Permission, related_name='siteuser_set', blank=True
-    )
-    
-    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
-    
-    bio = models.TextField(blank=True, null=True)
-    rate = models.FloatField(blank=True, null=True)
 endef
 
 define SETTINGS_THEMES
@@ -1523,6 +1503,47 @@ define SITEUSER_EDIT_TEMPLATE
     </div>
   </form>
 {% endblock %}
+endef
+
+define SITEUSER_FORM
+from django import forms
+from django.contrib.auth.forms import UserChangeForm
+from .models import User
+
+class SiteUserForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = User
+        fields = ("username", "user_theme_preference", "bio", "rate")
+
+    bio = forms.CharField(widget=forms.Textarea(attrs={"id": "editor"}), required=False)
+endef
+
+define SITEUSER_MODEL
+from django.db import models
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.conf import settings
+
+class User(AbstractUser):
+    groups = models.ManyToManyField(Group, related_name='siteuser_set', blank=True)
+    user_permissions = models.ManyToManyField(
+        Permission, related_name='siteuser_set', blank=True
+    )
+    
+    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
+    
+    bio = models.TextField(blank=True, null=True)
+    rate = models.FloatField(blank=True, null=True)
+endef
+
+define SITEUSER_URLS
+from django.urls import path
+from .views import UserProfileView, UpdateThemePreferenceView, UserEditView
+
+urlpatterns = [
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
+    path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
+    path('<int:pk>/edit/', UserEditView.as_view(), name='user-edit'),
+]
 endef
 
 define SITEUSER_VIEW_TEMPLATE
@@ -2061,6 +2082,22 @@ django-frontend-app-default: python-webpack-init
 	-$(GIT_ADD) package.json
 	-$(GIT_ADD) postcss.config.js
 
+django-payment-default:
+	python manage.py startapp payment
+	@echo "$$PAYMENT_FORM" > payment/forms.py
+	@echo "$$PAYMENT_MODEL" > payment/models.py
+	@echo "$$PAYMENT_ADMIN" > payment/admin.py
+	@echo "$$PAYMENT_VIEW" > payment/views.py
+	@echo "$$PAYMENT_URLS" > payment/urls.py
+	$(ADD_DIR) payment/templates/
+	$(ADD_DIR) payment/management/commands
+	@echo "$$PAYMENT_VIEW_TEMPLATE" > payment/templates/profile.html
+	@echo "$$PAYMENT_EDIT_TEMPLATE" > payment/templates/user_edit.html
+	@echo "INSTALLED_APPS.append('payment')" >> $(SETTINGS)
+	@echo "AUTH_USER_MODEL = 'payment.User'" >> $(SETTINGS)
+	python manage.py makemigrations payment
+	$(GIT_ADD) payment/
+
 django-secret-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
 
@@ -2580,6 +2617,8 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 		$(MAKE) wagtail-sitepage
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-crispy
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-payment
 	$(MAKE) django-migrations
 	$(MAKE) django-migrate
 	$(MAKE) su
