@@ -2725,6 +2725,8 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 		$(MAKE) django-model-form-demo
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-logging-demo
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-payment
 	export URLS=urls.py; \
 		$(MAKE) django-url-patterns
 	$(MAKE) django-custom-admin
@@ -2746,8 +2748,6 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 		$(MAKE) wagtail-sitepage
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-crispy
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-payment
 	$(MAKE) django-migrations
 	$(MAKE) django-migrate
 	$(MAKE) su
