@@ -1865,13 +1865,20 @@ export FRONTEND_CONTEXT_INDEX
 export FRONTEND_CONTEXT_USER_PROVIDER
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
+export PAYMENT_ADMIN
+export PAYMENT_FORM
+export PAYMENT_MODEL
+export PAYMENT_URLS
+export PAYMENT_VIEW
+export PAYMENT_VIEW_TEMPLATE
+export PAYMENT_EDIT_TEMPLATE
 export REQUIREMENTS_TEST
 export SETTINGS_THEMES
 export SITEPAGE_MODEL
 export SITEPAGE_TEMPLATE
+export SITEUSER_ADMIN
 export SITEUSER_FORM
 export SITEUSER_MODEL
-export SITEUSER_ADMIN
 export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_VIEW_TEMPLATE
@@ -2094,7 +2101,6 @@ django-payment-default:
 	@echo "$$PAYMENT_VIEW_TEMPLATE" > payment/templates/profile.html
 	@echo "$$PAYMENT_EDIT_TEMPLATE" > payment/templates/user_edit.html
 	@echo "INSTALLED_APPS.append('payment')" >> $(SETTINGS)
-	@echo "AUTH_USER_MODEL = 'payment.User'" >> $(SETTINGS)
 	python manage.py makemigrations payment
 	$(GIT_ADD) payment/
 
