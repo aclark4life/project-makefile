@@ -2356,8 +2356,8 @@ django-settings-default:
 	echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
 	echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
 	echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
-	echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')"
-	echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')"
+	echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(SETTINGS)
+	echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(SETTINGS)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
