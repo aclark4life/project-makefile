@@ -1441,9 +1441,6 @@ endef
 define PAYMENT_ADMIN
 endef
 
-define PAYMENT_EDIT_TEMPLATE
-endef
-
 define PAYMENT_FORM
 endef
 
@@ -1453,10 +1450,13 @@ endef
 define PAYMENT_URLS
 endef
 
+define PAYMENT_VIEW
+endef
+
 define PAYMENT_VIEW_TEMPLATE
 endef
 
-define PAYMENT_VIEW
+define PAYMENT_VIEW_TEMPLATE_SUCCESS
 endef
 
 define REQUIREMENTS_TEST
@@ -1871,7 +1871,7 @@ export PAYMENT_MODEL
 export PAYMENT_URLS
 export PAYMENT_VIEW
 export PAYMENT_VIEW_TEMPLATE
-export PAYMENT_EDIT_TEMPLATE
+export PAYMENT_VIEW_TEMPLATE_SUCCESS
 export REQUIREMENTS_TEST
 export SETTINGS_THEMES
 export SITEPAGE_MODEL
@@ -2098,8 +2098,8 @@ django-payment-default:
 	@echo "$$PAYMENT_URLS" > payment/urls.py
 	$(ADD_DIR) payment/templates/
 	$(ADD_DIR) payment/management/commands
-	@echo "$$PAYMENT_VIEW_TEMPLATE" > payment/templates/profile.html
-	@echo "$$PAYMENT_EDIT_TEMPLATE" > payment/templates/user_edit.html
+	@echo "$$PAYMENT_VIEW_TEMPLATE" > payment/templates/payment.html
+	@echo "$$PAYMENT_VIEW_TEMPLATE_SUCCESS" > payment/templates/payment_success.html
 	@echo "INSTALLED_APPS.append('payment')" >> $(SETTINGS)
 	python manage.py makemigrations payment
 	$(GIT_ADD) payment/
