@@ -1452,11 +1452,11 @@ class PaymentAdmin(admin.ModelAdmin):
     list_filter = ('timestamp',)
     readonly_fields = ('amount', 'stripe_charge_id', 'timestamp')
 
-    def has_add_permission(self, request):
-        return False
+    # def has_add_permission(self, request):
+    #     return False
 
-    def has_delete_permission(self, request, obj=None):
-        return False
+    # def has_delete_permission(self, request, obj=None):
+    #     return False
 endef
 
 define PAYMENT_FORM
