@@ -1466,7 +1466,7 @@ from django import forms
 
 class PaymentForm(forms.Form):
     stripeToken = forms.CharField(widget=forms.HiddenInput())
-    amount = forms.DecimalField(max_digits=10, decimal_places=2)
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.HiddenInput())
 endef
 
 define PAYMENT_MODEL
@@ -1508,7 +1508,9 @@ from .models import Payment
 
 class PaymentView(View):
     def get(self, request):
-        form = PaymentForm()
+        # Set the amount you want to charge
+        amount = 50.00  # for example, $50.00
+        form = PaymentForm(initial={'amount': amount})
         return render(request, 'payment.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
 
     def post(self, request):
