@@ -2295,6 +2295,7 @@ django-payment-default:
 	@echo "INSTALLED_APPS.append('payment')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('djstripe')" >> $(SETTINGS)
 	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(SETTINGS)
+	@echo "DJSTRIPE_WEBHOOK_SECRET = os.environ.get('DJSTRIPE_WEBHOOK_SECRET')" >> $(SETTINGS)
 	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(SETTINGS)
 	@echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(SETTINGS)
 	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(SETTINGS)
