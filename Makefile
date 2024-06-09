@@ -2836,7 +2836,6 @@ wagtail-install-default:
         python-webpack-boilerplate \
         python-docx \
         reportlab \
-		stripe \
         texttable \
         wagtail \
         wagtailmenus \
