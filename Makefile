@@ -2245,6 +2245,7 @@ django-payment-default:
 	@echo "$$PAYMENT_VIEW_TEMPLATE" > payment/templates/payment.html
 	@echo "$$PAYMENT_VIEW_TEMPLATE_SUCCESS" > payment/templates/payment_success.html
 	@echo "INSTALLED_APPS.append('payment')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('djstripe')" >> $(SETTINGS)
 	python manage.py makemigrations payment
 	$(GIT_ADD) payment/
 
