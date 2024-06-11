@@ -2901,7 +2901,7 @@ wagtail-install-default:
         whitenoise \
         xhtml2pdf
 	python -m pip install --pre \
-        django-mongodb==5
+        django-mongodb==5.0.*
 
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
