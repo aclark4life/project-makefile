@@ -2250,7 +2250,7 @@ django-custom-admin-default:
 	echo "$$BACKEND_APPS" > backend/apps.py
 
 django-init-default: db-init django-install
-	django-admin startproject $(PROJECT_NAME)
+	django-admin startproject backend
 
 django-install-default:
 	$(ENSURE_PIP)
