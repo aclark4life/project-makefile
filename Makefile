@@ -2900,7 +2900,7 @@ wagtail-install-default:
         weasyprint \
         whitenoise \
         xhtml2pdf
-	python -m pip install --pre \
+	python -m pip install --pre=5 \
         django-mongodb
 
 webpack-init-default: npm-init
