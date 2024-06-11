@@ -2859,6 +2859,7 @@ wagtail-install-default:
         django-imagekit \
         django-import-export \
         django-ipware \
+        django-mongodb \
         django-multiselectfield \
         django-phonenumber-field \
         django-recurrence \
