@@ -2242,13 +2242,20 @@ db-pg-init-test-default:
 	-dropdb test_$(PROJECT_NAME)
 	-createdb test_$(PROJECT_NAME)
 
-
 db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 django-custom-admin-default:
 	echo "$$CUSTOM_ADMIN" > backend/admin.py
 	echo "$$BACKEND_APPS" > backend/apps.py
+
+django-init-default: db-init django-install
+	django-admin startproject $(PROJECT_NAME)
+
+django-install-default:
+	$(ENSURE_PIP)
+	python -m pip install \
+		Django
 
 django-frontend-app-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
@@ -2960,7 +2967,6 @@ db-init-default: db-pg-init
 db-init-test-default: db-pg-init-test
 deploy-default: eb-deploy
 django-clean-default: wagtail-clean
-django-init-default: wagtail-init
 djlint-default: lint-djlint
 e-default: edit
 eb-env-default: eb-print-env
