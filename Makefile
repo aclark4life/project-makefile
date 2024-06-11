@@ -2859,7 +2859,6 @@ wagtail-install-default:
         django-imagekit \
         django-import-export \
         django-ipware \
-        django-mongodb \
         django-multiselectfield \
         django-phonenumber-field \
         django-recurrence \
@@ -2901,6 +2900,8 @@ wagtail-install-default:
         weasyprint \
         whitenoise \
         xhtml2pdf
+	python -m pip install --pre \
+        django-mongodb
 
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
