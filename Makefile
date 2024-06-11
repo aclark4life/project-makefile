@@ -2251,6 +2251,7 @@ django-custom-admin-default:
 
 django-init-default: db-init django-install
 	django-admin startproject backend
+	$(GIT_ADD) backend
 
 django-install-default:
 	$(ENSURE_PIP)
