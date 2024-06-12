@@ -2268,10 +2268,10 @@ eb-create-default: aws-check-env eb-check-env
 
 eb-custom-env-default:
 	$(ADD_DIR) .ebextensions
-	echo "$$CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
+	@echo "$$CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
 	$(GIT_ADD) .ebextensions/bash.config
 	$(ADD_DIR) .platform/hooks/postdeploy
-	echo "$$CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
+	@echo "$$CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
 	$(GIT_ADD) .platform/hooks/postdeploy/setenv.sh
 
 eb-deploy-default:
@@ -2343,8 +2343,8 @@ db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
 django-custom-admin-default:
-	echo "$$CUSTOM_ADMIN" > backend/admin.py
-	echo "$$BACKEND_APPS" > backend/apps.py
+	@echo "$$CUSTOM_ADMIN" > backend/admin.py
+	@echo "$$BACKEND_APPS" > backend/apps.py
 
 django-init-default: db-init django-install
 	django-admin startproject backend .
@@ -2507,41 +2507,41 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 
 django-settings-default:
-	echo "# $(PROJECT_NAME)" >> $(SETTINGS)
-	echo "ALLOWED_HOSTS = ['*']" >> $(SETTINGS)
-	echo "import dj_database_url  # noqa" >> $(SETTINGS)
-	echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
+	@echo "# $(PROJECT_NAME)" >> $(SETTINGS)
+	@echo "ALLOWED_HOSTS = ['*']" >> $(SETTINGS)
+	@echo "import dj_database_url  # noqa" >> $(SETTINGS)
+	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
          'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
-	echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('rest_framework')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('allauth')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DEV_SETTINGS)
-	echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
-	echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
-	echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
-	echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
-	echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(SETTINGS)
-	echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
-	echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
-	echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
-	echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
-	echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
-	echo "$$REST_FRAMEWORK" >> $(SETTINGS)
-	echo "$$SETTINGS_THEMES" >> $(SETTINGS)
-	echo "$$INTERNAL_IPS" >> $(DEV_SETTINGS)
-	echo "LOGIN_REDIRECT_URL = '/'" >> $(SETTINGS)
-	echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
-	echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
-	echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
-	echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
-	echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
+	@echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('rest_framework')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('allauth')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DEV_SETTINGS)
+	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
+	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
+	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
+	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(SETTINGS)
+	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
+	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
+	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
+	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
+	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
+	@echo "$$REST_FRAMEWORK" >> $(SETTINGS)
+	@echo "$$SETTINGS_THEMES" >> $(SETTINGS)
+	@echo "$$INTERNAL_IPS" >> $(DEV_SETTINGS)
+	@echo "LOGIN_REDIRECT_URL = '/'" >> $(SETTINGS)
+	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
+	@echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
+	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
+	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
+	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
@@ -2565,7 +2565,7 @@ django-user-default:
         User.objects.create_user('user', '', 'user')"
 
 django-url-patterns-default:
-	echo "$$BACKEND_URLS_DJANGO" > backend/urls.py
+	@echo "$$BACKEND_URLS_DJANGO" > backend/urls.py
 
 django-npm-install-save-default:
 	npm install \
@@ -2636,7 +2636,7 @@ gh-default:
 	gh browse
 
 git-ignore-default:
-	echo "$$GIT_IGNORE" > .gitignore
+	@echo "$$GIT_IGNORE" > .gitignore
 	$(GIT_ADD) .gitignore
 
 git-branches-default:
@@ -2931,7 +2931,7 @@ wagtail-start-default:
 	wagtail start backend .
 
 wagtail-url-patterns-default:
-	echo "$$BACKEND_URLS" > backend/urls.py
+	@echo "$$BACKEND_URLS" > backend/urls.py
 
 wagtail-init-default: db-init wagtail-install wagtail-start django-init-common
 	export SETTINGS=backend/settings/base.py; \
