@@ -2387,7 +2387,55 @@ django-init-common-default:
 django-install-default:
 	$(ENSURE_PIP)
 	python -m pip install \
-		Django
+        Faker \
+        boto3 \
+        crispy-bootstrap5 \
+        djangorestframework \
+        django-allauth \
+        django-after-response \
+        django-ckeditor \
+        django-colorful \
+        django-cors-headers \
+        django-countries \
+        django-crispy-forms \
+        django-debug-toolbar \
+        django-extensions \
+        django-hijack \
+        django-honeypot \
+        django-imagekit \
+        django-import-export \
+        django-ipware \
+        django-multiselectfield \
+        django-phonenumber-field \
+        django-recurrence \
+        django-recaptcha \
+        django-registration \
+        django-richtextfield \
+        django-sendgrid-v5 \
+        django-social-share \
+        django-sql-explorer \
+        django-storages \
+        django-tables2 \
+        django-timezone-field \
+		django-widget-tweaks \
+        dj-database-url \
+        dj-rest-auth \
+        dj-stripe \
+        docutils \
+        enmerkar \
+        gunicorn \
+        html2docx \
+        icalendar \
+        mailchimp-marketing \
+        mailchimp-transactional \
+        phonenumbers \
+        pipdeptree \
+        psycopg2-binary \
+        pydotplus \
+        python-webpack-boilerplate \
+        python-docx \
+        reportlab \
+        texttable \
 
 django-frontend-app-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
@@ -2933,7 +2981,7 @@ wagtail-start-default:
 wagtail-url-patterns-default:
 	@echo "$$BACKEND_URLS" > backend/urls.py
 
-wagtail-init-default: db-init wagtail-install wagtail-start django-init-common
+wagtail-init-default: db-init django-install wagtail-install wagtail-start django-init-common
 	export SETTINGS=backend/settings/base.py; \
         $(MAKE) wagtail-settings
 	export SETTINGS=backend/settings/base.py; \
@@ -2973,55 +3021,6 @@ wagtail-init-default: db-init wagtail-install wagtail-start django-init-common
 wagtail-install-default:
 	$(ENSURE_PIP)
 	python -m pip install \
-        Faker \
-        boto3 \
-        crispy-bootstrap5 \
-        djangorestframework \
-        django-allauth \
-        django-after-response \
-        django-ckeditor \
-        django-colorful \
-        django-cors-headers \
-        django-countries \
-        django-crispy-forms \
-        django-debug-toolbar \
-        django-extensions \
-        django-hijack \
-        django-honeypot \
-        django-imagekit \
-        django-import-export \
-        django-ipware \
-        django-multiselectfield \
-        django-phonenumber-field \
-        django-recurrence \
-        django-recaptcha \
-        django-registration \
-        django-richtextfield \
-        django-sendgrid-v5 \
-        django-social-share \
-        django-sql-explorer \
-        django-storages \
-        django-tables2 \
-        django-timezone-field \
-		django-widget-tweaks \
-        dj-database-url \
-        dj-rest-auth \
-        dj-stripe \
-        docutils \
-        enmerkar \
-        gunicorn \
-        html2docx \
-        icalendar \
-        mailchimp-marketing \
-        mailchimp-transactional \
-        phonenumbers \
-        pipdeptree \
-        psycopg2-binary \
-        pydotplus \
-        python-webpack-boilerplate \
-        python-docx \
-        reportlab \
-        texttable \
         wagtail \
         wagtailmenus \
         wagtail-color-panel \
