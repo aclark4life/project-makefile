@@ -2249,9 +2249,42 @@ django-custom-admin-default:
 	echo "$$CUSTOM_ADMIN" > backend/admin.py
 	echo "$$BACKEND_APPS" > backend/apps.py
 
-django-init-default: db-init django-install
+django-init-default: db-init django-install django-init-common
 	django-admin startproject backend
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-siteuser
+	@$(MAKE) django-migrations
+	@$(MAKE) django-migrate
+	@$(MAKE) su
+	@$(MAKE) django-frontend-app
+	@$(MAKE) npm-install
+	@$(MAKE) django-npm-install-save
+	@$(MAKE) django-npm-install-save-dev
+	@$(MAKE) pip-init-test
+	@$(MAKE) readme
+	@$(MAKE) gitignore
+	@$(MAKE) freeze
+	@$(MAKE) serve
+
+django-init-common-default:
+	@echo "$$DOCKERFILE" > Dockerfile
+	@echo "$$DOCKERCOMPOSE" > docker-compose.yml
+	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
+		$(MAKE) django-settings
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-model-form-demo
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-logging-demo
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-payment
+	export URLS=urls.py; \
+		$(MAKE) django-url-patterns
+	$(MAKE) django-custom-admin
 	$(GIT_ADD) backend
+	$(GIT_ADD) requirements.txt
+	$(GIT_ADD) manage.py
+	$(GIT_ADD) Dockerfile
+	$(GIT_ADD) .dockerignore
 
 django-install-default:
 	$(ENSURE_PIP)
@@ -2443,9 +2476,6 @@ django-user-default:
 
 django-url-patterns-default:
 	echo "$$BACKEND_URLS" > backend/$(URLS)
-
-django-npm-install-default:
-	npm install
 
 django-npm-install-save-default:
 	npm install \
@@ -2800,28 +2830,10 @@ wagtail-backend-templates-default:
 wagtail-start-default:
 	wagtail start backend .
 
-wagtail-init-default: db-init wagtail-install wagtail-start
-	@echo "$$DOCKERFILE" > Dockerfile
-	@echo "$$DOCKERCOMPOSE" > docker-compose.yml
-	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
-		$(MAKE) django-settings
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-model-form-demo
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-logging-demo
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-payment
-	export URLS=urls.py; \
-		$(MAKE) django-url-patterns
-	$(MAKE) django-custom-admin
-	$(GIT_ADD) backend
-	$(GIT_ADD) requirements.txt
-	$(GIT_ADD) manage.py
-	$(GIT_ADD) Dockerfile
-	$(GIT_ADD) .dockerignore
-	$(MAKE) wagtail-homepage
-	$(MAKE) wagtail-search-template
-	$(MAKE) wagtail-search-urls
+wagtail-init-default: db-init wagtail-install wagtail-start django-init-common
+	@$(MAKE) wagtail-homepage
+	@$(MAKE) wagtail-search-template
+	@$(MAKE) wagtail-search-urls
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
 	export SETTINGS=backend/settings/base.py; \
@@ -2832,12 +2844,12 @@ wagtail-init-default: db-init wagtail-install wagtail-start
 		$(MAKE) wagtail-sitepage
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-crispy
-	$(MAKE) django-migrations
-	$(MAKE) django-migrate
-	$(MAKE) su
-	$(MAKE) wagtail-backend-templates
+	@$(MAKE) wagtail-backend-templates
+	@$(MAKE) django-migrations
+	@$(MAKE) django-migrate
+	@$(MAKE) su
 	@$(MAKE) django-frontend-app
-	@$(MAKE) django-npm-install
+	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
 	@$(MAKE) pip-init-test
