@@ -617,9 +617,9 @@ rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
 define DJANGO_HOME_PAGE_VIEWS
-from django.views.generic import View
+from django.views.generic import TemplateView
 
-class HomeView(View):
+class HomeView(TemplateView):
     template_name = "home.html"
 endef
 
@@ -630,6 +630,14 @@ from .views import HomeView
 urlpatterns = [
     path("", HomeView.as_view(), name="home")
 ]
+endef
+
+define DJANGO_HOME_PAGE_TEMPLATE
+{% extends "base.html" %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+    </main>
+{% endblock %}
 endef
 
 define DJANGO_BASE_TEMPLATE
@@ -729,14 +737,6 @@ try:
     from .local import *
 except ImportError:
     pass
-endef
-
-define DJANGO_HOME_PAGE_TEMPLATE
-{% extends "base.html" %}
-{% block content %}
-    <main class="{% block main_class %}{% endblock %}">
-    </main>
-{% endblock %}
 endef
 
 define DJANGO_MANAGE_PY
@@ -2434,29 +2434,29 @@ django-templates-default:
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 
 django-init-default: db-init django-install
-	$(MAKE) separator
+	@$(MAKE) separator
 	django-admin startproject backend .
-	$(MAKE) django-templates
+	@$(MAKE) django-templates
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
-	$(MAKE) django-settings-directory
-	# @$(MAKE) django-home
+	@$(MAKE) django-settings-directory
+	@$(MAKE) django-home
 	@$(MAKE) django-urls
-	$(MAKE) separator
+	@$(MAKE) separator
 	@$(MAKE) django-common
-	$(MAKE) separator
+	@$(MAKE) separator
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
-	$(MAKE) separator
+	@$(MAKE) separator
 	@$(MAKE) django-migrations
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@$(MAKE) django-frontend
-	$(MAKE) separator
+	@$(MAKE) separator
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
 	@$(MAKE) pip-init-test
-	$(MAKE) separator
+	@$(MAKE) separator
 	@$(MAKE) readme
 	@$(MAKE) gitignore
 	@$(MAKE) freeze
