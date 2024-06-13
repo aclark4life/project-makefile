@@ -2792,6 +2792,9 @@ git-branches-default:
 git-commit-default:
 	-@$(GIT_COMMIT)
 
+git-commit-last-default:
+	git commit -a -m "$(shell git log -1 --pretty=%B)"
+
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
