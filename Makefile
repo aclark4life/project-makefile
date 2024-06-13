@@ -136,7 +136,8 @@ urlpatterns += [
     path('django/', admin.site.urls),
     path('user/', include('siteuser.urls')),
     path('explorer/', include('explorer.urls')),
-    path("hijack/", include("hijack.urls")),
+    path('hijack/', include('hijack.urls')),
+    path('', include('home.urls')),
 ]
 if settings.DEBUG:
     from django.conf.urls.static import static
