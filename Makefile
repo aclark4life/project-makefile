@@ -1611,6 +1611,21 @@ REST_FRAMEWORK = {
 }
 endef
 
+define SEPARATOR
+ ____            _           _     __  __       _         __ _ _      
+|  _ \ _ __ ___ (_) ___  ___| |_  |  \/  | __ _| | _____ / _(_) | ___ 
+| |_) | '__/ _ \| |/ _ \/ __| __| | |\/| |/ _` | |/ / _ \ |_| | |/ _ \
+|  __/| | | (_) | |  __/ (__| |_  | |  | | (_| |   <  __/  _| | |  __/
+|_|   |_|  \___// |\___|\___|\__| |_|  |_|\__,_|_|\_\___|_| |_|_|\___|
+              |__/                                                    
+                    _    _                   
+__      _____  _ __| | _(_)_ __   __ _       
+\ \ /\ / / _ \| '__| |/ / | '_ \ / _` |      
+ \ V  V / (_) | |  |   <| | | | | (_| |_ _ _ 
+  \_/\_/ \___/|_|  |_|\_\_|_| |_|\__, (_|_|_)
+                                 |___/       
+endef
+
 define SITEPAGE_MODEL
 from wagtail.models import Page
 
@@ -2226,6 +2241,7 @@ export PAYMENT_VIEW
 export PAYMENT_VIEW_TEMPLATE
 export PAYMENT_VIEW_TEMPLATE_SUCCESS
 export REQUIREMENTS_TEST
+export SEPARATOR
 export SETTINGS_THEMES
 export SITEPAGE_MODEL
 export SITEPAGE_TEMPLATE
@@ -2400,7 +2416,7 @@ db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
 
-db-pg-init-default:
+db-pg-init-default: separator
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
@@ -2416,6 +2432,7 @@ django-custom-admin-default:
 	@echo "$$BACKEND_APPS" > backend/apps.py
 
 django-init-default: db-init django-install
+	$(MAKE) separator
 	django-admin startproject backend .
 	@$(ADD_DIR) backend/settings
 	@$(ADD_DIR) backend/templates
@@ -2428,17 +2445,21 @@ django-init-default: db-init django-install
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	# @$(MAKE) django-home
 	@$(MAKE) django-url-patterns
+	$(MAKE) separator
 	@$(MAKE) django-init-common
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
+	$(MAKE) separator
 	@$(MAKE) django-migrations
 	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@$(MAKE) django-frontend
+	$(MAKE) separator
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
 	@$(MAKE) pip-init-test
+	$(MAKE) separator
 	@$(MAKE) readme
 	@$(MAKE) gitignore
 	@$(MAKE) freeze
@@ -2456,7 +2477,7 @@ django-init-common-default:
 	$(GIT_ADD) Dockerfile
 	$(GIT_ADD) .dockerignore
 
-django-install-default:
+django-install-default: separator
 	$(ENSURE_PIP)
 	python -m pip install \
         Faker \
@@ -2943,6 +2964,9 @@ reveal-init-default: webpack-reveal-init
 reveal-serve-default:
 	npm run watch &
 	python -m http.server
+
+separator:
+	@echo "$$SEPARATOR"
 
 sphinx-init-default: sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
