@@ -2432,19 +2432,13 @@ django-custom-admin-default:
 django-init-default: db-init django-install
 	$(MAKE) separator
 	django-admin startproject backend .
-	@$(ADD_DIR) backend/settings
-	@$(ADD_DIR) backend/templates
-	@$(COPY_FILE) backend/settings.py backend/settings/base.py
-	@$(DEL_FILE) backend/settings.py
-	@echo "import os" >> backend/settings/base.py
-	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
+	$(MAKE) django-settings-directory
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
-	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	# @$(MAKE) django-home
 	@$(MAKE) django-url-patterns
 	$(MAKE) separator
-	@$(MAKE) django-init-common
+	@$(MAKE) django-common
 	$(MAKE) separator
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
@@ -2464,7 +2458,7 @@ django-init-default: db-init django-install
 	@$(MAKE) freeze
 	@$(MAKE) serve
 
-django-init-common-default:
+django-common-default:
 	@echo "$$DOCKERFILE" > Dockerfile
 	@echo "$$DOCKERCOMPOSE" > docker-compose.yml
 	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
@@ -2653,6 +2647,15 @@ django-logging-demo-default:
 django-serve-default:
 	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
+
+django-settings-directory-default:
+	@$(ADD_DIR) backend/settings
+	@$(ADD_DIR) backend/templates
+	@$(COPY_FILE) backend/settings.py backend/settings/base.py
+	@$(DEL_FILE) backend/settings.py
+	@echo "import os" >> backend/settings/base.py
+	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
+	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
 
 django-settings-default:
 	@echo "# $(PROJECT_NAME)" >> $(SETTINGS)
@@ -3089,7 +3092,7 @@ wagtail-start-default:
 wagtail-url-patterns-default:
 	@echo "$$BACKEND_URLS" > backend/urls.py
 
-wagtail-init-default: db-init django-install wagtail-install wagtail-start django-init-common
+wagtail-init-default: db-init django-install wagtail-install wagtail-start django-common
 	export SETTINGS=backend/settings/base.py; \
         $(MAKE) wagtail-settings
 	export SETTINGS=backend/settings/base.py; \
