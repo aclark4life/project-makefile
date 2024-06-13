@@ -2794,6 +2794,7 @@ git-commit-default:
 
 git-commit-last-default:
 	git commit -a -m "$(shell git log -1 --pretty=%B)"
+	@$(GIT_PUSH)
 
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
