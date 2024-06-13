@@ -2429,10 +2429,14 @@ django-custom-admin-default:
 	@echo "$$CUSTOM_ADMIN" > backend/admin.py
 	@echo "$$BACKEND_APPS" > backend/apps.py
 
+django-templates-default:
+	@$(ADD_DIR) backend/templates
+	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
+
 django-init-default: db-init django-install
 	$(MAKE) separator
 	django-admin startproject backend .
-	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
+	$(MAKE) django-templates
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	$(MAKE) django-settings-directory
 	# @$(MAKE) django-home
@@ -2650,7 +2654,6 @@ django-serve-default:
 
 django-settings-directory-default:
 	@$(ADD_DIR) backend/settings
-	@$(ADD_DIR) backend/templates
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	@echo "import os" >> backend/settings/base.py
