@@ -119,7 +119,7 @@ class CustomAdminConfig(AdminConfig):
     default_site = "backend.admin.CustomAdminSite"
 endef
 
-define BACKEND_URLS_DJANGO
+define DJANGO_URLS
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
@@ -168,7 +168,7 @@ urlpatterns += [
 ]
 endef
 
-define BACKEND_URLS
+define WAGTAIL_URLS
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
@@ -2180,8 +2180,6 @@ export ALLAUTH_LAYOUT_BASE
 export AUTHENTICATION_BACKENDS
 export BABELRC
 export BACKEND_APPS
-export BACKEND_URLS
-export BACKEND_URLS_DJANGO
 export BLOCK_CAROUSEL
 export BLOCK_MARKETING
 export COMPONENT_CLOCK
@@ -2196,6 +2194,7 @@ export CUSTOM_ENV_EC2_USER
 export CUSTOM_ENV_VAR_FILE
 export DJANGO_MANAGE_PY
 export DJANGO_SETTINGS_DEV
+export DJANGO_URLS
 export DOCKERFILE
 export DOCKERCOMPOSE
 export ESLINTRC
@@ -2260,6 +2259,7 @@ export WAGTAIL_HOME_PAGE_MODEL
 export WAGTAIL_HOME_PAGE_TEMPLATE
 export WAGTAIL_HOME_PAGE_VIEWS
 export WAGTAIL_HOME_PAGE_URLS
+export WAGTAIL_URLS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_HTML
 export WEBPACK_INDEX_JS
@@ -2432,11 +2432,11 @@ django-custom-admin-default:
 django-init-default: db-init django-install
 	$(MAKE) separator
 	django-admin startproject backend .
-	$(MAKE) django-settings-directory
-	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$DJANGO_MANAGE_PY" > manage.py
+	$(MAKE) django-settings-directory
 	# @$(MAKE) django-home
-	@$(MAKE) django-url-patterns
+	@$(MAKE) django-urls
 	$(MAKE) separator
 	@$(MAKE) django-common
 	$(MAKE) separator
@@ -2716,8 +2716,8 @@ django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
         User.objects.create_user('user', '', 'user')"
 
-django-url-patterns-default:
-	@echo "$$BACKEND_URLS_DJANGO" > backend/urls.py
+django-urls-default:
+	@echo "$$DJANGO_URLS" > backend/urls.py
 
 django-npm-install-save-default:
 	npm install \
@@ -3089,8 +3089,8 @@ wagtail-backend-templates-default:
 wagtail-start-default:
 	wagtail start backend .
 
-wagtail-url-patterns-default:
-	@echo "$$BACKEND_URLS" > backend/urls.py
+wagtail-urls-default:
+	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
 wagtail-init-default: db-init django-install wagtail-install wagtail-start django-common
 	export SETTINGS=backend/settings/base.py; \
@@ -3101,7 +3101,7 @@ wagtail-init-default: db-init django-install wagtail-install wagtail-start djang
 		$(MAKE) django-logging-demo
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-payment
-	@$(MAKE) wagtail-url-patterns
+	@$(MAKE) wagtail-urls
 	@$(MAKE) wagtail-homepage
 	@$(MAKE) wagtail-search-template
 	@$(MAKE) wagtail-search-urls
