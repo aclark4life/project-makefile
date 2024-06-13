@@ -843,100 +843,6 @@ define FAVICON_TEMPLATE
 <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
 endef
 
-
-define HTML_INDEX
-<h1>Hello world</h1>
-endef
-
-define HTML_ERROR
-<h1>500</h1>
-endef
-
-define INTERNAL_IPS
-INTERNAL_IPS = ["127.0.0.1",]
-endef
-
-define JENKINS_FILE
-pipeline {
-    agent any
-    stages {
-        stage('') {
-            steps {
-                echo ''
-            }
-        }
-    }
-}
-endef
-
-define SITEPAGE_MODEL
-from wagtail.models import Page
-
-
-class SitePage(Page):
-    template = "sitepage/site_page.html"
-
-    class Meta:
-        verbose_name = "Site Page"
-endef
-
-define SEARCH_TEMPLATE
-{% extends "base.html" %}
-{% load static wagtailcore_tags %}
-{% block body_class %}template-searchresults{% endblock %}
-{% block title %}Search{% endblock %}
-{% block content %}
-    <h1>Search</h1>
-    <form action="{% url 'search' %}" method="get">
-        <input type="text"
-               name="query"
-               {% if search_query %}value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search" class="button">
-    </form>
-    {% if search_results %}
-        <ul>
-            {% for result in search_results %}
-                <li>
-                    <h4>
-                        <a href="{% pageurl result %}">{{ result }}</a>
-                    </h4>
-                    {% if result.search_description %}{{ result.search_description }}{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% if search_results.has_previous %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-        {% endif %}
-        {% if search_results.has_next %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-        {% endif %}
-    {% elif search_query %}
-        No results found
-	{% else %}
-		No results found. Try a <a href="?query=test">test query</a>?
-    {% endif %}
-{% endblock %}
-endef
-
-define SEARCH_URLS
-from django.urls import path
-from .views import search
-
-urlpatterns = [
-    path("", search, name="search")
-]
-endef
-
-define REST_FRAMEWORK
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
-endef
-
 define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
 import '../utils/tinymce.js';
@@ -1130,6 +1036,14 @@ _build/
 .elasticbeanstalk/
 endef
 
+define HTML_INDEX
+<h1>Hello world</h1>
+endef
+
+define HTML_ERROR
+<h1>500</h1>
+endef
+
 define HTML_FOOTER
 {% load wagtailcore_tags %}
   <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
@@ -1143,7 +1057,6 @@ define HTML_FOOTER
     </ul>
   </footer>
 endef
-
 
 define HTML_HEADER
 {% load wagtailcore_tags %}
@@ -1235,6 +1148,23 @@ define HTML_OFFCANVAS
     </ul>
   </div>
 </div>
+endef
+
+define INTERNAL_IPS
+INTERNAL_IPS = ["127.0.0.1",]
+endef
+
+define JENKINS_FILE
+pipeline {
+    agent any
+    stages {
+        stage('') {
+            steps {
+                echo ''
+            }
+        }
+    }
+}
 endef
 
 define LOGGING_DEMO_VIEWS
@@ -1652,6 +1582,74 @@ pytest-django
 factory-boy
 flake8
 tox
+endef
+
+define REST_FRAMEWORK
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+endef
+
+define SITEPAGE_MODEL
+from wagtail.models import Page
+
+
+class SitePage(Page):
+    template = "sitepage/site_page.html"
+
+    class Meta:
+        verbose_name = "Site Page"
+endef
+
+define SEARCH_TEMPLATE
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% block body_class %}template-searchresults{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text"
+               name="query"
+               {% if search_query %}value="{{ search_query }}"{% endif %}>
+        <input type="submit" value="Search" class="button">
+    </form>
+    {% if search_results %}
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <h4>
+                        <a href="{% pageurl result %}">{{ result }}</a>
+                    </h4>
+                    {% if result.search_description %}{{ result.search_description }}{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        No results found
+	{% else %}
+		No results found. Try a <a href="?query=test">test query</a>?
+    {% endif %}
+{% endblock %}
+endef
+
+define SEARCH_URLS
+from django.urls import path
+from .views import search
+
+urlpatterns = [
+    path("", search, name="search")
+]
 endef
 
 define SETTINGS_THEMES
