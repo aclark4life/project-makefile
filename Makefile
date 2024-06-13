@@ -2652,7 +2652,7 @@ django-settings-default:
 	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
+	# @echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
 	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
