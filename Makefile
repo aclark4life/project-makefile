@@ -886,6 +886,22 @@ define FAVICON_TEMPLATE
 <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
 endef
 
+define HOME_PAGE_VIEWS
+from django.views.generic import View
+
+
+class HomeView(View):
+    template_name = "home.html"
+endef
+
+define HOME_PAGE_URLS
+from django.urls import path
+from .views import HomeView
+
+urlpatterns = [
+    path("", HomeView.as_view(), name="home")
+]
+endef
 
 define HOME_PAGE_MODEL
 from django.db import models
@@ -2131,6 +2147,8 @@ export HTML_ERROR
 export HTML_INDEX
 export HOME_PAGE_MODEL
 export HOME_PAGE_TEMPLATE
+export HOME_PAGE_VIEWS
+export HOME_PAGE_URLS
 export HTML_FOOTER
 export HTML_HEADER
 export HTML_OFFCANVAS
@@ -2349,12 +2367,14 @@ django-custom-admin-default:
 django-init-default: db-init django-install
 	django-admin startproject backend .
 	@$(ADD_DIR) backend/settings
+	@$(ADD_DIR) backend/templates
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	@echo "import os" >> backend/settings/base.py
 	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
+	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
 	@$(MAKE) django-url-patterns
 	@$(MAKE) django-init-common
 	export SETTINGS=backend/settings/base.py; \
@@ -2362,10 +2382,11 @@ django-init-default: db-init django-install
 	@$(MAKE) django-migrations
 	@$(MAKE) django-migrate
 	@$(MAKE) su
-	@$(MAKE) django-frontend-app
+	@$(MAKE) django-frontend
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
+	@$(MAKE) django-home
 	@$(MAKE) pip-init-test
 	@$(MAKE) readme
 	@$(MAKE) gitignore
@@ -2437,7 +2458,7 @@ django-install-default:
         reportlab \
         texttable \
 
-django-frontend-app-default: python-webpack-init
+django-frontend-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
 	$(ADD_DIR) frontend/src/utils
@@ -2456,17 +2477,25 @@ django-frontend-app-default: python-webpack-init
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	@echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
-	-$(GIT_ADD) home
-	-$(GIT_ADD) frontend
-	-$(GIT_ADD) .babelrc
-	-$(GIT_ADD) .browserslistrc
-	-$(GIT_ADD) .eslintrc
-	-$(GIT_ADD) .nvmrc
-	-$(GIT_ADD) .stylelintrc.json
-	-$(GIT_ADD) docker-compose.yml
-	-$(GIT_ADD) package-lock.json
-	-$(GIT_ADD) package.json
-	-$(GIT_ADD) postcss.config.js
+	$(GIT_ADD) home
+	$(GIT_ADD) frontend
+	$(GIT_ADD) .babelrc
+	$(GIT_ADD) .browserslistrc
+	$(GIT_ADD) .eslintrc
+	$(GIT_ADD) .nvmrc
+	$(GIT_ADD) .stylelintrc.json
+	$(GIT_ADD) docker-compose.yml
+	$(GIT_ADD) package-lock.json
+	$(GIT_ADD) package.json
+	$(GIT_ADD) postcss.config.js
+
+django-home-default:
+	python manage.py startapp home
+	$(ADD_DIR) home/templates
+	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home.html
+	@echo "$$HOME_PAGE_VIEWS" > home/views.py
+	@echo "$$HOME_PAGE_URLS" > home/urls.py
+	$(GIT_ADD) home
 
 django-payment-default:
 	python manage.py startapp payment
@@ -3008,7 +3037,7 @@ wagtail-init-default: db-init django-install wagtail-install wagtail-start djang
 	@$(MAKE) django-migrations
 	@$(MAKE) django-migrate
 	@$(MAKE) su
-	@$(MAKE) django-frontend-app
+	@$(MAKE) django-frontend
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
