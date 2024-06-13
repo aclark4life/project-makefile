@@ -616,6 +616,22 @@ EOF
 rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
+define DJANGO_HOME_PAGE_VIEWS
+from django.views.generic import View
+
+class HomeView(View):
+    template_name = "home.html"
+endef
+
+define DJANGO_HOME_PAGE_URLS
+from django.urls import path
+from .views import HomeView
+
+urlpatterns = [
+    path("", HomeView.as_view(), name="home")
+]
+endef
+
 define DJANGO_BASE_TEMPLATE
 {% load static webpack_loader %}
 
@@ -1897,23 +1913,6 @@ tinymce.init({
 });
 endef
 
-define WAGTAIL_HOME_PAGE_VIEWS
-from django.views.generic import View
-
-
-class HomeView(View):
-    template_name = "home.html"
-endef
-
-define WAGTAIL_HOME_PAGE_URLS
-from django.urls import path
-from .views import HomeView
-
-urlpatterns = [
-    path("", HomeView.as_view(), name="home")
-]
-endef
-
 define WAGTAIL_HOME_PAGE_MODEL
 from django.db import models
 from wagtail.models import Page
@@ -2429,6 +2428,7 @@ django-init-default: db-init django-install
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	@$(MAKE) django-url-patterns
 	@$(MAKE) django-init-common
+	@$(MAKE) django-home
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
 	@$(MAKE) django-migrations
@@ -2438,7 +2438,6 @@ django-init-default: db-init django-install
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
-	@$(MAKE) django-home
 	@$(MAKE) pip-init-test
 	@$(MAKE) readme
 	@$(MAKE) gitignore
@@ -2653,6 +2652,7 @@ django-settings-default:
 	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
 	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
