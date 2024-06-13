@@ -796,11 +796,6 @@ volumes:
   postgres_data:
 endef
 
-define INTERNAL_IPS
-INTERNAL_IPS = ["127.0.0.1",]
-endef
-
-
 define ESLINTRC
 {
     "env": {
@@ -855,6 +850,10 @@ endef
 
 define HTML_ERROR
 <h1>500</h1>
+endef
+
+define INTERNAL_IPS
+INTERNAL_IPS = ["127.0.0.1",]
 endef
 
 define JENKINS_FILE
