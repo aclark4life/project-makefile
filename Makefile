@@ -250,98 +250,6 @@ urlpatterns += [
 ]
 endef
 
-
-define BASE_TEMPLATE
-{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
-
-<!DOCTYPE html>
-<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
-    <head>
-        <meta charset="utf-8" />
-        <title>
-            {% block title %}
-            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
-            {% endblock %}
-            {% block title_suffix %}
-            {% wagtail_site as current_site %}
-            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
-            {% endblock %}
-        </title>
-        {% if page.search_description %}
-        <meta name="description" content="{{ page.search_description }}" />
-        {% endif %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request.in_preview_panel %}
-        <base target="_blank">
-        {% endif %}
-
-        {% stylesheet_pack 'app' %}
-
-        {% block extra_css %}
-        {# Override this in templates to add extra stylesheets #}
-        {% endblock %}
-
-        <style>
-          .success {
-              background-color: #d4edda;
-              border-color: #c3e6cb;
-              color: #155724;
-          }
-          .info {
-              background-color: #d1ecf1;
-              border-color: #bee5eb;
-              color: #0c5460;
-          }
-          .warning {
-              background-color: #fff3cd;
-              border-color: #ffeeba;
-              color: #856404;
-          }
-          .danger {
-              background-color: #f8d7da;
-              border-color: #f5c6cb;
-              color: #721c24;
-          }
-        </style>
-        {% include 'favicon.html' %}
-        {% csrf_token %}
-    </head>
-    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
-        <main class="flex-shrink-0">
-            {% wagtailuserbar %}
-            <div id="app"></div>
-            {% include 'header.html' %}
-            {% if messages %}
-                <div class="messages container">
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show"
-                             role="alert">
-                            {{ message }}
-                            <button type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="container">
-                {% block content %}{% endblock %}
-            </div>
-        </main>
-        {% include 'footer.html' %}
-        {% include 'offcanvas.html' %}
-        {% javascript_pack 'app' %}
-        {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
-        {% endblock %}
-    </body>
-</html>
-endef
-
-
 define BLOCK_CAROUSEL
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
@@ -739,6 +647,84 @@ EOF
 rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
+define DJANGO_BASE_TEMPLATE
+{% load static webpack_loader %}
+
+<!DOCTYPE html>
+<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% endblock %}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {% stylesheet_pack 'app' %}
+
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+
+        <style>
+          .success {
+              background-color: #d4edda;
+              border-color: #c3e6cb;
+              color: #155724;
+          }
+          .info {
+              background-color: #d1ecf1;
+              border-color: #bee5eb;
+              color: #0c5460;
+          }
+          .warning {
+              background-color: #fff3cd;
+              border-color: #ffeeba;
+              color: #856404;
+          }
+          .danger {
+              background-color: #f8d7da;
+              border-color: #f5c6cb;
+              color: #721c24;
+          }
+        </style>
+        {% include 'favicon.html' %}
+        {% csrf_token %}
+    </head>
+    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            <div id="app"></div>
+            {% include 'header.html' %}
+            {% if messages %}
+                <div class="messages container">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        {% include 'footer.html' %}
+        {% include 'offcanvas.html' %}
+        {% javascript_pack 'app' %}
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
+endef
+
 define DJANGO_SETTINGS_DEV
 from .base import *
 
@@ -758,6 +744,14 @@ try:
     from .local import *
 except ImportError:
     pass
+endef
+
+define DJANGO_HOME_PAGE_TEMPLATE
+{% extends "base.html" %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+    </main>
+{% endblock %}
 endef
 
 define DJANGO_MANAGE_PY
@@ -886,7 +880,7 @@ define FAVICON_TEMPLATE
 <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
 endef
 
-define HOME_PAGE_VIEWS
+define WAGTAIL_HOME_PAGE_VIEWS
 from django.views.generic import View
 
 
@@ -894,7 +888,7 @@ class HomeView(View):
     template_name = "home.html"
 endef
 
-define HOME_PAGE_URLS
+define WAGTAIL_HOME_PAGE_URLS
 from django.urls import path
 from .views import HomeView
 
@@ -903,7 +897,7 @@ urlpatterns = [
 ]
 endef
 
-define HOME_PAGE_MODEL
+define WAGTAIL_HOME_PAGE_MODEL
 from django.db import models
 from wagtail.models import Page
 from wagtail.fields import RichTextField, StreamField
@@ -956,7 +950,7 @@ class HomePage(Page):
         verbose_name = 'Home Page'
 endef
 
-define HOME_PAGE_TEMPLATE
+define WAGTAIL_HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
 {% block content %}
@@ -2018,6 +2012,96 @@ tinymce.init({
 });
 endef
 
+define WAGTAIL_BASE_TEMPLATE
+{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
+
+<!DOCTYPE html>
+<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% wagtail_site as current_site %}
+            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        {% if page.search_description %}
+        <meta name="description" content="{{ page.search_description }}" />
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+        <base target="_blank">
+        {% endif %}
+
+        {% stylesheet_pack 'app' %}
+
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+
+        <style>
+          .success {
+              background-color: #d4edda;
+              border-color: #c3e6cb;
+              color: #155724;
+          }
+          .info {
+              background-color: #d1ecf1;
+              border-color: #bee5eb;
+              color: #0c5460;
+          }
+          .warning {
+              background-color: #fff3cd;
+              border-color: #ffeeba;
+              color: #856404;
+          }
+          .danger {
+              background-color: #f8d7da;
+              border-color: #f5c6cb;
+              color: #721c24;
+          }
+        </style>
+        {% include 'favicon.html' %}
+        {% csrf_token %}
+    </head>
+    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            {% wagtailuserbar %}
+            <div id="app"></div>
+            {% include 'header.html' %}
+            {% if messages %}
+                <div class="messages container">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        {% include 'footer.html' %}
+        {% include 'offcanvas.html' %}
+        {% javascript_pack 'app' %}
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
+endef
+
 define WEBPACK_CONFIG_JS
 const path = require('path');
 
@@ -2057,6 +2141,7 @@ module.exports = {
   ],
 };
 endef
+
 
 define WEBPACK_INDEX_HTML
 <!DOCTYPE html>
@@ -2118,7 +2203,6 @@ export BABELRC
 export BACKEND_APPS
 export BACKEND_URLS
 export BACKEND_URLS_DJANGO
-export BASE_TEMPLATE
 export BLOCK_CAROUSEL
 export BLOCK_MARKETING
 export COMPONENT_CLOCK
@@ -2145,10 +2229,6 @@ export FRONTEND_STYLES
 export GIT_IGNORE
 export HTML_ERROR
 export HTML_INDEX
-export HOME_PAGE_MODEL
-export HOME_PAGE_TEMPLATE
-export HOME_PAGE_VIEWS
-export HOME_PAGE_URLS
 export HTML_FOOTER
 export HTML_HEADER
 export HTML_OFFCANVAS
@@ -2195,6 +2275,11 @@ export SEARCH_URLS
 export THEME_BLUE
 export THEME_TOGGLER
 export TINYMCE_JS
+export WAGTAIL_BASE_TEMPLATE
+export WAGTAIL_HOME_PAGE_MODEL
+export WAGTAIL_HOME_PAGE_TEMPLATE
+export WAGTAIL_HOME_PAGE_VIEWS
+export WAGTAIL_HOME_PAGE_URLS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_HTML
 export WEBPACK_INDEX_JS
@@ -2374,7 +2459,7 @@ django-init-default: db-init django-install
 	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
-	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	@$(MAKE) django-url-patterns
 	@$(MAKE) django-init-common
 	export SETTINGS=backend/settings/base.py; \
@@ -2492,9 +2577,9 @@ django-frontend-default: python-webpack-init
 django-home-default:
 	python manage.py startapp home
 	$(ADD_DIR) home/templates
-	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home.html
-	@echo "$$HOME_PAGE_VIEWS" > home/views.py
-	@echo "$$HOME_PAGE_URLS" > home/urls.py
+	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
+	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
+	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
 	$(GIT_ADD) home
 
 django-payment-default:
@@ -2973,7 +3058,7 @@ wagtail-privacy-default:
 	$(GIT_ADD) privacy/
 
 wagtail-base-default:
-	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 
 wagtail-header-default:
 	@echo "$$HTML_HEADER" > backend/templates/header.html
@@ -2987,8 +3072,8 @@ wagtail-clean-default:
 	done
 
 wagtail-homepage-default:
-	@echo "$$HOME_PAGE_MODEL" > home/models.py
-	@echo "$$HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
+	@echo "$$WAGTAIL_HOME_PAGE_MODEL" > home/models.py
+	@echo "$$WAGTAIL_HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	$(ADD_DIR) home/templates/blocks
 	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
@@ -2997,7 +3082,7 @@ wagtail-homepage-default:
 wagtail-backend-templates-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
-	@echo "$$BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
 	@echo "$$HTML_HEADER" > backend/templates/header.html
 	@echo "$$HTML_FOOTER" > backend/templates/footer.html
