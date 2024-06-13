@@ -137,7 +137,7 @@ urlpatterns += [
     path('user/', include('siteuser.urls')),
     path('explorer/', include('explorer.urls')),
     path('hijack/', include('hijack.urls')),
-    path('', include('home.urls')),
+    # path('', include('home.urls')),
 ]
 if settings.DEBUG:
     from django.conf.urls.static import static
@@ -2426,9 +2426,9 @@ django-init-default: db-init django-install
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
+	# @$(MAKE) django-home
 	@$(MAKE) django-url-patterns
 	@$(MAKE) django-init-common
-	@$(MAKE) django-home
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
 	@$(MAKE) django-migrations
