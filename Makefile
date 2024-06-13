@@ -27,8 +27,7 @@ REVIEW_EDITOR = subl
 GIT_BRANCHES = $(shell git branch -a | grep remote | grep -v HEAD | grep -v main |\
     grep -v master)
 GIT_MESSAGE = "Update $(PROJECT_NAME)"
-GIT_COMMIT = -git commit -a -m $(GIT_MESSAGE)
-GIT_COMMIT_LAST = -git commit -a -m $(shell git log -1 --pretty=%B)
+GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
 GIT_PUSH = git push
 GIT_PUSH_FORCE = git push --force-with-lease
 
@@ -2791,10 +2790,7 @@ git-branches-default:
         git checkout -t $$i ; done
 
 git-commit-default:
-	@$(GIT_COMMIT)
-
-git-commit-last-default:
-	@$(GIT_COMMIT_LAST)
+	-@$(GIT_COMMIT)
 
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
