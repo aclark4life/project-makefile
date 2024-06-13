@@ -2195,6 +2195,9 @@ export CUSTOM_ENV_VAR_FILE
 export DJANGO_MANAGE_PY
 export DJANGO_SETTINGS_DEV
 export DJANGO_URLS
+export DJANGO_HOME_PAGE_URLS
+export DJANGO_HOME_PAGE_VIEWS
+export DJANGO_HOME_PAGE_TEMPLATE
 export DOCKERFILE
 export DOCKERCOMPOSE
 export ESLINTRC
@@ -2434,7 +2437,6 @@ django-templates-default:
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 
 django-init-default: db-init django-install
-	@$(MAKE) separator
 	django-admin startproject backend .
 	@$(MAKE) django-templates
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
