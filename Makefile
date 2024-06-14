@@ -3088,7 +3088,7 @@ wagtail-homepage-default:
 wagtail-backend-templates-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
-	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
+	# @echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
 	@echo "$$HTML_HEADER" > backend/templates/header.html
 	@echo "$$HTML_FOOTER" > backend/templates/footer.html
@@ -3124,6 +3124,7 @@ wagtail-init-default: db-init django-install wagtail-install wagtail-start djang
 		$(MAKE) wagtail-sitepage
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-crispy
+	@$(MAKE) wagtail-base
 	@$(MAKE) wagtail-backend-templates
 	@$(MAKE) django-migrations
 	@$(MAKE) django-migrate
