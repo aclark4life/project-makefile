@@ -2458,6 +2458,7 @@ django-init-default: db-init django-install
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
+	@$(MAKE) wagtail-backend-templates
 	@$(MAKE) pip-init-test
 	@$(MAKE) separator
 	@$(MAKE) readme
