@@ -137,7 +137,7 @@ urlpatterns += [
     path('user/', include('siteuser.urls')),
     path('explorer/', include('explorer.urls')),
     path('hijack/', include('hijack.urls')),
-    # path('', include('home.urls')),
+    path('', include('home.urls')),
 ]
 if settings.DEBUG:
     from django.conf.urls.static import static
@@ -2681,7 +2681,7 @@ django-settings-default:
 	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
-	# @echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
 	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
@@ -2701,7 +2701,7 @@ django-settings-default:
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
 	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(SETTINGS)
-	@echo "TEMPLATES[0]['DIRS'].append('os.path.join(PROJECT_DIR, \'templates\')')" >> $(SETTINGS)
+	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(SETTINGS)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
