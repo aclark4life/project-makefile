@@ -719,6 +719,88 @@ define DJANGO_BASE_TEMPLATE
 </html>
 endef
 
+define DJANGO_SEARCH_FORMS
+from django import forms
+
+class SearchForm(forms.Form):
+    query = forms.CharField(max_length=100, required=True, label='Search')
+
+endef
+
+define DJANGO_SEARCH_URLS
+from django.urls import path
+from .views import SearchView
+
+urlpatterns = [
+    path('search/', SearchView.as_view(), name='search'),
+]
+endef
+
+define DJANGO_SEARCH_VIEWS
+from django.views.generic import ListView
+from django.db.models import Q
+from .models import YourModel  # Replace with your actual model
+from .forms import SearchForm
+
+class SearchView(ListView):
+    model = YourModel
+    template_name = 'your_app/search_results.html'
+    context_object_name = 'results'
+    paginate_by = 10
+
+    def get_queryset(self):
+        form = SearchForm(self.request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            return YourModel.objects.filter(
+                Q(field1__icontains=query) | Q(field2__icontains=query)
+                # Add more fields as needed
+            )
+        return YourModel.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = SearchForm(self.request.GET)
+        return context
+endef
+
+define DJANGO_SEARCH_TEMPLATE
+{% extends "base.html" %}
+{% block body_class %}template-searchresults{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text"
+               name="query"
+               {% if search_query %}value="{{ search_query }}"{% endif %}>
+        <input type="submit" value="Search" class="button">
+    </form>
+    {% if search_results %}
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <h4>
+                        <a href="{% pageurl result %}">{{ result }}</a>
+                    </h4>
+                    {% if result.search_description %}{{ result.search_description }}{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        No results found
+	{% else %}
+		No results found. Try a <a href="?query=test">test query</a>?
+    {% endif %}
+{% endblock %}
+endef
+
 define DJANGO_SETTINGS_DEV
 from .base import *
 
@@ -1635,41 +1717,7 @@ class SitePage(Page):
 endef
 
 define WAGTAIL_SEARCH_TEMPLATE
-{% extends "base.html" %}
 {% load static wagtailcore_tags %}
-{% block body_class %}template-searchresults{% endblock %}
-{% block title %}Search{% endblock %}
-{% block content %}
-    <h1>Search</h1>
-    <form action="{% url 'search' %}" method="get">
-        <input type="text"
-               name="query"
-               {% if search_query %}value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search" class="button">
-    </form>
-    {% if search_results %}
-        <ul>
-            {% for result in search_results %}
-                <li>
-                    <h4>
-                        <a href="{% pageurl result %}">{{ result }}</a>
-                    </h4>
-                    {% if result.search_description %}{{ result.search_description }}{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% if search_results.has_previous %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-        {% endif %}
-        {% if search_results.has_next %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-        {% endif %}
-    {% elif search_query %}
-        No results found
-	{% else %}
-		No results found. Try a <a href="?query=test">test query</a>?
-    {% endif %}
-{% endblock %}
 endef
 
 define WAGTAIL_SEARCH_URLS
@@ -2204,7 +2252,6 @@ export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_SEARCH_TEMPLATE
-export DJANGO_SEARCH_URLS
 export DJANGO_SEARCH_VIEWS
 export DOCKERFILE
 export DOCKERCOMPOSE
@@ -2608,7 +2655,7 @@ django-search-default:
 	$(ADD_DIR) search/templates
 	@echo "$$DJANGO_SEARCH_TEMPLATE" > search/templates/search.html
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
-	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
+	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
 	$(GIT_ADD) search
 
 django-secret-default:
@@ -3058,6 +3105,7 @@ usage-default:
 
 wagtail-search-default:
 	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
+	@echo "$$DJANGO_SEARCH_TEMPLATE" >> search/templates/search/search.html
 	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
 	$(GIT_ADD) search
 
