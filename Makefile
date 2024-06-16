@@ -1178,9 +1178,7 @@ define HTML_ERROR
 endef
 
 define HTML_FOOTER
-{% load wagtailcore_tags %}
   <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
-    {% wagtail_site as current_site %}
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
     <ul class="list-inline">
       <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
@@ -2005,6 +2003,10 @@ tinymce.init({
   content_css: false,
 });
 endef
+
+define WAGTAIL_HTML_FOOTER
+{% load wagtailcore_tags %}
+endef 
 
 define WAGTAIL_HTML_HEADER
 {% load wagtailcore_tags %}
@@ -3198,8 +3200,8 @@ wagtail-backend-templates-default:
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	# @echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
-	@echo "$$HTML_HEADER" > backend/templates/header.html
-	@echo "$$HTML_FOOTER" > backend/templates/footer.html
+	@echo "$$HTML_HEADER" >> backend/templates/header.html
+	@echo "$$HTML_FOOTER" >> backend/templates/footer.html
 	@echo "$$HTML_OFFCANVAS" > backend/templates/offcanvas.html
 	$(GIT_ADD) backend/templates/
 
