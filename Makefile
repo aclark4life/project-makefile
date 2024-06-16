@@ -2719,6 +2719,7 @@ django-settings-default:
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
 	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(SETTINGS)
+	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(SETTINGS)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(SETTINGS)
 
 django-crispy-default:
