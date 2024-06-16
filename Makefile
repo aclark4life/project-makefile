@@ -1076,8 +1076,6 @@ define HTML_FOOTER
 endef
 
 define HTML_HEADER
-{% load wagtailcore_tags %}
-{% wagtail_site as current_site %}
 <div class="app-header">
     <div class="container py-4 app-navbar">
         <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
@@ -1926,6 +1924,11 @@ tinymce.init({
 });
 endef
 
+define WAGTAIL_HTML_HEADER
+{% load wagtailcore_tags %}
+{% wagtail_site as current_site %}
+endef 
+
 define WAGTAIL_HOME_PAGE_MODEL
 from django.db import models
 from wagtail.models import Page
@@ -2199,6 +2202,9 @@ export DJANGO_URLS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
 export DJANGO_HOME_PAGE_TEMPLATE
+export DJANGO_SEARCH_URLS
+export DJANGO_SEARCH_VIEWS
+export DJANGO_SEARCH_TEMPLATE
 export DOCKERFILE
 export DOCKERCOMPOSE
 export ESLINTRC
@@ -2263,6 +2269,7 @@ export WAGTAIL_HOME_PAGE_MODEL
 export WAGTAIL_HOME_PAGE_TEMPLATE
 export WAGTAIL_HOME_PAGE_VIEWS
 export WAGTAIL_HOME_PAGE_URLS
+export WAGTAIL_HTML_HEADER
 export WAGTAIL_URLS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_HTML
@@ -2442,7 +2449,9 @@ django-init-default: db-init django-install
 	@$(MAKE) django-templates
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	@$(MAKE) django-settings-directory
-	@$(MAKE) django-home
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-home
+	@$(MAKE) django-search
 	@$(MAKE) django-urls
 	@$(MAKE) separator
 	@$(MAKE) django-common
@@ -2568,6 +2577,7 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
+	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
 	$(GIT_ADD) home
 
 django-payment-default:
@@ -2591,6 +2601,14 @@ django-payment-default:
 	python manage.py makemigrations payment
 	@echo "$$PAYMENT_MIGRATION" > payment/migrations/0002_set_stripe_api_keys.py
 	$(GIT_ADD) payment/
+
+django-search-default:
+	python manage.py startapp search
+	$(ADD_DIR) search/templates
+	@echo "$$DJANGO_SEARCH_TEMPLATE" > search/templates/search.html
+	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
+	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
+	$(GIT_ADD) search
 
 django-secret-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -2682,7 +2700,6 @@ django-settings-default:
 	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
 	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
@@ -3067,7 +3084,8 @@ wagtail-base-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 
 wagtail-header-default:
-	@echo "$$HTML_HEADER" > backend/templates/header.html
+	@echo "$$WAGTAIL_HTML_HEADER" > backend/templates/header.html
+	@echo "$$HTML_HEADER" >> backend/templates/header.html
 
 wagtail-clean-default:
 	-@for dir in "$(WAGTAIL_CLEAN_DIRS)"; do \
