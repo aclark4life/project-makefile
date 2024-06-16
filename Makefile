@@ -1748,7 +1748,41 @@ class SitePage(Page):
 endef
 
 define WAGTAIL_SEARCH_TEMPLATE
+{% extends "base.html" %}
 {% load static wagtailcore_tags %}
+{% block body_class %}template-searchresults{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text"
+               name="query"
+               {% if search_query %}value="{{ search_query }}"{% endif %}>
+        <input type="submit" value="Search" class="button">
+    </form>
+    {% if search_results %}
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <h4>
+                        <a href="{% pageurl result %}">{{ result }}</a>
+                    </h4> 
+                    {% if result.search_description %}{{ result.search_description }}{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        No results found
+    {% else %}
+        No results found. Try a <a href="?query=test">test query</a>?
+    {% endif %}
+{% endblock %}
 endef
 
 define WAGTAIL_SEARCH_URLS
@@ -3148,7 +3182,6 @@ usage-default:
 
 wagtail-search-default:
 	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
-	@echo "$$DJANGO_SEARCH_TEMPLATE" >> search/templates/search/search.html
 	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
 	$(GIT_ADD) search
 
