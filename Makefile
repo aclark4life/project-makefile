@@ -137,6 +137,7 @@ urlpatterns += [
     path('user/', include('siteuser.urls')),
     path('explorer/', include('explorer.urls')),
     path('hijack/', include('hijack.urls')),
+    path('search/', include('search.urls')),
     path('', include('home.urls')),
 ]
 if settings.DEBUG:
@@ -1633,7 +1634,7 @@ class SitePage(Page):
         verbose_name = "Site Page"
 endef
 
-define SEARCH_TEMPLATE
+define WAGTAIL_SEARCH_TEMPLATE
 {% extends "base.html" %}
 {% load static wagtailcore_tags %}
 {% block body_class %}template-searchresults{% endblock %}
@@ -1671,7 +1672,7 @@ define SEARCH_TEMPLATE
 {% endblock %}
 endef
 
-define SEARCH_URLS
+define WAGTAIL_SEARCH_URLS
 from django.urls import path
 from .views import search
 
@@ -2202,9 +2203,9 @@ export DJANGO_URLS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
 export DJANGO_HOME_PAGE_TEMPLATE
+export DJANGO_SEARCH_TEMPLATE
 export DJANGO_SEARCH_URLS
 export DJANGO_SEARCH_VIEWS
-export DJANGO_SEARCH_TEMPLATE
 export DOCKERFILE
 export DOCKERCOMPOSE
 export ESLINTRC
@@ -2259,8 +2260,8 @@ export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_VIEW_TEMPLATE
 export SITEUSER_EDIT_TEMPLATE
-export SEARCH_TEMPLATE
-export SEARCH_URLS
+export WAGTAIL_SEARCH_TEMPLATE
+export WAGTAIL_SEARCH_URLS
 export THEME_BLUE
 export THEME_TOGGLER
 export TINYMCE_JS
@@ -3055,8 +3056,9 @@ usage-default:
 	@echo "   make help    Print all targets"
 	@echo "   make usage   Print this message"
 
-wagtail-search-urls:
-	@echo "$$SEARCH_URLS" > search/urls.py
+wagtail-search-default:
+	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
+	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
 	$(GIT_ADD) search
 
 wagtail-settings-default:
@@ -3069,8 +3071,6 @@ wagtail-settings-default:
 	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
 	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(SETTINGS)
 
-wagtail-search-template:
-	@echo "$$SEARCH_TEMPLATE" > search/templates/search/search.html
 
 wagtail-privacy-default:
 	python manage.py startapp privacy
@@ -3131,8 +3131,7 @@ wagtail-init-default: db-init django-install wagtail-install wagtail-start djang
 		$(MAKE) django-payment
 	@$(MAKE) wagtail-urls
 	@$(MAKE) wagtail-homepage
-	@$(MAKE) wagtail-search-template
-	@$(MAKE) wagtail-search-urls
+	@$(MAKE) wagtail-search
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-siteuser
 	export SETTINGS=backend/settings/base.py; \
