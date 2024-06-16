@@ -2707,6 +2707,8 @@ django-settings-default:
 	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
 	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
 	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
+	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(SETTINGS)
+	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(SETTINGS)
 	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
 	@echo "$$REST_FRAMEWORK" >> $(SETTINGS)
@@ -2718,8 +2720,6 @@ django-settings-default:
 	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
-	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(SETTINGS)
-	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(SETTINGS)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(SETTINGS)
 
 django-crispy-default:
