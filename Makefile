@@ -727,6 +727,19 @@ class SearchForm(forms.Form):
 
 endef
 
+define DJANGO_SEARCH_UTILS
+from django.apps import apps
+from django.conf import settings
+
+def get_search_models():
+    models = []
+    for model_path in settings.SEARCH_MODELS:
+        app_label, model_name = model_path.split('.')
+        model = apps.get_model(app_label, model_name)
+        models.append(model)
+    return models
+endef
+
 define DJANGO_SEARCH_URLS
 from django.urls import path
 from .views import SearchView
@@ -739,29 +752,49 @@ endef
 define DJANGO_SEARCH_VIEWS
 from django.views.generic import ListView
 from django.db.models import Q
-from .models import YourModel  # Replace with your actual model
 from .forms import SearchForm
+from .utils import get_search_models
 
 class SearchView(ListView):
-    model = YourModel
     template_name = 'your_app/search_results.html'
     context_object_name = 'results'
     paginate_by = 10
 
     def get_queryset(self):
         form = SearchForm(self.request.GET)
+        query = None
+        results = []
+
         if form.is_valid():
             query = form.cleaned_data['query']
-            return YourModel.objects.filter(
-                Q(field1__icontains=query) | Q(field2__icontains=query)
-                # Add more fields as needed
-            )
-        return YourModel.objects.none()
+            search_models = get_search_models()
+
+            for model in search_models:
+                fields = [f.name for f in model._meta.fields if isinstance(f, (models.CharField, models.TextField))]
+                queries = [Q(**{f"{field}__icontains": query}) for field in fields]
+                model_results = model.objects.filter(queries.pop())
+
+                for item in queries:
+                    model_results = model_results.filter(item)
+
+                results.extend(model_results)
+
+        return results
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = SearchForm(self.request.GET)
+        context['query'] = self.request.GET.get('query', '')
         return context
+endef
+
+define DJANGO_SEARCH_SETTINGS
+SEARCH_MODELS = [
+    # 'app_name.Article',
+    # 'app_name.BlogPost',
+    # 'app_name.Comment',
+    # Add other models as needed
+]
 endef
 
 define DJANGO_SEARCH_TEMPLATE
@@ -2251,7 +2284,10 @@ export DJANGO_URLS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
 export DJANGO_HOME_PAGE_TEMPLATE
+export DJANGO_SEARCH_FORMS
+export DJANGO_SEARCH_SETTINGS
 export DJANGO_SEARCH_TEMPLATE
+export DJANGO_SEARCH_UTILS
 export DJANGO_SEARCH_VIEWS
 export DOCKERFILE
 export DOCKERCOMPOSE
@@ -2499,7 +2535,8 @@ django-init-default: db-init django-install
 	@$(MAKE) django-settings-directory
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-home
-	@$(MAKE) django-search
+	export SETTINGS=backend/settings/base.py; \
+		$(MAKE) django-search
 	@$(MAKE) django-urls
 	@$(MAKE) separator
 	@$(MAKE) django-common
@@ -2653,9 +2690,12 @@ django-payment-default:
 django-search-default:
 	python manage.py startapp search
 	$(ADD_DIR) search/templates
+	@echo "$$DJANGO_SEARCH_FORMS" > search/forms.py
+	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(SETTINGS)
 	@echo "$$DJANGO_SEARCH_TEMPLATE" > search/templates/search.html
+	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
+	@echo "$$DJANGO_SEARCH_UTILS" > search/utils.py
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
-	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
 	$(GIT_ADD) search
 
 django-secret-default:
