@@ -2431,10 +2431,14 @@ export WEBPACK_REVEAL_INDEX_JS
 # Rules
 # ------------------------------------------------------------------------------  
 
-aws-check-env-default:  # https://stackoverflow.com/a/4731504/185820
+aws-check-env-default: aws-check-env-profile aws-check-env-region
+
+aws-check-env-profile-default:
 ifndef AWS_PROFILE
 	$(error AWS_PROFILE is undefined)
 endif
+
+aws-check-env-regiion-default:
 ifndef AWS_REGION
 	$(error AWS_REGION is undefined)
 endif
@@ -2535,8 +2539,8 @@ eb-restart-default:
 eb-upgrade-default:
 	eb upgrade
 
-eb-init-default:
-	eb init
+eb-init-default: aws-check-env-profile
+	eb init --profile=$(AWS_PROFILE)
 
 eb-list-platforms-default:
 	aws elasticbeanstalk list-platform-versions
