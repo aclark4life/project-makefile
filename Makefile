@@ -2536,7 +2536,10 @@ eb-pg-export-default:
 eb-restart-default:
 	eb ssh -c "systemctl restart web"
 
-eb-upgrade-default:
+eb-rebuild-default:
+	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
+
+eb-upgrade-default: aws-check-env-profile
 	eb upgrade
 
 eb-init-default: aws-check-env-profile
