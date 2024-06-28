@@ -2438,7 +2438,7 @@ ifndef AWS_PROFILE
 	$(error AWS_PROFILE is undefined)
 endif
 
-aws-check-env-regiion-default:
+aws-check-env-region-default:
 ifndef AWS_REGION
 	$(error AWS_REGION is undefined)
 endif
@@ -2449,6 +2449,12 @@ aws-secret-default: aws-check-env
 
 aws-sg-default: aws-check-env
 	aws ec2 describe-security-groups $(AWS_OPTS)
+
+aws-vol-default: aws-check-env
+	aws ec2 describe-volumes --output table
+
+aws-vol-available-default: aws-check-env
+	aws ec2 describe-volumes --filters Name=status,Values=available --query "Volumes[*].{ID:VolumeId,Size:Size}" --output table
 
 aws-ssm-default: aws-check-env
 	aws ssm describe-parameters $(AWS_OPTS)
