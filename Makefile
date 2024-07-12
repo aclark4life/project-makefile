@@ -19,7 +19,7 @@ PROJECT_MAKEFILE := project.mk
 PROJECT_NAME = project-makefile
 PROJECT_DIRS = backend contactpage home privacy siteuser
 
-WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payment node_modules
+WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
 WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml
 
 REVIEW_EDITOR = subl
@@ -199,7 +199,7 @@ urlpatterns += [
     path('model-form-demo/', include('model_form_demo.urls')),
     path('explorer/', include('explorer.urls')),
     path('logging-demo/', include('logging_demo.urls')),
-    path('payment/', include('payment.urls')),
+    path('payments/', include('payments.urls')),
 ]
 
 if settings.DEBUG:
@@ -1485,14 +1485,14 @@ define PRIVACY_PAGE_TEMPLATE
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
 endef
 
-define PAYMENT_ADMIN
+define PAYMENTS_ADMIN
 # admin.py
 
 from django.contrib import admin
 from .models import Payment
 
 @admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
+class PaymentsAdmin(admin.ModelAdmin):
     list_display = ('id', 'amount', 'stripe_charge_id', 'timestamp')
     search_fields = ('stripe_charge_id',)
     list_filter = ('timestamp',)
@@ -1506,17 +1506,17 @@ class PaymentAdmin(admin.ModelAdmin):
     #     return False
 endef
 
-define PAYMENT_FORM
+define PAYMENTS_FORM
 # forms.py
 
 from django import forms
 
-class PaymentForm(forms.Form):
+class PaymentsForm(forms.Form):
     stripeToken = forms.CharField(widget=forms.HiddenInput())
     amount = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.HiddenInput())
 endef
 
-define PAYMENT_MIGRATION
+define PAYMENTS_MIGRATION
 from django.db import migrations
 import os
 import secrets
@@ -1554,7 +1554,7 @@ def set_stripe_api_keys(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payment', '0001_initial'),
+        ('payments', '0001_initial'),
     ]
 
     operations = [
@@ -1563,7 +1563,7 @@ class Migration(migrations.Migration):
 
 endef
 
-define PAYMENT_MODEL
+define PAYMENTS_MODEL
 # models.py
 
 from django.db import models
@@ -1577,38 +1577,38 @@ class Payment(models.Model):
         return f"Payment of {self.amount} with charge ID {self.stripe_charge_id}"
 endef
 
-define PAYMENT_URLS
+define PAYMENTS_URLS
 # urls.py
 
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import PaymentView
+from .views import PaymentsView
 
 urlpatterns = [
-    path('', PaymentView.as_view(), name='payment'),
-    path('success/', TemplateView.as_view(template_name='payment_success.html'), name='payment_success'),
+    path('', PaymentsView.as_view(), name='payments'),
+    path('success/', TemplateView.as_view(template_name='payments_success.html'), name='payments_success'),
 ]
 endef
 
-define PAYMENT_VIEW
+define PAYMENTS_VIEW
 # views.py
 
 import stripe
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import PaymentForm
+from .forms import PaymentsForm
 from .models import Payment
 
-class PaymentView(View):
+class PaymentsView(View):
     def get(self, request):
         # Set the amount you want to charge
         amount = 50.00  # for example, $50.00
-        form = PaymentForm(initial={'amount': amount})
-        return render(request, 'payment.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+        form = PaymentsForm(initial={'amount': amount})
+        return render(request, 'payments.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
 
     def post(self, request):
-        form = PaymentForm(request.POST)
+        form = PaymentsForm(request.POST)
         if form.is_valid():
             stripe.api_key = settings.STRIPE_SECRET_KEY
             token = form.cleaned_data['stripeToken']
@@ -1622,31 +1622,31 @@ class PaymentView(View):
                     source=token,
                 )
 
-                # Save the payment in the database
-                payment = Payment.objects.create(
+                # Save the payments in the database
+                payments = Payments.objects.create(
                     amount=form.cleaned_data['amount'],
                     stripe_charge_id=charge.id
                 )
 
-                return redirect('payment_success')  # Redirect to a success page
+                return redirect('payments_success')  # Redirect to a success page
 
             except stripe.error.StripeError as e:
                 # Handle error
-                return render(request, 'payment.html', {'form': form, 'error': str(e), 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+                return render(request, 'payments.html', {'form': form, 'error': str(e), 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
 
-        return render(request, 'payment.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+        return render(request, 'payments.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
 endef
 
-define PAYMENT_VIEW_TEMPLATE
+define PAYMENTS_VIEW_TEMPLATE
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Payment</title>
+    <title>Payments</title>
     <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
-    <h1>Make a Payment</h1>
-    <form method="post" id="payment-form">
+    <h1>Make a Payments</h1>
+    <form method="post" id="payments-form">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Pay</button>
@@ -1658,7 +1658,7 @@ define PAYMENT_VIEW_TEMPLATE
         var card = elements.create('card');
         card.mount('#card-element');
 
-        var form = document.getElementById('payment-form');
+        var form = document.getElementById('payments-form');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
 
@@ -1683,11 +1683,11 @@ define PAYMENT_VIEW_TEMPLATE
 </html>
 endef
 
-define PAYMENT_VIEW_TEMPLATE_SUCCESS
+define PAYMENTS_VIEW_TEMPLATE_SUCCESS
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Payment Success</title>
+    <title>Payments Success</title>
 </head>
 <body>
     <h1>Payment Successful</h1>
@@ -2387,14 +2387,14 @@ export FRONTEND_CONTEXT_INDEX
 export FRONTEND_CONTEXT_USER_PROVIDER
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
-export PAYMENT_ADMIN
-export PAYMENT_FORM
-export PAYMENT_MIGRATION
-export PAYMENT_MODEL
-export PAYMENT_URLS
-export PAYMENT_VIEW
-export PAYMENT_VIEW_TEMPLATE
-export PAYMENT_VIEW_TEMPLATE_SUCCESS
+export PAYMENTS_ADMIN
+export PAYMENTS_FORM
+export PAYMENTS_MIGRATION
+export PAYMENTS_MODEL
+export PAYMENTS_URLS
+export PAYMENTS_VIEW
+export PAYMENTS_VIEW_TEMPLATE
+export PAYMENTS_VIEW_TEMPLATE_SUCCESS
 export REQUIREMENTS_TEST
 export SEPARATOR
 export SETTINGS_THEMES
@@ -2744,27 +2744,27 @@ django-home-default:
 	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
 	$(GIT_ADD) home
 
-django-payment-default:
-	python manage.py startapp payment
-	@echo "$$PAYMENT_FORM" > payment/forms.py
-	@echo "$$PAYMENT_MODEL" > payment/models.py
-	@echo "$$PAYMENT_ADMIN" > payment/admin.py
-	@echo "$$PAYMENT_VIEW" > payment/views.py
-	@echo "$$PAYMENT_URLS" > payment/urls.py
-	$(ADD_DIR) payment/templates/
-	$(ADD_DIR) payment/management/commands
-	@echo "$$PAYMENT_VIEW_TEMPLATE" > payment/templates/payment.html
-	@echo "$$PAYMENT_VIEW_TEMPLATE_SUCCESS" > payment/templates/payment_success.html
-	@echo "INSTALLED_APPS.append('payment')" >> $(SETTINGS)
+django-payments-default:
+	python manage.py startapp payments
+	@echo "$$PAYMENTS_FORM" > payments/forms.py
+	@echo "$$PAYMENTS_MODEL" > payments/models.py
+	@echo "$$PAYMENTS_ADMIN" > payments/admin.py
+	@echo "$$PAYMENTS_VIEW" > payments/views.py
+	@echo "$$PAYMENTS_URLS" > payments/urls.py
+	$(ADD_DIR) payments/templates/
+	$(ADD_DIR) payments/management/commands
+	@echo "$$PAYMENTS_VIEW_TEMPLATE" > payments/templates/payments.html
+	@echo "$$PAYMENTS_VIEW_TEMPLATE_SUCCESS" > payments/templates/payments_success.html
+	@echo "INSTALLED_APPS.append('payments')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('djstripe')" >> $(SETTINGS)
 	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(SETTINGS)
 	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(SETTINGS)
 	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(SETTINGS)
 	@echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(SETTINGS)
 	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(SETTINGS)
-	python manage.py makemigrations payment
-	@echo "$$PAYMENT_MIGRATION" > payment/migrations/0002_set_stripe_api_keys.py
-	$(GIT_ADD) payment/
+	python manage.py makemigrations payments
+	@echo "$$PAYMENTS_MIGRATION" > payments/migrations/0002_set_stripe_api_keys.py
+	$(GIT_ADD) payments/
 
 django-search-default:
 	python manage.py startapp search
@@ -3294,7 +3294,7 @@ wagtail-init-default: db-init django-install wagtail-install wagtail-start djang
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-logging-demo
 	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-payment
+		$(MAKE) django-payments
 	@$(MAKE) wagtail-urls
 	@$(MAKE) wagtail-homepage
 	@$(MAKE) wagtail-search
