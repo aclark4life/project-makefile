@@ -55,6 +55,8 @@ ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
     include $(PROJECT_MAKEFILE)
 endif
 
+PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
+
 # --------------------------------------------------------------------------------
 # Variables (no override)
 # --------------------------------------------------------------------------------
@@ -3096,7 +3098,7 @@ plone-clean-default:
 
 plone-init-default:
 	$(ENSURE_PIP)
-	python -m pip install plone
+	python -m pip install plone -c $(PLONE_CONTRAINTS)
 	mkwsgiinstance -d $(PROJECT_NAME) -u admin:admin
 	@echo "Created $(PROJECT_NAME)!"
 	$(MAKE) plone-serve
