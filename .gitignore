@@ -2,3 +2,5 @@ __pycache__
 *.pyc
 dist/
 node_modules/
+build/
+project_makefile.egg-info/
