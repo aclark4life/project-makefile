@@ -1698,6 +1698,10 @@ define PAYMENTS_VIEW_TEMPLATE_SUCCESS
 </html>
 endef
 
+define PYTHON_PROJECT_TOML
+[build-system]
+endef
+
 define REQUIREMENTS_TEST
 pytest
 pytest-runner
@@ -2387,8 +2391,6 @@ export PRIVACY_PAGE_MODEL
 export REST_FRAMEWORK
 export FRONTEND_CONTEXT_INDEX
 export FRONTEND_CONTEXT_USER_PROVIDER
-export PRIVACY_PAGE_MODEL
-export PRIVACY_PAGE_TEMPLATE
 export PAYMENTS_ADMIN
 export PAYMENTS_FORM
 export PAYMENTS_MIGRATION
@@ -2397,6 +2399,9 @@ export PAYMENTS_URLS
 export PAYMENTS_VIEW
 export PAYMENTS_VIEW_TEMPLATE
 export PAYMENTS_VIEW_TEMPLATE_SUCCESS
+export PRIVACY_PAGE_MODEL
+export PRIVACY_PAGE_TEMPLATE
+export PYTHON_PROJECT_TOML
 export REQUIREMENTS_TEST
 export SEPARATOR
 export SETTINGS_THEMES
@@ -3113,6 +3118,9 @@ project-mk-default:
 	touch project.mk
 	$(GIT_ADD) project.mk
 
+python-project-default:
+	@echo "$(PYTHON_PROJECT_TOML)" > pyproject.toml
+
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python3 -m http.server
@@ -3430,6 +3438,7 @@ open-default: django-open
 p-default: git-push
 pack-default: django-npm-build
 pip-install-up: pip-install-upgrade
+pyproject-default: python-project
 readme-default: readme-init-md
 restart-default: eb-restart
 reveal-default: reveal-init
