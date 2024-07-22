@@ -3429,6 +3429,7 @@ o-default: open
 open-default: django-open
 p-default: git-push
 pack-default: django-npm-build
+pip-install-up: pip-install-upgrade
 readme-default: readme-init-md
 restart-default: eb-restart
 reveal-default: reveal-init
