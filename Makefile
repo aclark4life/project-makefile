@@ -1702,6 +1702,30 @@ define PYTHON_CI_YAML
 name: Build Wheels
 endef
 
+define PYTHONN_LICENSE_TXT
+MIT License
+
+Copyright (c) [YEAR] [OWNER NAME]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+endef
+
 define PYTHON_PROJECT_TOML
 [build-system]
 endef
@@ -2406,6 +2430,7 @@ export PAYMENTS_VIEW_TEMPLATE_SUCCESS
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
 export PYTHON_CI_YAML
+export PYTHON_LICENSE_TXT
 export PYTHON_PROJECT_TOML
 export REQUIREMENTS_TEST
 export SEPARATOR
@@ -3123,6 +3148,10 @@ project-mk-default:
 	touch project.mk
 	$(GIT_ADD) project.mk
 
+python-license-default:
+	@echo "$(PYTHON_LICENSE_TXT)" > LICENSE.txt
+	$(GIT_ADD) LICENSE.txt
+
 python-project-default:
 	@echo "$(PYTHON_PROJECT_TOML)" > pyproject.toml
 	$(GIT_ADD) pyproject.toml
@@ -3432,6 +3461,7 @@ h-default: help
 i-default: install
 index-default: html-index
 last-default: git-commit-last
+license-default: python-license
 error-default: html-error
 eb-up-default: eb-upgrade
 init-default: wagtail-init
