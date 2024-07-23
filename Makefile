@@ -1698,6 +1698,10 @@ define PAYMENTS_VIEW_TEMPLATE_SUCCESS
 </html>
 endef
 
+define PYTHON_CI_YAML
+name: Build Wheels
+endef
+
 define PYTHON_PROJECT_TOML
 [build-system]
 endef
@@ -2401,6 +2405,7 @@ export PAYMENTS_VIEW_TEMPLATE
 export PAYMENTS_VIEW_TEMPLATE_SUCCESS
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
+export PYTHON_CI_YAML
 export PYTHON_PROJECT_TOML
 export REQUIREMENTS_TEST
 export SEPARATOR
@@ -3131,6 +3136,11 @@ python-setup-sdist-default:
 
 python-webpack-init-default:
 	python manage.py webpack_init --no-input
+
+python-ci-default:
+	$(ADD_DIR) .github/workflows
+	@echo "$(PYTHON_CI_YAML)" > .github/workflows/build_wheels.yml
+	$(GIT_ADD) .github/workflows/build_wheels.yml
 
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
