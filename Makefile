@@ -3120,6 +3120,7 @@ project-mk-default:
 
 python-project-default:
 	@echo "$(PYTHON_PROJECT_TOML)" > pyproject.toml
+	$(GIT_ADD) pyproject.toml
 
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
