@@ -2567,7 +2567,7 @@ eb-custom-env-default:
 eb-deploy-default:
 	eb deploy
 
-eb-pg-export-default:
+eb-pg-export-default: aws-check-env eb-check-env
 	@if [ ! -d $(EB_DIR) ]; then \
         echo "Directory $(EB_DIR) does not exist"; \
     else \
