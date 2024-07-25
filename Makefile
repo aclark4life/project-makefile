@@ -3439,6 +3439,7 @@ c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
+create-default: eb-create
 d-default: deploy
 db-import-default: db-pg-import
 db-export-default: eb-pg-export
