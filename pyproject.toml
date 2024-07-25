@@ -12,7 +12,7 @@ license = {text = "MIT"}
 authors = [{name = "Your Name", email = "your.email@example.com"}]
 
 [project.scripts]
-project-makefile = "project_makefile.write_makefile:write_makefile"
+project-makefile = "write_makefile.write_makefile:write_makefile"
 
 [tool.setuptools]
 packages = ["project_makefile"]
