@@ -3179,7 +3179,7 @@ plone-init-default:
 	$(ENSURE_PIP)
 	python -m pip install plone -c $(PLONE_CONSTRAINTS)
 	mkwsgiinstance -d $(PROJECT_NAME) -u admin:admin
-	cat $(PACKAGE_NAME)/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/' -e 's/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
+	cat $(PACKAGE_NAME)/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
 	mv -f $(TMPDIR)/zope.ini $(PACKAGE_NAME)/etc/zope.ini
 	@echo "Created $(PROJECT_NAME)!"
 	$(MAKE) plone-serve
