@@ -3182,7 +3182,7 @@ plone-init-default:
 	@echo "Created $(PROJECT_NAME)!"
 	cat $(PACKAGE_NAME)/etc/zope.ini | sed 's/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
 	mv -f $(TMPDIR)/zope.ini $(PACKAGE_NAME)/etc/zope.ini
-	@echo "Configured port 8000!")
+	@echo "Configured port 8000!"
 	$(MAKE) plone-serve
 
 plone-serve-default:
