@@ -19,7 +19,7 @@ PROJECT_MAKEFILE := project.mk
 PROJECT_NAME = project-makefile
 PROJECT_DIRS = backend contactpage home privacy siteuser
 
-PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_')
+PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/')
 
 WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
 WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml
