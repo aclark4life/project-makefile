@@ -3174,6 +3174,7 @@ pip-uninstall-default:
 
 plone-clean-default:
 	$(DEL_DIR) $(PROJECT_NAME)
+	$(DEL_DIR) $(PACKAGE_NAME)
 
 plone-init-default:
 	$(ENSURE_PIP)
