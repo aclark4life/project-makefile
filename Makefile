@@ -3177,7 +3177,7 @@ plone-clean-default:
 
 plone-init-default:
 	$(ENSURE_PIP)
-	python -m pip install plone -c $(PLONE_CONTRAINTS)
+	python -m pip install plone -c $(PLONE_CONSTRAINTS)
 	mkwsgiinstance -d $(PROJECT_NAME) -u admin:admin
 	@echo "Created $(PROJECT_NAME)!"
 	$(MAKE) plone-serve
