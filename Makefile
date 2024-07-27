@@ -72,7 +72,7 @@ ADD_DIR := mkdir -pv
 ADD_FILE := touch
 COPY_DIR := cp -rv
 COPY_FILE := cp -v
-DEL_DIR := rm -rv
+DEL_DIR := -rm -rv
 DEL_FILE := rm -v
 GIT_ADD := -git add
 
