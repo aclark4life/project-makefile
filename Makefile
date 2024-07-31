@@ -2622,7 +2622,7 @@ eb-restart-default:
 eb-rebuild-default:
 	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
 
-eb-upgrade-default: aws-check-env-profile
+eb-upgrade-default:
 	eb upgrade
 
 eb-init-default: aws-check-env-profile
