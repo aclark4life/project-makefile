@@ -3504,6 +3504,7 @@ force-push-default: git-push-force
 freeze-default: pip-freeze
 git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
+git-force-default: git-push-force
 gitignore-default: git-ignore
 h-default: help
 i-default: install
