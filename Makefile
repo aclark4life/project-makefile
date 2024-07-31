@@ -2934,8 +2934,7 @@ django-settings-default:
 	@echo "# $(PROJECT_NAME)" >> $(SETTINGS)
 	@echo "ALLOWED_HOSTS = ['*']" >> $(SETTINGS)
 	@echo "import dj_database_url  # noqa" >> $(SETTINGS)
-	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', \
-         'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
+	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
 	@echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(SETTINGS)
 	@echo "INSTALLED_APPS.append('rest_framework')" >> $(SETTINGS)
