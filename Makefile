@@ -74,7 +74,7 @@ COPY_DIR := cp -rv
 COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
-GIT_ADD := -git add
+GIT_ADD := git add
 
 ENSURE_PIP := python -m ensurepip
 
@@ -3224,11 +3224,11 @@ rand-default:
 readme-init-rst-default:
 	@echo "$(PROJECT_NAME)" > README.rst
 	@echo "================================================================================" >> README.rst
-	-@git add README.rst
+	$(GIT_ADD) README.rst
 
 readme-init-md-default:
 	@echo "# $(PROJECT_NAME)" > README.md
-	-@git add README.md
+	$(GIT_ADD) README.md
 
 readme-edit-rst-default:
 	vi README.rst
