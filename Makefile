@@ -3115,9 +3115,9 @@ jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
 lint-default:
-	-ruff check -v --fix
 	-ruff format -v
 	-djlint --reformat --format-css --format-js .
+	-ruff check -v --fix
 
 make-default:
 	$(GIT_ADD) Makefile
