@@ -3094,6 +3094,9 @@ git-prune-default:
 git-set-upstream-default:
 	git push --set-upstream origin main
 
+git-set-default-default:
+	gh repo set-default
+
 git-short-default:
 	@echo $(GIT_REV)
 
