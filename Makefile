@@ -2729,7 +2729,7 @@ django-common-default:
 	$(GIT_ADD) requirements.txt
 	$(GIT_ADD) manage.py
 	$(GIT_ADD) Dockerfile
-	$(GIT_ADD) .dockerignore
+	-$(GIT_ADD) .dockerignore
 
 django-install-default: separator
 	$(ENSURE_PIP)
