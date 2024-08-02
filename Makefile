@@ -2697,6 +2697,7 @@ django-init-default: db-init django-install
 		$(MAKE) django-search
 	@$(MAKE) django-urls
 	@$(MAKE) separator
+	@$(MAKE) freeze
 	@$(MAKE) django-common
 	@$(MAKE) separator
 	export SETTINGS=backend/settings/base.py; \
@@ -2716,7 +2717,6 @@ django-init-default: db-init django-install
 	@$(MAKE) separator
 	@$(MAKE) readme
 	@$(MAKE) gitignore
-	@$(MAKE) freeze
 	@$(MAKE) serve
 
 django-common-default:
