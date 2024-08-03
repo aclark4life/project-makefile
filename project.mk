@@ -1,5 +1,5 @@
 edit:
-	vi Makefile
+	nvim Makefile
 
 logo:
 	python logo.py
