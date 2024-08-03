@@ -2725,10 +2725,10 @@ django-common-default:
 	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
 		$(MAKE) django-settings
 	$(MAKE) django-custom-admin
-	$(GIT_ADD) backend
-	$(GIT_ADD) requirements.txt
-	$(GIT_ADD) manage.py
-	$(GIT_ADD) Dockerfile
+	-$(GIT_ADD) backend
+	-$(GIT_ADD) requirements.txt
+	-$(GIT_ADD) manage.py
+	-$(GIT_ADD) Dockerfile
 	-$(GIT_ADD) .dockerignore
 
 django-install-default: separator
