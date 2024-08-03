@@ -1844,6 +1844,7 @@ urlpatterns += [
 ]
 
 if settings.DEBUG:
+
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -1859,11 +1860,13 @@ if settings.DEBUG:
 
 # https://www.django-rest-framework.org/#example
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = User
         fields = ['url', 'username', 'email', 'is_staff']
 
 class UserViewSet(viewsets.ModelViewSet):
+
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
