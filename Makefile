@@ -3525,6 +3525,7 @@ migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
 mk-default: project-mk
+m-default: django-migrate
 o-default: open
 open-default: django-open
 p-default: git-push
