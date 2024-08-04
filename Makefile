@@ -2981,6 +2981,9 @@ django-crispy-default:
 django-shell-default:
 	python manage.py shell
 
+django-db-shell-default:
+	python manage.py dbshell
+
 django-static-default:
 	python manage.py collectstatic --noinput
 
@@ -3499,6 +3502,7 @@ db-import-default: db-pg-import
 db-export-default: eb-pg-export
 db-init-default: db-pg-init
 db-init-test-default: db-pg-init-test
+db-shell-default: django-db-shell
 deploy-default: eb-deploy
 django-clean-default: wagtail-clean
 djlint-default: lint-djlint
