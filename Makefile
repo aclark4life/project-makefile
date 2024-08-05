@@ -3503,6 +3503,7 @@ db-export-default: eb-pg-export
 db-init-default: db-pg-init
 db-init-test-default: db-pg-init-test
 db-shell-default: django-db-shell
+dbshell-default: django-db-shell
 deploy-default: eb-deploy
 django-clean-default: wagtail-clean
 djlint-default: lint-djlint
