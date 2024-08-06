@@ -3243,10 +3243,10 @@ readme-init-md-default:
 	-$(GIT_ADD) README.md
 
 readme-edit-rst-default:
-	vi README.rst
+	$(EDITOR) README.rst
 
 readme-edit-md-default:
-	vi README.md
+	$(EDITOR) README.md
 
 readme-open-default:
 	open README.pdf
