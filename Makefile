@@ -3116,7 +3116,7 @@ help-default:
             | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
             | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
             | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | less # http://stackoverflow.com/a/26339924
+            | awk '{printf "%s\n", $$0}' ; done | $(PAGER) # http://stackoverflow.com/a/26339924
 
 html-index-default:
 	@echo "$$HTML_INDEX" > index.html
