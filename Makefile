@@ -3387,7 +3387,7 @@ project-mk-default:
 
 programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > programming_interview.py
-	-$(GIT_ADD) programming_interview.py 2>&1 >/dev/null
+	-$(GIT_ADD) programming_interview.py > /dev/null 2>&1
 
 python-license-default:
 	@echo "$(PYTHON_LICENSE_TXT)" > LICENSE.txt
