@@ -61,15 +61,14 @@ PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
 
 PAGER ?= less
 
+GIT_REV = $(shell git rev-parse --short HEAD)
+GIT_BRANCH = $(shell git branch --show-current)
+
 # --------------------------------------------------------------------------------
 # Variables (no override)
 # --------------------------------------------------------------------------------
 
 AWS_OPTS := --no-cli-pager --output table
-
-GIT_REV := $(shell git rev-parse --short HEAD)
-GIT_BRANCH := $(shell git branch --show-current)
-
 ADD_DIR := mkdir -pv
 ADD_FILE := touch
 COPY_DIR := cp -rv
@@ -3387,7 +3386,8 @@ project-mk-default:
 
 programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > programming_interview.py
-	-$(GIT_ADD) programming_interview.py > /dev/null 2>&1
+	@echo "Created programming_interview.py!"
+	-@$(GIT_ADD) programming_interview.py > /dev/null 2>&1
 
 python-license-default:
 	@echo "$(PYTHON_LICENSE_TXT)" > LICENSE.txt
