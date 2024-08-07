@@ -26,12 +26,13 @@ WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements
 
 REVIEW_EDITOR = subl
 
-GIT_BRANCHES = $(shell git branch -a | grep remote | grep -v HEAD | grep -v main |\
-    grep -v master)
+GIT_BRANCHES = $(shell git branch -a) 
+GIT_BRANCH = $(shell git branch --show-current)
 GIT_MESSAGE = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
 GIT_PUSH = git push
 GIT_PUSH_FORCE = git push --force-with-lease
+GIT_REV = $(shell git rev-parse --short HEAD)
 
 GET_DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var;\
     env | grep DATABASE_URL"
@@ -60,9 +61,6 @@ endif
 PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
 
 PAGER ?= less
-
-GIT_REV = $(shell git rev-parse --short HEAD)
-GIT_BRANCH = $(shell git branch --show-current)
 
 # --------------------------------------------------------------------------------
 # Variables (no override)
