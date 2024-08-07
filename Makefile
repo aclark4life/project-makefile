@@ -3663,9 +3663,9 @@ project-mk-default:
 	-$(GIT_ADD) project.mk
 
 programming-interview-default:
-	@echo "$$PROGRAMMING_INTERVIEW" > programming_interview.py
-	@echo "Created programming_interview.py!"
-	-@$(GIT_ADD) programming_interview.py > /dev/null 2>&1
+	@echo "$$PROGRAMMING_INTERVIEW" > interview.py
+	@echo "Created interview.py!"
+	-@$(GIT_ADD) interview.py > /dev/null 2>&1
 
 python-license-default:
 	@echo "$(PYTHON_LICENSE_TXT)" > LICENSE.txt
