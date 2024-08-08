@@ -739,7 +739,8 @@ endef
 
 define DJANGO_SEARCH_VIEWS
 from django.views.generic import ListView
-from django.db.models import Q
+from django.db import models
+from django.db.models import Q 
 from .forms import SearchForm
 from .utils import get_search_models
 
@@ -848,7 +849,7 @@ define DJANGO_SETTINGS_PROD
 from backend.utils import get_ec2_metadata
 
 LOCAL_IPV4 = get_ec2_metadata()
-ALLOWED_HOSTS.append(LOCAL_IPV4)
+ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
 endef
 
 define DJANGO_MANAGE_PY

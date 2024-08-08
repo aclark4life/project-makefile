@@ -7,6 +7,7 @@
 
 from PIL import Image, ImageDraw, ImageFont
 
+
 # create an image
 def create_image(filename):
     """
@@ -25,7 +26,7 @@ def create_image(filename):
 
     # get a font
     # fontsize = int(x/2)
-    fontsize = int(x/5)
+    fontsize = int(x / 5)
     # fontsize = int(x/6)
 
     fnt = ImageFont.truetype(filename, fontsize)
@@ -35,10 +36,10 @@ def create_image(filename):
 
     # draw multiline text
     # xoffset = (x/8) + (x/16)
-    xoffset = (x/16)
+    xoffset = x / 16
 
     # yoffset = y/8
-    yoffset = y/3
+    yoffset = y / 3
 
     # text black
     d.multiline_text((xoffset, yoffset), text, font=fnt, fill=(0, 0, 0))
@@ -51,7 +52,6 @@ def create_image(filename):
 
 
 if __name__ == "__main__":
-
     # files = [f for f in os.listdir(".") if f.endswith("ttf")]
     # for filename in files:
 
