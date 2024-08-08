@@ -974,7 +974,7 @@ endef
 
 define FRONTEND_APP_CONFIG
 import '../utils/themeToggler.js';
-import '../utils/tinymce.js';
+// import '../utils/tinymce.js';
 endef
 
 define FRONTEND_PORTAL
@@ -3281,7 +3281,7 @@ django-frontend-default: python-webpack-init
 	@echo "$$ESLINTRC" > frontend/.eslintrc
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
-	@echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
+	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
 	@$(MAKE) npm-install
