@@ -15,14 +15,16 @@ RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 
 PROJECT_EMAIL := aclark@aclark.net
-PROJECT_MAKEFILE := project.mk
 PROJECT_NAME = project-makefile
 PROJECT_DIRS = backend contactpage home privacy siteuser
 
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
+CUSTOM_MAKEFILE_NAME := project.mk
 
 WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
-WAGTAIL_CLEAN_FILES = README.rst .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml
+WAGTAIL_CLEAN_FILES = README.rst README.md .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js project.mk
+
+FRONTEND_FILES = home frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 
 REVIEW_EDITOR = subl
 
@@ -54,8 +56,8 @@ INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
 PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
 LB_TYPE ?= application
 
-ifneq ($(wildcard $(PROJECT_MAKEFILE)),)
-    include $(PROJECT_MAKEFILE)
+ifneq ($(wildcard $(CUSTOM_MAKEFILE_NAME)),)
+    include $(CUSTOM_MAKEFILE_NAME)
 endif
 
 PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
@@ -148,6 +150,17 @@ def get_ec2_metadata():
         print(f"Error retrieving EC2 metadata: {e}")
         return None
 
+endef
+
+define CUSTOM_MAKEFILE
+# Custom Makefile
+# Add your custom makefile commands here
+#
+# For example:
+#
+# You can define the project name and other variables
+#
+# PROJECT_NAME := my-new-project
 endef
 
 define DJANGO_URLS
@@ -2874,6 +2887,7 @@ export CONTACT_PAGE_TEST
 export CUSTOM_ADMIN
 export CUSTOM_ENV_EC2_USER
 export CUSTOM_ENV_VAR_FILE
+export CUSTOM_MAKEFILE
 export DJANGO_BASE_TEMPLATE
 export DJANGO_MANAGE_PY
 export DJANGO_SETTINGS_DEV
@@ -3137,61 +3151,64 @@ db-pg-init-test-default:
 db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
+django-backend-default:
+	django-admin startproject backend .
+	-$(GIT_ADD) backend
+
 django-backend-utils-default:
 	@echo "$$BACKEND_UTILS" > backend/utils.py
+	-$(GIT_ADD) backend/utils.py
 
 django-custom-admin-default:
 	@echo "$$CUSTOM_ADMIN" > backend/admin.py
 	@echo "$$BACKEND_APPS" > backend/apps.py
+	-$(GIT_ADD) backend/admin.py
+	-$(GIT_ADD) backend/apps.py
+
+django-dockerfile-default:
+	@echo "$$DOCKERFILE" > Dockerfile
+	-$(GIT_ADD) Dockerfile
+	@echo "$$DOCKERCOMPOSE" > docker-compose.yml
+	-$(GIT_ADD) docker-compose.yml
+
+django-html-offcanvas-default:
+	-$(ADD_DIR) backend/templates
+	@echo "$$DJANGO_HTML_OFFCANVAS" > backend/templates/offcanvas.html
+	-$(GIT_ADD) backend/templates/offcanvas.html
+
+django-manage-py-default:
+	@echo "$$DJANGO_MANAGE_PY" > manage.py
+	$(GIT_ADD) manage.py
 
 django-templates-default:
 	@$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
+	$(GIT_ADD) backend/templates/base.html
 
-django-init-default: db-init django-install
-	django-admin startproject backend .
+django-init-default: db-init django-install django-backend
+	@$(MAKE) custom-makefile
+	@$(MAKE) django-settings-dir
+	@$(MAKE) django-custom-admin
+	@$(MAKE) django-dockerfile
+	@$(MAKE) django-html-offcanvas
+	@$(MAKE) django-manage-py
 	@$(MAKE) django-templates
-	@echo "$$DJANGO_MANAGE_PY" > manage.py
-	@$(MAKE) django-settings-directory
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-home
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-search
 	@$(MAKE) django-urls
-	@$(MAKE) separator
-	@$(MAKE) freeze
-	@$(MAKE) django-common
-	@$(MAKE) separator
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-siteuser
-	@$(MAKE) separator
-	@$(MAKE) django-migrations
+	@$(MAKE) wagtail-backend-templates
+	@$(MAKE) gitignore
+	export SETTINGS=backend/settings/base.py; $(MAKE) django-home
+	export SETTINGS=backend/settings/base.py; $(MAKE) django-search
+	export \
+		DEV_SETTINGS=backend/settings/dev.py; \
+		SETTINGS=backend/settings/base.py \
+		$(MAKE) django-settings
+	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
+	@$(MAKE) pip-init-test
+	@$(MAKE) django-frontend
+	@$(MAKE) readme
 	@$(MAKE) django-migrate
 	@$(MAKE) su
-	@$(MAKE) django-frontend
-	@$(MAKE) separator
-	@$(MAKE) npm-install
-	@$(MAKE) django-npm-install-save
-	@$(MAKE) django-npm-install-save-dev
-	@$(MAKE) wagtail-backend-templates
-	@@echo "$$DJANGO_HTML_OFFCANVAS" > backend/templates/offcanvas.html
-	@$(MAKE) pip-init-test
-	@$(MAKE) separator
-	@$(MAKE) readme
-	@$(MAKE) gitignore
 	@$(MAKE) serve
-
-django-common-default:
-	@echo "$$DOCKERFILE" > Dockerfile
-	@echo "$$DOCKERCOMPOSE" > docker-compose.yml
-	export SETTINGS=backend/settings/base.py DEV_SETTINGS=backend/settings/dev.py; \
-		$(MAKE) django-settings
-	$(MAKE) django-custom-admin
-	-$(GIT_ADD) backend
-	-$(GIT_ADD) requirements.txt
-	-$(GIT_ADD) manage.py
-	-$(GIT_ADD) Dockerfile
-	-$(GIT_ADD) .dockerignore
 
 django-install-default: separator
 	$(ENSURE_PIP)
@@ -3265,17 +3282,10 @@ django-frontend-default: python-webpack-init
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	@echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
-	-$(GIT_ADD) home
-	-$(GIT_ADD) frontend
-	-$(GIT_ADD) .babelrc
-	-$(GIT_ADD) .browserslistrc
-	-$(GIT_ADD) .eslintrc
-	-$(GIT_ADD) .nvmrc
-	-$(GIT_ADD) .stylelintrc.json
-	-$(GIT_ADD) docker-compose.yml
-	-$(GIT_ADD) package-lock.json
-	-$(GIT_ADD) package.json
-	-$(GIT_ADD) postcss.config.js
+	@$(MAKE) django-npm-install-save
+	@$(MAKE) django-npm-install-save-dev
+	@$(MAKE) npm-install
+	-$(GIT_ADD) $(FRONTEND_FILES)
 
 django-home-default:
 	python manage.py startapp home
@@ -3283,8 +3293,9 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
-	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
 	-$(GIT_ADD) home
+	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
+	-$(GIT_ADD) $(SETTINGS)
 
 django-payments-default:
 	python manage.py startapp payments
@@ -3312,31 +3323,32 @@ django-search-default:
 	python manage.py startapp search
 	$(ADD_DIR) search/templates
 	@echo "$$DJANGO_SEARCH_FORMS" > search/forms.py
-	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(SETTINGS)
 	@echo "$$DJANGO_SEARCH_TEMPLATE" > search/templates/search.html
 	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
 	@echo "$$DJANGO_SEARCH_UTILS" > search/utils.py
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
 	-$(GIT_ADD) search
+	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(SETTINGS)
+	-$(GIT_ADD) $(SETTINGS)
 
 django-secret-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
 
 django-siteuser-default:
 	python manage.py startapp siteuser
+	$(ADD_DIR) siteuser/templates/
 	@echo "$$SITEUSER_FORM" > siteuser/forms.py
 	@echo "$$SITEUSER_MODEL" > siteuser/models.py
 	@echo "$$SITEUSER_ADMIN" > siteuser/admin.py
 	@echo "$$SITEUSER_VIEW" > siteuser/views.py
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
-	$(ADD_DIR) siteuser/templates/
-	$(ADD_DIR) siteuser/management/commands
 	@echo "$$SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
 	@echo "$$SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
 	@echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(SETTINGS)
+	-$(GIT_ADD) $(SETTINGS)
 	python manage.py makemigrations siteuser
-	-$(GIT_ADD) siteuser/
+	-$(GIT_ADD) siteuser
 
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
@@ -3383,14 +3395,16 @@ django-serve-default:
 	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
-django-settings-directory-default:
+django-settings-dir-default:
 	@$(ADD_DIR) backend/settings
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	@echo "import os" >> backend/settings/base.py
 	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
+	@echo "$$SETTINGS_THEMES" >> backend/settings/base.py
 	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
 	@echo "$$DJANGO_SETTINGS_PROD" >> backend/settings/production.py
+	-$(GIT_ADD) backend/settings/
 
 django-settings-default:
 	@echo "# $(PROJECT_NAME)" >> $(SETTINGS)
@@ -3430,6 +3444,7 @@ django-settings-default:
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(SETTINGS)
+	-$(GIT_ADD) $(DEV_SETTINGS)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
@@ -3457,6 +3472,7 @@ django-user-default:
 
 django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
+	-$(GIT_ADD) backend/urls.py
 
 django-npm-install-save-default:
 	npm install \
@@ -3486,7 +3502,7 @@ django-npm-install-save-default:
         react-swipeable \
         snakeize \
         striptags \
-        tinymce \
+        # tinymce \
         url-join \
         viewport-mercator-project
 
@@ -3658,9 +3674,9 @@ plone-serve-default:
 plone-build-default:
 	buildout
 
-project-mk-default:
-	touch project.mk
-	-$(GIT_ADD) project.mk
+custom-makefile-default:
+	@echo "$$CUSTOM_MAKEFILE" > $(CUSTOM_MAKEFILE_NAME)
+	-$(GIT_ADD) $(CUSTOM_MAKEFILE_NAME)
 
 programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > interview.py
@@ -3824,11 +3840,13 @@ wagtail-header-default:
 	@echo "$$HTML_HEADER" >> backend/templates/header.html
 
 wagtail-clean-default:
-	-@for dir in "$(WAGTAIL_CLEAN_DIRS)"; do \
-		$(DEL_DIR) $$dir; \
+	-@for dir in $(shell echo "$(WAGTAIL_CLEAN_DIRS)"); do \
+		echo "Cleaning $$dir"; \
+		$(DEL_DIR) $$dir >/dev/null 2>&1; \
 	done
-	-@for file in "$(WAGTAIL_CLEAN_FILES)"; do \
-		$(DEL_FILE) $$file; \
+	-@for file in $(shell echo "$(WAGTAIL_CLEAN_FILES)"); do \
+		echo "Cleaning $$file"; \
+		$(DEL_FILE) $$file >/dev/null 2>&1; \
 	done
 
 wagtail-homepage-default:
@@ -3855,7 +3873,7 @@ wagtail-start-default:
 wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
-wagtail-init-default: db-init django-install wagtail-install wagtail-start django-common
+wagtail-init-default: db-init django-install wagtail-install wagtail-start
 	export SETTINGS=backend/settings/base.py; \
         $(MAKE) wagtail-settings
 	export SETTINGS=backend/settings/base.py; \
@@ -3878,11 +3896,10 @@ wagtail-init-default: db-init django-install wagtail-install wagtail-start djang
 	export SETTINGS=backend/settings/base.py; \
 		$(MAKE) django-crispy
 	@$(MAKE) wagtail-base
-	@$(MAKE) wagtail-backend-templates
-	@$(MAKE) django-migrations
-	@$(MAKE) django-migrate
-	@$(MAKE) su
 	@$(MAKE) django-frontend
+	@$(MAKE) wagtail-backend-templates
+	# @$(MAKE) django-migrate
+	@$(MAKE) su
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
 	@$(MAKE) django-npm-install-save-dev
