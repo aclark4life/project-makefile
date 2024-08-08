@@ -823,7 +823,7 @@ define DJANGO_SEARCH_TEMPLATE
 endef
 
 define DJANGO_SETTINGS_DEV
-from .base import *
+from .base import *  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -3308,8 +3308,8 @@ django-payments-default:
 	$(ADD_DIR) payments/management/commands
 	@echo "$$PAYMENTS_VIEW_TEMPLATE" > payments/templates/payments.html
 	@echo "$$PAYMENTS_VIEW_TEMPLATE_SUCCESS" > payments/templates/payments_success.html
-	@echo "INSTALLED_APPS.append('payments')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('djstripe')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(SETTINGS)
 	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(SETTINGS)
 	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(SETTINGS)
 	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(SETTINGS)
@@ -3344,7 +3344,7 @@ django-siteuser-default:
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	@echo "$$SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
 	@echo "$$SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
-	@echo "INSTALLED_APPS.append('siteuser')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(SETTINGS)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(SETTINGS)
 	-$(GIT_ADD) $(SETTINGS)
 	python manage.py makemigrations siteuser
@@ -3379,7 +3379,7 @@ django-model-form-demo-default:
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
-	@echo "INSTALLED_APPS.append('model_form_demo')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(SETTINGS)
 	python manage.py makemigrations
 	-$(GIT_ADD) model_form_demo
 
@@ -3388,7 +3388,7 @@ django-logging-demo-default:
 	@echo "$$LOGGING_DEMO_VIEWS" > logging_demo/views.py
 	@echo "$$LOGGING_DEMO_URLS" > logging_demo/urls.py
 	@echo "$$LOGGING_DEMO_SETTINGS" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('logging_demo')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(SETTINGS)
 	-$(GIT_ADD) logging_demo
 
 django-serve-default:
@@ -3399,7 +3399,7 @@ django-settings-dir-default:
 	@$(ADD_DIR) backend/settings
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
-	@echo "import os" >> backend/settings/base.py
+	@echo "import os  # noqa" >> backend/settings/base.py
 	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
 	@echo "$$SETTINGS_THEMES" >> backend/settings/base.py
 	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
