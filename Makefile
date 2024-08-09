@@ -3179,12 +3179,12 @@ django-html-offcanvas-default:
 
 django-manage-py-default:
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
-	$(GIT_ADD) manage.py
+	-$(GIT_ADD) manage.py
 
 django-templates-default:
 	@$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
-	$(GIT_ADD) backend/templates/base.html
+	-$(GIT_ADD) backend/templates/base.html
 
 django-init-default: db-init django-install django-backend
 	@$(MAKE) custom-makefile
