@@ -3206,29 +3206,29 @@ django-footer-default:
 	@echo "$$DJANGO_FOOTER" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
 
-django-init-default: db-init django-install django-backend
-	@$(MAKE) custom-makefile
-	@$(MAKE) django-settings-dir
-	@$(MAKE) django-custom-admin
-	@$(MAKE) django-dockerfile
-	@$(MAKE) django-html-offcanvas
-	@$(MAKE) django-header
-	@$(MAKE) django-footer
-	@$(MAKE) django-manage-py
-	@$(MAKE) django-templates
-	@$(MAKE) django-urls
-	@$(MAKE) django-favicon
-	@$(MAKE) gitignore
-	@$(MAKE) django-home
-	@$(MAKE) django-search
-	@$(MAKE) django-settings
-	@$(MAKE) django-siteuser
-	@$(MAKE) pip-init-test
-	@$(MAKE) django-frontend
-	@$(MAKE) readme
-	@$(MAKE) django-migrate
-	@$(MAKE) su
-	@$(MAKE) serve
+django-init-default: db-init django-install pip-freeze django-backend \
+	custom-makefile \
+	django-settings-dir \
+	django-custom-admin \
+	django-dockerfile \
+	django-html-offcanvas \
+	django-header \
+	django-footer \
+	django-manage-py \
+	django-templates \
+	django-urls \
+	django-favicon \
+	gitignore \
+	django-home \
+	django-search \
+	django-settings \
+	django-siteuser \
+	pip-init-test \
+	django-frontend \
+	django-migrate \
+	readme \
+	su \
+	serve
 
 django-install-default: separator
 	$(ENSURE_PIP)
