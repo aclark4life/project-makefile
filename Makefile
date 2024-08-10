@@ -3314,13 +3314,13 @@ django-payments-default:
 	$(ADD_DIR) payments/management/commands
 	@echo "$$PAYMENTS_VIEW_TEMPLATE" > payments/templates/payments.html
 	@echo "$$PAYMENTS_VIEW_TEMPLATE_SUCCESS" > payments/templates/payments_success.html
-	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(SETTINGS)
-	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(SETTINGS)
-	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(SETTINGS)
-	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(SETTINGS)
-	@echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(SETTINGS)
-	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations payments
 	@echo "$$PAYMENTS_MIGRATION" > payments/migrations/0002_set_stripe_api_keys.py
 	-$(GIT_ADD) payments/
@@ -3453,8 +3453,8 @@ django-settings-default:
 	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_DEV)
 
 django-crispy-default:
-	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
-	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(SETTINGS)
+	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(DJANGO_SETTINGS_FILE_BASE)
 
 django-shell-default:
 	python manage.py shell
@@ -3819,14 +3819,14 @@ wagtail-search-default:
 	-$(GIT_ADD) search
 
 wagtail-settings-default:
-	@echo "INSTALLED_APPS.append('wagtailmenus')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('wagtailmarkdown')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('wagtail_modeladmin')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('wagtailseo')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('wagtail_color_panel')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(SETTINGS)
-	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(SETTINGS)
-	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('wagtailmenus')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('wagtailmarkdown')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('wagtail_modeladmin')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('wagtailseo')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('wagtail_color_panel')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(DJANGO_SETTINGS_FILE_BASE)
 
 
 wagtail-privacy-default:
@@ -3834,7 +3834,7 @@ wagtail-privacy-default:
 	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
 	$(ADD_DIR) privacy/templates
 	@echo "$$PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
-	@echo "INSTALLED_APPS.append('privacy')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('privacy')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations privacy
 	-$(GIT_ADD) privacy/
 
@@ -3950,7 +3950,7 @@ wagtail-contactpage-default:
 	$(ADD_DIR) contactpage/templates/contactpage/
 	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
 	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
-	@echo "INSTALLED_APPS.append('contactpage')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('contactpage')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations contactpage
 	-$(GIT_ADD) contactpage/
 
@@ -3959,7 +3959,7 @@ wagtail-sitepage-default:
 	@echo "$$SITEPAGE_MODEL" > sitepage/models.py
 	$(ADD_DIR) sitepage/templates/sitepage/
 	@echo "$$SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
-	@echo "INSTALLED_APPS.append('sitepage')" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('sitepage')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations sitepage
 	-$(GIT_ADD) sitepage/
 
