@@ -3225,7 +3225,7 @@ django-init-default: db-init django-install pip-freeze django-backend \
 	su \
 	serve
 
-django-install-default: pip-install
+django-install-default: separator
 	$(ENSURE_PIP)
 	python -m pip install \
 	Django \
@@ -3277,7 +3277,7 @@ django-install-default: pip-install
         python-webpack-boilerplate \
         python-docx \
         reportlab \
-        texttable \
+        texttable
 	freeze
 
 django-frontend-default: python-webpack-init
