@@ -3900,9 +3900,9 @@ wagtail-init-default: db-init django-install wagtail-install
 	wagtail-search \
 	wagtail-sitepage \
 	wagtail-urls \
-	wagtail-templates
-	# @$(MAKE) django-settings
-	# @$(MAKE) wagtail-settings
+	wagtail-templates \
+	django-settings \
+	wagtail-settings
 	# @$(MAKE) django-model-form-demo
 	# @$(MAKE) django-logging-demo
 	# @$(MAKE) django-payments
