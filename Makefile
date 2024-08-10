@@ -22,7 +22,7 @@ PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 CUSTOM_MAKEFILE_NAME := project.mk
 
 WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
-WAGTAIL_CLEAN_FILES = README.rst README.md .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js project.mk
+WAGTAIL_CLEAN_FILES = README.rst README.md .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 
 FRONTEND_FILES = home frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 
@@ -4023,7 +4023,7 @@ logs-default: eb-logs
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
-mk-default: project-mk
+mk-default: custom-makefile
 m-default: django-migrate
 o-default: open
 open-default: django-open
