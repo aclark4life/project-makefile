@@ -3278,6 +3278,7 @@ django-install-default: pip-install
         python-docx \
         reportlab \
         texttable \
+	freeze
 
 django-frontend-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
