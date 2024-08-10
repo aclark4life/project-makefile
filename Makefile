@@ -64,6 +64,11 @@ PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
 
 PAGER ?= less
 
+DJANGO_SETTINGS_DIR = backend/settings
+DJANGO_SETTINGS_FILE_BASE = $(DJANGO_SETTINGS_DIR)/base.py
+DJANGO_SETTINGS_FILE_DEV = $(DJANGO_SETTINGS_DIR)/dev.py
+DJANGO_SETTINGS_FILE_PROD = $(DJANGO_SETTINGS_DIR)/production.py
+
 # --------------------------------------------------------------------------------
 # Variables (no override)
 # --------------------------------------------------------------------------------
@@ -2893,6 +2898,9 @@ export DJANGO_BASE_TEMPLATE
 export DJANGO_MANAGE_PY
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_PROD
+export DJANGO_SETTINGS_FILE_BASE
+export DJANGO_SETTINGS_FILE_DEV
+export DJANGO_SETTINGS_FILE_PROD
 export DJANGO_URLS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
@@ -3197,13 +3205,10 @@ django-init-default: db-init django-install django-backend
 	@$(MAKE) django-urls
 	@$(MAKE) wagtail-backend-templates
 	@$(MAKE) gitignore
-	export SETTINGS=backend/settings/base.py; $(MAKE) django-home
-	export SETTINGS=backend/settings/base.py; $(MAKE) django-search
-	export \
-		DEV_SETTINGS=backend/settings/dev.py; \
-		SETTINGS=backend/settings/base.py \
-		$(MAKE) django-settings
-	export SETTINGS=backend/settings/base.py; $(MAKE) django-siteuser
+	@$(MAKE) django-home
+	@$(MAKE) django-search
+	@$(MAKE) django-settings
+	@$(MAKE) django-siteuser
 	@$(MAKE) pip-init-test
 	@$(MAKE) django-frontend
 	@$(MAKE) readme
@@ -3295,8 +3300,8 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
 	-$(GIT_ADD) home
-	@echo "INSTALLED_APPS.append('home')" >> $(SETTINGS)
-	-$(GIT_ADD) $(SETTINGS)
+	@echo "INSTALLED_APPS.append('home')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_BASE)
 
 django-payments-default:
 	python manage.py startapp payments
@@ -3329,8 +3334,8 @@ django-search-default:
 	@echo "$$DJANGO_SEARCH_UTILS" > search/utils.py
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
 	-$(GIT_ADD) search
-	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(SETTINGS)
-	-$(GIT_ADD) $(SETTINGS)
+	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(DJANGO_SETTINGS_FILE_BASE)
+	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_BASE)
 
 django-secret-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -3345,9 +3350,9 @@ django-siteuser-default:
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	@echo "$$SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
 	@echo "$$SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
-	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(SETTINGS)
-	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(SETTINGS)
-	-$(GIT_ADD) $(SETTINGS)
+	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations siteuser
 	-$(GIT_ADD) siteuser
 
@@ -3380,7 +3385,7 @@ django-model-form-demo-default:
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
-	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(SETTINGS)
+	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations
 	-$(GIT_ADD) model_form_demo
 
@@ -3388,8 +3393,8 @@ django-logging-demo-default:
 	python manage.py startapp logging_demo
 	@echo "$$LOGGING_DEMO_VIEWS" > logging_demo/views.py
 	@echo "$$LOGGING_DEMO_URLS" > logging_demo/urls.py
-	@echo "$$LOGGING_DEMO_SETTINGS" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(SETTINGS)
+	@echo "$$LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	-$(GIT_ADD) logging_demo
 
 django-serve-default:
@@ -3397,7 +3402,7 @@ django-serve-default:
 	python manage.py runserver 0.0.0.0:8000
 
 django-settings-dir-default:
-	@$(ADD_DIR) backend/settings
+	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	@echo "import os  # noqa" >> backend/settings/base.py
@@ -3408,44 +3413,44 @@ django-settings-dir-default:
 	-$(GIT_ADD) backend/settings/
 
 django-settings-default:
-	@echo "# $(PROJECT_NAME)" >> $(SETTINGS)
-	@echo "ALLOWED_HOSTS = ['*']" >> $(SETTINGS)
-	@echo "import dj_database_url  # noqa" >> $(SETTINGS)
-	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(SETTINGS)
-	@echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('rest_framework')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('allauth')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('allauth.account')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('django_extensions')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DEV_SETTINGS)
-	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(SETTINGS)
-	@echo "INSTALLED_APPS.append('explorer')" >> $(DEV_SETTINGS)
-	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DEV_SETTINGS)
-	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(SETTINGS)
-	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(SETTINGS)
-	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(SETTINGS)
-	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DEV_SETTINGS)
-	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DEV_SETTINGS)
-	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(SETTINGS)
-	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(SETTINGS)
-	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(SETTINGS)
-	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(SETTINGS)
-	@echo "$$REST_FRAMEWORK" >> $(SETTINGS)
-	@echo "$$SETTINGS_THEMES" >> $(SETTINGS)
-	@echo "$$INTERNAL_IPS" >> $(DEV_SETTINGS)
-	@echo "LOGIN_REDIRECT_URL = '/'" >> $(SETTINGS)
-	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(SETTINGS)
-	@echo "$$AUTHENTICATION_BACKENDS" >> $(SETTINGS)
-	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(SETTINGS)
-	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(SETTINGS)
-	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(SETTINGS)
-	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(SETTINGS)
-	-$(GIT_ADD) $(DEV_SETTINGS)
+	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "ALLOWED_HOSTS = ['*']" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('rest_framework')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('allauth')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('allauth.account')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('django_extensions')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('explorer')" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$REST_FRAMEWORK" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$SETTINGS_THEMES" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$INTERNAL_IPS" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "LOGIN_REDIRECT_URL = '/'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_FILE_BASE)
+	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_DEV)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(SETTINGS)
@@ -3876,30 +3881,22 @@ wagtail-urls-default:
 
 wagtail-init-default: db-init django-install wagtail-install wagtail-start
 	export SETTINGS=backend/settings/base.py; \
-        $(MAKE) wagtail-settings
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-model-form-demo
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-logging-demo
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-payments
+        @$(MAKE) wagtail-settings
+	@$(MAKE) django-model-form-demo
+	@$(MAKE) django-logging-demo
+	@$(MAKE) django-payments
 	@$(MAKE) wagtail-urls
 	@$(MAKE) wagtail-homepage
 	@$(MAKE) wagtail-search
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-siteuser
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) wagtail-privacy
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) wagtail-contactpage
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) wagtail-sitepage
-	export SETTINGS=backend/settings/base.py; \
-		$(MAKE) django-crispy
+	@$(MAKE) django-siteuser
+	@$(MAKE) wagtail-privacy
+	@$(MAKE) wagtail-contactpage
+	@$(MAKE) wagtail-sitepage
+	@$(MAKE) django-crispy
 	@$(MAKE) wagtail-base
 	@$(MAKE) django-frontend
 	@$(MAKE) wagtail-backend-templates
-	# @$(MAKE) django-migrate
+	@$(MAKE) django-migrate
 	@$(MAKE) su
 	@$(MAKE) npm-install
 	@$(MAKE) django-npm-install-save
