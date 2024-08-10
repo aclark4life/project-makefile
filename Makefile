@@ -3225,9 +3225,10 @@ django-init-default: db-init django-install pip-freeze django-backend \
 	su \
 	serve
 
-django-install-default: separator
+django-install-default: pip-install
 	$(ENSURE_PIP)
 	python -m pip install \
+	Django \
         Faker \
         boto3 \
         crispy-bootstrap5 \
