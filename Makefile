@@ -3904,7 +3904,8 @@ wagtail-init-default: db-init django-install wagtail-install
 	wagtail-urls \
 	wagtail-templates \
 	django-settings \
-	wagtail-settings 
+	wagtail-settings \
+	gitignore 
 	git status
 	# @$(MAKE) django-model-form-demo
 	# @$(MAKE) django-logging-demo
@@ -3919,7 +3920,6 @@ wagtail-init-default: db-init django-install wagtail-install
 	# @$(MAKE) django-npm-install-save-dev
 	# @$(MAKE) pip-init-test
 	# @$(MAKE) readme
-	# @$(MAKE) gitignore
 	# @$(MAKE) freeze
 	# @$(MAKE) serve
 
