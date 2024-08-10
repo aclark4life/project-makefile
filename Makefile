@@ -1165,6 +1165,8 @@ dist/
 node_modules/
 _build/
 .elasticbeanstalk/
+db.sqlite3
+home/static
 endef
 
 define HTML_INDEX
@@ -3892,6 +3894,9 @@ wagtail-templates-default:
 
 wagtail-start-default:
 	wagtail start backend .
+	-$(GIT_ADD) backend/
+	-$(GIT_ADD) .dockerignore
+	-$(GIT_ADD) Dockerfile
 
 wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
