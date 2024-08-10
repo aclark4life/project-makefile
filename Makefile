@@ -3203,7 +3203,6 @@ django-footer-default:
 	-$(GIT_ADD) backend/templates/footer.html
 
 django-init-default: db-init django-install pip-freeze django-backend \
-	custom-makefile \
 	django-settings-dir \
 	django-custom-admin \
 	django-dockerfile \
