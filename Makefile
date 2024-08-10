@@ -129,91 +129,6 @@ class CustomAdminConfig(AdminConfig):
     default_site = "backend.admin.CustomAdminSite"
 endef
 
-define BACKEND_UTILS
-import requests
-
-
-def get_ec2_metadata():
-    try:
-        # Step 1: Get the token
-        token_url = "http://169.254.169.254/latest/api/token"
-        headers = {"X-aws-ec2-metadata-token-ttl-seconds": "21600"}
-        response = requests.put(token_url, headers=headers)
-        response.raise_for_status()  # Raise an error for bad responses
-
-        token = response.text
-
-        # Step 2: Use the token to get the instance metadata
-        metadata_url = "http://169.254.169.254/latest/meta-data/local-ipv4"
-        headers = {"X-aws-ec2-metadata-token": token}
-        response = requests.get(metadata_url, headers=headers)
-        response.raise_for_status()  # Raise an error for bad responses
-
-        metadata = response.text
-        return metadata
-    except requests.RequestException as e:
-        print(f"Error retrieving EC2 metadata: {e}")
-        return None
-
-endef
-
-define CUSTOM_MAKEFILE
-# Custom Makefile
-# Add your custom makefile commands here
-#
-# PROJECT_NAME := my-new-project
-endef
-
-define DJANGO_URLS
-from django.conf import settings
-from django.urls import include, path
-from django.contrib import admin
-from rest_framework import routers, serializers, viewsets
-from dj_rest_auth.registration.views import RegisterView
-from siteuser.models import User
-urlpatterns = []
-if settings.DEBUG:
-	urlpatterns += [
-		path("django/doc/", include("django.contrib.admindocs.urls")),
-	]
-urlpatterns += [
-    path('accounts/', include('allauth.urls')),
-    path('django/', admin.site.urls),
-    path('user/', include('siteuser.urls')),
-    path('explorer/', include('explorer.urls')),
-    path('hijack/', include('hijack.urls')),
-    path('search/', include('search.urls')),
-    path('', include('home.urls')),
-]
-if settings.DEBUG:
-    from django.conf.urls.static import static
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-    # Serve static and media files from development server
-    urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    import debug_toolbar
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
-# https://www.django-rest-framework.org/#example
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'is_staff']
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-urlpatterns += [
-    path("api/", include(router.urls)),
-    path("api/", include("rest_framework.urls", namespace="rest_framework")),
-    path("api/", include("dj_rest_auth.urls")),
-    # path("api/register/", RegisterView.as_view(), name="register"),
-]
-endef
-
 define BLOCK_CAROUSEL
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
@@ -579,6 +494,13 @@ EOF
 rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
+define CUSTOM_MAKEFILE
+# Custom Makefile
+# Add your custom makefile commands here
+#
+# PROJECT_NAME := my-new-project
+endef
+
 define DJANGO_HOME_PAGE_VIEWS
 from django.views.generic import TemplateView
 
@@ -876,6 +798,50 @@ def main():
 
 if __name__ == "__main__":
     main()
+endef
+
+define DJANGO_URLS
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+
+urlpatterns = [
+    path("django/", admin.site.urls),
+]
+endef
+
+define DJANGO_UTILS
+from django.urls import URLResolver
+import requests
+
+
+def get_ec2_metadata():
+    try:
+        # Step 1: Get the token
+        token_url = "http://169.254.169.254/latest/api/token"
+        headers = {"X-aws-ec2-metadata-token-ttl-seconds": "21600"}
+        response = requests.put(token_url, headers=headers)
+        response.raise_for_status()  # Raise an error for bad responses
+
+        token = response.text
+
+        # Step 2: Use the token to get the instance metadata
+        metadata_url = "http://169.254.169.254/latest/meta-data/local-ipv4"
+        headers = {"X-aws-ec2-metadata-token": token}
+        response = requests.get(metadata_url, headers=headers)
+        response.raise_for_status()  # Raise an error for bad responses
+
+        metadata = response.text
+        return metadata
+    except requests.RequestException as e:
+        print(f"Error retrieving EC2 metadata: {e}")
+        return None
+
+# Function to remove a specific URL pattern based on its route (including catch-all)
+def remove_urlpattern(urlpatterns, route_to_remove):
+    urlpatterns[:] = [urlpattern for urlpattern in urlpatterns if not (
+        isinstance(urlpattern, URLResolver) and urlpattern.pattern._route == route_to_remove
+    )]
 endef
 
 define DOCKERFILE
@@ -1228,7 +1194,7 @@ define DJANGO_HEADER
                         </span>
                     </li>
                     <li class="nav-item">
-                        <form class="form" action="{% url 'search' %}">
+                        <form class="form" action="/search">
                             <div class="row">
                                 <div class="col-8">
                                     <input class="form-control"
@@ -2289,86 +2255,25 @@ from django.urls import include, path
 from django.contrib import admin
 
 from wagtail.admin import urls as wagtailadmin_urls
-from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from rest_framework import routers, serializers, viewsets
-from dj_rest_auth.registration.views import RegisterView
+from search import views as search_views
 
-from siteuser.models import User
-
-urlpatterns = []
-
-if settings.DEBUG:
-	urlpatterns += [
-		path("django/doc/", include("django.contrib.admindocs.urls")),
-	]
-
-urlpatterns += [
-    path('accounts/', include('allauth.urls')),
-    path('django/', admin.site.urls),
-    path('wagtail/', include(wagtailadmin_urls)),
-    path('user/', include('siteuser.urls')),
-    path('search/', include('search.urls')),
-    path('model-form-demo/', include('model_form_demo.urls')),
-    path('explorer/', include('explorer.urls')),
-    path('logging-demo/', include('logging_demo.urls')),
-    path('payments/', include('payments.urls')),
+urlpatterns = [
+    path("django/", admin.site.urls),
+    path("wagtail/", include(wagtailadmin_urls)),
+    path("documents/", include(wagtaildocs_urls)),
+    path("search/", search_views.search, name="search"),
 ]
 
 if settings.DEBUG:
-
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
     # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-    import debug_toolbar
-    urlpatterns += [
-        path("__debug__/", include(debug_toolbar.urls)),
-    ]
-
-
-# https://www.django-rest-framework.org/#example
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'is_staff']
-
-class UserViewSet(viewsets.ModelViewSet):
-
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-
-urlpatterns += [
-    path("api/", include(router.urls)),
-    path("api/", include("rest_framework.urls", namespace="rest_framework")),
-    path("api/", include("dj_rest_auth.urls")),
-    # path("api/register/", RegisterView.as_view(), name="register"),
-]
-
-urlpatterns += [
-    path("hijack/", include("hijack.urls")),
-]
-
-urlpatterns += [
-    # For anything not caught by a more specific rule above, hand over to
-    # Wagtail's page serving mechanism. This should be the last pattern in
-    # the list:
-    path("", include(wagtail_urls)),
-
-    # Alternatively, if you want Wagtail pages to be served from a subpath
-    # of your site, rather than the site root:
-    #    path("pages/", include(wagtail_urls)),
-]
 endef
-
 
 define SETTINGS_THEMES
 THEMES = [
@@ -2618,7 +2523,7 @@ define WAGTAIL_HTML_FOOTER
 {% load wagtailcore_tags %}
 endef 
 
-define WAGTAIL_HEADER
+define WAGTAIL_HEADER_PREFIX
 {% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
 endef 
@@ -2900,6 +2805,7 @@ export DJANGO_SETTINGS_FILE_BASE
 export DJANGO_SETTINGS_FILE_DEV
 export DJANGO_SETTINGS_FILE_PROD
 export DJANGO_URLS
+export DJANGO_UTILS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
 export DJANGO_HOME_PAGE_TEMPLATE
@@ -2977,7 +2883,7 @@ export WAGTAIL_HOME_PAGE_MODEL
 export WAGTAIL_HOME_PAGE_TEMPLATE
 export WAGTAIL_HOME_PAGE_VIEWS
 export WAGTAIL_HOME_PAGE_URLS
-export WAGTAIL_HEADER
+export WAGTAIL_HTML_PREFIX
 export WAGTAIL_HTML_OFFCANVAS
 export WAGTAIL_URLS
 export WEBPACK_CONFIG_JS
@@ -3158,12 +3064,20 @@ db-pg-init-test-default:
 db-pg-import-default:
 	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
 
-django-backend-default:
+django-allauth-template-default:
+	$(ADD_DIR) backend/templates/allauth/layouts
+	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
+	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
+
+django-allauth-default:
+	@echo "urlpatterns += [path('accounts/', include('allauth.urls'))]" >> backend/urls.py
+
+django-project-default:
 	django-admin startproject backend .
 	-$(GIT_ADD) backend
 
-django-backend-utils-default:
-	@echo "$$BACKEND_UTILS" > backend/utils.py
+django-utils-default:
+	@echo "$$DJANGO_UTILS" > backend/utils.py
 	-$(GIT_ADD) backend/utils.py
 
 django-custom-admin-default:
@@ -3178,7 +3092,7 @@ django-dockerfile-default:
 	@echo "$$DOCKERCOMPOSE" > docker-compose.yml
 	-$(GIT_ADD) docker-compose.yml
 
-django-html-offcanvas-default:
+django-offcanvas-template-default:
 	-$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_HTML_OFFCANVAS" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/offcanvas.html
@@ -3187,7 +3101,7 @@ django-manage-py-default:
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	-$(GIT_ADD) manage.py
 
-django-templates-default:
+django-base-template-default:
 	@$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	-$(GIT_ADD) backend/templates/base.html
@@ -3196,31 +3110,37 @@ django-favicon-default:
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
 	-$(GIT_ADD) backend/templates/favicon.html
 
-django-header-default:
+django-header-template-default:
 	@echo "$$DJANGO_HEADER" > backend/templates/header.html
 	-$(GIT_ADD) backend/templates/header.html
 
-django-footer-default:
+django-footer-template-default:
 	@echo "$$DJANGO_FOOTER" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
 
-django-init-default: db-init django-install pip-freeze django-backend \
+django-init-default: separator \
+	db-init \
+	django-install \
+	django-project \
+	django-utils \
+	pip-freeze \
 	django-settings-dir \
 	django-custom-admin \
 	django-dockerfile \
-	django-html-offcanvas \
-	django-allauth-templates \
-	django-header \
-	django-footer \
+	django-offcanvas-template \
+	django-header-template \
+	django-footer-template \
+	django-base-template \
 	django-manage-py \
-	django-templates \
 	django-urls \
+	django-urls-debug \
+	django-allauth \
+	django-allauth-template \
 	django-favicon \
 	gitignore \
-	django-home \
-	django-search \
 	django-settings \
 	django-siteuser \
+	django-home \
 	django-frontend \
 	django-migrate \
 	pip-init-test \
@@ -3228,7 +3148,43 @@ django-init-default: db-init django-install pip-freeze django-backend \
 	su \
 	serve
 
-django-install-default: separator
+django-wagtail-init-default: separator \
+	db-init \
+	django-install \
+	wagtail-install \
+	wagtail-project \
+	django-utils \
+	pip-freeze \
+        django-custom-admin \
+        django-dockerfile \
+	django-offcanvas-template \
+	wagtail-header-prefix-template \
+	django-header-template \
+	wagtail-base-template \
+	django-footer-template \
+	django-manage-py \
+	wagtail-home \
+	wagtail-urls \
+	django-urls-debug \
+	django-allauth \
+	django-allauth-template \
+	django-favicon \
+	gitignore \
+	wagtail-search \
+	django-settings \
+	wagtail-settings \
+	django-siteuser \
+	django-modelform-demo \
+	django-logging-demo \
+	wagtail-urls-home \
+	django-frontend \
+	django-migrate \
+	pip-init-test \
+	readme \
+	su \
+	serve
+
+django-install-default:
 	$(ENSURE_PIP)
 	python -m pip install \
 	Django \
@@ -3301,8 +3257,8 @@ django-frontend-default: python-webpack-init
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
-	@$(MAKE) django-npm-install-save
-	@$(MAKE) django-npm-install-save-dev
+	@$(MAKE) django-npm-save
+	@$(MAKE) django-npm-save-dev
 	@$(MAKE) npm-install
 	-$(GIT_ADD) $(FRONTEND_FILES)
 
@@ -3312,11 +3268,12 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
-	-$(GIT_ADD) home
-	@echo "INSTALLED_APPS.append('home')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('home')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "urlpatterns += [path('', include('home.urls'))]" >> backend/urls.py
+	-$(GIT_ADD) home/templates
+	-$(GIT_ADD) home/*.py
 
-django-payments-default:
+django-payments-demo-default:
 	python manage.py startapp payments
 	@echo "$$PAYMENTS_FORM" > payments/forms.py
 	@echo "$$PAYMENTS_MODEL" > payments/models.py
@@ -3327,13 +3284,13 @@ django-payments-default:
 	$(ADD_DIR) payments/management/commands
 	@echo "$$PAYMENTS_VIEW_TEMPLATE" > payments/templates/payments.html
 	@echo "$$PAYMENTS_VIEW_TEMPLATE_SUCCESS" > payments/templates/payments_success.html
-	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "urlpatterns += [path('payments/', include('payments.urls'))]" >> backend/urls.py
 	python manage.py makemigrations payments
 	@echo "$$PAYMENTS_MIGRATION" > payments/migrations/0002_set_stripe_api_keys.py
 	-$(GIT_ADD) payments/
@@ -3341,14 +3298,16 @@ django-payments-default:
 django-search-default:
 	python manage.py startapp search
 	$(ADD_DIR) search/templates
-	@echo "$$DJANGO_SEARCH_FORMS" > search/forms.py
 	@echo "$$DJANGO_SEARCH_TEMPLATE" > search/templates/search.html
+	@echo "$$DJANGO_SEARCH_FORMS" > search/forms.py
 	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
 	@echo "$$DJANGO_SEARCH_UTILS" > search/utils.py
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
-	-$(GIT_ADD) search
 	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(DJANGO_SETTINGS_FILE_BASE)
-	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('search')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "urlpatterns += [path('search/', include('search.urls'))]" >> backend/urls.py
+	-$(GIT_ADD) search/templates
+	-$(GIT_ADD) search/*.py
 
 django-secret-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
@@ -3364,10 +3323,11 @@ django-siteuser-default:
 	@echo "$$SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
 	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/user.html
 	@echo "$$SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
-	-$(GIT_ADD) siteuser/templates
-	-$(GIT_ADD) siteuser/*.py
 	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "urlpatterns += [path('user/', include('siteuser.urls'))]" >> backend/urls.py
+	-$(GIT_ADD) siteuser/templates
+	-$(GIT_ADD) siteuser/*.py
 	python manage.py makemigrations siteuser
 	-$(GIT_ADD) siteuser/migrations/*.py
 
@@ -3389,7 +3349,7 @@ django-migrations-default:
 django-migrations-show-default:
 	python manage.py showmigrations
 
-django-model-form-demo-default:
+django-modelform-demo-default:
 	python manage.py startapp model_form_demo
 	@echo "$$MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
 	@echo "$$MODEL_FORM_DEMO_FORMS" > model_form_demo/forms.py
@@ -3401,8 +3361,11 @@ django-model-form-demo-default:
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
 	@echo "$$MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
 	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "urlpatterns += [path('model-form-demo/', include('model_form_demo.urls'))]" >> backend/urls.py
 	python manage.py makemigrations
-	-$(GIT_ADD) model_form_demo
+	-$(GIT_ADD) model_form_demo/*.py
+	-$(GIT_ADD) model_form_demo/templates
+	-$(GIT_ADD) model_form_demo/migrations
 
 django-logging-demo-default:
 	python manage.py startapp logging_demo
@@ -3410,7 +3373,8 @@ django-logging-demo-default:
 	@echo "$$LOGGING_DEMO_URLS" > logging_demo/urls.py
 	@echo "$$LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
-	-$(GIT_ADD) logging_demo
+	@echo "urlpatterns += [path('logging-demo/', include('logging_demo.urls'))]" >> backend/urls.py
+	-$(GIT_ADD) logging_demo/*.py
 
 django-serve-default:
 	npm run watch &
@@ -3465,7 +3429,6 @@ django-settings-default:
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_FILE_BASE)
-	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_DEV)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_FILE_BASE)
@@ -3495,14 +3458,17 @@ django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
 	-$(GIT_ADD) backend/urls.py
 
-django-npm-install-save-default:
+django-urls-debug-default:
+	@echo "if settings.DEBUG: urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]" >> backend/urls.py
+
+django-npm-save-default:
 	npm install \
         @fortawesome/fontawesome-free \
         @fortawesome/fontawesome-svg-core \
         @fortawesome/free-brands-svg-icons \
         @fortawesome/free-solid-svg-icons \
         @fortawesome/react-fontawesome \
-		bootstrap \
+        	bootstrap \
         camelize \
         date-fns \
         history \
@@ -3523,11 +3489,10 @@ django-npm-install-save-default:
         react-swipeable \
         snakeize \
         striptags \
-        # tinymce \
         url-join \
         viewport-mercator-project
 
-django-npm-install-save-dev-default:
+django-npm-save-dev-default:
 	npm install \
         eslint-plugin-react \
         eslint-config-standard \
@@ -3575,7 +3540,8 @@ git-commit-default:
 	-@$(GIT_COMMIT)
 
 git-commit-last-default:
-	git commit -a -m "$(shell git log -1 --pretty=%B)"
+	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
+	git commit -a -F $(TMPDIR)/commit.txt
 	@$(GIT_PUSH)
 
 git-commit-empty-default:
@@ -3756,16 +3722,16 @@ reveal-build-default:
 
 reveal-init-default: webpack-reveal-init
 	npm install \
-       css-loader \
-       mini-css-extract-plugin \
-       reveal.js \
-       style-loader
+	css-loader \
+	mini-css-extract-plugin \
+	reveal.js \
+	style-loader
 	jq '.scripts += {"build": "webpack"}' package.json > \
-        $(TMPDIR)/tmp.json && mv $(TMPDIR)/tmp.json package.json
+	$(TMPDIR)/tmp.json && mv $(TMPDIR)/tmp.json package.json
 	jq '.scripts += {"start": "webpack serve --mode development --port 8000 --static"}' package.json > \
-        $(TMPDIR)/tmp.json && mv $(TMPDIR)/tmp.json package.json
+	$(TMPDIR)/tmp.json && mv $(TMPDIR)/tmp.json package.json
 	jq '.scripts += {"watch": "webpack watch --mode development"}' package.json > \
-        $(TMPDIR)/tmp.json && mv $(TMPDIR)/tmp.json package.json
+	$(TMPDIR)/tmp.json && mv $(TMPDIR)/tmp.json package.json
 
 reveal-serve-default:
 	npm run watch &
@@ -3831,7 +3797,8 @@ usage-default:
 wagtail-search-default:
 	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
 	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
-	-$(GIT_ADD) search
+	-$(GIT_ADD) search/templates
+	-$(GIT_ADD) search/*.py
 
 wagtail-settings-default:
 	@echo "INSTALLED_APPS.append('wagtailmenus')" >> $(DJANGO_SETTINGS_FILE_BASE)
@@ -3855,12 +3822,11 @@ wagtail-privacy-default:
 	-$(GIT_ADD) privacy/*.py
 	-$(GIT_ADD) privacy/migrations/*.py
 
-wagtail-base-default:
+wagtail-base-template-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 
-wagtail-header-default:
-	@echo "$$WAGTAIL_HEADER" > backend/templates/header.html
-	@echo "$$DJANGO_HEADER" >> backend/templates/header.html
+wagtail-header-prefix-template-default:
+	@echo "$$WAGTAIL_HEADER_PREFIX" > backend/templates/header.html
 
 wagtail-clean-default:
 	-@for dir in $(shell echo "$(WAGTAIL_CLEAN_DIRS)"); do \
@@ -3872,7 +3838,7 @@ wagtail-clean-default:
 		$(DEL_FILE) $$file >/dev/null 2>&1; \
 	done
 
-wagtail-homepage-default:
+wagtail-home-default:
 	@echo "$$WAGTAIL_HOME_PAGE_MODEL" > home/models.py
 	@echo "$$WAGTAIL_HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	$(ADD_DIR) home/templates/blocks
@@ -3880,55 +3846,27 @@ wagtail-homepage-default:
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	-$(GIT_ADD) home/templates
 	-$(GIT_ADD) home/*.py
+	python manage.py makemigrations home
 	-$(GIT_ADD) home/migrations/*.py
-
-django-allauth-templates-default:
-	$(ADD_DIR) backend/templates/allauth/layouts
-	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
-	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
 wagtail-templates-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$WAGTAIL_HTML_OFFCANVAS" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/
 
-wagtail-start-default:
+wagtail-project-default:
 	wagtail start backend .
 	-$(GIT_ADD) backend/
 	-$(GIT_ADD) .dockerignore
 	-$(GIT_ADD) Dockerfile
+	-$(GIT_ADD) manage.py
+	-$(GIT_ADD) requirements.txt
 
 wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
-wagtail-init-default: db-init django-install wagtail-install
-	$(MAKE) wagtail-start \
-	wagtail-contactpage \
-	wagtail-homepage \
-	wagtail-privacy \
-	wagtail-search \
-	wagtail-sitepage \
-	wagtail-urls \
-	wagtail-templates \
-	django-settings \
-	wagtail-settings \
-	gitignore 
-	git status
-	# @$(MAKE) django-model-form-demo
-	# @$(MAKE) django-logging-demo
-	# @$(MAKE) django-payments
-	# @$(MAKE) django-siteuser
-	# @$(MAKE) django-crispy
-	# @$(MAKE) django-frontend
-	# @$(MAKE) django-migrate
-	# @$(MAKE) su
-	# @$(MAKE) npm-install
-	# @$(MAKE) django-npm-install-save
-	# @$(MAKE) django-npm-install-save-dev
-	# @$(MAKE) pip-init-test
-	# @$(MAKE) readme
-	# @$(MAKE) freeze
-	# @$(MAKE) serve
+wagtail-urls-home-default:
+	@echo "urlpatterns += [path('', include('wagtail.urls'))]" >> backend/urls.py
 
 wagtail-install-default:
 	$(ENSURE_PIP)
@@ -3938,7 +3876,7 @@ wagtail-install-default:
         wagtail-color-panel \
         wagtail-django-recaptcha \
         wagtail-markdown \
-        wagtail_modeladmin \
+        wagtail-modeladmin \
         wagtail-seo \
         weasyprint \
         whitenoise \
@@ -3986,7 +3924,9 @@ wagtail-sitepage-default:
 	@echo "$$SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
 	@echo "INSTALLED_APPS.append('sitepage')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations sitepage
-	-$(GIT_ADD) sitepage/
+	-$(GIT_ADD) sitepage/templates
+	-$(GIT_ADD) sitepage/*.py
+	-$(GIT_ADD) sitepage/migrations/*.py
 
 # ------------------------------------------------------------------------------  
 # More rules
@@ -4027,7 +3967,7 @@ last-default: git-commit-last
 license-default: python-license
 error-default: html-error
 eb-up-default: eb-upgrade
-init-default: wagtail-init
+init-default: django-wagtail-init
 install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
@@ -4061,6 +4001,7 @@ test-default: django-test
 u-default: usage
 up-default: eb-upgrade
 urls-default: django-show-urls
+wagtail-init-default: django-wagtail-init
 webpack-default: webpack-init
 
 # --------------------------------------------------------------------------------
