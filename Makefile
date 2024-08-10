@@ -3207,6 +3207,7 @@ django-init-default: db-init django-install pip-freeze django-backend \
 	django-custom-admin \
 	django-dockerfile \
 	django-html-offcanvas \
+	django-allauth-templates \
 	django-header \
 	django-footer \
 	django-manage-py \
@@ -3875,13 +3876,13 @@ wagtail-homepage-default:
 	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	-$(GIT_ADD) home
 
-wagtail-backend-templates-default:
+django-allauth-templates-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
-	# @echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
-	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
-	@echo "$$DJANGO_HEADER" >> backend/templates/header.html
-	@echo "$$DJANGO_FOOTER" >> backend/templates/footer.html
+	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
+
+wagtail-templates-default:
+	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$WAGTAIL_HTML_OFFCANVAS" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/
 
@@ -3891,33 +3892,33 @@ wagtail-start-default:
 wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
-wagtail-init-default: db-init django-install wagtail-install wagtail-start
-	@$(MAKE) django-settings
-	@$(MAKE) wagtail-settings
-	@$(MAKE) django-model-form-demo
-	@$(MAKE) django-logging-demo
-	@$(MAKE) django-payments
-	@$(MAKE) wagtail-urls
-	@$(MAKE) wagtail-homepage
-	@$(MAKE) wagtail-search
-	@$(MAKE) django-siteuser
-	@$(MAKE) wagtail-privacy
-	@$(MAKE) wagtail-contactpage
-	@$(MAKE) wagtail-sitepage
-	@$(MAKE) django-crispy
-	@$(MAKE) wagtail-base
-	@$(MAKE) django-frontend
-	@$(MAKE) wagtail-backend-templates
-	@$(MAKE) django-migrate
-	@$(MAKE) su
-	@$(MAKE) npm-install
-	@$(MAKE) django-npm-install-save
-	@$(MAKE) django-npm-install-save-dev
-	@$(MAKE) pip-init-test
-	@$(MAKE) readme
-	@$(MAKE) gitignore
-	@$(MAKE) freeze
-	@$(MAKE) serve
+wagtail-init-default: db-init django-install wagtail-install
+	$(MAKE) wagtail-start \
+	wagtail-contactpage \
+	wagtail-homepage \
+	wagtail-privacy \
+	wagtail-search \
+	wagtail-sitepage \
+	wagtail-urls \
+	wagtail-templates
+	# @$(MAKE) django-settings
+	# @$(MAKE) wagtail-settings
+	# @$(MAKE) django-model-form-demo
+	# @$(MAKE) django-logging-demo
+	# @$(MAKE) django-payments
+	# @$(MAKE) django-siteuser
+	# @$(MAKE) django-crispy
+	# @$(MAKE) django-frontend
+	# @$(MAKE) django-migrate
+	# @$(MAKE) su
+	# @$(MAKE) npm-install
+	# @$(MAKE) django-npm-install-save
+	# @$(MAKE) django-npm-install-save-dev
+	# @$(MAKE) pip-init-test
+	# @$(MAKE) readme
+	# @$(MAKE) gitignore
+	# @$(MAKE) freeze
+	# @$(MAKE) serve
 
 wagtail-install-default:
 	$(ENSURE_PIP)
