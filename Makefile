@@ -3902,7 +3902,8 @@ wagtail-init-default: db-init django-install wagtail-install
 	wagtail-urls \
 	wagtail-templates \
 	django-settings \
-	wagtail-settings
+	wagtail-settings 
+	git status
 	# @$(MAKE) django-model-form-demo
 	# @$(MAKE) django-logging-demo
 	# @$(MAKE) django-payments
@@ -3965,7 +3966,9 @@ wagtail-contactpage-default:
 	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations contactpage
-	-$(GIT_ADD) contactpage/
+	-$(GIT_ADD) contactpage/templates
+	-$(GIT_ADD) contactpage/*.py
+	-$(GIT_ADD) contactpage/migrations/*.py
 
 wagtail-sitepage-default:
 	python manage.py startapp sitepage
