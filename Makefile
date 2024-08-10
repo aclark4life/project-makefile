@@ -1179,7 +1179,7 @@ define HTML_ERROR
 <h1>500</h1>
 endef
 
-define HTML_FOOTER
+define DJANGO_FOOTER
   <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
     <ul class="list-inline">
@@ -1191,7 +1191,7 @@ define HTML_FOOTER
   </footer>
 endef
 
-define HTML_HEADER
+define DJANGO_HEADER
 <div class="app-header">
     <div class="container py-4 app-navbar">
         <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
@@ -2620,7 +2620,7 @@ define WAGTAIL_HTML_FOOTER
 {% load wagtailcore_tags %}
 endef 
 
-define WAGTAIL_HTML_HEADER
+define WAGTAIL_HEADER
 {% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
 endef 
@@ -2924,8 +2924,8 @@ export FRONTEND_STYLES
 export GIT_IGNORE
 export HTML_ERROR
 export HTML_INDEX
-export HTML_FOOTER
-export HTML_HEADER
+export DJANGO_FOOTER
+export DJANGO_HEADER
 export INTERNAL_IPS
 export JENKINS_FILE
 export LOGGING_DEMO_VIEWS
@@ -2979,7 +2979,7 @@ export WAGTAIL_HOME_PAGE_MODEL
 export WAGTAIL_HOME_PAGE_TEMPLATE
 export WAGTAIL_HOME_PAGE_VIEWS
 export WAGTAIL_HOME_PAGE_URLS
-export WAGTAIL_HTML_HEADER
+export WAGTAIL_HEADER
 export WAGTAIL_HTML_OFFCANVAS
 export WAGTAIL_URLS
 export WEBPACK_CONFIG_JS
@@ -3194,16 +3194,30 @@ django-templates-default:
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	-$(GIT_ADD) backend/templates/base.html
 
+django-favicon-default:
+	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
+	-$(GIT_ADD) backend/templates/favicon.html
+
+django-header-default:
+	@echo "$$DJANGO_HEADER" > backend/templates/header.html
+	-$(GIT_ADD) backend/templates/header.html
+
+django-footer-default:
+	@echo "$$DJANGO_FOOTER" > backend/templates/footer.html
+	-$(GIT_ADD) backend/templates/footer.html
+
 django-init-default: db-init django-install django-backend
 	@$(MAKE) custom-makefile
 	@$(MAKE) django-settings-dir
 	@$(MAKE) django-custom-admin
 	@$(MAKE) django-dockerfile
 	@$(MAKE) django-html-offcanvas
+	@$(MAKE) django-header
+	@$(MAKE) django-footer
 	@$(MAKE) django-manage-py
 	@$(MAKE) django-templates
 	@$(MAKE) django-urls
-	@$(MAKE) wagtail-backend-templates
+	@$(MAKE) django-favicon
 	@$(MAKE) gitignore
 	@$(MAKE) django-home
 	@$(MAKE) django-search
@@ -3407,7 +3421,7 @@ django-settings-dir-default:
 	@$(DEL_FILE) backend/settings.py
 	@echo "import os  # noqa" >> backend/settings/base.py
 	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
-	@echo "$$SETTINGS_THEMES" >> backend/settings/base.py
+	# @echo "$$SETTINGS_THEMES" >> backend/settings/base.py
 	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
 	@echo "$$DJANGO_SETTINGS_PROD" >> backend/settings/production.py
 	-$(GIT_ADD) backend/settings/
@@ -3842,8 +3856,8 @@ wagtail-base-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 
 wagtail-header-default:
-	@echo "$$WAGTAIL_HTML_HEADER" > backend/templates/header.html
-	@echo "$$HTML_HEADER" >> backend/templates/header.html
+	@echo "$$WAGTAIL_HEADER" > backend/templates/header.html
+	@echo "$$DJANGO_HEADER" >> backend/templates/header.html
 
 wagtail-clean-default:
 	-@for dir in $(shell echo "$(WAGTAIL_CLEAN_DIRS)"); do \
@@ -3868,8 +3882,8 @@ wagtail-backend-templates-default:
 	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	# @echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
-	@echo "$$HTML_HEADER" >> backend/templates/header.html
-	@echo "$$HTML_FOOTER" >> backend/templates/footer.html
+	@echo "$$DJANGO_HEADER" >> backend/templates/header.html
+	@echo "$$DJANGO_FOOTER" >> backend/templates/footer.html
 	@echo "$$WAGTAIL_HTML_OFFCANVAS" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/
 
@@ -3880,6 +3894,7 @@ wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
 wagtail-init-default: db-init django-install wagtail-install wagtail-start
+	@$(MAKE) django-settings
 	@$(MAKE) wagtail-settings
 	@$(MAKE) django-model-form-demo
 	@$(MAKE) django-logging-demo
