@@ -3223,9 +3223,9 @@ django-init-default: db-init django-install pip-freeze django-backend \
 	django-search \
 	django-settings \
 	django-siteuser \
-	pip-init-test \
 	django-frontend \
 	django-migrate \
+	pip-init-test \
 	readme \
 	su \
 	serve
@@ -3363,12 +3363,14 @@ django-siteuser-default:
 	@echo "$$SITEUSER_VIEW" > siteuser/views.py
 	@echo "$$SITEUSER_URLS" > siteuser/urls.py
 	@echo "$$SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
+	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/user.html
 	@echo "$$SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
+	-$(GIT_ADD) siteuser/templates
+	-$(GIT_ADD) siteuser/*.py
 	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(DJANGO_SETTINGS_FILE_BASE)
-	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations siteuser
-	-$(GIT_ADD) siteuser
+	-$(GIT_ADD) siteuser/migrations/*.py
 
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
