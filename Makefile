@@ -3849,7 +3849,9 @@ wagtail-privacy-default:
 	@echo "$$PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
 	@echo "INSTALLED_APPS.append('privacy')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	python manage.py makemigrations privacy
-	-$(GIT_ADD) privacy/
+	-$(GIT_ADD) privacy/templates
+	-$(GIT_ADD) privacy/*.py
+	-$(GIT_ADD) privacy/migrations/*.py
 
 wagtail-base-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
