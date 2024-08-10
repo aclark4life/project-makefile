@@ -3880,8 +3880,7 @@ wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
 wagtail-init-default: db-init django-install wagtail-install wagtail-start
-	export SETTINGS=backend/settings/base.py; \
-        @$(MAKE) wagtail-settings
+	@$(MAKE) wagtail-settings
 	@$(MAKE) django-model-form-demo
 	@$(MAKE) django-logging-demo
 	@$(MAKE) django-payments
