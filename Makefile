@@ -616,6 +616,78 @@ define DJANGO_BASE_TEMPLATE
 </html>
 endef
 
+define DJANGO_HEADER
+<div class="app-header">
+    <div class="container py-4 app-navbar">
+        <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
+            <a class="navbar-brand me-auto" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasExample"
+                    aria-controls="offcanvasExample"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-none d-md-block">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a id="home-nav"
+                           class="nav-link {% if request.path == '/' %}active{% endif %}"
+                           aria-current="page"
+                           href="/">Home</a>
+                    </li>
+                    {% for child in current_site.root_page.get_children %}
+                        {% if child.show_in_menus %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == child.url %}active{% endif %}" aria-current="page"
+                                    href="{{ child.url }}">{{ child }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <div data-component="UserMenu"
+                         data-is-authenticated="{{ request.user.is_authenticated }}"
+                         data-is-superuser="{{ request.user.is_superuser }}"></div>
+                    <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+                        <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
+                            <i class="fas fa-circle-half-stroke"></i>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form" action="/search">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input class="form-control"
+                                           type="search"
+                                           name="query"
+                                           {% if search_query %}value="{{ search_query }}"{% endif %}>
+                                </div>
+                                <div class="col-4">
+                                    <input type="submit" value="Search" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+endef 
+
+define DJANGO_FOOTER
+  <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
+    <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
+      {% for child in current_site.root_page.get_children %}
+          <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
+      {% endfor %}
+    </ul>
+  </footer>
+endef
+
 define DJANGO_SEARCH_FORMS
 from django import forms
 
@@ -1128,78 +1200,6 @@ endef
 define HTML_ERROR
 <h1>500</h1>
 endef
-
-define DJANGO_FOOTER
-  <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
-    <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
-    <ul class="list-inline">
-      <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
-      {% for child in current_site.root_page.get_children %}
-          <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
-      {% endfor %}
-    </ul>
-  </footer>
-endef
-
-define DJANGO_HEADER
-<div class="app-header">
-    <div class="container py-4 app-navbar">
-        <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
-            <a class="navbar-brand me-auto" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample"
-                    aria-controls="offcanvasExample"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="d-none d-md-block">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a id="home-nav"
-                           class="nav-link {% if request.path == '/' %}active{% endif %}"
-                           aria-current="page"
-                           href="/">Home</a>
-                    </li>
-                    {% for child in current_site.root_page.get_children %}
-                        {% if child.show_in_menus %}
-                            <li class="nav-item">
-                                <a class="nav-link {% if request.path == child.url %}active{% endif %}" aria-current="page"
-                                    href="{{ child.url }}">{{ child }}</a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                    <div data-component="UserMenu"
-                         data-is-authenticated="{{ request.user.is_authenticated }}"
-                         data-is-superuser="{{ request.user.is_superuser }}"></div>
-                    <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
-                        <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
-                            <i class="fas fa-circle-half-stroke"></i>
-                        </span>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form" action="/search">
-                            <div class="row">
-                                <div class="col-8">
-                                    <input class="form-control"
-                                           type="search"
-                                           name="query"
-                                           {% if search_query %}value="{{ search_query }}"{% endif %}>
-                                </div>
-                                <div class="col-4">
-                                    <input type="submit" value="Search" class="form-control">
-                                </div>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</div>
-endef 
 
 define INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
