@@ -7,37 +7,9 @@
 # --------------------------------------------------------------------------------
 # Variables (override)
 # --------------------------------------------------------------------------------
-
+#
 .DEFAULT_GOAL := git-commit-push
-
-UNAME := $(shell uname)
-RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
-TMPDIR := $(shell mktemp -d)
-
-PROJECT_EMAIL := aclark@aclark.net
-PROJECT_NAME = project-makefile
-PROJECT_DIRS = backend contactpage home privacy siteuser
-
-PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 CUSTOM_MAKEFILE_NAME := project.mk
-
-WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
-WAGTAIL_CLEAN_FILES = README.rst README.md .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
-
-FRONTEND_FILES = home frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
-
-REVIEW_EDITOR = subl
-
-GIT_BRANCHES = $(shell git branch -a) 
-GIT_BRANCH = $(shell git branch --show-current)
-GIT_MESSAGE = "Update $(PROJECT_NAME)"
-GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
-GIT_PUSH = git push
-GIT_PUSH_FORCE = git push --force-with-lease
-GIT_REV = $(shell git rev-parse --short HEAD)
-
-GET_DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var;\
-    env | grep DATABASE_URL"
 DATABASE_AWK = awk -F\= '{print $$2}'
 DATABASE_HOST = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
     python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["HOST"])')
@@ -47,27 +19,43 @@ DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
     python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
     python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
-
-ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
-INSTANCE_MAX ?= 1
-INSTANCE_MIN ?= 1
-INSTANCE_TYPE ?= t4g.small
-INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
-PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
-LB_TYPE ?= application
-
-ifneq ($(wildcard $(CUSTOM_MAKEFILE_NAME)),)
-    include $(CUSTOM_MAKEFILE_NAME)
-endif
-
-PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
-
-PAGER ?= less
-
 DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_FILE_BASE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_FILE_DEV = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_FILE_PROD = $(DJANGO_SETTINGS_DIR)/production.py
+ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
+FRONTEND_FILES = home frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
+GET_DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var;\
+    env | grep DATABASE_URL"
+GIT_BRANCH = $(shell git branch --show-current)
+GIT_BRANCHES = $(shell git branch -a) 
+GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
+GIT_MESSAGE = "Update $(PROJECT_NAME)"
+GIT_PUSH = git push
+GIT_PUSH_FORCE = git push --force-with-lease
+GIT_REV = $(shell git rev-parse --short HEAD)
+INSTANCE_MAX ?= 1
+INSTANCE_MIN ?= 1
+INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
+INSTANCE_TYPE ?= t4g.small
+LB_TYPE ?= application
+PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
+PAGER ?= less
+PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
+PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
+PROJECT_DIRS = backend contactpage home privacy siteuser
+PROJECT_EMAIL := aclark@aclark.net
+PROJECT_NAME = project-makefile
+RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
+REVIEW_EDITOR = subl
+TMPDIR := $(shell mktemp -d)
+UNAME := $(shell uname)
+WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
+WAGTAIL_CLEAN_FILES = README.rst README.md .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
+
+ifneq ($(wildcard $(CUSTOM_MAKEFILE_NAME)),)
+    include $(CUSTOM_MAKEFILE_NAME)
+endif
 
 # --------------------------------------------------------------------------------
 # Variables (no override)
