@@ -61,18 +61,16 @@ endif
 # Variables (no override)
 # --------------------------------------------------------------------------------
 
-AWS_OPTS := --no-cli-pager --output table
 ADD_DIR := mkdir -pv
 ADD_FILE := touch
+AWS_OPTS := --no-cli-pager --output table
 COPY_DIR := cp -rv
 COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
-GIT_ADD := git add
-
-ENSURE_PIP := python -m ensurepip
-
 EB_DIR = .elasticbeanstalk
+ENSURE_PIP := python -m ensurepip
+GIT_ADD := git add
 
 # --------------------------------------------------------------------------------
 # Multi-line variables
@@ -3524,6 +3522,12 @@ git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         git checkout -t $$i ; done
 
+git-commit-alpha-sort-default:
+	git commit -a -m "Alpha sort"
+
+git-commit-clean-up-default:
+	git commit -a -m "Clean up"
+
 git-commit-default:
 	-@$(GIT_COMMIT)
 
@@ -3920,10 +3924,12 @@ wagtail-sitepage-default:
 # More rules
 # ------------------------------------------------------------------------------  
 
+as-default: git-commit-alpha-sort git-push
 b-default: build
 build-default: pip-install
 c-default: clean
 ce-default: git-commit-edit-push
+cu-default: git-commit-clean-up git-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
 create-default: eb-create
