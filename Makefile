@@ -3162,6 +3162,7 @@ django-wagtail-init-default: separator \
 	django-siteuser \
 	django-modelform-demo \
 	django-logging-demo \
+	django-payments-demo-default \
 	wagtail-urls-home \
 	django-frontend \
 	django-migrate \
