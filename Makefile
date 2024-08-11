@@ -3277,6 +3277,7 @@ django-payments-demo-default:
 	@echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "urlpatterns += [path('payments/', include('payments.urls'))]" >> backend/urls.py
 	python manage.py makemigrations payments
 	@echo "$$PAYMENTS_MIGRATION" > payments/migrations/0002_set_stripe_api_keys.py
