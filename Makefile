@@ -2158,109 +2158,6 @@ class SitePage(Page):
         verbose_name = "Site Page"
 endef
 
-define WAGTAIL_HTML_OFFCANVAS
-{% load wagtailcore_tags %}
-{% wagtail_site as current_site %}
-<div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <a class="offcanvas-title text-light h5 text-decoration-none" id="offcanvasExampleLabel" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-    <button type="button" class="btn-close bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body bg-dark">
-    {% wagtail_site as current_site %}
-    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      <li class="nav-item">
-        <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
-      </li>
-      {% for child in current_site.root_page.get_children %}
-      <li class="nav-item">
-        <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
-      </li>
-      {% endfor %}
-      <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
-          <span class="nav-link text-light" data-bs-toggle="tooltip" title="Toggle dark mode">
-              <i class="fas fa-circle-half-stroke"></i>
-          </span>
-      </li>
-      <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
-    </ul>
-  </div>
-</div>
-endef
-
-define WAGTAIL_SEARCH_TEMPLATE
-{% extends "base.html" %}
-{% load static wagtailcore_tags %}
-{% block body_class %}template-searchresults{% endblock %}
-{% block title %}Search{% endblock %}
-{% block content %}
-    <h1>Search</h1>
-    <form action="{% url 'search' %}" method="get">
-        <input type="text"
-               name="query"
-               {% if search_query %}value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search" class="button">
-    </form>
-    {% if search_results %}
-        <ul>
-            {% for result in search_results %}
-                <li>
-                    <h4>
-                        <a href="{% pageurl result %}">{{ result }}</a>
-                    </h4> 
-                    {% if result.search_description %}{{ result.search_description }}{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% if search_results.has_previous %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-        {% endif %}
-        {% if search_results.has_next %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-        {% endif %}
-    {% elif search_query %}
-        No results found
-    {% else %}
-        No results found. Try a <a href="?query=test">test query</a>?
-    {% endif %}
-{% endblock %}
-endef
-
-define WAGTAIL_SEARCH_URLS
-from django.urls import path
-from .views import search
-
-urlpatterns = [
-    path("", search, name="search")
-]
-endef
-
-define WAGTAIL_URLS
-from django.conf import settings
-from django.urls import include, path
-from django.contrib import admin
-
-from wagtail.admin import urls as wagtailadmin_urls
-from wagtail.documents import urls as wagtaildocs_urls
-
-from search import views as search_views
-
-urlpatterns = [
-    path("django/", admin.site.urls),
-    path("wagtail/", include(wagtailadmin_urls)),
-    path("documents/", include(wagtaildocs_urls)),
-    path("search/", search_views.search, name="search"),
-]
-
-if settings.DEBUG:
-    from django.conf.urls.static import static
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-    # Serve static and media files from development server
-    urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-endef
-
 define SETTINGS_THEMES
 THEMES = [
     ('light', 'Light Theme'),
@@ -2503,6 +2400,109 @@ tinymce.init({
   skin: false,
   content_css: false,
 });
+endef
+
+define WAGTAIL_HTML_OFFCANVAS
+{% load wagtailcore_tags %}
+{% wagtail_site as current_site %}
+<div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <a class="offcanvas-title text-light h5 text-decoration-none" id="offcanvasExampleLabel" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+    <button type="button" class="btn-close bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body bg-dark">
+    {% wagtail_site as current_site %}
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item">
+        <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
+      </li>
+      {% for child in current_site.root_page.get_children %}
+      <li class="nav-item">
+        <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
+      </li>
+      {% endfor %}
+      <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+          <span class="nav-link text-light" data-bs-toggle="tooltip" title="Toggle dark mode">
+              <i class="fas fa-circle-half-stroke"></i>
+          </span>
+      </li>
+      <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
+    </ul>
+  </div>
+</div>
+endef
+
+define WAGTAIL_SEARCH_TEMPLATE
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% block body_class %}template-searchresults{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text"
+               name="query"
+               {% if search_query %}value="{{ search_query }}"{% endif %}>
+        <input type="submit" value="Search" class="button">
+    </form>
+    {% if search_results %}
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <h4>
+                        <a href="{% pageurl result %}">{{ result }}</a>
+                    </h4> 
+                    {% if result.search_description %}{{ result.search_description }}{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        No results found
+    {% else %}
+        No results found. Try a <a href="?query=test">test query</a>?
+    {% endif %}
+{% endblock %}
+endef
+
+define WAGTAIL_SEARCH_URLS
+from django.urls import path
+from .views import search
+
+urlpatterns = [
+    path("", search, name="search")
+]
+endef
+
+define WAGTAIL_URLS
+from django.conf import settings
+from django.urls import include, path
+from django.contrib import admin
+
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+
+from search import views as search_views
+
+urlpatterns = [
+    path("django/", admin.site.urls),
+    path("wagtail/", include(wagtailadmin_urls)),
+    path("documents/", include(wagtaildocs_urls)),
+    path("search/", search_views.search, name="search"),
+]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+    # Serve static and media files from development server
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 endef
 
 define WAGTAIL_HTML_FOOTER
@@ -2859,8 +2859,6 @@ export SITEUSER_URLS
 export SITEUSER_VIEW
 export SITEUSER_VIEW_TEMPLATE
 export SITEUSER_EDIT_TEMPLATE
-export WAGTAIL_SEARCH_TEMPLATE
-export WAGTAIL_SEARCH_URLS
 export THEME_BLUE
 export THEME_TOGGLER
 export TINYMCE_JS
@@ -2871,6 +2869,8 @@ export WAGTAIL_HOME_PAGE_VIEWS
 export WAGTAIL_HOME_PAGE_URLS
 export WAGTAIL_HTML_PREFIX
 export WAGTAIL_HTML_OFFCANVAS
+export WAGTAIL_SEARCH_TEMPLATE
+export WAGTAIL_SEARCH_URLS
 export WAGTAIL_URLS
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_HTML
