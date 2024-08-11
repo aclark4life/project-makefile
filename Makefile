@@ -270,6 +270,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
             <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
             <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
             <li><a className="dropdown-item" href="/logging-demo/">Logging Demo</a></li>
+            <li><a className="dropdown-item" href="/payments/">Payments Demo</a></li>
             {isSuperuser ? (
               <>
                 <li><hr className="dropdown-divider"></hr></li>
@@ -1411,24 +1412,11 @@ define PRIVACY_PAGE_TEMPLATE
 endef
 
 define PAYMENTS_ADMIN
-# admin.py
-
 from django.contrib import admin
-from .models import Payment
+from .models import Product, Order
 
-@admin.register(Payment)
-class PaymentsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'amount', 'stripe_charge_id', 'timestamp')
-    search_fields = ('stripe_charge_id',)
-    list_filter = ('timestamp',)
-
-    # readonly_fields = ('amount', 'stripe_charge_id', 'timestamp')
-
-    # def has_add_permission(self, request):
-    #     return False
-
-    # def has_delete_permission(self, request, obj=None):
-    #     return False
+admin.site.register(Product)
+admin.site.register(Order)
 endef
 
 define PAYMENTS_FORM
@@ -1441,7 +1429,7 @@ class PaymentsForm(forms.Form):
     amount = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.HiddenInput())
 endef
 
-define PAYMENTS_MIGRATION
+define PAYMENTS_MIGRATION_0002
 from django.db import migrations
 import os
 import secrets
@@ -1488,137 +1476,184 @@ class Migration(migrations.Migration):
 
 endef
 
-define PAYMENTS_MODEL
-# models.py
+define PAYMENTS_MIGRATION_0003
+from django.db import migrations
 
+def create_initial_products(apps, schema_editor):
+    Product = apps.get_model('payments', 'Product')
+    Product.objects.create(name='T-shirt', description='A cool T-shirt', price=20.00)
+    Product.objects.create(name='Mug', description='A nice mug', price=10.00)
+    Product.objects.create(name='Hat', description='A stylish hat', price=15.00)
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('payments', '0002_set_stripe_api_keys'),  # Adjust this to match your initial migration file
+    ]
+
+    operations = [
+        migrations.RunPython(create_initial_products),
+    ]
+endef
+
+define PAYMENTS_MODELS
 from django.db import models
 
-class Payment(models.Model):
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    stripe_charge_id = models.CharField(max_length=255)
-    timestamp = models.DateTimeField(auto_now_add=True)
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"Payment of {self.amount} with charge ID {self.stripe_charge_id}"
+        return self.name
+
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    stripe_checkout_session_id = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"Order {self.id} for {self.product.name}"
 endef
 
 define PAYMENTS_URLS
-# urls.py
-
 from django.urls import path
-from django.views.generic import TemplateView
-from .views import PaymentsView
+from .views import CheckoutView, SuccessView, CancelView, ProductListView, ProductDetailView
 
 urlpatterns = [
-    path('', PaymentsView.as_view(), name='payments'),
-    path('success/', TemplateView.as_view(template_name='payments_success.html'), name='payments_success'),
+    path('', ProductListView.as_view(), name='product_list'),
+    path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('success/', SuccessView.as_view(), name='success'),
+    path('cancel/', CancelView.as_view(), name='cancel'),
 ]
 endef
 
 define PAYMENTS_VIEW
-# views.py
-
-import stripe
 from django.conf import settings
-from django.shortcuts import render, redirect
-from django.views import View
-from .forms import PaymentsForm
-from .models import Payment
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import TemplateView, View, ListView, DetailView
+import stripe
+from .models import Product, Order
 
-class PaymentsView(View):
-    def get(self, request):
-        # Set the amount you want to charge
-        amount = 50.00  # for example, $50.00
-        form = PaymentsForm(initial={'amount': amount})
-        return render(request, 'payments.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
-    def post(self, request):
-        form = PaymentsForm(request.POST)
-        if form.is_valid():
-            stripe.api_key = settings.STRIPE_SECRET_KEY
-            token = form.cleaned_data['stripeToken']
-            amount = int(form.cleaned_data['amount'] * 100)  # Stripe uses cents
+class ProductListView(ListView):
+    model = Product
+    template_name = 'payments/product_list.html'
+    context_object_name = 'products'
 
-            try:
-                charge = stripe.Charge.create(
-                    amount=amount,
-                    currency='usd',
-                    description='Example charge',
-                    source=token,
-                )
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'payments/product_detail.html'
+    context_object_name = 'product'
 
-                # Save the payments in the database
-                payments = Payments.objects.create(
-                    amount=form.cleaned_data['amount'],
-                    stripe_charge_id=charge.id
-                )
+class CheckoutView(View):
+    template_name = 'payments/checkout.html'
 
-                return redirect('payments_success')  # Redirect to a success page
+    def get(self, request, *args, **kwargs):
+        products = Product.objects.all()
+        return render(request, self.template_name, {'products': products})
 
-            except stripe.error.StripeError as e:
-                # Handle error
-                return render(request, 'payments.html', {'form': form, 'error': str(e), 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+    def post(self, request, *args, **kwargs):
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
+        
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {
+                        'name': product.name,
+                    },
+                    'unit_amount': int(product.price * 100),
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url='http://localhost:8000/payments/success/',
+            cancel_url='http://localhost:8000/payments/cancel/',
+        )
 
-        return render(request, 'payments.html', {'form': form, 'stripe_publishable_key': settings.STRIPE_PUBLISHABLE_KEY})
+        Order.objects.create(product=product, stripe_checkout_session_id=session.id)
+        return redirect(session.url, code=303)
+
+class SuccessView(TemplateView):
+    template_name = 'payments/success.html'
+
+class CancelView(TemplateView):
+    template_name = 'payments/cancel.html'
 endef
 
-define PAYMENTS_VIEW_TEMPLATE
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payments</title>
-    <script src="https://js.stripe.com/v3/"></script>
-</head>
-<body>
-    <h1>Make a Payments</h1>
-    <form method="post" id="payments-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Pay</button>
-    </form>
-    <script>
-        var stripe = Stripe('{{ stripe_publishable_key }}');
-        var elements = stripe.elements();
+define PAYMENTS_TEMPLATE_CANCEL
+{% extends "base.html" %}
 
-        var card = elements.create('card');
-        card.mount('#card-element');
+{% block title %}Cancel{% endblock %}
 
-        var form = document.getElementById('payments-form');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            stripe.createToken(card).then(function(result) {
-                if (result.error) {
-                    // Inform the customer that there was an error.
-                } else {
-                    // Send the token to your server.
-                    var hiddenInput = document.createElement('input');
-                    hiddenInput.setAttribute('type', 'hidden');
-                    hiddenInput.setAttribute('name', 'stripeToken');
-                    hiddenInput.setAttribute('value', result.token.id);
-                    form.appendChild(hiddenInput);
-
-                    // Submit the form
-                    form.submit();
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+{% block content %}
+<h1>Payment Cancelled</h1>
+<p>Your payment was cancelled.</p>
+{% endblock %}
 endef
 
-define PAYMENTS_VIEW_TEMPLATE_SUCCESS
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payments Success</title>
-</head>
-<body>
-    <h1>Payment Successful</h1>
-    <p>Thank you for your payment!</p>
-</body>
-</html>
+define PAYMENTS_TEMPLATE_CHECKOUT
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h1>Checkout</h1>
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Pay</button>
+</form>
+{% endblock %}
+endef
+
+define PAYMENTS_TEMPLATE_SUCCESS
+{% extends "base.html" %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+<h1>Payment Successful</h1>
+<p>Thank you for your purchase!</p>
+{% endblock %}
+endef
+
+define PAYMENTS_TEMPLATE_PRODUCT_DETAIL
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+<p>Price: ${{ product.price }}</p>
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    <button type="submit">Buy Now</button>
+</form>
+{% endblock %}
+endef
+
+define PAYMENTS_TEMPLATE_PRODUCT_LIST
+{% extends "base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h1>Products</h1>
+<ul>
+    {% for product in products %}
+    <li>
+        <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
 endef
 
 define PROGRAMMING_INTERVIEW
@@ -2835,12 +2870,16 @@ export FRONTEND_CONTEXT_INDEX
 export FRONTEND_CONTEXT_USER_PROVIDER
 export PAYMENTS_ADMIN
 export PAYMENTS_FORM
-export PAYMENTS_MIGRATION
-export PAYMENTS_MODEL
+export PAYMENTS_MIGRATION_0002
+export PAYMENTS_MIGRATION_0003
+export PAYMENTS_MODELS
 export PAYMENTS_URLS
 export PAYMENTS_VIEW
-export PAYMENTS_VIEW_TEMPLATE
-export PAYMENTS_VIEW_TEMPLATE_SUCCESS
+export PAYMENTS_TEMPLATE_CANCEL
+export PAYMENTS_TEMPLATE_CHECKOUT
+export PAYMENTS_TEMPLATE_SUCCESS
+export PAYMENTS_TEMPLATE_PRODUCT_LIST
+export PAYMENTS_TEMPLATE_PRODUCT_DETAIL
 export PROGRAMMING_INTERVIEW
 export PRIVACY_PAGE_MODEL
 export PRIVACY_PAGE_TEMPLATE
@@ -3263,14 +3302,17 @@ django-home-default:
 django-payments-demo-default:
 	python manage.py startapp payments
 	@echo "$$PAYMENTS_FORM" > payments/forms.py
-	@echo "$$PAYMENTS_MODEL" > payments/models.py
+	@echo "$$PAYMENTS_MODELS" > payments/models.py
 	@echo "$$PAYMENTS_ADMIN" > payments/admin.py
 	@echo "$$PAYMENTS_VIEW" > payments/views.py
 	@echo "$$PAYMENTS_URLS" > payments/urls.py
-	$(ADD_DIR) payments/templates/
+	$(ADD_DIR) payments/templates/payments
 	$(ADD_DIR) payments/management/commands
-	@echo "$$PAYMENTS_VIEW_TEMPLATE" > payments/templates/payments.html
-	@echo "$$PAYMENTS_VIEW_TEMPLATE_SUCCESS" > payments/templates/payments_success.html
+	@echo "$$PAYMENTS_TEMPLATE_CANCEL" > payments/templates/payments/cancel.html
+	@echo "$$PAYMENTS_TEMPLATE_CHECKOUT" > payments/templates/payments/checkout.html
+	@echo "$$PAYMENTS_TEMPLATE_SUCCESS" > payments/templates/payments/success.html
+	@echo "$$PAYMENTS_TEMPLATE_PRODUCT_LIST" > payments/templates/payments/product_list.html
+	@echo "$$PAYMENTS_TEMPLATE_PRODUCT_DETAIL" > payments/templates/payments/product_detail.html
 	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(DJANGO_SETTINGS_FILE_BASE)
@@ -3280,7 +3322,8 @@ django-payments-demo-default:
 	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "urlpatterns += [path('payments/', include('payments.urls'))]" >> backend/urls.py
 	python manage.py makemigrations payments
-	@echo "$$PAYMENTS_MIGRATION" > payments/migrations/0002_set_stripe_api_keys.py
+	@echo "$$PAYMENTS_MIGRATION_0002" > payments/migrations/0002_set_stripe_api_keys.py
+	@echo "$$PAYMENTS_MIGRATION_0003" > payments/migrations/0003_create_initial_products.py
 	-$(GIT_ADD) payments/
 
 django-search-default:
