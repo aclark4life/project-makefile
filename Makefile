@@ -3276,7 +3276,7 @@ django-init-minimal-default: separator \
 	django-urls-minimal \
 	django-urls-debug \
 	django-settings-minimal \
-	django-settings-dev \
+	django-settings-dev-minimal \
 	django-settings-prod \
 	django-frontend \
 	django-migrate \
@@ -3635,6 +3635,16 @@ django-settings-base-default:
 	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_FILE_BASE)
+
+
+django-settings-dev-minimal-default:
+	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
+	@echo "$$INTERNAL_IPS" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_FILE_DEV)
+	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_DEV)
 
 django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_FILE_DEV)
