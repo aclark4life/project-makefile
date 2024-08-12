@@ -913,7 +913,7 @@ endef
 
 define DJANGO_URLS_API
 from rest_framework import routers  # noqa
-from .api import UserViewSet, api
+from .api import UserViewSet, api  # noqa
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
