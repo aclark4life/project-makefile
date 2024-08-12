@@ -702,10 +702,16 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 endef
 
 define DJANGO_REST_VIEWS
+from ninja import NinjaAPI
 from rest_framework import viewsets
 from siteuser.models import User
 from .serializers import UserSerializer
 
+api = NinjaAPI()
+
+@api.get("/hello")
+def hello(request):
+    return "Hello world"
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -907,11 +913,12 @@ endef
 
 define DJANGO_URLS_API
 from rest_framework import routers  # noqa
-from .api import UserViewSet  # noqa
+from .api import UserViewSet, api
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
-urlpatterns += [path("api/", include(router.urls))]
+# urlpatterns += [path("api/", include(router.urls))]
+urlpatterns += [path("api/", api.urls)]
 endef
 
 define DJANGO_UTILS
@@ -3283,6 +3290,7 @@ django-install-default:
         django-import-export \
         django-ipware \
         django-multiselectfield \
+        django-ninja \
         django-phonenumber-field \
         django-recurrence \
         django-recaptcha \
@@ -3464,6 +3472,7 @@ django-logging-demo-default:
 	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "urlpatterns += [path('logging-demo/', include('logging_demo.urls'))]" >> backend/urls.py
 	-$(GIT_ADD) logging_demo/*.py
+	-$(GIT_ADD) logging_demo/migrations/*.py
 
 django-serve-default:
 	npm run watch &
@@ -3523,7 +3532,7 @@ django-settings-dev-default:
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_FILE_DEV)
 
 django-settings-prod-default:
-	@echo "$$DJANGO_SETTINGS_PROD" >> $(DJANGO_SETTINGS_FILE_PROD)
+	@echo "$$DJANGO_SETTINGS_PROD" > $(DJANGO_SETTINGS_FILE_PROD)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_FILE_BASE)
