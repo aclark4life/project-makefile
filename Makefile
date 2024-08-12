@@ -4033,6 +4033,7 @@ last-default: git-commit-last
 license-default: python-license
 error-default: html-error
 eb-up-default: eb-upgrade
+force: git-push-force
 init-default: django-wagtail-init
 install-default: pip-install
 install-dev-default: pip-install-dev
