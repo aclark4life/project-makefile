@@ -3530,9 +3530,11 @@ django-settings-dev-default:
 	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
 	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_FILE_DEV)
+	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_DEV)
 
 django-settings-prod-default:
 	@echo "$$DJANGO_SETTINGS_PROD" > $(DJANGO_SETTINGS_FILE_PROD)
+	-$(GIT_ADD) $(DJANGO_SETTINGS_FILE_PROD)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_FILE_BASE)
