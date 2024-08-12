@@ -24,7 +24,7 @@ DJANGO_SETTINGS_FILE_BASE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_FILE_DEV = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_FILE_PROD = $(DJANGO_SETTINGS_DIR)/production.py
 ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
-FRONTEND_FILES = home frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
+FRONTEND_FILES = frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 GET_DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var;\
     env | grep DATABASE_URL"
 GIT_BRANCH = $(shell git branch --show-current)
@@ -834,6 +834,65 @@ define DJANGO_SEARCH_TEMPLATE
 {% endblock %}
 endef
 
+define DJANGO_SETTINGS_BASE_MINIMAL
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+ALLOWED_HOSTS = []
+INSTALLED_APPS = [
+    # "django.contrib.admin",
+    # "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+]
+MIDDLEWARE = [
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+ROOT_URLCONF = "backend.urls"
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+WSGI_APPLICATION = "backend.wsgi.application"
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+LANGUAGE_CODE = "en-us"
+TIME_ZONE = "UTC"
+USE_I18N = True
+USE_TZ = True
+STATIC_URL = "static/"
+endef
+
 define DJANGO_SETTINGS_DEV
 from .base import *  # noqa
 
@@ -899,6 +958,16 @@ def main():
 
 if __name__ == "__main__":
     main()
+endef
+
+define DJANGO_URLS_MINIMAL
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+
+urlpatterns = [
+    # path("django/", admin.site.urls),
+]
 endef
 
 define DJANGO_URLS
@@ -2862,6 +2931,7 @@ export CUSTOM_ENV_VAR_FILE
 export CUSTOM_MAKEFILE
 export DJANGO_BASE_TEMPLATE
 export DJANGO_MANAGE_PY
+export DJANGO_SETTINGS_BASE_MINIMAL
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_FILE_BASE
@@ -2871,6 +2941,7 @@ export DJANGO_SETTINGS_REST_FRAMEWORK
 export DJANGO_SETTINGS_THEMES
 export DJANGO_URLS
 export DJANGO_URLS_API
+export DJANGO_URLS_MINIMAL
 export DJANGO_UTILS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
@@ -3153,8 +3224,7 @@ django-utils-default:
 django-custom-admin-default:
 	@echo "$$CUSTOM_ADMIN" > backend/admin.py
 	@echo "$$BACKEND_APPS" > backend/apps.py
-	-$(GIT_ADD) backend/admin.py
-	-$(GIT_ADD) backend/apps.py
+	-$(GIT_ADD) backend/*.py
 
 django-dockerfile-default:
 	@echo "$$DOCKERFILE" > Dockerfile
@@ -3188,6 +3258,33 @@ django-footer-template-default:
 	@echo "$$DJANGO_FOOTER" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
 
+django-init-minimal-default: separator \
+	db-init \
+	django-install-minimal \
+	django-project \
+	django-utils \
+	pip-freeze \
+	pip-init-test \
+	django-settings-dir \
+	django-custom-admin \
+	django-dockerfile \
+	django-offcanvas-template \
+	django-header-template \
+	django-footer-template \
+	django-base-template \
+	django-manage-py \
+	django-urls-minimal \
+	django-urls-debug \
+	django-settings-minimal \
+	django-settings-dev \
+	django-settings-prod \
+	django-frontend \
+	django-migrate \
+	gitignore \
+	readme \
+	lint \
+	serve
+
 django-init-default: separator \
 	db-init \
 	django-install \
@@ -3217,8 +3314,8 @@ django-init-default: separator \
 	django-rest-serializers \
 	django-rest-views \
 	django-urls-api \
-	django-migrate \
 	django-frontend \
+	django-migrate \
 	readme \
 	lint \
 	su \
@@ -3260,12 +3357,21 @@ django-wagtail-init-default: separator \
 	django-rest-views \
 	django-urls-api \
 	wagtail-urls-home \
-	django-migrate \
 	django-frontend \
+	django-migrate \
 	readme \
 	lint \
 	su \
 	serve
+
+django-install-minimal-default:
+	$(ENSURE_PIP)
+	python -m pip install \
+	Django \
+	dj-database-url \
+	django-debug-toolbar \
+	django-hijack \
+	python-webpack-boilerplate
 
 django-install-default:
 	$(ENSURE_PIP)
@@ -3482,7 +3588,15 @@ django-settings-dir-default:
 	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
-	-$(GIT_ADD) backend/settings/
+	-$(GIT_ADD) backend/settings/*.py
+
+django-settings-minimal-default:
+	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$DJANGO_SETTINGS_BASE_MINIMAL" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "import os  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DJANGO_SETTINGS_FILE_BASE)
 
 django-settings-base-default:
 	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_FILE_BASE)
@@ -3511,6 +3625,7 @@ django-settings-base-default:
 	@echo "INSTALLED_APPS.append('rest_framework')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('explorer')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
 	@echo "LOGIN_REDIRECT_URL = '/'" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_FILE_BASE)
@@ -3526,7 +3641,6 @@ django-settings-dev-default:
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
 	@echo "$$INTERNAL_IPS" >> $(DJANGO_SETTINGS_FILE_DEV)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
-	@echo "INSTALLED_APPS.append('explorer')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
 	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
 	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_FILE_DEV)
@@ -3566,6 +3680,10 @@ django-urls-api-default:
 
 django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
+	-$(GIT_ADD) backend/urls.py
+
+django-urls-minimal-default:
+	@echo "$$DJANGO_URLS_MINIMAL" > backend/urls.py
 	-$(GIT_ADD) backend/urls.py
 
 django-urls-debug-default:
