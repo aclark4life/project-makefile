@@ -689,6 +689,18 @@ define DJANGO_FOOTER
   </footer>
 endef
 
+define DJANGO_REST_SERIALIZERS
+from rest_framework import serializers
+from siteuser.models import User
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'is_staff']
+
+endef
+
 define DJANGO_SEARCH_FORMS
 from django import forms
 
@@ -811,17 +823,13 @@ from .base import *  # noqa
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#t%ohiokp+8!7#xh4qzoxuyy=-&sxl*!z-&w%y83h87-jm7p9="
-
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
     pass
 endef
@@ -832,6 +840,16 @@ from backend.utils import get_ec2_metadata
 
 LOCAL_IPV4 = get_ec2_metadata()
 ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
+endef
+
+define DJANGO_SETTINGS_REST_FRAMEWORK
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 endef
 
 define DJANGO_MANAGE_PY
@@ -2159,16 +2177,6 @@ flake8
 tox
 endef
 
-define REST_FRAMEWORK
-REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
-endef
-
 define SEPARATOR
 .==========================================================================================================================================.
 |                                                                                                                                          |  
@@ -2193,7 +2201,7 @@ class SitePage(Page):
         verbose_name = "Site Page"
 endef
 
-define SETTINGS_THEMES
+define DJANGO_SETTINGS_THEMES
 THEMES = [
     ('light', 'Light Theme'),
     ('dark', 'Dark Theme'),
@@ -2825,12 +2833,15 @@ export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_FILE_BASE
 export DJANGO_SETTINGS_FILE_DEV
 export DJANGO_SETTINGS_FILE_PROD
+export DJANGO_SETTINGS_REST_FRAMEWORK
+export DJANGO_SETTINGS_THEMES
 export DJANGO_URLS
 export DJANGO_UTILS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_HTML_OFFCANVAS
+export DJANGO_REST_SERIALIZERS
 export DJANGO_SEARCH_FORMS
 export DJANGO_SEARCH_SETTINGS
 export DJANGO_SEARCH_TEMPLATE
@@ -2865,7 +2876,6 @@ export MODEL_FORM_DEMO_TEMPLATE_DETAIL
 export MODEL_FORM_DEMO_TEMPLATE_FORM
 export MODEL_FORM_DEMO_TEMPLATE_LIST
 export PRIVACY_PAGE_MODEL
-export REST_FRAMEWORK
 export FRONTEND_CONTEXT_INDEX
 export FRONTEND_CONTEXT_USER_PROVIDER
 export PAYMENTS_ADMIN
@@ -2888,7 +2898,6 @@ export PYTHON_LICENSE_TXT
 export PYTHON_PROJECT_TOML
 export REQUIREMENTS_TEST
 export SEPARATOR
-export SETTINGS_THEMES
 export SITEPAGE_MODEL
 export SITEPAGE_TEMPLATE
 export SITEUSER_ADMIN
@@ -3163,13 +3172,17 @@ django-init-default: separator \
 	django-allauth-template \
 	django-favicon \
 	gitignore \
-	django-settings \
+	django-settings-base \
+	django-settings-dev \
+	django-settings-prod \
 	django-siteuser \
 	django-home \
+	django-rest-serializers \
 	django-frontend \
 	django-migrate \
 	pip-init-test \
 	readme \
+	lint \
 	su \
 	serve
 
@@ -3196,17 +3209,21 @@ django-wagtail-init-default: separator \
 	django-favicon \
 	gitignore \
 	wagtail-search \
-	django-settings \
+	django-settings-base \
+	django-settings-dev \
+	django-settings-prod \
 	wagtail-settings \
 	django-siteuser \
 	django-modelform-demo \
 	django-logging-demo \
 	django-payments-demo-default \
 	wagtail-urls-home \
+	django-rest-serializers \
 	django-frontend \
 	django-migrate \
 	pip-init-test \
 	readme \
+	lint \
 	su \
 	serve
 
@@ -3326,6 +3343,10 @@ django-payments-demo-default:
 	@echo "$$PAYMENTS_MIGRATION_0003" > payments/migrations/0003_create_initial_products.py
 	-$(GIT_ADD) payments/
 
+django-rest-serializers-default:
+	@echo "$$DJANGO_REST_SERIALIZERS" > backend/serializers.py
+	-$(GIT_ADD) backend/serializers.py
+
 django-search-default:
 	python manage.py startapp search
 	$(ADD_DIR) search/templates
@@ -3340,7 +3361,7 @@ django-search-default:
 	-$(GIT_ADD) search/templates
 	-$(GIT_ADD) search/*.py
 
-django-secret-default:
+django-secret-key-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
 
 django-siteuser-default:
@@ -3415,51 +3436,57 @@ django-settings-dir-default:
 	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
-	@echo "import os  # noqa" >> backend/settings/base.py
-	@echo "STATICFILES_DIRS = []" >> backend/settings/base.py
-	# @echo "$$SETTINGS_THEMES" >> backend/settings/base.py
-	@echo "$$DJANGO_SETTINGS_DEV" > backend/settings/dev.py
-	@echo "$$DJANGO_SETTINGS_PROD" >> backend/settings/production.py
 	-$(GIT_ADD) backend/settings/
 
-django-settings-default:
+django-settings-base-default:
 	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "ALLOWED_HOSTS = ['*']" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "# Uncomment the next two lines to enable the custom admin" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "import os  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "$$DJANGO_SETTINGS_THEMES" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "ALLOWED_HOSTS = ['*']" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('rest_framework')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('allauth')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('allauth.account')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('django_extensions')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('django_extensions')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "INSTALLED_APPS.append('explorer')" >> $(DJANGO_SETTINGS_FILE_DEV)
-	@echo "INSTALLED_APPS.append('django.contrib.admindocs')" >> $(DJANGO_SETTINGS_FILE_DEV)
-	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')" >> $(DJANGO_SETTINGS_FILE_DEV)
-	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')" >> $(DJANGO_SETTINGS_FILE_DEV)
-	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "$$REST_FRAMEWORK" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "$$SETTINGS_THEMES" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "$$INTERNAL_IPS" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "INSTALLED_APPS.append('rest_framework')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "LOGIN_REDIRECT_URL = '/'" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "$$AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_FILE_BASE)
-	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "STATICFILES_DIRS = []" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_FILE_BASE)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_FILE_BASE)
+	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_FILE_BASE)
+
+django-settings-dev-default:
+	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
+	@echo "$$INTERNAL_IPS" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "INSTALLED_APPS.append('explorer')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')  # noqa" >> $(DJANGO_SETTINGS_FILE_DEV)
+	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_FILE_DEV)
+
+django-settings-prod-default:
+	@echo "$$DJANGO_SETTINGS_PROD" >> $(DJANGO_SETTINGS_FILE_PROD)
 
 django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_FILE_BASE)
@@ -4028,7 +4055,7 @@ restart-default: eb-restart
 reveal-default: reveal-init
 s-default: serve
 sdist-default: python-setup-sdist
-secret-default: django-secret
+secret-default: django-secret-key
 serve-default: django-serve
 shell-default: django-shell
 show-urls-default: django-show-urls
