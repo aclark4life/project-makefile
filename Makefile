@@ -275,8 +275,8 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
               <>
                 <li><hr className="dropdown-divider"></hr></li>
                 <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
+                <li><a className="dropdown-item" href="/api" target="_blank">Django API</a></li>
                 <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
-                <li><a className="dropdown-item" href="/api" target="_blank">Django REST framework</a></li>
                 <li><a className="dropdown-item" href="/explorer" target="_blank">SQL Explorer</a></li>
               </>
             ) : null}
@@ -701,6 +701,17 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 endef
 
+define DJANGO_REST_VIEWS
+from rest_framework import viewsets
+from siteuser.models import User
+from .serializers import UserSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+endef
+
 define DJANGO_SEARCH_FORMS
 from django import forms
 
@@ -835,8 +846,15 @@ except ImportError:
 endef
 
 define DJANGO_SETTINGS_PROD
-# project-makefile
+from .base import *  # noqa
 from backend.utils import get_ec2_metadata
+
+DEBUG = False
+
+try:
+    from .local import *  # noqa
+except ImportError:
+    pass
 
 LOCAL_IPV4 = get_ec2_metadata()
 ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
@@ -885,6 +903,15 @@ from django.conf import settings
 urlpatterns = [
     path("django/", admin.site.urls),
 ]
+endef
+
+define DJANGO_URLS_API
+from rest_framework import routers  # noqa
+from .api import UserViewSet  # noqa
+
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+urlpatterns += [path("api/", include(router.urls))]
 endef
 
 define DJANGO_UTILS
@@ -2836,12 +2863,14 @@ export DJANGO_SETTINGS_FILE_PROD
 export DJANGO_SETTINGS_REST_FRAMEWORK
 export DJANGO_SETTINGS_THEMES
 export DJANGO_URLS
+export DJANGO_URLS_API
 export DJANGO_UTILS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_HTML_OFFCANVAS
 export DJANGO_REST_SERIALIZERS
+export DJANGO_REST_VIEWS
 export DJANGO_SEARCH_FORMS
 export DJANGO_SEARCH_SETTINGS
 export DJANGO_SEARCH_TEMPLATE
@@ -3158,6 +3187,7 @@ django-init-default: separator \
 	django-project \
 	django-utils \
 	pip-freeze \
+	pip-init-test \
 	django-settings-dir \
 	django-custom-admin \
 	django-dockerfile \
@@ -3178,9 +3208,10 @@ django-init-default: separator \
 	django-siteuser \
 	django-home \
 	django-rest-serializers \
-	django-frontend \
+	django-rest-views \
+	django-urls-api \
 	django-migrate \
-	pip-init-test \
+	django-frontend \
 	readme \
 	lint \
 	su \
@@ -3193,6 +3224,7 @@ django-wagtail-init-default: separator \
 	wagtail-project \
 	django-utils \
 	pip-freeze \
+	pip-init-test \
         django-custom-admin \
         django-dockerfile \
 	django-offcanvas-template \
@@ -3217,11 +3249,12 @@ django-wagtail-init-default: separator \
 	django-modelform-demo \
 	django-logging-demo \
 	django-payments-demo-default \
-	wagtail-urls-home \
 	django-rest-serializers \
-	django-frontend \
+	django-rest-views \
+	django-urls-api \
+	wagtail-urls-home \
 	django-migrate \
-	pip-init-test \
+	django-frontend \
 	readme \
 	lint \
 	su \
@@ -3346,6 +3379,10 @@ django-payments-demo-default:
 django-rest-serializers-default:
 	@echo "$$DJANGO_REST_SERIALIZERS" > backend/serializers.py
 	-$(GIT_ADD) backend/serializers.py
+
+django-rest-views-default:
+	@echo "$$DJANGO_REST_VIEWS" > backend/api.py
+	-$(GIT_ADD) backend/api.py
 
 django-search-default:
 	python manage.py startapp search
@@ -3511,6 +3548,10 @@ django-test-default: django-npm-install django-npm-build django-static
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
         User.objects.create_user('user', '', 'user')"
+
+django-urls-api-default:
+	@echo "$$DJANGO_URLS_API" >> backend/urls.py
+	-$(GIT_ADD) backend/urls.py
 
 django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
