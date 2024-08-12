@@ -3370,7 +3370,6 @@ django-install-minimal-default:
 	Django \
 	dj-database-url \
 	django-debug-toolbar \
-	django-hijack \
 	python-webpack-boilerplate
 
 django-install-default:
