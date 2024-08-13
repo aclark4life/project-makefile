@@ -4186,16 +4186,16 @@ build-default: pip-install
 c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
-cp-default: git-commit-push
 cp-alpha-sort-default: git-commit-alpha-sort git-push
 cp-clean-up-default: git-commit-clean-up git-push
+cp-default: git-commit-push
 cp-lint-default: git-commit-lint git-push
 cp-upgrade-default: git-commit-upgrade git-push
 create-default: eb-create
 d-default: deploy
-db-import-default: db-pg-import
 db-dump-default: eb-pg-export
 db-export-default: eb-pg-export
+db-import-default: db-pg-import
 db-init-default: db-pg-init
 db-init-test-default: db-pg-init-test
 db-shell-default: django-db-shell
@@ -4206,9 +4206,13 @@ djlint-default: lint-djlint
 e-default: edit
 eb-env-default: eb-print-env
 eb-export-default: eb-pg-export
+eb-up-default: eb-upgrade
 edit-default: readme-edit-md
 empty-default: git-commit-empty
+error-default: html-error
 force-push-default: git-push-force
+force: git-push-force
+fp-default: git-push-force
 freeze-default: pip-freeze
 git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
@@ -4217,22 +4221,19 @@ gitignore-default: git-ignore
 h-default: help
 i-default: install
 index-default: html-index
-last-default: git-commit-last
-license-default: python-license
-error-default: html-error
-eb-up-default: eb-upgrade
-force: git-push-force
 init-default: django-wagtail-init
 install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 l-default: lint
+last-default: git-commit-last
+license-default: python-license
 logs-default: eb-logs
+m-default: django-migrate
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
 mk-default: custom-makefile
-m-default: django-migrate
 o-default: open
 open-default: django-open
 p-default: git-push
@@ -4247,8 +4248,8 @@ sdist-default: python-setup-sdist
 secret-default: django-secret-key
 serve-default: django-serve
 shell-default: django-shell
-show-urls-default: django-show-urls
 show-migrations-default: migrations-show
+show-urls-default: django-show-urls
 ssm-list-default: aws-ssm
 static-default: django-static
 su-default: django-su
