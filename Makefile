@@ -3779,6 +3779,9 @@ git-commit-alpha-sort-default:
 git-commit-clean-up-default:
 	git commit -a -m "Clean up"
 
+git-commit-lint-default:
+	git commit -a -m "Lint"
+
 git-commit-upgrade-default:
 	git commit -a -m "Upgrade"
 
@@ -4186,6 +4189,7 @@ clean-default: wagtail-clean
 cp-default: git-commit-push
 cp-alpha-sort-default: git-commit-alpha-sort git-push
 cp-clean-up-default: git-commit-clean-up git-push
+cp-lint-default: git-commit-lint git-push
 cp-upgrade-default: git-commit-upgrade git-push
 create-default: eb-create
 d-default: deploy
