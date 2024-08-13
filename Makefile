@@ -4187,6 +4187,7 @@ c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
 cp-alpha-sort-default: git-commit-alpha-sort git-push
+cp-as-default: git-commit-alpha-sort git-push
 cp-clean-up-default: git-commit-clean-up git-push
 cp-default: git-commit-push
 cp-lint-default: git-commit-lint git-push
