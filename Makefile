@@ -4245,7 +4245,7 @@ static-default: django-static
 su-default: django-su
 test-default: django-test
 u-default: usage
-up-default: eb-upgrade
+upgrade-default: pip-install-upgrade
 urls-default: django-show-urls
 wagtail-init-default: django-wagtail-init
 webpack-default: webpack-init
