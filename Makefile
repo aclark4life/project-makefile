@@ -3779,6 +3779,9 @@ git-commit-alpha-sort-default:
 git-commit-clean-up-default:
 	git commit -a -m "Clean up"
 
+git-commit-upgrade-default:
+	git commit -a -m "Upgrade"
+
 git-commit-default:
 	-@$(GIT_COMMIT)
 
@@ -4175,14 +4178,15 @@ wagtail-sitepage-default:
 # More rules
 # ------------------------------------------------------------------------------  
 
-as-default: git-commit-alpha-sort git-push
 b-default: build
 build-default: pip-install
 c-default: clean
 ce-default: git-commit-edit-push
-cu-default: git-commit-clean-up git-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
+cp-alpha-sort-default: git-commit-alpha-sort git-push
+cp-clean-up-default: git-commit-clean-up git-push
+cp-upgrade-default: git-commit-upgrade git-push
 create-default: eb-create
 d-default: deploy
 db-import-default: db-pg-import
