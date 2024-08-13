@@ -4190,6 +4190,7 @@ cp-upgrade-default: git-commit-upgrade git-push
 create-default: eb-create
 d-default: deploy
 db-import-default: db-pg-import
+db-dump-default: eb-pg-export
 db-export-default: eb-pg-export
 db-init-default: db-pg-init
 db-init-test-default: db-pg-init-test
