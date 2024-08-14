@@ -9,8 +9,6 @@
 # --------------------------------------------------------------------------------
 #
 .DEFAULT_GOAL := git-commit-push
-BACKEND_APPS_FILE := backend/apps.py
-CUSTOM_ADMIN_FILE := backend/admin.py
 CUSTOM_MAKEFILE_FILE := project.mk
 DATABASE_AWK = awk -F\= '{print $$2}'
 DATABASE_HOST = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
@@ -21,12 +19,14 @@ DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
     python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
 DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
     python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
+DJANGO_BACKEND_APPS_FILE := backend/apps.py
+DJANGO_CUSTOM_ADMIN_FILE := backend/admin.py
+DJANGO_FRONTEND_FILES = frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
 ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
-FRONTEND_FILES = frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 GET_DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var;\
     env | grep DATABASE_URL"
 GIT_BRANCH = $(shell git branch --show-current)
@@ -82,13 +82,6 @@ define ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
 
-define AUTHENTICATION_BACKENDS
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
-endef
-
 define BABELRC
 {
   "presets": [
@@ -108,63 +101,6 @@ define BABELRC
     "@babel/plugin-transform-class-properties"
   ]
 }
-endef
-
-define BACKEND_APPS
-from django.contrib.admin.apps import AdminConfig
-
-class CustomAdminConfig(AdminConfig):
-    default_site = "backend.admin.CustomAdminSite"
-endef
-
-define BLOCK_CAROUSEL
-        <div id="carouselExampleCaptions" class="carousel slide">
-            <div class="carousel-indicators">
-                {% for image in block.value.images %}
-                    <button type="button"
-                            data-bs-target="#carouselExampleCaptions"
-                            data-bs-slide-to="{{ forloop.counter0 }}"
-                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
-                            aria-label="Slide {{ forloop.counter }}"></button>
-                {% endfor %}
-            </div>
-            <div class="carousel-inner">
-                {% for image in block.value.images %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>{{ image.title }}</h5>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <button class="carousel-control-prev"
-                    type="button"
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next"
-                    type="button"
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-endef
-
-define BLOCK_MARKETING
-{% load wagtailcore_tags %}
-<div class="{{ self.block_class }}">
-    {% if block.value.images.0 %}
-        {% include 'blocks/carousel_block.html' %}
-    {% else %}
-        {{ self.title }}
-        {{ self.content }}
-    {% endif %}
-</div>
 endef
 
 define COMPONENT_CLOCK
@@ -304,133 +240,14 @@ UserMenu.propTypes = {
 export default UserMenu;
 endef
 
+define DJANGO_BACKEND_APPS
+from django.contrib.admin.apps import AdminConfig
 
-define CONTACT_PAGE_TEMPLATE
-{% extends 'base.html' %}
-{% load crispy_forms_tags static wagtailcore_tags %}
-{% block content %}
-        <h1>{{ page.title }}</h1>
-        {{ page.intro|richtext }}
-        <form action="{% pageurl page %}" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit">
-        </form>
-{% endblock %}
+class CustomAdminConfig(AdminConfig):
+    default_site = "backend.admin.CustomAdminSite"
 endef
 
-define CONTACT_PAGE_TEST
-from django.test import TestCase
-from wagtail.test.utils import WagtailPageTestCase
-from wagtail.models import Page
-
-from contactpage.models import ContactPage, FormField
-
-class ContactPageTest(TestCase, WagtailPageTestCase):
-    def test_contact_page_creation(self):
-        # Create a ContactPage instance
-        contact_page = ContactPage(
-            title='Contact',
-            intro='Welcome to our contact page!',
-            thank_you_text='Thank you for reaching out.'
-        )
-
-        # Save the ContactPage instance
-        self.assertEqual(contact_page.save_revision().publish().get_latest_revision_as_page(), contact_page)
-
-    def test_form_field_creation(self):
-        # Create a ContactPage instance
-        contact_page = ContactPage(
-            title='Contact',
-            intro='Welcome to our contact page!',
-            thank_you_text='Thank you for reaching out.'
-        )
-        # Save the ContactPage instance
-        contact_page_revision = contact_page.save_revision()
-        contact_page_revision.publish()
-
-        # Create a FormField associated with the ContactPage
-        form_field = FormField(
-            page=contact_page,
-            label='Your Name',
-            field_type='singleline',
-            required=True
-        )
-        form_field.save()
-
-        # Retrieve the ContactPage from the database
-        contact_page_from_db = Page.objects.get(id=contact_page.id).specific
-
-        # Check if the FormField is associated with the ContactPage
-        self.assertEqual(contact_page_from_db.form_fields.first(), form_field)
-
-    def test_contact_page_form_submission(self):
-        # Create a ContactPage instance
-        contact_page = ContactPage(
-            title='Contact',
-            intro='Welcome to our contact page!',
-            thank_you_text='Thank you for reaching out.'
-        )
-        # Save the ContactPage instance
-        contact_page_revision = contact_page.save_revision()
-        contact_page_revision.publish()
-
-        # Simulate a form submission
-        form_data = {
-            'your_name': 'John Doe',
-            # Add other form fields as needed
-        }
-
-        response = self.client.post(contact_page.url, form_data)
-
-        # Check if the form submission is successful (assuming a 302 redirect)
-        self.assertEqual(response.status_code, 302)
-        
-        # You may add more assertions based on your specific requirements
-endef
-
-define CONTACT_PAGE_MODEL
-from django.db import models
-from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import (
-    FieldPanel, FieldRowPanel,
-    InlinePanel, MultiFieldPanel
-)
-from wagtail.fields import RichTextField
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-
-
-class FormField(AbstractFormField):
-    page = ParentalKey('ContactPage', on_delete=models.CASCADE, related_name='form_fields')
-
-
-class ContactPage(AbstractEmailForm):
-    intro = RichTextField(blank=True)
-    thank_you_text = RichTextField(blank=True)
-
-    content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel('intro'),
-        InlinePanel('form_fields', label="Form fields"),
-        FieldPanel('thank_you_text'),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('from_address', classname="col6"),
-                FieldPanel('to_address', classname="col6"),
-            ]),
-            FieldPanel('subject'),
-        ], "Email"),
-    ]
-
-    class Meta:
-        verbose_name = "Contact Page"
-endef
-
-define CONTACT_PAGE_LANDING
-{% extends 'base.html' %}
-{% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
-endef
-
-define CUSTOM_ADMIN
+define DJANGO_CUSTOM_ADMIN
 # admin.py
 from django.contrib.admin import AdminSite
 
@@ -490,6 +307,13 @@ define CUSTOM_MAKEFILE
 # PROJECT_NAME := my-new-project
 endef
 
+define DJANGO_AUTHENTICATION_BACKENDS
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+endef
+
 define DJANGO_HOME_PAGE_VIEWS
 from django.views.generic import TemplateView
 
@@ -512,6 +336,190 @@ define DJANGO_HOME_PAGE_TEMPLATE
     <main class="{% block main_class %}{% endblock %}">
     </main>
 {% endblock %}
+endef
+
+define DJANGO_FRONTEND_APP_CONFIG
+import '../utils/themeToggler.js';
+// import '../utils/tinymce.js';
+endef
+
+define DJANGO_FRONTEND_PORTAL
+// Via pwellever
+import React from 'react';
+import { createPortal } from 'react-dom';
+
+const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
+  if (value.toLowerCase() === 'true') {
+    value = true;
+  } else if (value.toLowerCase() === 'false') {
+    value = false;
+  } else if (value.toLowerCase() === 'null') {
+    value = null;
+  } else if (!isNaN(parseFloat(value)) && isFinite(value)) {
+    // Parse numeric value
+    value = parseFloat(value);
+  } else if (
+    (value[0] === '[' && value.slice(-1) === ']') || (value[0] === '{' && value.slice(-1) === '}')
+  ) {
+    // Parse JSON strings
+    value = JSON.parse(value);
+  }
+
+  result[key] = value;
+  return result;
+}, {});
+
+// This method of using portals instead of calling ReactDOM.render on individual components
+// ensures that all components are mounted under a single React tree, and are therefore able
+// to share context.
+
+export default function getPageComponents (components) {
+  const getPortalComponent = domEl => {
+    // The element's "data-component" attribute is used to determine which component to render.
+    // All other "data-*" attributes are passed as props.
+    const { component: componentName, ...rest } = domEl.dataset;
+    const Component = components[componentName];
+    if (!Component) {
+      console.error(`Component "$${componentName}" not found.`);
+      return null;
+    }
+    const props = parseProps(rest);
+    domEl.innerHTML = '';
+
+    // eslint-disable-next-line no-unused-vars
+    const { ErrorBoundary } = components;
+    return createPortal(
+      <ErrorBoundary>
+        <Component {...props} />
+      </ErrorBoundary>,
+      domEl,
+    );
+  };
+
+  return Array.from(document.querySelectorAll('[data-component]')).map(getPortalComponent);
+}
+endef
+
+define DJANGO_FRONTEND_COMPONENTS
+export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as UserMenu } from './UserMenu';
+endef
+
+define DJANGO_FRONTEND_CONTEXT_INDEX
+export { UserContextProvider as default } from './UserContextProvider';
+endef
+
+define DJANGO_FRONTEND_CONTEXT_USER_PROVIDER
+// UserContextProvider.js
+import React, { createContext, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
+
+const UserContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = () => {
+    try {
+      // Add logic to handle login, set isAuthenticated to true
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Login error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  const logout = () => {
+    try {
+      // Add logic to handle logout, set isAuthenticated to false
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  return (
+    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+UserContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const useUserContext = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error('useUserContext must be used within a UserContextProvider');
+  }
+
+  return context;
+};
+
+// Add PropTypes for the return value of useUserContext
+useUserContext.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+endef
+
+define DJANGO_FRONTEND_STYLES
+// If you comment out code below, bootstrap will use red as primary color
+// and btn-primary will become red
+
+// $primary: red;
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+.jumbotron {
+  // should be relative path of the entry scss file
+  background-image: url("../../vendors/images/sample.jpg");
+  background-size: cover;
+}
+
+#theme-toggler-authenticated:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+
+#theme-toggler-anonymous:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+endef
+
+define DJANGO_FRONTEND_APP
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import 'bootstrap';
+import '@fortawesome/fontawesome-free/js/fontawesome';
+import '@fortawesome/fontawesome-free/js/solid';
+import '@fortawesome/fontawesome-free/js/regular';
+import '@fortawesome/fontawesome-free/js/brands';
+import getDataComponents from '../dataComponents';
+import UserContextProvider from '../context';
+import * as components from '../components';
+import "../styles/index.scss";
+import "../styles/theme-blue.scss";
+import "./config";
+
+const { ErrorBoundary } = components;
+const dataComponents = getDataComponents(components);
+const container = document.getElementById('app');
+const root = createRoot(container);
+const App = () => (
+    <ErrorBoundary>
+      <UserContextProvider>
+        {dataComponents}
+      </UserContextProvider>
+    </ErrorBoundary>
+);
+root.render(<App />);
 endef
 
 define DJANGO_HTML_OFFCANVAS
@@ -911,6 +919,138 @@ if __name__ == "__main__":
     main()
 endef
 
+define DJANGO_SITEUSER_ADMIN
+from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
+
+from .models import User
+
+admin.site.register(User, UserAdmin)
+endef
+
+define DJANGO_SITEUSER_EDIT_TEMPLATE
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Edit User</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <div class="d-flex">
+      <button type="submit">Save changes</button>
+      <a class="text-decoration-none" href="/user/profile">Cancel</a>
+    </div>
+  </form>
+{% endblock %}
+endef
+
+define DJANGO_SITEUSER_FORM
+from django import forms
+from django.contrib.auth.forms import UserChangeForm
+from .models import User
+
+class SiteUserForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = User
+        fields = ("username", "user_theme_preference", "bio", "rate")
+
+    bio = forms.CharField(widget=forms.Textarea(attrs={"id": "editor"}), required=False)
+endef
+
+define DJANGO_SITEUSER_MODEL
+from django.db import models
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.conf import settings
+
+class User(AbstractUser):
+    groups = models.ManyToManyField(Group, related_name='siteuser_set', blank=True)
+    user_permissions = models.ManyToManyField(
+        Permission, related_name='siteuser_set', blank=True
+    )
+    
+    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
+    
+    bio = models.TextField(blank=True, null=True)
+    rate = models.FloatField(blank=True, null=True)
+endef
+
+define DJANGO_SITEUSER_URLS
+from django.urls import path
+from .views import UserProfileView, UpdateThemePreferenceView, UserEditView
+
+urlpatterns = [
+    path('profile/', UserProfileView.as_view(), name='user-profile'),
+    path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
+    path('<int:pk>/edit/', UserEditView.as_view(), name='user-edit'),
+]
+endef
+
+define DJANGO_SITEUSER_VIEW_TEMPLATE
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>User Profile</h2>
+<div class="d-flex justify-content-end">
+    <a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
+</div>
+<p>Username: {{ user.username }}</p>
+<p>Theme: {{ user.user_theme_preference }}</p>
+<p>Bio: {{ user.bio|default:""|safe }}</p>
+<p>Rate: {{ user.rate|default:"" }}</p>
+{% endblock %}
+endef
+
+define DJANGO_SITEUSER_VIEW
+import json
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import DetailView
+from django.views.generic.edit import UpdateView
+from django.urls import reverse_lazy
+
+from .models import User
+from .forms import SiteUserForm
+
+
+class UserProfileView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "profile.html"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class UpdateThemePreferenceView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            new_theme = data.get("theme")
+            user = request.user
+            user.user_theme_preference = new_theme
+            user.save()
+            response_data = {"theme": new_theme}
+            return JsonResponse(response_data)
+        except json.JSONDecodeError as e:
+            return JsonResponse({"error": e}, status=400)
+
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+class UserEditView(LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'user_edit.html'  # Create this template in your templates folder
+    form_class = SiteUserForm
+
+    def get_success_url(self):
+        # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
+        return reverse_lazy('user-profile')
+endef
 define DJANGO_URLS
 from django.contrib import admin
 from django.urls import path, include
@@ -1059,190 +1199,6 @@ endef
 define FAVICON_TEMPLATE
 {% load static %}
 <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
-endef
-
-define FRONTEND_APP_CONFIG
-import '../utils/themeToggler.js';
-// import '../utils/tinymce.js';
-endef
-
-define FRONTEND_PORTAL
-// Via pwellever
-import React from 'react';
-import { createPortal } from 'react-dom';
-
-const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
-  if (value.toLowerCase() === 'true') {
-    value = true;
-  } else if (value.toLowerCase() === 'false') {
-    value = false;
-  } else if (value.toLowerCase() === 'null') {
-    value = null;
-  } else if (!isNaN(parseFloat(value)) && isFinite(value)) {
-    // Parse numeric value
-    value = parseFloat(value);
-  } else if (
-    (value[0] === '[' && value.slice(-1) === ']') || (value[0] === '{' && value.slice(-1) === '}')
-  ) {
-    // Parse JSON strings
-    value = JSON.parse(value);
-  }
-
-  result[key] = value;
-  return result;
-}, {});
-
-// This method of using portals instead of calling ReactDOM.render on individual components
-// ensures that all components are mounted under a single React tree, and are therefore able
-// to share context.
-
-export default function getPageComponents (components) {
-  const getPortalComponent = domEl => {
-    // The element's "data-component" attribute is used to determine which component to render.
-    // All other "data-*" attributes are passed as props.
-    const { component: componentName, ...rest } = domEl.dataset;
-    const Component = components[componentName];
-    if (!Component) {
-      console.error(`Component "$${componentName}" not found.`);
-      return null;
-    }
-    const props = parseProps(rest);
-    domEl.innerHTML = '';
-
-    // eslint-disable-next-line no-unused-vars
-    const { ErrorBoundary } = components;
-    return createPortal(
-      <ErrorBoundary>
-        <Component {...props} />
-      </ErrorBoundary>,
-      domEl,
-    );
-  };
-
-  return Array.from(document.querySelectorAll('[data-component]')).map(getPortalComponent);
-}
-endef
-
-define FRONTEND_COMPONENTS
-export { default as ErrorBoundary } from './ErrorBoundary';
-export { default as UserMenu } from './UserMenu';
-endef
-
-define FRONTEND_CONTEXT_INDEX
-export { UserContextProvider as default } from './UserContextProvider';
-endef
-
-define FRONTEND_CONTEXT_USER_PROVIDER
-// UserContextProvider.js
-import React, { createContext, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-
-const UserContext = createContext();
-
-export const UserContextProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const login = () => {
-    try {
-      // Add logic to handle login, set isAuthenticated to true
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Login error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  const logout = () => {
-    try {
-      // Add logic to handle logout, set isAuthenticated to false
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  return (
-    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-UserContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export const useUserContext = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error('useUserContext must be used within a UserContextProvider');
-  }
-
-  return context;
-};
-
-// Add PropTypes for the return value of useUserContext
-useUserContext.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-};
-endef
-
-define FRONTEND_STYLES
-// If you comment out code below, bootstrap will use red as primary color
-// and btn-primary will become red
-
-// $primary: red;
-
-@import "~bootstrap/scss/bootstrap.scss";
-
-.jumbotron {
-  // should be relative path of the entry scss file
-  background-image: url("../../vendors/images/sample.jpg");
-  background-size: cover;
-}
-
-#theme-toggler-authenticated:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-
-#theme-toggler-anonymous:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-endef
-
-define FRONTEND_APP
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import 'bootstrap';
-import '@fortawesome/fontawesome-free/js/fontawesome';
-import '@fortawesome/fontawesome-free/js/solid';
-import '@fortawesome/fontawesome-free/js/regular';
-import '@fortawesome/fontawesome-free/js/brands';
-import getDataComponents from '../dataComponents';
-import UserContextProvider from '../context';
-import * as components from '../components';
-import "../styles/index.scss";
-import "../styles/theme-blue.scss";
-import "./config";
-
-const { ErrorBoundary } = components;
-const dataComponents = getDataComponents(components);
-const container = document.getElementById('app');
-const root = createRoot(container);
-const App = () => (
-    <ErrorBoundary>
-      <UserContextProvider>
-        {dataComponents}
-      </UserContextProvider>
-    </ErrorBoundary>
-);
-root.render(<App />);
 endef
 
 define GIT_IGNORE
@@ -1642,9 +1598,11 @@ class CheckoutView(View):
         return redirect(session.url, code=303)
 
 class SuccessView(TemplateView):
+
     template_name = 'payments/success.html'
 
 class CancelView(TemplateView):
+
     template_name = 'payments/cancel.html'
 endef
 
@@ -1795,6 +1753,7 @@ class DataStructure:
 
 
 class Interview(DataStructure):
+
     # Protected methods for factorial calculation
     def _factorial_recursive(self, n):
         if n == 0:
@@ -1991,6 +1950,7 @@ class Interview(DataStructure):
 
 
 def setup_readline(local):
+
     # Enable tab completion
     readline.parse_and_bind("tab: complete")
     # Optionally, you can set the completer function manually
@@ -2253,138 +2213,6 @@ THEMES = [
 ]
 endef
 
-define SITEUSER_ADMIN
-from django.contrib.auth.admin import UserAdmin
-from django.contrib import admin
-
-from .models import User
-
-admin.site.register(User, UserAdmin)
-endef
-
-define SITEUSER_EDIT_TEMPLATE
-{% extends 'base.html' %}
-
-{% block content %}
-  <h2>Edit User</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <div class="d-flex">
-      <button type="submit">Save changes</button>
-      <a class="text-decoration-none" href="/user/profile">Cancel</a>
-    </div>
-  </form>
-{% endblock %}
-endef
-
-define SITEUSER_FORM
-from django import forms
-from django.contrib.auth.forms import UserChangeForm
-from .models import User
-
-class SiteUserForm(UserChangeForm):
-    class Meta(UserChangeForm.Meta):
-        model = User
-        fields = ("username", "user_theme_preference", "bio", "rate")
-
-    bio = forms.CharField(widget=forms.Textarea(attrs={"id": "editor"}), required=False)
-endef
-
-define SITEUSER_MODEL
-from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
-from django.conf import settings
-
-class User(AbstractUser):
-    groups = models.ManyToManyField(Group, related_name='siteuser_set', blank=True)
-    user_permissions = models.ManyToManyField(
-        Permission, related_name='siteuser_set', blank=True
-    )
-    
-    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
-    
-    bio = models.TextField(blank=True, null=True)
-    rate = models.FloatField(blank=True, null=True)
-endef
-
-define SITEUSER_URLS
-from django.urls import path
-from .views import UserProfileView, UpdateThemePreferenceView, UserEditView
-
-urlpatterns = [
-    path('profile/', UserProfileView.as_view(), name='user-profile'),
-    path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
-    path('<int:pk>/edit/', UserEditView.as_view(), name='user-edit'),
-]
-endef
-
-define SITEUSER_VIEW_TEMPLATE
-{% extends 'base.html' %}
-
-{% block content %}
-<h2>User Profile</h2>
-<div class="d-flex justify-content-end">
-    <a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
-</div>
-<p>Username: {{ user.username }}</p>
-<p>Theme: {{ user.user_theme_preference }}</p>
-<p>Bio: {{ user.bio|default:""|safe }}</p>
-<p>Rate: {{ user.rate|default:"" }}</p>
-{% endblock %}
-endef
-
-define SITEUSER_VIEW
-import json
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse
-from django.utils.decorators import method_decorator
-from django.views import View
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import DetailView
-from django.views.generic.edit import UpdateView
-from django.urls import reverse_lazy
-
-from .models import User
-from .forms import SiteUserForm
-
-
-class UserProfileView(LoginRequiredMixin, DetailView):
-    model = User
-    template_name = "profile.html"
-
-    def get_object(self, queryset=None):
-        return self.request.user
-
-
-@method_decorator(csrf_exempt, name="dispatch")
-class UpdateThemePreferenceView(View):
-    def post(self, request, *args, **kwargs):
-        try:
-            data = json.loads(request.body.decode("utf-8"))
-            new_theme = data.get("theme")
-            user = request.user
-            user.user_theme_preference = new_theme
-            user.save()
-            response_data = {"theme": new_theme}
-            return JsonResponse(response_data)
-        except json.JSONDecodeError as e:
-            return JsonResponse({"error": e}, status=400)
-
-    def http_method_not_allowed(self, request, *args, **kwargs):
-        return JsonResponse({"error": "Invalid request method"}, status=405)
-
-
-class UserEditView(LoginRequiredMixin, UpdateView):
-    model = User
-    template_name = 'user_edit.html'  # Create this template in your templates folder
-    form_class = SiteUserForm
-
-    def get_success_url(self):
-        # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
-        return reverse_lazy('user-profile')
-endef
 
 define SITEPAGE_TEMPLATE
 {% extends 'base.html' %}
@@ -2490,6 +2318,180 @@ tinymce.init({
 });
 endef
 
+define WAGTAIL_BLOCK_CAROUSEL
+        <div id="carouselExampleCaptions" class="carousel slide">
+            <div class="carousel-indicators">
+                {% for image in block.value.images %}
+                    <button type="button"
+                            data-bs-target="#carouselExampleCaptions"
+                            data-bs-slide-to="{{ forloop.counter0 }}"
+                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                            aria-label="Slide {{ forloop.counter }}"></button>
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+                {% for image in block.value.images %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>{{ image.title }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next"
+                    type="button"
+                    data-bs-target="#carouselExampleCaptions"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+endef
+
+define WAGTAIL_BLOCK_MARKETING
+{% load wagtailcore_tags %}
+<div class="{{ self.block_class }}">
+    {% if block.value.images.0 %}
+        {% include 'blocks/carousel_block.html' %}
+    {% else %}
+        {{ self.title }}
+        {{ self.content }}
+    {% endif %}
+</div>
+endef
+
+define WAGTAIL_CONTACT_PAGE_TEMPLATE
+{% extends 'base.html' %}
+{% load crispy_forms_tags static wagtailcore_tags %}
+{% block content %}
+        <h1>{{ page.title }}</h1>
+        {{ page.intro|richtext }}
+        <form action="{% pageurl page %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit">
+        </form>
+{% endblock %}
+endef
+
+define WAGTAIL_CONTACT_PAGE_TEST
+from django.test import TestCase
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail.models import Page
+
+from contactpage.models import ContactPage, FormField
+
+class ContactPageTest(TestCase, WagtailPageTestCase):
+    def test_contact_page_creation(self):
+        # Create a ContactPage instance
+        contact_page = ContactPage(
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
+        )
+
+        # Save the ContactPage instance
+        self.assertEqual(contact_page.save_revision().publish().get_latest_revision_as_page(), contact_page)
+
+    def test_form_field_creation(self):
+        # Create a ContactPage instance
+        contact_page = ContactPage(
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
+        )
+        # Save the ContactPage instance
+        contact_page_revision = contact_page.save_revision()
+        contact_page_revision.publish()
+
+        # Create a FormField associated with the ContactPage
+        form_field = FormField(
+            page=contact_page,
+            label='Your Name',
+            field_type='singleline',
+            required=True
+        )
+        form_field.save()
+
+        # Retrieve the ContactPage from the database
+        contact_page_from_db = Page.objects.get(id=contact_page.id).specific
+
+        # Check if the FormField is associated with the ContactPage
+        self.assertEqual(contact_page_from_db.form_fields.first(), form_field)
+
+    def test_contact_page_form_submission(self):
+        # Create a ContactPage instance
+        contact_page = ContactPage(
+            title='Contact',
+            intro='Welcome to our contact page!',
+            thank_you_text='Thank you for reaching out.'
+        )
+        # Save the ContactPage instance
+        contact_page_revision = contact_page.save_revision()
+        contact_page_revision.publish()
+
+        # Simulate a form submission
+        form_data = {
+            'your_name': 'John Doe',
+            # Add other form fields as needed
+        }
+
+        response = self.client.post(contact_page.url, form_data)
+
+        # Check if the form submission is successful (assuming a 302 redirect)
+        self.assertEqual(response.status_code, 302)
+        
+        # You may add more assertions based on your specific requirements
+endef
+
+define WAGTAIL_CONTACT_PAGE_MODEL
+from django.db import models
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import (
+    FieldPanel, FieldRowPanel,
+    InlinePanel, MultiFieldPanel
+)
+from wagtail.fields import RichTextField
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+
+
+class FormField(AbstractFormField):
+    page = ParentalKey('ContactPage', on_delete=models.CASCADE, related_name='form_fields')
+
+
+class ContactPage(AbstractEmailForm):
+    intro = RichTextField(blank=True)
+    thank_you_text = RichTextField(blank=True)
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label="Form fields"),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel('subject'),
+        ], "Email"),
+    ]
+
+    class Meta:
+        verbose_name = "Contact Page"
+endef
+
+define WAGTAIL_CONTACT_PAGE_LANDING
+{% extends 'base.html' %}
+{% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
+endef
 define WAGTAIL_HTML_OFFCANVAS
 {% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
@@ -2855,23 +2857,28 @@ endef
 # ------------------------------------------------------------------------------  
 
 export ALLAUTH_LAYOUT_BASE
-export AUTHENTICATION_BACKENDS
 export BABELRC
-export BACKEND_APPS
-export BLOCK_CAROUSEL
-export BLOCK_MARKETING
 export COMPONENT_CLOCK
 export COMPONENT_ERROR
 export COMPONENT_USER_MENU
-export CONTACT_PAGE_MODEL
-export CONTACT_PAGE_TEMPLATE
-export CONTACT_PAGE_LANDING
-export CONTACT_PAGE_TEST
-export CUSTOM_ADMIN
+export WAGTAIL_CONTACT_PAGE_MODEL
+export WAGTAIL_CONTACT_PAGE_TEMPLATE
+export WAGTAIL_CONTACT_PAGE_LANDING
+export WAGTAIL_CONTACT_PAGE_TEST
 export CUSTOM_ENV_EC2_USER
 export CUSTOM_ENV_VAR_FILE
 export CUSTOM_MAKEFILE
+export DJANGO_AUTHENTICATION_BACKENDS
+export DJANGO_BACKEND_APPS
 export DJANGO_BASE_TEMPLATE
+export DJANGO_CUSTOM_ADMIN
+export DJANGO_FRONTEND_APP
+export DJANGO_FRONTEND_APP_CONFIG
+export DJANGO_FRONTEND_COMPONENTS
+export DJANGO_FRONTEND_PORTAL
+export DJANGO_FRONTEND_STYLES
+export DJANGO_FRONTEND_CONTEXT_INDEX
+export DJANGO_FRONTEND_CONTEXT_USER_PROVIDER
 export DJANGO_MANAGE_PY
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_PROD
@@ -2895,15 +2902,17 @@ export DJANGO_SEARCH_TEMPLATE
 export DJANGO_SEARCH_URLS
 export DJANGO_SEARCH_UTILS
 export DJANGO_SEARCH_VIEWS
+export DJANGO_SITEUSER_ADMIN
+export DJANGO_SITEUSER_FORM
+export DJANGO_SITEUSER_MODEL
+export DJANGO_SITEUSER_URLS
+export DJANGO_SITEUSER_VIEW
+export DJANGO_SITEUSER_VIEW_TEMPLATE
+export DJANGO_SITEUSER_EDIT_TEMPLATE
 export DOCKERFILE
 export DOCKERCOMPOSE
 export ESLINTRC
 export FAVICON_TEMPLATE
-export FRONTEND_APP
-export FRONTEND_APP_CONFIG
-export FRONTEND_COMPONENTS
-export FRONTEND_PORTAL
-export FRONTEND_STYLES
 export GIT_IGNORE
 export HTML_ERROR
 export HTML_INDEX
@@ -2923,8 +2932,6 @@ export MODEL_FORM_DEMO_TEMPLATE_DETAIL
 export MODEL_FORM_DEMO_TEMPLATE_FORM
 export MODEL_FORM_DEMO_TEMPLATE_LIST
 export PRIVACY_PAGE_MODEL
-export FRONTEND_CONTEXT_INDEX
-export FRONTEND_CONTEXT_USER_PROVIDER
 export PAYMENTS_ADMIN
 export PAYMENTS_FORM
 export PAYMENTS_MIGRATION_0002
@@ -2947,17 +2954,12 @@ export REQUIREMENTS_TEST
 export SEPARATOR
 export SITEPAGE_MODEL
 export SITEPAGE_TEMPLATE
-export SITEUSER_ADMIN
-export SITEUSER_FORM
-export SITEUSER_MODEL
-export SITEUSER_URLS
-export SITEUSER_VIEW
-export SITEUSER_VIEW_TEMPLATE
-export SITEUSER_EDIT_TEMPLATE
 export THEME_BLUE
 export THEME_TOGGLER
 export TINYMCE_JS
 export WAGTAIL_BASE_TEMPLATE
+export WAGTAIL_BLOCK_CAROUSEL
+export WAGTAIL_BLOCK_MARKETING
 export WAGTAIL_HOME_PAGE_MODEL
 export WAGTAIL_HOME_PAGE_TEMPLATE
 export WAGTAIL_HOME_PAGE_VIEWS
@@ -3162,8 +3164,8 @@ django-utils-default:
 	-$(GIT_ADD) backend/utils.py
 
 django-custom-admin-default:
-	@echo "$$CUSTOM_ADMIN" > $(CUSTOM_ADMIN_FILE)
-	@echo "$$BACKEND_APPS" > $(BACKEND_APPS_FILE)
+	@echo "$$DJANGO_CUSTOM_ADMIN" > $(DJANGO_CUSTOM_ADMIN_FILE)
+	@echo "$$DJANGO_BACKEND_APPS" > $(DJANGO_BACKEND_APPS_FILE)
 	-$(GIT_ADD) backend/*.py
 
 django-dockerfile-default:
@@ -3373,14 +3375,14 @@ django-frontend-default: python-webpack-init
 	$(ADD_DIR) frontend/src/utils
 	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
-	@echo "$$FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
-	@echo "$$FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
+	@echo "$$DJANGO_FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
+	@echo "$$DJANGO_FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
 	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
-	@echo "$$FRONTEND_APP" > frontend/src/application/app.js
-	@echo "$$FRONTEND_APP_CONFIG" > frontend/src/application/config.js
-	@echo "$$FRONTEND_COMPONENTS" > frontend/src/components/index.js
-	@echo "$$FRONTEND_PORTAL" > frontend/src/dataComponents.js
-	@echo "$$FRONTEND_STYLES" > frontend/src/styles/index.scss
+	@echo "$$DJANGO_FRONTEND_APP" > frontend/src/application/app.js
+	@echo "$$DJANGO_FRONTEND_APP_CONFIG" > frontend/src/application/config.js
+	@echo "$$DJANGO_FRONTEND_COMPONENTS" > frontend/src/components/index.js
+	@echo "$$DJANGO_FRONTEND_PORTAL" > frontend/src/dataComponents.js
+	@echo "$$DJANGO_FRONTEND_STYLES" > frontend/src/styles/index.scss
 	@echo "$$BABELRC" > frontend/.babelrc
 	@echo "$$ESLINTRC" > frontend/.eslintrc
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
@@ -3389,7 +3391,7 @@ django-frontend-default: python-webpack-init
 	@$(MAKE) django-npm-save
 	@$(MAKE) django-npm-save-dev
 	@$(MAKE) npm-install
-	-$(GIT_ADD) $(FRONTEND_FILES)
+	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
 
 django-home-default:
 	python manage.py startapp home
@@ -3458,14 +3460,14 @@ django-secret-key-default:
 django-siteuser-default:
 	python manage.py startapp siteuser
 	$(ADD_DIR) siteuser/templates/
-	@echo "$$SITEUSER_FORM" > siteuser/forms.py
-	@echo "$$SITEUSER_MODEL" > siteuser/models.py
-	@echo "$$SITEUSER_ADMIN" > siteuser/admin.py
-	@echo "$$SITEUSER_VIEW" > siteuser/views.py
-	@echo "$$SITEUSER_URLS" > siteuser/urls.py
-	@echo "$$SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
-	@echo "$$SITEUSER_TEMPLATE" > siteuser/templates/user.html
-	@echo "$$SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
+	@echo "$$DJANGO_SITEUSER_FORM" > siteuser/forms.py
+	@echo "$$DJANGO_SITEUSER_MODEL" > siteuser/models.py
+	@echo "$$DJANGO_SITEUSER_ADMIN" > siteuser/admin.py
+	@echo "$$DJANGO_SITEUSER_VIEW" > siteuser/views.py
+	@echo "$$DJANGO_SITEUSER_URLS" > siteuser/urls.py
+	@echo "$$DJANGO_SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
+	@echo "$$DJANGO_SITEUSER_TEMPLATE" > siteuser/templates/user.html
+	@echo "$$DJANGO_SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
 	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('user/', include('siteuser.urls'))]" >> backend/urls.py
@@ -3544,7 +3546,7 @@ django-settings-base-default:
 	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "import os  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_THEMES" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "ALLOWED_HOSTS = ['*']" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3995,7 +3997,6 @@ wagtail-settings-default:
 	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(DJANGO_SETTINGS_BASE_FILE)
 
-
 wagtail-privacy-default:
 	python manage.py startapp privacy
 	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
@@ -4027,8 +4028,8 @@ wagtail-home-default:
 	@echo "$$WAGTAIL_HOME_PAGE_MODEL" > home/models.py
 	@echo "$$WAGTAIL_HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
 	$(ADD_DIR) home/templates/blocks
-	@echo "$$BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
-	@echo "$$BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
+	@echo "$$WAGTAIL_BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
+	@echo "$$WAGTAIL_BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	-$(GIT_ADD) home/templates
 	-$(GIT_ADD) home/*.py
 	python manage.py makemigrations home
@@ -4091,11 +4092,11 @@ webpack-reveal-init-default: npm-init
 
 wagtail-contactpage-default:
 	python manage.py startapp contactpage
-	@echo "$$CONTACT_PAGE_MODEL" > contactpage/models.py
-	@echo "$$CONTACT_PAGE_TEST" > contactpage/tests.py
+	@echo "$$WAGTAIL_CONTACT_PAGE_MODEL" > contactpage/models.py
+	@echo "$$WAGTAIL_CONTACT_PAGE_TEST" > contactpage/tests.py
 	$(ADD_DIR) contactpage/templates/contactpage/
-	@echo "$$CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
-	@echo "$$CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
+	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
+	@echo "$$WAGTAIL_CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
 	@echo "INSTALLED_APPS.append('contactpage')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations contactpage
 	-$(GIT_ADD) contactpage/templates
