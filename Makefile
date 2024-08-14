@@ -7,28 +7,34 @@
 # --------------------------------------------------------------------------------
 # Variables (override)
 # --------------------------------------------------------------------------------
-#
 .DEFAULT_GOAL := git-commit-push
-CUSTOM_MAKEFILE_FILE := project.mk
-DATABASE_AWK = awk -F\= '{print $$2}'
-DATABASE_HOST = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
-    python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["HOST"])')
-DATABASE_NAME = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
-    python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
-DATABASE_PASS = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
-    python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
-DATABASE_USER = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
-    python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
+DJANGO_DB_COL = awk -F\= '{print $$2}'
+DJANGO_DB_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL"
+DJANGO_DB_HOST = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
+	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["HOST"])')
+DJANGO_DB_NAME = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
+	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
+DJANGO_DB_PASS = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
+	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
+DJANGO_DB_USER = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
+	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 DJANGO_BACKEND_APPS_FILE := backend/apps.py
 DJANGO_CUSTOM_ADMIN_FILE := backend/admin.py
-DJANGO_FRONTEND_FILES = frontend .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
+DJANGO_FRONTEND_FILES = .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json frontend package-lock.json \
+	package.json postcss.config.js
 DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
-ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
-GET_DATABASE_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var;\
-    env | grep DATABASE_URL"
+EB_DIR_NAME := .elasticbeanstalk
+EB_ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
+EB_PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
+EC2_INSTANCE_MAX ?= 1
+EC2_INSTANCE_MIN ?= 1
+EC2_INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
+EC2_INSTANCE_TYPE ?= t4g.small
+EC2_LB_TYPE ?= application
+EDITOR_REVIEW = subl
 GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
@@ -36,27 +42,22 @@ GIT_MESSAGE = "Update $(PROJECT_NAME)"
 GIT_PUSH = git push
 GIT_PUSH_FORCE = git push --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
-INSTANCE_MAX ?= 1
-INSTANCE_MIN ?= 1
-INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
-INSTANCE_TYPE ?= t4g.small
-LB_TYPE ?= application
+MAKEFILE_CUSTOM_FILE := project.mk
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 PAGER ?= less
-PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
-PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
+PIP_ENSURE = python -m ensurepip
+PIP_CONSTRAINTS_PLONE = https://dist.plone.org/release/6.0.11.1/constraints.txt
 PROJECT_DIRS = backend contactpage home privacy siteuser
 PROJECT_EMAIL := aclark@aclark.net
 PROJECT_NAME = project-makefile
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
-REVIEW_EDITOR = subl
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
 WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
-WAGTAIL_CLEAN_FILES = README.rst README.md .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
+WAGTAIL_CLEAN_FILES = .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 
-ifneq ($(wildcard $(CUSTOM_MAKEFILE_FILE)),)
-    include $(CUSTOM_MAKEFILE_FILE)
+ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
+    include $(MAKEFILE_CUSTOM_FILE)
 endif
 
 # --------------------------------------------------------------------------------
@@ -70,216 +71,13 @@ COPY_DIR := cp -rv
 COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
-EB_DIR = .elasticbeanstalk
-ENSURE_PIP := python -m ensurepip
 GIT_ADD := git add
 
 # --------------------------------------------------------------------------------
 # Multi-line variables
 # --------------------------------------------------------------------------------
 
-define ALLAUTH_LAYOUT_BASE
-{% extends 'base.html' %}
-endef
-
-define BABELRC
-{
-  "presets": [
-    [
-      "@babel/preset-react",
-    ],
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "usage",
-        "corejs": "3.0.0"
-      }
-    ]
-  ],
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-class-properties"
-  ]
-}
-endef
-
-define COMPONENT_CLOCK
-// Via ChatGPT
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import PropTypes from 'prop-types';
-
-const Clock = ({ color = '#fff' }) => {
-  const [date, setDate] = useState(new Date());
-  const [blink, setBlink] = useState(true);
-  const timerID = useRef();
-
-  const tick = useCallback(() => {
-    setDate(new Date());
-    setBlink(prevBlink => !prevBlink);
-  }, []);
-
-  useEffect(() => {
-    timerID.current = setInterval(() => tick(), 1000);
-
-    // Return a cleanup function to be run on component unmount
-    return () => clearInterval(timerID.current);
-  }, [tick]);
-
-  const formattedDate = date.toLocaleDateString(undefined, {
-    weekday: 'short',
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
-  const formattedTime = date.toLocaleTimeString(undefined, {
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-
-  return (
-    <> 
-      <div style={{ animation: blink ? 'blink 1s infinite' : 'none' }}><span className='me-2'>{formattedDate}</span> {formattedTime}</div>
-    </>
-  );
-};
-
-Clock.propTypes = {
-  color: PropTypes.string,
-};
-
-export default Clock;
-endef
-
-define COMPONENT_ERROR
-import { Component } from 'react';
-import PropTypes from 'prop-types';
-
-class ErrorBoundary extends Component {
-  constructor (props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError () {
-    return { hasError: true };
-  }
-
-  componentDidCatch (error, info) {
-    const { onError } = this.props;
-    console.error(error);
-    onError && onError(error, info);
-  }
-
-  render () {
-    const { children = null } = this.props;
-    const { hasError } = this.state;
-
-    return hasError ? null : children;
-  }
-}
-
-ErrorBoundary.propTypes = {
-  onError: PropTypes.func,
-  children: PropTypes.node,
-};
-
-export default ErrorBoundary;
-endef
-
-define COMPONENT_USER_MENU
-// UserMenu.js
-import React from 'react';
-import PropTypes from 'prop-types';
-
-function handleLogout() {
-    window.location.href = '/accounts/logout';
-}
-
-const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
-  return (
-    <div> 
-      {isAuthenticated ? (
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i className="fa-solid fa-circle-user"></i>
-          </a>
-          <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
-            <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
-            <li><a className="dropdown-item" href="/logging-demo/">Logging Demo</a></li>
-            <li><a className="dropdown-item" href="/payments/">Payments Demo</a></li>
-            {isSuperuser ? (
-              <>
-                <li><hr className="dropdown-divider"></hr></li>
-                <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
-                <li><a className="dropdown-item" href="/api" target="_blank">Django API</a></li>
-                <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
-                <li><a className="dropdown-item" href="/explorer" target="_blank">SQL Explorer</a></li>
-              </>
-            ) : null}
-            <li><hr className="dropdown-divider"></hr></li>
-            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
-          </ul>
-        </li>
-      ) : (
-        <li className="nav-item">
-          <a className={`nav-link text-$${textColor}`} href="/accounts/login"><i className="fa-solid fa-circle-user"></i></a>
-        </li>
-      )}
-    </div>
-  );
-};
-
-UserMenu.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  isSuperuser: PropTypes.bool.isRequired,
-  textColor: PropTypes.string,
-};
-
-export default UserMenu;
-endef
-
-define DJANGO_BACKEND_APPS
-from django.contrib.admin.apps import AdminConfig
-
-class CustomAdminConfig(AdminConfig):
-    default_site = "backend.admin.CustomAdminSite"
-endef
-
-define DJANGO_CUSTOM_ADMIN
-# admin.py
-from django.contrib.admin import AdminSite
-
-class CustomAdminSite(AdminSite):
-    site_header = 'Project Makefile'
-    site_title = 'Project Makefile'
-    index_title = 'Project Makefile'
-
-custom_admin_site = CustomAdminSite(name='custom_admin')
-endef
-
-define CUSTOM_ENV_EC2_USER
-files:
-    "/home/ec2-user/.bashrc":
-        mode: "000644"
-        owner: ec2-user
-        group: ec2-user
-        content: |
-            # .bashrc
-
-            # Source global definitions
-            if [ -f /etc/bashrc ]; then
-                    . /etc/bashrc
-            fi
-
-            # User specific aliases and functions
-            set -o vi
-
-            source <(sed -E -n 's/[^#]+/export &/ p' /opt/elasticbeanstalk/deployment/custom_env_var)
-endef
-
-define CUSTOM_ENV_VAR_FILE
+define EB_CUSTOM_ENV_VAR_FILE
 #!/bin/bash
 
 # Via https://aws.amazon.com/premiumsupport/knowledge-center/elastic-beanstalk-env-variables-linux2/
@@ -300,11 +98,28 @@ EOF
 rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
-define CUSTOM_MAKEFILE
-# Custom Makefile
-# Add your custom makefile commands here
-#
-# PROJECT_NAME := my-new-project
+define EB_CUSTOM_ENV_EC2_USER
+files:
+    "/home/ec2-user/.bashrc":
+        mode: "000644"
+        owner: ec2-user
+        group: ec2-user
+        content: |
+            # .bashrc
+
+            # Source global definitions
+            if [ -f /etc/bashrc ]; then
+                    . /etc/bashrc
+            fi
+
+            # User specific aliases and functions
+            set -o vi
+
+            source <(sed -E -n 's/[^#]+/export &/ p' /opt/elasticbeanstalk/deployment/custom_env_var)
+endef
+
+define DJANGO_ALLAUTH_LAYOUT_BASE
+{% extends 'base.html' %}
 endef
 
 define DJANGO_AUTHENTICATION_BACKENDS
@@ -314,239 +129,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
-define DJANGO_HOME_PAGE_VIEWS
-from django.views.generic import TemplateView
+define DJANGO_BACKEND_APPS
+from django.contrib.admin.apps import AdminConfig
 
-class HomeView(TemplateView):
-    template_name = "home.html"
-endef
-
-define DJANGO_HOME_PAGE_URLS
-from django.urls import path
-from .views import HomeView
-
-urlpatterns = [
-    path("", HomeView.as_view(), name="home")
-]
-endef
-
-define DJANGO_HOME_PAGE_TEMPLATE
-{% extends "base.html" %}
-{% block content %}
-    <main class="{% block main_class %}{% endblock %}">
-    </main>
-{% endblock %}
-endef
-
-define DJANGO_FRONTEND_APP_CONFIG
-import '../utils/themeToggler.js';
-// import '../utils/tinymce.js';
-endef
-
-define DJANGO_FRONTEND_PORTAL
-// Via pwellever
-import React from 'react';
-import { createPortal } from 'react-dom';
-
-const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
-  if (value.toLowerCase() === 'true') {
-    value = true;
-  } else if (value.toLowerCase() === 'false') {
-    value = false;
-  } else if (value.toLowerCase() === 'null') {
-    value = null;
-  } else if (!isNaN(parseFloat(value)) && isFinite(value)) {
-    // Parse numeric value
-    value = parseFloat(value);
-  } else if (
-    (value[0] === '[' && value.slice(-1) === ']') || (value[0] === '{' && value.slice(-1) === '}')
-  ) {
-    // Parse JSON strings
-    value = JSON.parse(value);
-  }
-
-  result[key] = value;
-  return result;
-}, {});
-
-// This method of using portals instead of calling ReactDOM.render on individual components
-// ensures that all components are mounted under a single React tree, and are therefore able
-// to share context.
-
-export default function getPageComponents (components) {
-  const getPortalComponent = domEl => {
-    // The element's "data-component" attribute is used to determine which component to render.
-    // All other "data-*" attributes are passed as props.
-    const { component: componentName, ...rest } = domEl.dataset;
-    const Component = components[componentName];
-    if (!Component) {
-      console.error(`Component "$${componentName}" not found.`);
-      return null;
-    }
-    const props = parseProps(rest);
-    domEl.innerHTML = '';
-
-    // eslint-disable-next-line no-unused-vars
-    const { ErrorBoundary } = components;
-    return createPortal(
-      <ErrorBoundary>
-        <Component {...props} />
-      </ErrorBoundary>,
-      domEl,
-    );
-  };
-
-  return Array.from(document.querySelectorAll('[data-component]')).map(getPortalComponent);
-}
-endef
-
-define DJANGO_FRONTEND_COMPONENTS
-export { default as ErrorBoundary } from './ErrorBoundary';
-export { default as UserMenu } from './UserMenu';
-endef
-
-define DJANGO_FRONTEND_CONTEXT_INDEX
-export { UserContextProvider as default } from './UserContextProvider';
-endef
-
-define DJANGO_FRONTEND_CONTEXT_USER_PROVIDER
-// UserContextProvider.js
-import React, { createContext, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-
-const UserContext = createContext();
-
-export const UserContextProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const login = () => {
-    try {
-      // Add logic to handle login, set isAuthenticated to true
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Login error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  const logout = () => {
-    try {
-      // Add logic to handle logout, set isAuthenticated to false
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  return (
-    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-UserContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export const useUserContext = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error('useUserContext must be used within a UserContextProvider');
-  }
-
-  return context;
-};
-
-// Add PropTypes for the return value of useUserContext
-useUserContext.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-};
-endef
-
-define DJANGO_FRONTEND_STYLES
-// If you comment out code below, bootstrap will use red as primary color
-// and btn-primary will become red
-
-// $primary: red;
-
-@import "~bootstrap/scss/bootstrap.scss";
-
-.jumbotron {
-  // should be relative path of the entry scss file
-  background-image: url("../../vendors/images/sample.jpg");
-  background-size: cover;
-}
-
-#theme-toggler-authenticated:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-
-#theme-toggler-anonymous:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-endef
-
-define DJANGO_FRONTEND_APP
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import 'bootstrap';
-import '@fortawesome/fontawesome-free/js/fontawesome';
-import '@fortawesome/fontawesome-free/js/solid';
-import '@fortawesome/fontawesome-free/js/regular';
-import '@fortawesome/fontawesome-free/js/brands';
-import getDataComponents from '../dataComponents';
-import UserContextProvider from '../context';
-import * as components from '../components';
-import "../styles/index.scss";
-import "../styles/theme-blue.scss";
-import "./config";
-
-const { ErrorBoundary } = components;
-const dataComponents = getDataComponents(components);
-const container = document.getElementById('app');
-const root = createRoot(container);
-const App = () => (
-    <ErrorBoundary>
-      <UserContextProvider>
-        {dataComponents}
-      </UserContextProvider>
-    </ErrorBoundary>
-);
-root.render(<App />);
-endef
-
-define DJANGO_HTML_OFFCANVAS
-<div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <a class="offcanvas-title text-light h5 text-decoration-none" id="offcanvasExampleLabel" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-    <button type="button" class="btn-close bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body bg-dark">
-    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      <li class="nav-item">
-        <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
-      </li>
-      {% for child in current_site.root_page.get_children %}
-      <li class="nav-item">
-        <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
-      </li>
-      {% endfor %}
-      <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
-          <span class="nav-link text-light" data-bs-toggle="tooltip" title="Toggle dark mode">
-              <i class="fas fa-circle-half-stroke"></i>
-          </span>
-      </li>
-      <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
-    </ul>
-  </div>
-</div>
+class CustomAdminConfig(AdminConfig):
+    default_site = "backend.admin.CustomAdminSite"
 endef
 
 define DJANGO_BASE_TEMPLATE
@@ -627,7 +214,496 @@ define DJANGO_BASE_TEMPLATE
 </html>
 endef
 
-define DJANGO_HEADER
+define DJANGO_CUSTOM_ADMIN
+# admin.py
+from django.contrib.admin import AdminSite
+
+class CustomAdminSite(AdminSite):
+    site_header = 'Project Makefile'
+    site_title = 'Project Makefile'
+    index_title = 'Project Makefile'
+
+custom_admin_site = CustomAdminSite(name='custom_admin')
+endef
+
+define DJANGO_DOCKERFILE
+FROM amazonlinux:2023
+RUN dnf install -y shadow-utils python3.11 python3.11-pip make nodejs20-npm nodejs postgresql15 postgresql15-server
+USER postgres
+RUN initdb -D /var/lib/pgsql/data
+USER root
+RUN useradd wagtail
+EXPOSE 8000
+ENV PYTHONUNBUFFERED=1 PORT=8000
+COPY requirements.txt /
+RUN python3.11 -m pip install -r /requirements.txt
+WORKDIR /app
+RUN chown wagtail:wagtail /app
+COPY --chown=wagtail:wagtail . .
+USER wagtail
+RUN npm-20 install; npm-20 run build
+RUN python3.11 manage.py collectstatic --noinput --clear
+CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
+endef
+
+define DJANGO_DOCKERCOMPOSE
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: project
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+
+  web:
+    build: .
+    command: sh -c "python manage.py migrate && gunicorn project.wsgi:application -b 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://admin:admin@db:5432/project
+
+volumes:
+  postgres_data:
+endef
+
+define DJANGO_FAVICON_TEMPLATE
+{% load static %}
+<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
+endef
+
+define DJANGO_FOOTER_TEMPLATE
+  <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
+    <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
+      {% for child in current_site.root_page.get_children %}
+          <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
+      {% endfor %}
+    </ul>
+  </footer>
+endef
+
+define DJANGO_FRONTEND_APP
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import 'bootstrap';
+import '@fortawesome/fontawesome-free/js/fontawesome';
+import '@fortawesome/fontawesome-free/js/solid';
+import '@fortawesome/fontawesome-free/js/regular';
+import '@fortawesome/fontawesome-free/js/brands';
+import getDataComponents from '../dataComponents';
+import UserContextProvider from '../context';
+import * as components from '../components';
+import "../styles/index.scss";
+import "../styles/theme-blue.scss";
+import "./config";
+
+const { ErrorBoundary } = components;
+const dataComponents = getDataComponents(components);
+const container = document.getElementById('app');
+const root = createRoot(container);
+const App = () => (
+    <ErrorBoundary>
+      <UserContextProvider>
+        {dataComponents}
+      </UserContextProvider>
+    </ErrorBoundary>
+);
+root.render(<App />);
+endef
+
+define DJANGO_FRONTEND_APP_CONFIG
+import '../utils/themeToggler.js';
+// import '../utils/tinymce.js';
+endef
+
+define DJANGO_FRONTEND_BABELRC
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "3.0.0"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-class-properties"
+  ]
+}
+endef
+
+define DJANGO_FRONTEND_COMPONENTS
+export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as UserMenu } from './UserMenu';
+endef
+
+define DJANGO_FRONTEND_CONTEXT_INDEX
+export { UserContextProvider as default } from './UserContextProvider';
+endef
+
+define DJANGO_FRONTEND_CONTEXT_USER_PROVIDER
+// UserContextProvider.js
+import React, { createContext, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
+
+const UserContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = () => {
+    try {
+      // Add logic to handle login, set isAuthenticated to true
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Login error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  const logout = () => {
+    try {
+      // Add logic to handle logout, set isAuthenticated to false
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  return (
+    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+UserContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const useUserContext = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error('useUserContext must be used within a UserContextProvider');
+  }
+
+  return context;
+};
+
+// Add PropTypes for the return value of useUserContext
+useUserContext.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+endef
+
+define DJANGO_FRONTEND_COMPONENT_CLOCK
+// Via ChatGPT
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
+
+const Clock = ({ color = '#fff' }) => {
+  const [date, setDate] = useState(new Date());
+  const [blink, setBlink] = useState(true);
+  const timerID = useRef();
+
+  const tick = useCallback(() => {
+    setDate(new Date());
+    setBlink(prevBlink => !prevBlink);
+  }, []);
+
+  useEffect(() => {
+    timerID.current = setInterval(() => tick(), 1000);
+
+    // Return a cleanup function to be run on component unmount
+    return () => clearInterval(timerID.current);
+  }, [tick]);
+
+  const formattedDate = date.toLocaleDateString(undefined, {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+
+  const formattedTime = date.toLocaleTimeString(undefined, {
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+
+  return (
+    <> 
+      <div style={{ animation: blink ? 'blink 1s infinite' : 'none' }}><span className='me-2'>{formattedDate}</span> {formattedTime}</div>
+    </>
+  );
+};
+
+Clock.propTypes = {
+  color: PropTypes.string,
+};
+
+export default Clock;
+endef
+
+define DJANGO_FRONTEND_COMPONENT_ERROR
+import { Component } from 'react';
+import PropTypes from 'prop-types';
+
+class ErrorBoundary extends Component {
+  constructor (props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError () {
+    return { hasError: true };
+  }
+
+  componentDidCatch (error, info) {
+    const { onError } = this.props;
+    console.error(error);
+    onError && onError(error, info);
+  }
+
+  render () {
+    const { children = null } = this.props;
+    const { hasError } = this.state;
+
+    return hasError ? null : children;
+  }
+}
+
+ErrorBoundary.propTypes = {
+  onError: PropTypes.func,
+  children: PropTypes.node,
+};
+
+export default ErrorBoundary;
+endef
+
+define DJANGO_FRONTEND_COMPONENT_USER_MENU
+// UserMenu.js
+import React from 'react';
+import PropTypes from 'prop-types';
+
+function handleLogout() {
+    window.location.href = '/accounts/logout';
+}
+
+const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
+  return (
+    <div> 
+      {isAuthenticated ? (
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i className="fa-solid fa-circle-user"></i>
+          </a>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
+            <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
+            <li><a className="dropdown-item" href="/logging-demo/">Logging Demo</a></li>
+            <li><a className="dropdown-item" href="/payments/">Payments Demo</a></li>
+            {isSuperuser ? (
+              <>
+                <li><hr className="dropdown-divider"></hr></li>
+                <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
+                <li><a className="dropdown-item" href="/api" target="_blank">Django API</a></li>
+                <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
+                <li><a className="dropdown-item" href="/explorer" target="_blank">SQL Explorer</a></li>
+              </>
+            ) : null}
+            <li><hr className="dropdown-divider"></hr></li>
+            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
+          </ul>
+        </li>
+      ) : (
+        <li className="nav-item">
+          <a className={`nav-link text-$${textColor}`} href="/accounts/login"><i className="fa-solid fa-circle-user"></i></a>
+        </li>
+      )}
+    </div>
+  );
+};
+
+UserMenu.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  isSuperuser: PropTypes.bool.isRequired,
+  textColor: PropTypes.string,
+};
+
+export default UserMenu;
+endef
+
+define DJANGO_FRONTEND_ESLINTRC
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "overrides": [
+        {
+            "env": {
+                "node": true
+            },
+            "files": [
+                ".eslintrc.{js,cjs}"
+            ],
+            "parserOptions": {
+                "sourceType": "script"
+            }
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "no-unused-vars": "off"
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+}
+endef
+
+define DJANGO_FRONTEND_OFFCANVAS_TEMPLATE
+<div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+  <div class="offcanvas-header">
+    <a class="offcanvas-title text-light h5 text-decoration-none" id="offcanvasExampleLabel" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+    <button type="button" class="btn-close bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body bg-dark">
+    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+      <li class="nav-item">
+        <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
+      </li>
+      {% for child in current_site.root_page.get_children %}
+      <li class="nav-item">
+        <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
+      </li>
+      {% endfor %}
+      <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+          <span class="nav-link text-light" data-bs-toggle="tooltip" title="Toggle dark mode">
+              <i class="fas fa-circle-half-stroke"></i>
+          </span>
+      </li>
+      <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
+    </ul>
+  </div>
+</div>
+endef
+
+define DJANGO_FRONTEND_STYLES
+// If you comment out code below, bootstrap will use red as primary color
+// and btn-primary will become red
+
+// $primary: red;
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+.jumbotron {
+  // should be relative path of the entry scss file
+  background-image: url("../../vendors/images/sample.jpg");
+  background-size: cover;
+}
+
+#theme-toggler-authenticated:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+
+#theme-toggler-anonymous:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+endef
+
+define DJANGO_FRONTEND_PORTAL
+// Via pwellever
+import React from 'react';
+import { createPortal } from 'react-dom';
+
+const parseProps = data => Object.entries(data).reduce((result, [key, value]) => {
+  if (value.toLowerCase() === 'true') {
+    value = true;
+  } else if (value.toLowerCase() === 'false') {
+    value = false;
+  } else if (value.toLowerCase() === 'null') {
+    value = null;
+  } else if (!isNaN(parseFloat(value)) && isFinite(value)) {
+    // Parse numeric value
+    value = parseFloat(value);
+  } else if (
+    (value[0] === '[' && value.slice(-1) === ']') || (value[0] === '{' && value.slice(-1) === '}')
+  ) {
+    // Parse JSON strings
+    value = JSON.parse(value);
+  }
+
+  result[key] = value;
+  return result;
+}, {});
+
+// This method of using portals instead of calling ReactDOM.render on individual components
+// ensures that all components are mounted under a single React tree, and are therefore able
+// to share context.
+
+export default function getPageComponents (components) {
+  const getPortalComponent = domEl => {
+    // The element's "data-component" attribute is used to determine which component to render.
+    // All other "data-*" attributes are passed as props.
+    const { component: componentName, ...rest } = domEl.dataset;
+    const Component = components[componentName];
+    if (!Component) {
+      console.error(`Component "$${componentName}" not found.`);
+      return null;
+    }
+    const props = parseProps(rest);
+    domEl.innerHTML = '';
+
+    // eslint-disable-next-line no-unused-vars
+    const { ErrorBoundary } = components;
+    return createPortal(
+      <ErrorBoundary>
+        <Component {...props} />
+      </ErrorBoundary>,
+      domEl,
+    );
+  };
+
+  return Array.from(document.querySelectorAll('[data-component]')).map(getPortalComponent);
+}
+endef
+
+define DJANGO_HEADER_TEMPLATE
 <div class="app-header">
     <div class="container py-4 app-navbar">
         <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
@@ -687,16 +763,463 @@ define DJANGO_HEADER
 </div>
 endef 
 
-define DJANGO_FOOTER
-  <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
-    <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
-    <ul class="list-inline">
-      <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
-      {% for child in current_site.root_page.get_children %}
-          <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
-      {% endfor %}
+define DJANGO_HOME_PAGE_VIEWS
+from django.views.generic import TemplateView
+
+class HomeView(TemplateView):
+    template_name = "home.html"
+endef
+
+define DJANGO_HOME_PAGE_URLS
+from django.urls import path
+from .views import HomeView
+
+urlpatterns = [
+    path("", HomeView.as_view(), name="home")
+]
+endef
+
+define DJANGO_HOME_PAGE_TEMPLATE
+{% extends "base.html" %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+    </main>
+{% endblock %}
+endef
+
+define DJANGO_LOGGING_DEMO_VIEWS
+from django.http import HttpResponse
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+def logging_demo(request):
+    logger.debug('Hello, world!')
+    return HttpResponse("Hello, world!")
+endef
+
+define DJANGO_LOGGING_DEMO_URLS
+from django.urls import path
+from .views import logging_demo
+
+urlpatterns = [
+    path('', logging_demo, name='logging_demo'),
+]
+endef
+
+define DJANGO_LOGGING_DEMO_SETTINGS
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
+}
+endef
+
+define DJANGO_MANAGE_PY
+#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
+
+
+def main():
+    """Run administrative tasks."""
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings.dev")
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+
+
+if __name__ == "__main__":
+    main()
+endef
+
+define DJANGO_MODEL_FORM_DEMO_MODEL
+from django.db import models
+from django.shortcuts import reverse
+
+class ModelFormDemo(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name or f"test-model-{self.pk}"
+
+    def get_absolute_url(self):
+        return reverse('model_form_demo_detail', kwargs={'pk': self.pk})
+endef
+
+define DJANGO_MODEL_FORM_DEMO_ADMIN
+from django.contrib import admin
+from .models import ModelFormDemo
+
+@admin.register(ModelFormDemo)
+class ModelFormDemoAdmin(admin.ModelAdmin):
+    pass
+endef
+
+define DJANGO_MODEL_FORM_DEMO_VIEWS
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from .models import ModelFormDemo
+from .forms import ModelFormDemoForm
+
+
+class ModelFormDemoListView(ListView):
+    model = ModelFormDemo
+    template_name = "model_form_demo_list.html"
+    context_object_name = "model_form_demos"
+
+
+class ModelFormDemoCreateView(CreateView):
+    model = ModelFormDemo
+    form_class = ModelFormDemoForm
+    template_name = "model_form_demo_form.html"
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+
+class ModelFormDemoUpdateView(UpdateView):
+    model = ModelFormDemo
+    form_class = ModelFormDemoForm
+    template_name = "model_form_demo_form.html"
+
+
+class ModelFormDemoDetailView(DetailView):
+    model = ModelFormDemo
+    template_name = "model_form_demo_detail.html"
+    context_object_name = "model_form_demo"
+endef
+
+define DJANGO_MODEL_FORM_DEMO_FORMS
+from django import forms
+from .models import ModelFormDemo
+
+class ModelFormDemoForm(forms.ModelForm):
+    class Meta:
+        model = ModelFormDemo
+        fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
+endef
+
+define DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{% if form.instance.pk %}Update Test Model{% else %}Create Test Model{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
+endef
+
+define DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Test Model Detail: {{ model_form_demo.name }}</h1>
+    <p>Name: {{ model_form_demo.name }}</p>
+    <p>Email: {{ model_form_demo.email }}</p>
+    <p>Age: {{ model_form_demo.age }}</p>
+    <p>Active: {{ model_form_demo.is_active }}</p>
+    <p>Created At: {{ model_form_demo.created_at }}</p>
+    <a href="{% url 'model_form_demo_update' model_form_demo.pk %}">Edit Test Model</a>
+{% endblock %}
+endef
+
+define DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Test Models List</h1>
+    <ul>
+        {% for model_form_demo in model_form_demos %}
+            <li><a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a></li>
+        {% endfor %}
     </ul>
-  </footer>
+    <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
+{% endblock %}
+endef
+
+define DJANGO_MODEL_FORM_DEMO_URLS
+from django.urls import path
+from .views import (
+    ModelFormDemoListView,
+    ModelFormDemoCreateView,
+    ModelFormDemoUpdateView,
+    ModelFormDemoDetailView,
+)
+
+urlpatterns = [
+    path('', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
+    path('create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
+    path('<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
+    path('<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
+]
+endef
+
+define DJANGO_PAYMENTS_ADMIN
+from django.contrib import admin
+from .models import Product, Order
+
+admin.site.register(Product)
+admin.site.register(Order)
+endef
+
+define DJANGO_PAYMENTS_FORM
+# forms.py
+
+from django import forms
+
+class PaymentsForm(forms.Form):
+    stripeToken = forms.CharField(widget=forms.HiddenInput())
+    amount = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.HiddenInput())
+endef
+
+define DJANGO_PAYMENTS_MIGRATION_0002
+from django.db import migrations
+import os
+import secrets
+import logging
+
+logger = logging.getLogger(__name__)
+
+def generate_default_key():
+    return 'sk_test_' + secrets.token_hex(24)
+
+def set_stripe_api_keys(apps, schema_editor):
+    # Get the Stripe API Key model
+    APIKey = apps.get_model('djstripe', 'APIKey')
+
+    # Fetch the keys from environment variables or generate default keys
+    test_secret_key = os.environ.get('STRIPE_TEST_SECRET_KEY', generate_default_key())
+    live_secret_key = os.environ.get('STRIPE_LIVE_SECRET_KEY', generate_default_key())
+
+    logger.info("STRIPE_TEST_SECRET_KEY: %s", test_secret_key)
+    logger.info("STRIPE_LIVE_SECRET_KEY: %s", live_secret_key)
+
+    # Check if the keys are not already in the database
+    if not APIKey.objects.filter(secret=test_secret_key).exists():
+        APIKey.objects.create(secret=test_secret_key, livemode=False)
+        logger.info("Added test secret key to the database.")
+    else:
+        logger.info("Test secret key already exists in the database.")
+
+    if not APIKey.objects.filter(secret=live_secret_key).exists():
+        APIKey.objects.create(secret=live_secret_key, livemode=True)
+        logger.info("Added live secret key to the database.")
+    else:
+        logger.info("Live secret key already exists in the database.")
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('payments', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.RunPython(set_stripe_api_keys),
+    ]
+
+endef
+
+define DJANGO_PAYMENTS_MIGRATION_0003
+from django.db import migrations
+
+def create_initial_products(apps, schema_editor):
+    Product = apps.get_model('payments', 'Product')
+    Product.objects.create(name='T-shirt', description='A cool T-shirt', price=20.00)
+    Product.objects.create(name='Mug', description='A nice mug', price=10.00)
+    Product.objects.create(name='Hat', description='A stylish hat', price=15.00)
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('payments', '0002_set_stripe_api_keys'),  # Adjust this to match your initial migration file
+    ]
+
+    operations = [
+        migrations.RunPython(create_initial_products),
+    ]
+endef
+
+define DJANGO_PAYMENTS_MODELS
+from django.db import models
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.name
+
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    stripe_checkout_session_id = models.CharField(max_length=200)
+
+    def __str__(self):
+        return f"Order {self.id} for {self.product.name}"
+endef
+
+define DJANGO_PAYMENTS_URLS
+from django.urls import path
+from .views import CheckoutView, SuccessView, CancelView, ProductListView, ProductDetailView
+
+urlpatterns = [
+    path('', ProductListView.as_view(), name='product_list'),
+    path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
+    path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('success/', SuccessView.as_view(), name='success'),
+    path('cancel/', CancelView.as_view(), name='cancel'),
+]
+endef
+
+define DJANGO_PAYMENTS_VIEW
+from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import TemplateView, View, ListView, DetailView
+import stripe
+from .models import Product, Order
+
+stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'payments/product_list.html'
+    context_object_name = 'products'
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'payments/product_detail.html'
+    context_object_name = 'product'
+
+class CheckoutView(View):
+    template_name = 'payments/checkout.html'
+
+    def get(self, request, *args, **kwargs):
+        products = Product.objects.all()
+        return render(request, self.template_name, {'products': products})
+
+    def post(self, request, *args, **kwargs):
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
+        
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {
+                        'name': product.name,
+                    },
+                    'unit_amount': int(product.price * 100),
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url='http://localhost:8000/payments/success/',
+            cancel_url='http://localhost:8000/payments/cancel/',
+        )
+
+        Order.objects.create(product=product, stripe_checkout_session_id=session.id)
+        return redirect(session.url, code=303)
+
+class SuccessView(TemplateView):
+
+    template_name = 'payments/success.html'
+
+class CancelView(TemplateView):
+
+    template_name = 'payments/cancel.html'
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_CANCEL
+{% extends "base.html" %}
+
+{% block title %}Cancel{% endblock %}
+
+{% block content %}
+<h1>Payment Cancelled</h1>
+<p>Your payment was cancelled.</p>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_CHECKOUT
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h1>Checkout</h1>
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Pay</button>
+</form>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_SUCCESS
+{% extends "base.html" %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+<h1>Payment Successful</h1>
+<p>Thank you for your purchase!</p>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+<p>Price: ${{ product.price }}</p>
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    <button type="submit">Buy Now</button>
+</form>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
+{% extends "base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h1>Products</h1>
+<ul>
+    {% for product in products %}
+    <li>
+        <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
 endef
 
 define DJANGO_REST_SERIALIZERS
@@ -894,29 +1417,11 @@ REST_FRAMEWORK = {
 }
 endef
 
-define DJANGO_MANAGE_PY
-#!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
-import os
-import sys
-
-
-def main():
-    """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "backend.settings.dev")
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError(
-            "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
-        ) from exc
-    execute_from_command_line(sys.argv)
-
-
-if __name__ == "__main__":
-    main()
+define DJANGO_SETTINGS_THEMES
+THEMES = [
+    ('light', 'Light Theme'),
+    ('dark', 'Dark Theme'),
+]
 endef
 
 define DJANGO_SITEUSER_ADMIN
@@ -1051,6 +1556,7 @@ class UserEditView(LoginRequiredMixin, UpdateView):
         # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
         return reverse_lazy('user-profile')
 endef
+
 define DJANGO_URLS
 from django.contrib import admin
 from django.urls import path, include
@@ -1105,102 +1611,6 @@ def remove_urlpattern(urlpatterns, route_to_remove):
     )]
 endef
 
-define DOCKERFILE
-FROM amazonlinux:2023
-RUN dnf install -y shadow-utils python3.11 python3.11-pip make nodejs20-npm nodejs postgresql15 postgresql15-server
-USER postgres
-RUN initdb -D /var/lib/pgsql/data
-USER root
-RUN useradd wagtail
-EXPOSE 8000
-ENV PYTHONUNBUFFERED=1 PORT=8000
-COPY requirements.txt /
-RUN python3.11 -m pip install -r /requirements.txt
-WORKDIR /app
-RUN chown wagtail:wagtail /app
-COPY --chown=wagtail:wagtail . .
-USER wagtail
-RUN npm-20 install; npm-20 run build
-RUN python3.11 manage.py collectstatic --noinput --clear
-CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
-endef
-
-define DOCKERCOMPOSE
-version: '3'
-
-services:
-  db:
-    image: postgres:latest
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: project
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-
-  web:
-    build: .
-    command: sh -c "python manage.py migrate && gunicorn project.wsgi:application -b 0.0.0.0:8000"
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    environment:
-      DATABASE_URL: postgres://admin:admin@db:5432/project
-
-volumes:
-  postgres_data:
-endef
-
-define ESLINTRC
-{
-    "env": {
-        "browser": true,
-        "es2021": true,
-        "node": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended"
-    ],
-    "overrides": [
-        {
-            "env": {
-                "node": true
-            },
-            "files": [
-                ".eslintrc.{js,cjs}"
-            ],
-            "parserOptions": {
-                "sourceType": "script"
-            }
-        }
-    ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
-    ],
-    "rules": {
-        "no-unused-vars": "off"
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
-    },
-}
-endef
-
-define FAVICON_TEMPLATE
-{% load static %}
-<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
-endef
-
 define GIT_IGNORE
 __pycache__
 *.pyc
@@ -1237,443 +1647,11 @@ pipeline {
 }
 endef
 
-define LOGGING_DEMO_VIEWS
-from django.http import HttpResponse
-import logging
-
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
-
-def logging_demo(request):
-    logger.debug('Hello, world!')
-    return HttpResponse("Hello, world!")
-endef
-
-define LOGGING_DEMO_URLS
-from django.urls import path
-from .views import logging_demo
-
-urlpatterns = [
-    path('', logging_demo, name='logging_demo'),
-]
-endef
-
-define LOGGING_DEMO_SETTINGS
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-    },
-}
-endef
-
-define MODEL_FORM_DEMO_MODEL
-from django.db import models
-from django.shortcuts import reverse
-
-class ModelFormDemo(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    age = models.IntegerField(blank=True, null=True)
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name or f"test-model-{self.pk}"
-
-    def get_absolute_url(self):
-        return reverse('model_form_demo_detail', kwargs={'pk': self.pk})
-endef
-
-define MODEL_FORM_DEMO_ADMIN
-from django.contrib import admin
-from .models import ModelFormDemo
-
-@admin.register(ModelFormDemo)
-class ModelFormDemoAdmin(admin.ModelAdmin):
-    pass
-endef
-
-define MODEL_FORM_DEMO_VIEWS
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
-from .models import ModelFormDemo
-from .forms import ModelFormDemoForm
-
-
-class ModelFormDemoListView(ListView):
-    model = ModelFormDemo
-    template_name = "model_form_demo_list.html"
-    context_object_name = "model_form_demos"
-
-
-class ModelFormDemoCreateView(CreateView):
-    model = ModelFormDemo
-    form_class = ModelFormDemoForm
-    template_name = "model_form_demo_form.html"
-
-    def form_valid(self, form):
-        form.instance.created_by = self.request.user
-        return super().form_valid(form)
-
-
-class ModelFormDemoUpdateView(UpdateView):
-    model = ModelFormDemo
-    form_class = ModelFormDemoForm
-    template_name = "model_form_demo_form.html"
-
-
-class ModelFormDemoDetailView(DetailView):
-    model = ModelFormDemo
-    template_name = "model_form_demo_detail.html"
-    context_object_name = "model_form_demo"
-endef
-
-define MODEL_FORM_DEMO_FORMS
-from django import forms
-from .models import ModelFormDemo
-
-class ModelFormDemoForm(forms.ModelForm):
-    class Meta:
-        model = ModelFormDemo
-        fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
-endef
-
-define MODEL_FORM_DEMO_TEMPLATE_FORM
-{% extends 'base.html' %}
-{% block content %}
-    <h1>{% if form.instance.pk %}Update Test Model{% else %}Create Test Model{% endif %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-{% endblock %}
-endef
-
-define MODEL_FORM_DEMO_TEMPLATE_DETAIL
-{% extends 'base.html' %}
-{% block content %}
-    <h1>Test Model Detail: {{ model_form_demo.name }}</h1>
-    <p>Name: {{ model_form_demo.name }}</p>
-    <p>Email: {{ model_form_demo.email }}</p>
-    <p>Age: {{ model_form_demo.age }}</p>
-    <p>Active: {{ model_form_demo.is_active }}</p>
-    <p>Created At: {{ model_form_demo.created_at }}</p>
-    <a href="{% url 'model_form_demo_update' model_form_demo.pk %}">Edit Test Model</a>
-{% endblock %}
-endef
-
-define MODEL_FORM_DEMO_TEMPLATE_LIST
-{% extends 'base.html' %}
-{% block content %}
-    <h1>Test Models List</h1>
-    <ul>
-        {% for model_form_demo in model_form_demos %}
-            <li><a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a></li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
-{% endblock %}
-endef
-
-define MODEL_FORM_DEMO_URLS
-from django.urls import path
-from .views import (
-    ModelFormDemoListView,
-    ModelFormDemoCreateView,
-    ModelFormDemoUpdateView,
-    ModelFormDemoDetailView,
-)
-
-urlpatterns = [
-    path('', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
-    path('create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
-    path('<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
-    path('<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
-]
-endef
-
-define PRIVACY_PAGE_MODEL
-from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel
-from wagtailmarkdown.fields import MarkdownField
-
-
-class PrivacyPage(Page):
-    """
-    A Wagtail Page model for the Privacy Policy page.
-    """
-
-    template = "privacy_page.html"
-
-    body = MarkdownField()
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body", classname="full"),
-    ]
-
-    class Meta:
-        verbose_name = "Privacy Page"
-endef
-
-define PRIVACY_PAGE_TEMPLATE
-{% extends 'base.html' %}
-{% load wagtailmarkdown %}
-{% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
-endef
-
-define PAYMENTS_ADMIN
-from django.contrib import admin
-from .models import Product, Order
-
-admin.site.register(Product)
-admin.site.register(Order)
-endef
-
-define PAYMENTS_FORM
-# forms.py
-
-from django import forms
-
-class PaymentsForm(forms.Form):
-    stripeToken = forms.CharField(widget=forms.HiddenInput())
-    amount = forms.DecimalField(max_digits=10, decimal_places=2, widget=forms.HiddenInput())
-endef
-
-define PAYMENTS_MIGRATION_0002
-from django.db import migrations
-import os
-import secrets
-import logging
-
-logger = logging.getLogger(__name__)
-
-def generate_default_key():
-    return 'sk_test_' + secrets.token_hex(24)
-
-def set_stripe_api_keys(apps, schema_editor):
-    # Get the Stripe API Key model
-    APIKey = apps.get_model('djstripe', 'APIKey')
-
-    # Fetch the keys from environment variables or generate default keys
-    test_secret_key = os.environ.get('STRIPE_TEST_SECRET_KEY', generate_default_key())
-    live_secret_key = os.environ.get('STRIPE_LIVE_SECRET_KEY', generate_default_key())
-
-    logger.info("STRIPE_TEST_SECRET_KEY: %s", test_secret_key)
-    logger.info("STRIPE_LIVE_SECRET_KEY: %s", live_secret_key)
-
-    # Check if the keys are not already in the database
-    if not APIKey.objects.filter(secret=test_secret_key).exists():
-        APIKey.objects.create(secret=test_secret_key, livemode=False)
-        logger.info("Added test secret key to the database.")
-    else:
-        logger.info("Test secret key already exists in the database.")
-
-    if not APIKey.objects.filter(secret=live_secret_key).exists():
-        APIKey.objects.create(secret=live_secret_key, livemode=True)
-        logger.info("Added live secret key to the database.")
-    else:
-        logger.info("Live secret key already exists in the database.")
-
-class Migration(migrations.Migration):
-
-    dependencies = [
-        ('payments', '0001_initial'),
-    ]
-
-    operations = [
-        migrations.RunPython(set_stripe_api_keys),
-    ]
-
-endef
-
-define PAYMENTS_MIGRATION_0003
-from django.db import migrations
-
-def create_initial_products(apps, schema_editor):
-    Product = apps.get_model('payments', 'Product')
-    Product.objects.create(name='T-shirt', description='A cool T-shirt', price=20.00)
-    Product.objects.create(name='Mug', description='A nice mug', price=10.00)
-    Product.objects.create(name='Hat', description='A stylish hat', price=15.00)
-
-class Migration(migrations.Migration):
-
-    dependencies = [
-        ('payments', '0002_set_stripe_api_keys'),  # Adjust this to match your initial migration file
-    ]
-
-    operations = [
-        migrations.RunPython(create_initial_products),
-    ]
-endef
-
-define PAYMENTS_MODELS
-from django.db import models
-
-class Product(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return self.name
-
-class Order(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    stripe_checkout_session_id = models.CharField(max_length=200)
-
-    def __str__(self):
-        return f"Order {self.id} for {self.product.name}"
-endef
-
-define PAYMENTS_URLS
-from django.urls import path
-from .views import CheckoutView, SuccessView, CancelView, ProductListView, ProductDetailView
-
-urlpatterns = [
-    path('', ProductListView.as_view(), name='product_list'),
-    path('product/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
-    path('checkout/', CheckoutView.as_view(), name='checkout'),
-    path('success/', SuccessView.as_view(), name='success'),
-    path('cancel/', CancelView.as_view(), name='cancel'),
-]
-endef
-
-define PAYMENTS_VIEW
-from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import TemplateView, View, ListView, DetailView
-import stripe
-from .models import Product, Order
-
-stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
-
-class ProductListView(ListView):
-    model = Product
-    template_name = 'payments/product_list.html'
-    context_object_name = 'products'
-
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = 'payments/product_detail.html'
-    context_object_name = 'product'
-
-class CheckoutView(View):
-    template_name = 'payments/checkout.html'
-
-    def get(self, request, *args, **kwargs):
-        products = Product.objects.all()
-        return render(request, self.template_name, {'products': products})
-
-    def post(self, request, *args, **kwargs):
-        product_id = request.POST.get('product_id')
-        product = get_object_or_404(Product, id=product_id)
-        
-        session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[{
-                'price_data': {
-                    'currency': 'usd',
-                    'product_data': {
-                        'name': product.name,
-                    },
-                    'unit_amount': int(product.price * 100),
-                },
-                'quantity': 1,
-            }],
-            mode='payment',
-            success_url='http://localhost:8000/payments/success/',
-            cancel_url='http://localhost:8000/payments/cancel/',
-        )
-
-        Order.objects.create(product=product, stripe_checkout_session_id=session.id)
-        return redirect(session.url, code=303)
-
-class SuccessView(TemplateView):
-
-    template_name = 'payments/success.html'
-
-class CancelView(TemplateView):
-
-    template_name = 'payments/cancel.html'
-endef
-
-define PAYMENTS_TEMPLATE_CANCEL
-{% extends "base.html" %}
-
-{% block title %}Cancel{% endblock %}
-
-{% block content %}
-<h1>Payment Cancelled</h1>
-<p>Your payment was cancelled.</p>
-{% endblock %}
-endef
-
-define PAYMENTS_TEMPLATE_CHECKOUT
-{% extends "base.html" %}
-
-{% block title %}Checkout{% endblock %}
-
-{% block content %}
-<h1>Checkout</h1>
-<form action="{% url 'checkout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Pay</button>
-</form>
-{% endblock %}
-endef
-
-define PAYMENTS_TEMPLATE_SUCCESS
-{% extends "base.html" %}
-
-{% block title %}Success{% endblock %}
-
-{% block content %}
-<h1>Payment Successful</h1>
-<p>Thank you for your purchase!</p>
-{% endblock %}
-endef
-
-define PAYMENTS_TEMPLATE_PRODUCT_DETAIL
-{% extends "base.html" %}
-
-{% block title %}{{ product.name }}{% endblock %}
-
-{% block content %}
-<h1>{{ product.name }}</h1>
-<p>{{ product.description }}</p>
-<p>Price: ${{ product.price }}</p>
-<form action="{% url 'checkout' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="product_id" value="{{ product.id }}">
-    <button type="submit">Buy Now</button>
-</form>
-{% endblock %}
-endef
-
-define PAYMENTS_TEMPLATE_PRODUCT_LIST
-{% extends "base.html" %}
-
-{% block title %}Products{% endblock %}
-
-{% block content %}
-<h1>Products</h1>
-<ul>
-    {% for product in products %}
-    <li>
-        <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
-    </li>
-    {% endfor %}
-</ul>
-{% endblock %}
+define MAKEFILE_CUSTOM
+# Custom Makefile
+# Add your custom makefile commands here
+#
+# PROJECT_NAME := my-new-project
 endef
 
 define PROGRAMMING_INTERVIEW
@@ -2195,32 +2173,6 @@ define SEPARATOR
 `=========================================================================================================================================='
 endef
 
-define SITEPAGE_MODEL
-from wagtail.models import Page
-
-
-class SitePage(Page):
-    template = "sitepage/site_page.html"
-
-    class Meta:
-        verbose_name = "Site Page"
-endef
-
-define DJANGO_SETTINGS_THEMES
-THEMES = [
-    ('light', 'Light Theme'),
-    ('dark', 'Dark Theme'),
-]
-endef
-
-
-define SITEPAGE_TEMPLATE
-{% extends 'base.html' %}
-{% block content %}
-    <h1>{{ page.title }}</h1>
-{% endblock %}
-endef
-
 define THEME_BLUE
 @import "~bootstrap/scss/bootstrap.scss";
 
@@ -2492,7 +2444,7 @@ define WAGTAIL_CONTACT_PAGE_LANDING
 {% extends 'base.html' %}
 {% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
 endef
-define WAGTAIL_HTML_OFFCANVAS
+define WAGTAIL_OFFCANVAS_TEMPLATE
 {% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
 <div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
@@ -2569,6 +2521,24 @@ urlpatterns = [
 ]
 endef
 
+define WAGTAIL_SITEPAGE_MODEL
+from wagtail.models import Page
+
+
+class SitePage(Page):
+    template = "sitepage/site_page.html"
+
+    class Meta:
+        verbose_name = "Site Page"
+endef
+
+define WAGTAIL_SITEPAGE_TEMPLATE
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ page.title }}</h1>
+{% endblock %}
+endef
+
 define WAGTAIL_URLS
 from django.conf import settings
 from django.urls import include, path
@@ -2594,10 +2564,6 @@ if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 endef
-
-define WAGTAIL_HTML_FOOTER
-{% load wagtailcore_tags %}
-endef 
 
 define WAGTAIL_HEADER_PREFIX
 {% load wagtailcore_tags %}
@@ -2761,6 +2727,35 @@ define WAGTAIL_BASE_TEMPLATE
 </html>
 endef
 
+define WAGTAIL_PRIVACY_PAGE_MODEL
+from wagtail.models import Page
+from wagtail.admin.panels import FieldPanel
+from wagtailmarkdown.fields import MarkdownField
+
+
+class PrivacyPage(Page):
+    """
+    A Wagtail Page model for the Privacy Policy page.
+    """
+
+    template = "privacy_page.html"
+
+    body = MarkdownField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body", classname="full"),
+    ]
+
+    class Meta:
+        verbose_name = "Privacy Page"
+endef
+
+define WAGTAIL_PRIVACY_PAGE_TEMPLATE
+{% extends 'base.html' %}
+{% load wagtailmarkdown %}
+{% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
+endef
+
 define WEBPACK_CONFIG_JS
 const path = require('path');
 
@@ -2772,6 +2767,25 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
 };
+endef
+
+define WEBPACK_INDEX_HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello, Webpack!</title>
+</head>
+<body>
+  <script src="dist/bundle.js"></script>
+</body>
+</html>
+endef
+
+define WEBPACK_INDEX_JS
+const message = "Hello, World!";
+console.log(message);
 endef
 
 define WEBPACK_REVEAL_CONFIG_JS
@@ -2801,21 +2815,6 @@ module.exports = {
 };
 endef
 
-
-define WEBPACK_INDEX_HTML
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello, Webpack!</title>
-</head>
-<body>
-  <script src="dist/bundle.js"></script>
-</body>
-</html>
-endef
-
 define WEBPACK_REVEAL_INDEX_HTML
 <!DOCTYPE html>
 <html>
@@ -2839,11 +2838,6 @@ define WEBPACK_REVEAL_INDEX_HTML
 </html>
 endef
 
-define WEBPACK_INDEX_JS
-const message = "Hello, World!";
-console.log(message);
-endef
-
 define WEBPACK_REVEAL_INDEX_JS
 import 'reveal.js/dist/reveal.css';
 import 'reveal.js/dist/theme/black.css';
@@ -2856,30 +2850,44 @@ endef
 # Export variables
 # ------------------------------------------------------------------------------  
 
-export ALLAUTH_LAYOUT_BASE
-export BABELRC
-export COMPONENT_CLOCK
-export COMPONENT_ERROR
-export COMPONENT_USER_MENU
-export WAGTAIL_CONTACT_PAGE_MODEL
-export WAGTAIL_CONTACT_PAGE_TEMPLATE
-export WAGTAIL_CONTACT_PAGE_LANDING
-export WAGTAIL_CONTACT_PAGE_TEST
-export CUSTOM_ENV_EC2_USER
-export CUSTOM_ENV_VAR_FILE
-export CUSTOM_MAKEFILE
+export DJANGO_ALLAUTH_LAYOUT_BASE
 export DJANGO_AUTHENTICATION_BACKENDS
 export DJANGO_BACKEND_APPS
 export DJANGO_BASE_TEMPLATE
 export DJANGO_CUSTOM_ADMIN
+export DJANGO_DOCKERFILE
+export DJANGO_DOCKERCOMPOSE
+export DJANGO_FAVICON_TEMPLATE
+export DJANGO_FOOTER_TEMPLATE
 export DJANGO_FRONTEND_APP
 export DJANGO_FRONTEND_APP_CONFIG
+export DJANGO_FRONTEND_BABELRC
 export DJANGO_FRONTEND_COMPONENTS
+export DJANGO_FRONTEND_ESLINTRC
 export DJANGO_FRONTEND_PORTAL
 export DJANGO_FRONTEND_STYLES
+export DJANGO_FRONTEND_COMPONENT_CLOCK
+export DJANGO_FRONTEND_COMPONENT_ERROR
+export DJANGO_FRONTEND_COMPONENT_USER_MENU
 export DJANGO_FRONTEND_CONTEXT_INDEX
 export DJANGO_FRONTEND_CONTEXT_USER_PROVIDER
+export DJANGO_FRONTEND_OFFCANVAS_TEMPLATE
+export DJANGO_HEADER_TEMPLATE
+export DJANGO_HOME_PAGE_URLS
+export DJANGO_HOME_PAGE_VIEWS
+export DJANGO_HOME_PAGE_TEMPLATE
+export DJANGO_LOGGING_DEMO_VIEWS
+export DJANGO_LOGGING_DEMO_URLS
+export DJANGO_LOGGING_DEMO_SETTINGS
 export DJANGO_MANAGE_PY
+export DJANGO_MODEL_FORM_DEMO_ADMIN
+export DJANGO_MODEL_FORM_DEMO_FORMS
+export DJANGO_MODEL_FORM_DEMO_MODEL
+export DJANGO_MODEL_FORM_DEMO_URLS
+export DJANGO_MODEL_FORM_DEMO_VIEWS
+export DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL
+export DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM
+export DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_BASE_FILE
@@ -2890,10 +2898,18 @@ export DJANGO_SETTINGS_THEMES
 export DJANGO_URLS
 export DJANGO_URLS_API
 export DJANGO_UTILS
-export DJANGO_HOME_PAGE_URLS
-export DJANGO_HOME_PAGE_VIEWS
-export DJANGO_HOME_PAGE_TEMPLATE
-export DJANGO_HTML_OFFCANVAS
+export DJANGO_PAYMENTS_ADMIN
+export DJANGO_PAYMENTS_FORM
+export DJANGO_PAYMENTS_MIGRATION_0002
+export DJANGO_PAYMENTS_MIGRATION_0003
+export DJANGO_PAYMENTS_MODELS
+export DJANGO_PAYMENTS_URLS
+export DJANGO_PAYMENTS_VIEW
+export DJANGO_PAYMENTS_TEMPLATE_CANCEL
+export DJANGO_PAYMENTS_TEMPLATE_CHECKOUT
+export DJANGO_PAYMENTS_TEMPLATE_SUCCESS
+export DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
+export DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL
 export DJANGO_REST_SERIALIZERS
 export DJANGO_REST_VIEWS
 export DJANGO_SEARCH_FORMS
@@ -2909,63 +2925,40 @@ export DJANGO_SITEUSER_URLS
 export DJANGO_SITEUSER_VIEW
 export DJANGO_SITEUSER_VIEW_TEMPLATE
 export DJANGO_SITEUSER_EDIT_TEMPLATE
-export DOCKERFILE
-export DOCKERCOMPOSE
-export ESLINTRC
-export FAVICON_TEMPLATE
+export EB_CUSTOM_ENV_EC2_USER
+export EB_CUSTOM_ENV_VAR_FILE
 export GIT_IGNORE
 export HTML_ERROR
 export HTML_INDEX
-export DJANGO_FOOTER
-export DJANGO_HEADER
 export INTERNAL_IPS
 export JENKINS_FILE
-export LOGGING_DEMO_VIEWS
-export LOGGING_DEMO_URLS
-export LOGGING_DEMO_SETTINGS
-export MODEL_FORM_DEMO_ADMIN
-export MODEL_FORM_DEMO_FORMS
-export MODEL_FORM_DEMO_MODEL
-export MODEL_FORM_DEMO_URLS
-export MODEL_FORM_DEMO_VIEWS
-export MODEL_FORM_DEMO_TEMPLATE_DETAIL
-export MODEL_FORM_DEMO_TEMPLATE_FORM
-export MODEL_FORM_DEMO_TEMPLATE_LIST
-export PRIVACY_PAGE_MODEL
-export PAYMENTS_ADMIN
-export PAYMENTS_FORM
-export PAYMENTS_MIGRATION_0002
-export PAYMENTS_MIGRATION_0003
-export PAYMENTS_MODELS
-export PAYMENTS_URLS
-export PAYMENTS_VIEW
-export PAYMENTS_TEMPLATE_CANCEL
-export PAYMENTS_TEMPLATE_CHECKOUT
-export PAYMENTS_TEMPLATE_SUCCESS
-export PAYMENTS_TEMPLATE_PRODUCT_LIST
-export PAYMENTS_TEMPLATE_PRODUCT_DETAIL
+export MAKEFILE_CUSTOM
 export PROGRAMMING_INTERVIEW
-export PRIVACY_PAGE_MODEL
-export PRIVACY_PAGE_TEMPLATE
 export PYTHON_CI_YAML
 export PYTHON_LICENSE_TXT
 export PYTHON_PROJECT_TOML
 export REQUIREMENTS_TEST
 export SEPARATOR
-export SITEPAGE_MODEL
-export SITEPAGE_TEMPLATE
+export WAGTAIL_SITEPAGE_MODEL
+export WAGTAIL_SITEPAGE_TEMPLATE
 export THEME_BLUE
 export THEME_TOGGLER
 export TINYMCE_JS
 export WAGTAIL_BASE_TEMPLATE
 export WAGTAIL_BLOCK_CAROUSEL
 export WAGTAIL_BLOCK_MARKETING
+export WAGTAIL_CONTACT_PAGE_MODEL
+export WAGTAIL_CONTACT_PAGE_TEMPLATE
+export WAGTAIL_CONTACT_PAGE_LANDING
+export WAGTAIL_CONTACT_PAGE_TEST
 export WAGTAIL_HOME_PAGE_MODEL
 export WAGTAIL_HOME_PAGE_TEMPLATE
 export WAGTAIL_HOME_PAGE_VIEWS
 export WAGTAIL_HOME_PAGE_URLS
-export WAGTAIL_HTML_PREFIX
-export WAGTAIL_HTML_OFFCANVAS
+export WAGTAIL_OFFCANVAS_TEMPLATE
+export WAGTAIL_PRIVACY_PAGE_MODEL
+export WAGTAIL_PRIVACY_PAGE_MODEL
+export WAGTAIL_PRIVACY_PAGE_TEMPLATE
 export WAGTAIL_SEARCH_TEMPLATE
 export WAGTAIL_SEARCH_URLS
 export WAGTAIL_URLS
@@ -3035,8 +3028,8 @@ docker-run-default:
 	podman run $(PROJECT_NAME)
 
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
-ifndef SSH_KEY
-	$(error SSH_KEY is undefined)
+ifndef EB_SSH_KEY
+	$(error EB_SSH_KEY is undefined)
 endif
 ifndef VPC_ID
 	$(error VPC_ID is undefined)
@@ -3052,14 +3045,14 @@ ifndef VPC_SUBNET_ELB
 endif
 
 eb-create-default: aws-check-env eb-check-env
-	eb create $(ENV_NAME) \
-         -im $(INSTANCE_MIN) \
-         -ix $(INSTANCE_MAX) \
-         -ip $(INSTANCE_PROFILE) \
-         -i $(INSTANCE_TYPE) \
-         -k $(SSH_KEY) \
-         -p $(PLATFORM) \
-         --elb-type $(LB_TYPE) \
+	eb create $(EB_ENV_NAME) \
+         -im $(EC2_INSTANCE_MIN) \
+         -ix $(EC2_INSTANCE_MAX) \
+         -ip $(EC2_INSTANCE_PROFILE) \
+         -i $(EC2_INSTANCE_TYPE) \
+         -k $(EB_SSH_KEY) \
+         -p $(EB_PLATFORM) \
+         --elb-type $(EC2_LB_TYPE) \
          --vpc \
          --vpc.id $(VPC_ID) \
          --vpc.elbpublic \
@@ -3070,22 +3063,22 @@ eb-create-default: aws-check-env eb-check-env
 
 eb-custom-env-default:
 	$(ADD_DIR) .ebextensions
-	@echo "$$CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
+	@echo "$$EB_CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
 	-$(GIT_ADD) .ebextensions/bash.config
 	$(ADD_DIR) .platform/hooks/postdeploy
-	@echo "$$CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
+	@echo "$$EB_CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
 	-$(GIT_ADD) .platform/hooks/postdeploy/setenv.sh
 
 eb-deploy-default:
 	eb deploy
 
 eb-pg-export-default: aws-check-env eb-check-env
-	@if [ ! -d $(EB_DIR) ]; then \
-        echo "Directory $(EB_DIR) does not exist"; \
+	@if [ ! -d $(EB_DIR_NAME) ]; then \
+        echo "Directory $(EB_DIR_NAME) does not exist"; \
     else \
-        echo "Directory $(EB_DIR) does exist!"; \
-        eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); pg_dump -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)" > $(DATABASE_NAME).sql; \
-        echo "Wrote $(DATABASE_NAME).sql"; \
+        echo "Directory $(EB_DIR_NAME) does exist!"; \
+        eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); pg_dump -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)" > $(DJANGO_DB_NAME).sql; \
+        echo "Wrote $(DJANGO_DB_NAME).sql"; \
     fi
 
 eb-restart-default:
@@ -3104,7 +3097,7 @@ eb-list-platforms-default:
 	aws elasticbeanstalk list-platform-versions
 
 eb-list-databases-default:
-	@eb ssh --quiet -c "export PGPASSWORD=$(DATABASE_PASS); psql -l -U $(DATABASE_USER) -h $(DATABASE_HOST) $(DATABASE_NAME)"
+	@eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); psql -l -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)"
 
 eb-logs-default:
 	eb logs
@@ -3145,11 +3138,11 @@ db-pg-init-test-default:
 	-createdb test_$(PROJECT_NAME)
 
 db-pg-import-default:
-	@psql $(DATABASE_NAME) < $(DATABASE_NAME).sql
+	@psql $(DJANGO_DB_NAME) < $(DJANGO_DB_NAME).sql
 
 django-allauth-template-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
-	@echo "$$ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
+	@echo "$$DJANGO_ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
 django-allauth-default:
@@ -3169,14 +3162,14 @@ django-custom-admin-default:
 	-$(GIT_ADD) backend/*.py
 
 django-dockerfile-default:
-	@echo "$$DOCKERFILE" > Dockerfile
+	@echo "$$DJANGO_DOCKERFILE" > Dockerfile
 	-$(GIT_ADD) Dockerfile
-	@echo "$$DOCKERCOMPOSE" > docker-compose.yml
+	@echo "$$DJANGO_DOCKERCOMPOSE" > docker-compose.yml
 	-$(GIT_ADD) docker-compose.yml
 
 django-offcanvas-template-default:
 	-$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_HTML_OFFCANVAS" > backend/templates/offcanvas.html
+	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/offcanvas.html
 
 django-manage-py-default:
@@ -3189,15 +3182,15 @@ django-base-template-default:
 	-$(GIT_ADD) backend/templates/base.html
 
 django-favicon-default:
-	@echo "$$FAVICON_TEMPLATE" > backend/templates/favicon.html
+	@echo "$$DJANGO_FAVICON_TEMPLATE" > backend/templates/favicon.html
 	-$(GIT_ADD) backend/templates/favicon.html
 
 django-header-template-default:
-	@echo "$$DJANGO_HEADER" > backend/templates/header.html
+	@echo "$$DJANGO_HEADER_TEMPLATE" > backend/templates/header.html
 	-$(GIT_ADD) backend/templates/header.html
 
 django-footer-template-default:
-	@echo "$$DJANGO_FOOTER" > backend/templates/footer.html
+	@echo "$$DJANGO_FOOTER_TEMPLATE" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
 
 django-init-minimal-default: separator \
@@ -3217,14 +3210,17 @@ django-init-minimal-default: separator \
 	django-manage-py \
 	django-urls \
 	django-urls-debug \
+	django-favicon \
 	django-settings-minimal \
 	django-settings-dev-minimal \
 	django-settings-prod \
+	django-home \
 	django-frontend \
 	django-migrate \
 	gitignore \
 	readme \
 	lint \
+	su \
 	serve
 
 django-init-default: separator \
@@ -3307,7 +3303,7 @@ django-wagtail-init-default: separator \
 	serve
 
 django-install-minimal-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip install \
 	Django \
 	dj-database-url \
@@ -3315,7 +3311,7 @@ django-install-minimal-default:
 	python-webpack-boilerplate
 
 django-install-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip install \
 	Django \
         Faker \
@@ -3373,18 +3369,18 @@ django-frontend-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
 	$(ADD_DIR) frontend/src/utils
-	@echo "$$COMPONENT_CLOCK" > frontend/src/components/Clock.js
-	@echo "$$COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
-	@echo "$$DJANGO_FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
-	@echo "$$DJANGO_FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
-	@echo "$$COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$DJANGO_FRONTEND_APP" > frontend/src/application/app.js
 	@echo "$$DJANGO_FRONTEND_APP_CONFIG" > frontend/src/application/config.js
+	@echo "$$DJANGO_FRONTEND_BABELRC" > frontend/.babelrc
+	@echo "$$DJANGO_FRONTEND_COMPONENT_CLOCK" > frontend/src/components/Clock.js
+	@echo "$$DJANGO_FRONTEND_COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
+	@echo "$$DJANGO_FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
+	@echo "$$DJANGO_FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
+	@echo "$$DJANGO_FRONTEND_COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$DJANGO_FRONTEND_COMPONENTS" > frontend/src/components/index.js
+	@echo "$$DJANGO_FRONTEND_ESLINTRC" > frontend/.eslintrc
 	@echo "$$DJANGO_FRONTEND_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$DJANGO_FRONTEND_STYLES" > frontend/src/styles/index.scss
-	@echo "$$BABELRC" > frontend/.babelrc
-	@echo "$$ESLINTRC" > frontend/.eslintrc
 	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
@@ -3407,18 +3403,18 @@ django-home-default:
 
 django-payments-demo-default:
 	python manage.py startapp payments
-	@echo "$$PAYMENTS_FORM" > payments/forms.py
-	@echo "$$PAYMENTS_MODELS" > payments/models.py
-	@echo "$$PAYMENTS_ADMIN" > payments/admin.py
-	@echo "$$PAYMENTS_VIEW" > payments/views.py
-	@echo "$$PAYMENTS_URLS" > payments/urls.py
+	@echo "$$DJANGO_PAYMENTS_FORM" > payments/forms.py
+	@echo "$$DJANGO_PAYMENTS_MODELS" > payments/models.py
+	@echo "$$DJANGO_PAYMENTS_ADMIN" > payments/admin.py
+	@echo "$$DJANGO_PAYMENTS_VIEW" > payments/views.py
+	@echo "$$DJANGO_PAYMENTS_URLS" > payments/urls.py
 	$(ADD_DIR) payments/templates/payments
 	$(ADD_DIR) payments/management/commands
-	@echo "$$PAYMENTS_TEMPLATE_CANCEL" > payments/templates/payments/cancel.html
-	@echo "$$PAYMENTS_TEMPLATE_CHECKOUT" > payments/templates/payments/checkout.html
-	@echo "$$PAYMENTS_TEMPLATE_SUCCESS" > payments/templates/payments/success.html
-	@echo "$$PAYMENTS_TEMPLATE_PRODUCT_LIST" > payments/templates/payments/product_list.html
-	@echo "$$PAYMENTS_TEMPLATE_PRODUCT_DETAIL" > payments/templates/payments/product_detail.html
+	@echo "$$DJANGO_PAYMENTS_TEMPLATE_CANCEL" > payments/templates/payments/cancel.html
+	@echo "$$DJANGO_PAYMENTS_TEMPLATE_CHECKOUT" > payments/templates/payments/checkout.html
+	@echo "$$DJANGO_PAYMENTS_TEMPLATE_SUCCESS" > payments/templates/payments/success.html
+	@echo "$$DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST" > payments/templates/payments/product_list.html
+	@echo "$$DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL" > payments/templates/payments/product_detail.html
 	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3428,8 +3424,8 @@ django-payments-demo-default:
 	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('payments/', include('payments.urls'))]" >> backend/urls.py
 	python manage.py makemigrations payments
-	@echo "$$PAYMENTS_MIGRATION_0002" > payments/migrations/0002_set_stripe_api_keys.py
-	@echo "$$PAYMENTS_MIGRATION_0003" > payments/migrations/0003_create_initial_products.py
+	@echo "$$DJANGO_PAYMENTS_MIGRATION_0002" > payments/migrations/0002_set_stripe_api_keys.py
+	@echo "$$DJANGO_PAYMENTS_MIGRATION_0003" > payments/migrations/0003_create_initial_products.py
 	-$(GIT_ADD) payments/
 
 django-rest-serializers-default:
@@ -3496,15 +3492,15 @@ django-migrations-show-default:
 
 django-modelform-demo-default:
 	python manage.py startapp model_form_demo
-	@echo "$$MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
-	@echo "$$MODEL_FORM_DEMO_FORMS" > model_form_demo/forms.py
-	@echo "$$MODEL_FORM_DEMO_MODEL" > model_form_demo/models.py
-	@echo "$$MODEL_FORM_DEMO_URLS" > model_form_demo/urls.py
-	@echo "$$MODEL_FORM_DEMO_VIEWS" > model_form_demo/views.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_FORMS" > model_form_demo/forms.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_MODEL" > model_form_demo/models.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_URLS" > model_form_demo/urls.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_VIEWS" > model_form_demo/views.py
 	$(ADD_DIR) model_form_demo/templates
-	@echo "$$MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
-	@echo "$$MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
-	@echo "$$MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
+	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
+	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
+	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
 	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('model-form-demo/', include('model_form_demo.urls'))]" >> backend/urls.py
 	python manage.py makemigrations
@@ -3514,9 +3510,9 @@ django-modelform-demo-default:
 
 django-logging-demo-default:
 	python manage.py startapp logging_demo
-	@echo "$$LOGGING_DEMO_VIEWS" > logging_demo/views.py
-	@echo "$$LOGGING_DEMO_URLS" > logging_demo/urls.py
-	@echo "$$LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_LOGGING_DEMO_VIEWS" > logging_demo/views.py
+	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
+	@echo "$$DJANGO_LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('logging-demo/', include('logging_demo.urls'))]" >> backend/urls.py
 	-$(GIT_ADD) logging_demo/*.py
@@ -3538,6 +3534,12 @@ django-settings-minimal-default:
 	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "STATICFILES_DIRS = []" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 django-settings-base-default:
 	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3570,8 +3572,8 @@ django-settings-base-default:
 	@echo "LOGIN_REDIRECT_URL = '/'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "STATICFILES_DIRS = []" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3783,7 +3785,7 @@ make-default:
 	-git push
 
 pip-freeze-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	-$(GIT_ADD) requirements.txt
@@ -3797,23 +3799,23 @@ pip-init-test-default:
 	-$(GIT_ADD) requirements-test.txt
 
 pip-install-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	$(MAKE) pip-upgrade
 	python -m pip install wheel
 	python -m pip install -r requirements.txt
 
 pip-install-dev-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip install -r requirements-dev.txt
 
 pip-install-test-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip install -r requirements-test.txt
 
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F\= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip install -U -r requirements.txt
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -3822,11 +3824,11 @@ pip-deps-default:
 	pipdeptree
 
 pip-upgrade-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip install -U pip
 
 pip-uninstall-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip freeze | xargs python -m pip uninstall -y
 
 plone-clean-default:
@@ -3834,8 +3836,8 @@ plone-clean-default:
 	$(DEL_DIR) $(PACKAGE_NAME)
 
 plone-init-default:
-	$(ENSURE_PIP)
-	python -m pip install plone -c $(PLONE_CONSTRAINTS)
+	$(PIP_ENSURE)
+	python -m pip install plone -c $(PIP_CONSTRAINTS_PLONE)
 	mkwsgiinstance -d $(PACKAGE_NAME) -u admin:admin
 	cat $(PACKAGE_NAME)/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
 	mv -f $(TMPDIR)/zope.ini $(PACKAGE_NAME)/etc/zope.ini
@@ -3849,8 +3851,8 @@ plone-build-default:
 	buildout
 
 custom-makefile-default:
-	@echo "$$CUSTOM_MAKEFILE" > $(CUSTOM_MAKEFILE_FILE)
-	-$(GIT_ADD) $(CUSTOM_MAKEFILE_FILE)
+	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
+	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
 
 programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > interview.py
@@ -3954,7 +3956,7 @@ sphinx-theme-init-default:
 
 review-default:
 ifeq ($(UNAME), Darwin)
-	$(REVIEW_EDITOR) `find backend/ -name \*.py` `find backend/ -name \*.html` `find frontend/ -name \*.js` `find frontend/ -name \*.js`
+	$(EDITOR_REVIEW) `find backend/ -name \*.py` `find backend/ -name \*.html` `find frontend/ -name \*.js` `find frontend/ -name \*.js`
 else
 	@echo "Unsupported"
 endif
@@ -3999,9 +4001,9 @@ wagtail-settings-default:
 
 wagtail-privacy-default:
 	python manage.py startapp privacy
-	@echo "$$PRIVACY_PAGE_MODEL" > privacy/models.py
+	@echo "$$WAGTAIL_PRIVACY_PAGE_MODEL" > privacy/models.py
 	$(ADD_DIR) privacy/templates
-	@echo "$$PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
+	@echo "$$WAGTAIL_PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
 	@echo "INSTALLED_APPS.append('privacy')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations privacy
 	-$(GIT_ADD) privacy/templates
@@ -4037,7 +4039,7 @@ wagtail-home-default:
 
 wagtail-templates-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
-	@echo "$$WAGTAIL_HTML_OFFCANVAS" > backend/templates/offcanvas.html
+	@echo "$$WAGTAIL_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/
 
 wagtail-project-default:
@@ -4055,7 +4057,7 @@ wagtail-urls-home-default:
 	@echo "urlpatterns += [path('', include('wagtail.urls'))]" >> backend/urls.py
 
 wagtail-install-default:
-	$(ENSURE_PIP)
+	$(PIP_ENSURE)
 	python -m pip install \
         wagtail \
         wagtailmenus \
@@ -4105,9 +4107,9 @@ wagtail-contactpage-default:
 
 wagtail-sitepage-default:
 	python manage.py startapp sitepage
-	@echo "$$SITEPAGE_MODEL" > sitepage/models.py
+	@echo "$$WAGTAIL_SITEPAGE_MODEL" > sitepage/models.py
 	$(ADD_DIR) sitepage/templates/sitepage/
-	@echo "$$SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
+	@echo "$$WAGTAIL_SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
 	@echo "INSTALLED_APPS.append('sitepage')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations sitepage
 	-$(GIT_ADD) sitepage/templates
@@ -4123,6 +4125,7 @@ build-default: pip-install
 c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
+clean-up-default: git-commit-clean-up git-push
 cp-alpha-sort-default: git-commit-alpha-sort git-push
 cp-as-default: git-commit-alpha-sort git-push
 cp-clean-up-default: git-commit-clean-up git-push
