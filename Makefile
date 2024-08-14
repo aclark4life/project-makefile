@@ -3464,6 +3464,7 @@ django-home-default:
 	@echo "urlpatterns += [path('', include('home.urls'))]" >> backend/urls.py
 	-$(GIT_ADD) home/templates
 	-$(GIT_ADD) home/*.py
+	-$(GIT_ADD) home/migrations/*.py
 
 django-payments-demo-default:
 	python manage.py startapp payments
