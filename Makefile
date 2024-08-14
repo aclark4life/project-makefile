@@ -9,6 +9,8 @@
 # --------------------------------------------------------------------------------
 #
 .DEFAULT_GOAL := git-commit-push
+BACKEND_APPS_FILE := backend/apps.py
+CUSTOM_ADMIN_FILE := backend/admin.py
 CUSTOM_MAKEFILE_FILE := project.mk
 DATABASE_AWK = awk -F\= '{print $$2}'
 DATABASE_HOST = $(shell $(GET_DATABASE_URL) | $(DATABASE_AWK) |\
@@ -3223,8 +3225,8 @@ django-utils-default:
 	-$(GIT_ADD) backend/utils.py
 
 django-custom-admin-default:
-	@echo "$$CUSTOM_ADMIN" > backend/admin.py
-	@echo "$$BACKEND_APPS" > backend/apps.py
+	@echo "$$CUSTOM_ADMIN" > $(CUSTOM_ADMIN_FILE)
+	@echo "$$BACKEND_APPS" > $(BACKEND_APPS_FILE)
 	-$(GIT_ADD) backend/*.py
 
 django-dockerfile-default:
