@@ -911,16 +911,6 @@ if __name__ == "__main__":
     main()
 endef
 
-define DJANGO_URLS_MINIMAL
-from django.contrib import admin
-from django.urls import path, include
-from django.conf import settings
-
-urlpatterns = [
-    # path("django/", admin.site.urls),
-]
-endef
-
 define DJANGO_URLS
 from django.contrib import admin
 from django.urls import path, include
@@ -2892,7 +2882,6 @@ export DJANGO_SETTINGS_REST_FRAMEWORK
 export DJANGO_SETTINGS_THEMES
 export DJANGO_URLS
 export DJANGO_URLS_API
-export DJANGO_URLS_MINIMAL
 export DJANGO_UTILS
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
@@ -3224,7 +3213,7 @@ django-init-minimal-default: separator \
 	django-footer-template \
 	django-base-template \
 	django-manage-py \
-	django-urls-minimal \
+	django-urls \
 	django-urls-debug \
 	django-settings-minimal \
 	django-settings-dev-minimal \
@@ -3640,10 +3629,6 @@ django-urls-api-default:
 
 django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
-	-$(GIT_ADD) backend/urls.py
-
-django-urls-minimal-default:
-	@echo "$$DJANGO_URLS_MINIMAL" > backend/urls.py
 	-$(GIT_ADD) backend/urls.py
 
 django-urls-debug-default:
