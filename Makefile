@@ -2270,6 +2270,96 @@ tinymce.init({
 });
 endef
 
+define WAGTAIL_BASE_TEMPLATE
+{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
+
+<!DOCTYPE html>
+<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% wagtail_site as current_site %}
+            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        {% if page.search_description %}
+        <meta name="description" content="{{ page.search_description }}" />
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+        <base target="_blank">
+        {% endif %}
+
+        {% stylesheet_pack 'app' %}
+
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+
+        <style>
+          .success {
+              background-color: #d4edda;
+              border-color: #c3e6cb;
+              color: #155724;
+          }
+          .info {
+              background-color: #d1ecf1;
+              border-color: #bee5eb;
+              color: #0c5460;
+          }
+          .warning {
+              background-color: #fff3cd;
+              border-color: #ffeeba;
+              color: #856404;
+          }
+          .danger {
+              background-color: #f8d7da;
+              border-color: #f5c6cb;
+              color: #721c24;
+          }
+        </style>
+        {% include 'favicon.html' %}
+        {% csrf_token %}
+    </head>
+    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            {% wagtailuserbar %}
+            <div id="app"></div>
+            {% include 'header.html' %}
+            {% if messages %}
+                <div class="messages container">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        {% include 'footer.html' %}
+        {% include 'offcanvas.html' %}
+        {% javascript_pack 'app' %}
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
+endef
+
 define WAGTAIL_BLOCK_CAROUSEL
         <div id="carouselExampleCaptions" class="carousel slide">
             <div class="carousel-indicators">
@@ -2444,6 +2534,79 @@ define WAGTAIL_CONTACT_PAGE_LANDING
 {% extends 'base.html' %}
 {% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
 endef
+
+define WAGTAIL_HEADER_PREFIX
+{% load wagtailcore_tags %}
+{% wagtail_site as current_site %}
+endef 
+
+define WAGTAIL_HOME_PAGE_MODEL
+from django.db import models
+from wagtail.models import Page
+from wagtail.fields import RichTextField, StreamField
+from wagtail import blocks
+from wagtail.admin.panels import FieldPanel
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail_color_panel.fields import ColorField
+from wagtail_color_panel.edit_handlers import NativeColorPanel
+
+
+class MarketingBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=False, help_text='Enter the block title')
+    content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
+    images = blocks.ListBlock(ImageChooserBlock(required=False), help_text="Select one or two images for column display. Select three or more images for carousel display.")
+    image = ImageChooserBlock(required=False, help_text="Select one image for background display.")
+    block_class = blocks.CharBlock(
+        required=False,
+        help_text='Enter a CSS class for styling the marketing block',
+        classname='full title',
+        default='vh-100 bg-secondary',
+    )
+    image_class = blocks.CharBlock(
+        required=False,
+        help_text='Enter a CSS class for styling the column display image(s)',
+        classname='full title',
+        default='img-thumbnail p-5',
+    )
+    layout_class = blocks.CharBlock(
+        required=False,
+        help_text='Enter a CSS class for styling the layout.',
+        classname='full title',
+        default='d-flex flex-row',
+    )
+
+    class Meta:
+        icon = 'placeholder'
+        template = 'blocks/marketing_block.html'
+
+
+class HomePage(Page):
+
+    template = 'home/home_page.html'  # Create a template for rendering the home page
+
+    marketing_blocks = StreamField([
+        ('marketing_block', MarketingBlock()),
+    ], blank=True, null=True, use_json_field=True)
+    content_panels = Page.content_panels + [
+        FieldPanel('marketing_blocks'),
+    ]
+
+    class Meta:
+        verbose_name = 'Home Page'
+endef
+
+define WAGTAIL_HOME_PAGE_TEMPLATE
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+        {% for block in page.marketing_blocks %}
+           {% include_block block %}
+        {% endfor %}
+    </main>
+{% endblock %}
+endef
+
 define WAGTAIL_OFFCANVAS_TEMPLATE
 {% load wagtailcore_tags %}
 {% wagtail_site as current_site %}
@@ -2563,168 +2726,6 @@ if settings.DEBUG:
     # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-endef
-
-define WAGTAIL_HEADER_PREFIX
-{% load wagtailcore_tags %}
-{% wagtail_site as current_site %}
-endef 
-
-define WAGTAIL_HOME_PAGE_MODEL
-from django.db import models
-from wagtail.models import Page
-from wagtail.fields import RichTextField, StreamField
-from wagtail import blocks
-from wagtail.admin.panels import FieldPanel
-from wagtail.images.blocks import ImageChooserBlock
-from wagtail_color_panel.fields import ColorField
-from wagtail_color_panel.edit_handlers import NativeColorPanel
-
-
-class MarketingBlock(blocks.StructBlock):
-    title = blocks.CharBlock(required=False, help_text='Enter the block title')
-    content = blocks.RichTextBlock(required=False, help_text='Enter the block content')
-    images = blocks.ListBlock(ImageChooserBlock(required=False), help_text="Select one or two images for column display. Select three or more images for carousel display.")
-    image = ImageChooserBlock(required=False, help_text="Select one image for background display.")
-    block_class = blocks.CharBlock(
-        required=False,
-        help_text='Enter a CSS class for styling the marketing block',
-        classname='full title',
-        default='vh-100 bg-secondary',
-    )
-    image_class = blocks.CharBlock(
-        required=False,
-        help_text='Enter a CSS class for styling the column display image(s)',
-        classname='full title',
-        default='img-thumbnail p-5',
-    )
-    layout_class = blocks.CharBlock(
-        required=False,
-        help_text='Enter a CSS class for styling the layout.',
-        classname='full title',
-        default='d-flex flex-row',
-    )
-
-    class Meta:
-        icon = 'placeholder'
-        template = 'blocks/marketing_block.html'
-
-
-class HomePage(Page):
-
-    template = 'home/home_page.html'  # Create a template for rendering the home page
-
-    marketing_blocks = StreamField([
-        ('marketing_block', MarketingBlock()),
-    ], blank=True, null=True, use_json_field=True)
-    content_panels = Page.content_panels + [
-        FieldPanel('marketing_blocks'),
-    ]
-
-    class Meta:
-        verbose_name = 'Home Page'
-endef
-
-define WAGTAIL_HOME_PAGE_TEMPLATE
-{% extends "base.html" %}
-{% load wagtailcore_tags %}
-{% block content %}
-    <main class="{% block main_class %}{% endblock %}">
-        {% for block in page.marketing_blocks %}
-           {% include_block block %}
-        {% endfor %}
-    </main>
-{% endblock %}
-endef
-
-define WAGTAIL_BASE_TEMPLATE
-{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
-
-<!DOCTYPE html>
-<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
-    <head>
-        <meta charset="utf-8" />
-        <title>
-            {% block title %}
-            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
-            {% endblock %}
-            {% block title_suffix %}
-            {% wagtail_site as current_site %}
-            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
-            {% endblock %}
-        </title>
-        {% if page.search_description %}
-        <meta name="description" content="{{ page.search_description }}" />
-        {% endif %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request.in_preview_panel %}
-        <base target="_blank">
-        {% endif %}
-
-        {% stylesheet_pack 'app' %}
-
-        {% block extra_css %}
-        {# Override this in templates to add extra stylesheets #}
-        {% endblock %}
-
-        <style>
-          .success {
-              background-color: #d4edda;
-              border-color: #c3e6cb;
-              color: #155724;
-          }
-          .info {
-              background-color: #d1ecf1;
-              border-color: #bee5eb;
-              color: #0c5460;
-          }
-          .warning {
-              background-color: #fff3cd;
-              border-color: #ffeeba;
-              color: #856404;
-          }
-          .danger {
-              background-color: #f8d7da;
-              border-color: #f5c6cb;
-              color: #721c24;
-          }
-        </style>
-        {% include 'favicon.html' %}
-        {% csrf_token %}
-    </head>
-    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
-        <main class="flex-shrink-0">
-            {% wagtailuserbar %}
-            <div id="app"></div>
-            {% include 'header.html' %}
-            {% if messages %}
-                <div class="messages container">
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show"
-                             role="alert">
-                            {{ message }}
-                            <button type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="container">
-                {% block content %}{% endblock %}
-            </div>
-        </main>
-        {% include 'footer.html' %}
-        {% include 'offcanvas.html' %}
-        {% javascript_pack 'app' %}
-        {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
-        {% endblock %}
-    </body>
-</html>
 endef
 
 define WAGTAIL_PRIVACY_PAGE_MODEL
