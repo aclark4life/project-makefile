@@ -3853,7 +3853,7 @@ plone-init-default:
 	$(MAKE) plone-serve
 
 plone-serve-default:
-	runwsgi $(PACKAGE_NAME)/etc/zope.ini
+	runwsgi backend/etc/zope.ini
 
 plone-build-default:
 	buildout
