@@ -5,7 +5,7 @@
 # https://github.com/aclark4life/project-makefile
 
 # --------------------------------------------------------------------------------
-# Variables
+# Variables to be used in phony target rules
 # --------------------------------------------------------------------------------
 
 .DEFAULT_GOAL := git-commit-push
@@ -66,7 +66,7 @@ WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend cont
 WAGTAIL_CLEAN_FILES = .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 
 # --------------------------------------------------------------------------------
-# Include the custom makefile if it exists.
+# Include the custom makefile if it exists
 # --------------------------------------------------------------------------------
 
 ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
@@ -74,7 +74,7 @@ ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
 endif
 
 # --------------------------------------------------------------------------------
-# Multi-line variables
+# Multi-line variables to be used in phony target rules
 # --------------------------------------------------------------------------------
 
 define EB_CUSTOM_ENV_VAR_FILE
@@ -2971,7 +2971,7 @@ export WEBPACK_REVEAL_INDEX_HTML
 export WEBPACK_REVEAL_INDEX_JS
 
 # ------------------------------------------------------------------------------
-# Multi-line Phony target rules
+# Multi-line phony target rules
 # ------------------------------------------------------------------------------
 
 aws-check-env-profile-default:
@@ -4207,7 +4207,8 @@ webpack-default: webpack-init
 wording: git-commit-wording git-push
 
 # --------------------------------------------------------------------------------
-# Allow override of default rules in MAKEFILE_CUSTOM_FILE
+# Allow customizing rules defined in this Makefile with rules defined in
+# $(MAKEFILE_CUSTOM_FILE)
 # --------------------------------------------------------------------------------
 
 %: %-default  # https://stackoverflow.com/a/49804748
