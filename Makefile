@@ -1392,6 +1392,23 @@ LOGGING = {
 }
 endef
 
+define DJANGO_SETTINGS_DEV_INTERNAL_IPS
+INTERNAL_IPS = ["127.0.0.1",]
+endef
+
+define JENKINS_FILE
+pipeline {
+    agent any
+    stages {
+        stage('') {
+            steps {
+                echo ''
+            }
+        }
+    }
+}
+endef
+
 define DJANGO_SETTINGS_PROD
 from .base import *  # noqa
 from backend.utils import get_ec2_metadata
@@ -1628,23 +1645,6 @@ endef
 
 define HTML_ERROR
 <h1>500</h1>
-endef
-
-define INTERNAL_IPS
-INTERNAL_IPS = ["127.0.0.1",]
-endef
-
-define JENKINS_FILE
-pipeline {
-    agent any
-    stages {
-        stage('') {
-            steps {
-                echo ''
-            }
-        }
-    }
-}
 endef
 
 define MAKEFILE_CUSTOM
@@ -2931,7 +2931,7 @@ export EB_CUSTOM_ENV_VAR_FILE
 export GIT_IGNORE
 export HTML_ERROR
 export HTML_INDEX
-export INTERNAL_IPS
+export DJANGO_SETTINGS_DEV_INTERNAL_IPS
 export JENKINS_FILE
 export MAKEFILE_CUSTOM
 export PROGRAMMING_INTERVIEW
@@ -3584,7 +3584,7 @@ django-settings-base-default:
 django-settings-dev-minimal-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
-	@echo "$$INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
+	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
@@ -3593,7 +3593,7 @@ django-settings-dev-minimal-default:
 django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
-	@echo "$$INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
+	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
