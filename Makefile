@@ -4122,6 +4122,8 @@ webpack-reveal-init-default: npm-init
 # Single-line phony target rules
 # --------------------------------------------------------------------------------
 
+as-default: git-commit-alpha-sort git-push
+alpha-default: git-commit-alpha-sort git-push
 alpha-sort-default: git-commit-alpha-sort git-push
 aws-check-env-default: aws-check-env-profile aws-check-env-region
 b-default: build
