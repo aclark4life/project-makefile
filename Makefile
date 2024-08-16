@@ -4205,6 +4205,7 @@ upgrade-default: pip-install-upgrade
 urls-default: django-show-urls
 wagtail-init-default: django-wagtail-init
 webpack-default: webpack-init
+wording: git-commit-wording git-push
 
 # --------------------------------------------------------------------------------
 # Allow override of default rules in MAKEFILE_CUSTOM_FILE
