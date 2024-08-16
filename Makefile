@@ -2848,7 +2848,7 @@ Reveal.initialize({ slideNumber: true, plugins: [ RevealNotes ]});
 endef
 
 # ------------------------------------------------------------------------------  
-# Export variables
+# Export variables used by phony target rules
 # ------------------------------------------------------------------------------  
 
 export DJANGO_ALLAUTH_LAYOUT_BASE
