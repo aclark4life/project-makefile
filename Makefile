@@ -3,12 +3,17 @@
 # A generic makefile for Python projects
 #
 # https://github.com/aclark4life/project-makefile
+#
+# --------------------------------------------------------------------------------
+# Set the default goal to `git commit -a` and `git push` with GIT_MESSAGE
+# --------------------------------------------------------------------------------
+
+.DEFAULT_GOAL := git-commit-push
 
 # --------------------------------------------------------------------------------
 # Single line variables to be used by phony target rules
 # --------------------------------------------------------------------------------
 
-.DEFAULT_GOAL := git-commit-push
 ADD_DIR := mkdir -pv
 ADD_FILE := touch
 AWS_OPTS := --no-cli-pager --output table
