@@ -1650,6 +1650,20 @@ define MAKEFILE_CUSTOM
 # PROJECT_NAME := my-new-project
 endef
 
+define PIP_INSTALL_REQUIREMENTS_TEST
+pytest
+pytest-runner
+coverage
+pytest-mock
+pytest-cov
+hypothesis
+selenium
+pytest-django
+factory-boy
+flake8
+tox
+endef
+
 define PROGRAMMING_INTERVIEW
 from rich import print as rprint
 from rich.console import Console
@@ -2140,20 +2154,6 @@ endef
 
 define PYTHON_PROJECT_TOML
 [build-system]
-endef
-
-define REQUIREMENTS_TEST
-pytest
-pytest-runner
-coverage
-pytest-mock
-pytest-cov
-hypothesis
-selenium
-pytest-django
-factory-boy
-flake8
-tox
 endef
 
 define SEPARATOR
@@ -2934,7 +2934,7 @@ export PROGRAMMING_INTERVIEW
 export PYTHON_CI_YAML
 export PYTHON_LICENSE_TXT
 export PYTHON_PROJECT_TOML
-export REQUIREMENTS_TEST
+export PIP_INSTALL_REQUIREMENTS_TEST
 export SEPARATOR
 export THEME_BLUE
 export THEME_TOGGLER
@@ -3792,7 +3792,7 @@ pip-init-default:
 	-$(GIT_ADD) requirements.txt
 
 pip-init-test-default:
-	@echo "$$REQUIREMENTS_TEST" > requirements-test.txt
+	@echo "$$PIP_INSTALL_REQUIREMENTS_TEST" > requirements-test.txt
 	-$(GIT_ADD) requirements-test.txt
 
 pip-install-default:
