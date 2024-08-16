@@ -2633,6 +2633,48 @@ define WAGTAIL_OFFCANVAS_TEMPLATE
 </div>
 endef
 
+define WAGTAIL_PRIVACY_PAGE_MODEL
+from wagtail.models import Page
+from wagtail.admin.panels import FieldPanel
+from wagtailmarkdown.fields import MarkdownField
+
+
+class PrivacyPage(Page):
+    """
+    A Wagtail Page model for the Privacy Policy page.
+    """
+
+    template = "privacy_page.html"
+
+    body = MarkdownField()
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body", classname="full"),
+    ]
+
+    class Meta:
+        verbose_name = "Privacy Page"
+endef
+
+define WAGTAIL_PRIVACY_PAGE_TEMPLATE
+{% extends 'base.html' %}
+{% load wagtailmarkdown %}
+{% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
+endef
+
+define WEBPACK_CONFIG_JS
+const path = require('path');
+
+module.exports = {
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+};
+endef
+
 define WAGTAIL_SEARCH_TEMPLATE
 {% extends "base.html" %}
 {% load static wagtailcore_tags %}
@@ -2722,48 +2764,6 @@ if settings.DEBUG:
     # Serve static and media files from development server
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-endef
-
-define WAGTAIL_PRIVACY_PAGE_MODEL
-from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel
-from wagtailmarkdown.fields import MarkdownField
-
-
-class PrivacyPage(Page):
-    """
-    A Wagtail Page model for the Privacy Policy page.
-    """
-
-    template = "privacy_page.html"
-
-    body = MarkdownField()
-
-    content_panels = Page.content_panels + [
-        FieldPanel("body", classname="full"),
-    ]
-
-    class Meta:
-        verbose_name = "Privacy Page"
-endef
-
-define WAGTAIL_PRIVACY_PAGE_TEMPLATE
-{% extends 'base.html' %}
-{% load wagtailmarkdown %}
-{% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
-endef
-
-define WEBPACK_CONFIG_JS
-const path = require('path');
-
-module.exports = {
-  mode: 'development',
-  entry: './src/index.js',
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-};
 endef
 
 define WEBPACK_INDEX_HTML
