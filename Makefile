@@ -1392,19 +1392,6 @@ define DJANGO_SETTINGS_DEV_INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
 endef
 
-define JENKINS_FILE
-pipeline {
-    agent any
-    stages {
-        stage('') {
-            steps {
-                echo ''
-            }
-        }
-    }
-}
-endef
-
 define DJANGO_SETTINGS_PROD
 from .base import *  # noqa
 from backend.utils import get_ec2_metadata
@@ -1641,6 +1628,19 @@ endef
 
 define HTML_ERROR
 <h1>500</h1>
+endef
+
+define JENKINS_FILE
+pipeline {
+    agent any
+    stages {
+        stage('') {
+            steps {
+                echo ''
+            }
+        }
+    }
+}
 endef
 
 define MAKEFILE_CUSTOM
