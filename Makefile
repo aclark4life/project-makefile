@@ -5,9 +5,17 @@
 # https://github.com/aclark4life/project-makefile
 
 # --------------------------------------------------------------------------------
-# Variables (override)
+# Variables
 # --------------------------------------------------------------------------------
+
 .DEFAULT_GOAL := git-commit-push
+ADD_DIR := mkdir -pv
+ADD_FILE := touch
+AWS_OPTS := --no-cli-pager --output table
+COPY_DIR := cp -rv
+COPY_FILE := cp -v
+DEL_DIR := rm -rv
+DEL_FILE := rm -v
 DJANGO_DB_COL = awk -F\= '{print $$2}'
 DJANGO_DB_URL = eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL"
 DJANGO_DB_HOST = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
@@ -35,6 +43,7 @@ EC2_INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
 EC2_INSTANCE_TYPE ?= t4g.small
 EC2_LB_TYPE ?= application
 EDITOR_REVIEW = subl
+GIT_ADD := git add
 GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
 GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
@@ -59,19 +68,6 @@ WAGTAIL_CLEAN_FILES = .dockerignore Dockerfile manage.py requirements.txt requir
 ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
     include $(MAKEFILE_CUSTOM_FILE)
 endif
-
-# --------------------------------------------------------------------------------
-# Variables (no override)
-# --------------------------------------------------------------------------------
-
-ADD_DIR := mkdir -pv
-ADD_FILE := touch
-AWS_OPTS := --no-cli-pager --output table
-COPY_DIR := cp -rv
-COPY_FILE := cp -v
-DEL_DIR := rm -rv
-DEL_FILE := rm -v
-GIT_ADD := git add
 
 # --------------------------------------------------------------------------------
 # Multi-line variables
