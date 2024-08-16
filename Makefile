@@ -2970,9 +2970,9 @@ export WEBPACK_REVEAL_CONFIG_JS
 export WEBPACK_REVEAL_INDEX_HTML
 export WEBPACK_REVEAL_INDEX_JS
 
-# ------------------------------------------------------------------------------  
-# Rules
-# ------------------------------------------------------------------------------  
+# ------------------------------------------------------------------------------
+# Phony target rules
+# ------------------------------------------------------------------------------
 
 aws-check-env-default: aws-check-env-profile aws-check-env-region
 
@@ -3726,6 +3726,9 @@ git-commit-lint-default:
 git-commit-upgrade-default:
 	git commit -a -m "Upgrade"
 
+git-commit-wording-default:
+	git commit -a -m "Wording"
+
 git-commit-default:
 	-@$(GIT_COMMIT)
 
@@ -4118,7 +4121,7 @@ wagtail-sitepage-default:
 	-$(GIT_ADD) sitepage/migrations/*.py
 
 # ------------------------------------------------------------------------------  
-# More rules
+# Phony targets
 # ------------------------------------------------------------------------------  
 
 b-default: build
@@ -4133,6 +4136,7 @@ cp-clean-up-default: git-commit-clean-up git-push
 cp-default: git-commit-push
 cp-lint-default: git-commit-lint git-push
 cp-upgrade-default: git-commit-upgrade git-push
+cp-wording-default: git-commit-wording git-push
 create-default: eb-create
 d-default: deploy
 db-dump-default: eb-pg-export
@@ -4203,7 +4207,7 @@ wagtail-init-default: django-wagtail-init
 webpack-default: webpack-init
 
 # --------------------------------------------------------------------------------
-# Overrides
+# Allow override of default rules in MAKEFILE_CUSTOM_FILE
 # --------------------------------------------------------------------------------
 
 %: %-default  # https://stackoverflow.com/a/49804748
