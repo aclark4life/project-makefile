@@ -1,6 +1,6 @@
 # Project Makefile
 #
-# A generic makefile for Python projects
+# A makefile to automate setup of a Wagtail CMS project and related tasks.
 #
 # https://github.com/aclark4life/project-makefile
 #
