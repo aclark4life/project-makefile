@@ -3887,6 +3887,15 @@ python-ci-default:
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
 
+readme-build-default:
+	rst2pdf README.rst
+
+readme-edit-rst-default:
+	$(EDITOR) README.rst
+
+readme-edit-md-default:
+	$(EDITOR) README.md
+
 readme-init-rst-default:
 	@echo "$(PROJECT_NAME)" > README.rst
 	@echo "================================================================================" >> README.rst
@@ -3896,17 +3905,8 @@ readme-init-md-default:
 	@echo "# $(PROJECT_NAME)" > README.md
 	-$(GIT_ADD) README.md
 
-readme-edit-rst-default:
-	$(EDITOR) README.rst
-
-readme-edit-md-default:
-	$(EDITOR) README.md
-
 readme-open-default:
 	open README.pdf
-
-readme-build-default:
-	rst2pdf README.rst
 
 reveal-build-default:
 	npm run build
