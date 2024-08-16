@@ -2971,10 +2971,8 @@ export WEBPACK_REVEAL_INDEX_HTML
 export WEBPACK_REVEAL_INDEX_JS
 
 # ------------------------------------------------------------------------------
-# Phony target rules
+# Multi-line Phony target rules
 # ------------------------------------------------------------------------------
-
-aws-check-env-default: aws-check-env-profile aws-check-env-region
 
 aws-check-env-profile-default:
 ifndef AWS_PROFILE
@@ -4120,10 +4118,11 @@ wagtail-sitepage-default:
 	-$(GIT_ADD) sitepage/*.py
 	-$(GIT_ADD) sitepage/migrations/*.py
 
-# ------------------------------------------------------------------------------  
-# Phony targets
-# ------------------------------------------------------------------------------  
+# --------------------------------------------------------------------------------
+# Phony target rules
+# --------------------------------------------------------------------------------
 
+aws-check-env-default: aws-check-env-profile aws-check-env-region
 b-default: build
 build-default: pip-install
 c-default: clean
