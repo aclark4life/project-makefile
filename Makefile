@@ -5,7 +5,7 @@
 # https://github.com/aclark4life/project-makefile
 
 # --------------------------------------------------------------------------------
-# Variables to be used in phony target rules
+# Single line variables to be used in phony target rules
 # --------------------------------------------------------------------------------
 
 .DEFAULT_GOAL := git-commit-push
@@ -4119,7 +4119,7 @@ wagtail-sitepage-default:
 	-$(GIT_ADD) sitepage/migrations/*.py
 
 # --------------------------------------------------------------------------------
-# Phony target rules
+# Single-line phony target rules
 # --------------------------------------------------------------------------------
 
 aws-check-env-default: aws-check-env-profile aws-check-env-region
