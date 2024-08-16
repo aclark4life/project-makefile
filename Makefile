@@ -3846,10 +3846,10 @@ plone-clean-default:
 plone-init-default:
 	$(PIP_ENSURE)
 	python -m pip install plone -c $(PIP_CONSTRAINTS_PLONE)
-	mkwsgiinstance -d $(PACKAGE_NAME) -u admin:admin
-	cat $(PACKAGE_NAME)/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
-	mv -f $(TMPDIR)/zope.ini $(PACKAGE_NAME)/etc/zope.ini
-	@echo "Created $(PROJECT_NAME)!"
+	mkwsgiinstance -d backend -u admin:admin
+	cat backend/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
+	mv -f $(TMPDIR)/zope.ini backend/etc/zope.ini
+	@echo "Created Plone instance in backend/!"
 	$(MAKE) plone-serve
 
 plone-serve-default:
