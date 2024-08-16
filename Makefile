@@ -3761,6 +3761,10 @@ lint-default:
 	-djlint --reformat --format-css --format-js .
 	-ruff check -v --fix
 
+makefile-custom-default:
+	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
+	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
+
 make-default:
 	-$(GIT_ADD) Makefile
 	-git commit Makefile -m "Add/update project-makefile files"
@@ -3851,10 +3855,6 @@ plone-serve-default:
 
 plone-build-default:
 	buildout
-
-custom-makefile-default:
-	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
-	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
 
 programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > interview.py
@@ -4181,7 +4181,7 @@ m-default: django-migrate
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
-mk-default: custom-makefile
+mk-default: makefile-custom
 o-default: open
 open-default: django-open
 p-default: git-push
