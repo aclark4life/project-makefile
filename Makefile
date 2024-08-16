@@ -699,6 +699,80 @@ export default function getPageComponents (components) {
 }
 endef
 
+define DJANGO_FRONTEND_THEME_BLUE
+@import "~bootstrap/scss/bootstrap.scss";
+
+[data-bs-theme="blue"] {
+  --bs-body-color: var(--bs-white);
+  --bs-body-color-rgb: #{to-rgb($$white)};
+  --bs-body-bg: var(--bs-blue);
+  --bs-body-bg-rgb: #{to-rgb($$blue)};
+  --bs-tertiary-bg: #{$$blue-600};
+
+  .dropdown-menu {
+    --bs-dropdown-bg: #{color-mix($$blue-500, $$blue-600)};
+    --bs-dropdown-link-active-bg: #{$$blue-700};
+  }
+
+  .btn-secondary {
+    --bs-btn-bg: #{color-mix($gray-600, $blue-400, .5)};
+    --bs-btn-border-color: #{rgba($$white, .25)};
+    --bs-btn-hover-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 5%)};
+    --bs-btn-hover-border-color: #{rgba($$white, .25)};
+    --bs-btn-active-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 10%)};
+    --bs-btn-active-border-color: #{rgba($$white, .5)};
+    --bs-btn-focus-border-color: #{rgba($$white, .5)};
+
+    // --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, 20%);
+  }
+}
+endef
+
+define DJANGO_FRONTEND_THEME_TOGGLER
+document.addEventListener('DOMContentLoaded', function () {
+    const rootElement = document.documentElement;
+    const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
+    const authThemeToggle = document.getElementById('theme-toggler-authenticated');
+    if (authThemeToggle) {
+        localStorage.removeItem('data-bs-theme');
+    }
+    const anonSavedTheme = localStorage.getItem('data-bs-theme');
+    if (anonSavedTheme) {
+        rootElement.setAttribute('data-bs-theme', anonSavedTheme);
+    }
+    if (anonThemeToggle) {
+        anonThemeToggle.addEventListener('click', function () {
+            const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            rootElement.setAttribute('data-bs-theme', newTheme);
+            localStorage.setItem('data-bs-theme', newTheme);
+        });
+    }
+    if (authThemeToggle) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        authThemeToggle.addEventListener('click', function () {
+            const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            fetch('/user/update_theme_preference/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
+                },
+                body: JSON.stringify({ theme: newTheme }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                rootElement.setAttribute('data-bs-theme', newTheme);
+            })
+            .catch(error => {
+                console.error('Error updating theme preference:', error);
+            });
+        });
+    }
+});
+endef
+
 define DJANGO_HEADER_TEMPLATE
 <div class="app-header">
     <div class="container py-4 app-navbar">
@@ -2169,80 +2243,6 @@ define SEPARATOR
 `=========================================================================================================================================='
 endef
 
-define THEME_BLUE
-@import "~bootstrap/scss/bootstrap.scss";
-
-[data-bs-theme="blue"] {
-  --bs-body-color: var(--bs-white);
-  --bs-body-color-rgb: #{to-rgb($$white)};
-  --bs-body-bg: var(--bs-blue);
-  --bs-body-bg-rgb: #{to-rgb($$blue)};
-  --bs-tertiary-bg: #{$$blue-600};
-
-  .dropdown-menu {
-    --bs-dropdown-bg: #{color-mix($$blue-500, $$blue-600)};
-    --bs-dropdown-link-active-bg: #{$$blue-700};
-  }
-
-  .btn-secondary {
-    --bs-btn-bg: #{color-mix($gray-600, $blue-400, .5)};
-    --bs-btn-border-color: #{rgba($$white, .25)};
-    --bs-btn-hover-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 5%)};
-    --bs-btn-hover-border-color: #{rgba($$white, .25)};
-    --bs-btn-active-bg: #{color-adjust(color-mix($gray-600, $blue-400, .5), 10%)};
-    --bs-btn-active-border-color: #{rgba($$white, .5)};
-    --bs-btn-focus-border-color: #{rgba($$white, .5)};
-
-    // --bs-btn-focus-box-shadow: 0 0 0 .25rem rgba(255, 255, 255, 20%);
-  }
-}
-endef
-
-define THEME_TOGGLER
-document.addEventListener('DOMContentLoaded', function () {
-    const rootElement = document.documentElement;
-    const anonThemeToggle = document.getElementById('theme-toggler-anonymous');
-    const authThemeToggle = document.getElementById('theme-toggler-authenticated');
-    if (authThemeToggle) {
-        localStorage.removeItem('data-bs-theme');
-    }
-    const anonSavedTheme = localStorage.getItem('data-bs-theme');
-    if (anonSavedTheme) {
-        rootElement.setAttribute('data-bs-theme', anonSavedTheme);
-    }
-    if (anonThemeToggle) {
-        anonThemeToggle.addEventListener('click', function () {
-            const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            rootElement.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('data-bs-theme', newTheme);
-        });
-    }
-    if (authThemeToggle) {
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-        authThemeToggle.addEventListener('click', function () {
-            const currentTheme = rootElement.getAttribute('data-bs-theme') || 'light';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            fetch('/user/update_theme_preference/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken, // Include the CSRF token in the headers
-                },
-                body: JSON.stringify({ theme: newTheme }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                rootElement.setAttribute('data-bs-theme', newTheme);
-            })
-            .catch(error => {
-                console.error('Error updating theme preference:', error);
-            });
-        });
-    }
-});
-endef
-
 define TINYMCE_JS
 import tinymce from 'tinymce';
 import 'tinymce/icons/default';
@@ -2869,6 +2869,8 @@ export DJANGO_FRONTEND_ESLINTRC
 export DJANGO_FRONTEND_OFFCANVAS_TEMPLATE
 export DJANGO_FRONTEND_PORTAL
 export DJANGO_FRONTEND_STYLES
+export DJANGO_FRONTEND_THEME_BLUE
+export DJANGO_FRONTEND_THEME_TOGGLER
 export DJANGO_HEADER_TEMPLATE
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_HOME_PAGE_URLS
@@ -2936,8 +2938,6 @@ export PYTHON_LICENSE_TXT
 export PYTHON_PROJECT_TOML
 export PIP_INSTALL_REQUIREMENTS_TEST
 export SEPARATOR
-export THEME_BLUE
-export THEME_TOGGLER
 export TINYMCE_JS
 export WAGTAIL_BASE_TEMPLATE
 export WAGTAIL_BLOCK_CAROUSEL
@@ -3378,8 +3378,8 @@ django-frontend-default: python-webpack-init
 	@echo "$$DJANGO_FRONTEND_ESLINTRC" > frontend/.eslintrc
 	@echo "$$DJANGO_FRONTEND_PORTAL" > frontend/src/dataComponents.js
 	@echo "$$DJANGO_FRONTEND_STYLES" > frontend/src/styles/index.scss
-	@echo "$$THEME_BLUE" > frontend/src/styles/theme-blue.scss
-	@echo "$$THEME_TOGGLER" > frontend/src/utils/themeToggler.js
+	@echo "$$DJANGO_FRONTEND_THEME_BLUE" > frontend/src/styles/theme-blue.scss
+	@echo "$$DJANGO_FRONTEND_THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
 	@$(MAKE) django-npm-save
 	@$(MAKE) django-npm-save-dev
@@ -3937,19 +3937,19 @@ sphinx-init-default: sphinx-install
 	$(MAKE) gitignore
 
 sphinx-theme-init-default:
-	export THEME_NAME=$(PROJECT_NAME)_theme; \
-	$(ADD_DIR) $$THEME_NAME ; \
-	$(ADD_FILE) $$THEME_NAME/__init__.py ; \
-	-$(GIT_ADD) $$THEME_NAME/__init__.py ; \
-	$(ADD_FILE) $$THEME_NAME/theme.conf ; \
-	-$(GIT_ADD) $$THEME_NAME/theme.conf ; \
-	$(ADD_FILE) $$THEME_NAME/layout.html ; \
-	-$(GIT_ADD) $$THEME_NAME/layout.html ; \
-	$(ADD_DIR) $$THEME_NAME/static/css ; \
-	$(ADD_FILE) $$THEME_NAME/static/css/style.css ; \
-	$(ADD_DIR) $$THEME_NAME/static/js ; \
-	$(ADD_FILE) $$THEME_NAME/static/js/script.js ; \
-	-$(GIT_ADD) $$THEME_NAME/static
+	export DJANGO_FRONTEND_THEME_NAME=$(PROJECT_NAME)_theme; \
+	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME ; \
+	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/__init__.py ; \
+	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/__init__.py ; \
+	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/theme.conf ; \
+	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/theme.conf ; \
+	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/layout.html ; \
+	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/layout.html ; \
+	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME/static/css ; \
+	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/static/css/style.css ; \
+	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME/static/js ; \
+	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/static/js/script.js ; \
+	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/static
 
 review-default:
 ifeq ($(UNAME), Darwin)
