@@ -3844,7 +3844,7 @@ plone-clean-default:
 	$(DEL_DIR) $(PROJECT_NAME)
 	$(DEL_DIR) $(PACKAGE_NAME)
 
-plone-init-default:
+plone-init-default: gitignore
 	$(PIP_ENSURE)
 	python -m pip install plone -c $(PIP_CONSTRAINTS_PLONE)
 	mkwsgiinstance -d backend -u admin:admin
