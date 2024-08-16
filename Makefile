@@ -3985,6 +3985,79 @@ usage-default:
 	@echo "   make help    Print all targets"
 	@echo "   make usage   Print this message"
 
+wagtail-base-template-default:
+	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
+
+wagtail-clean-default:
+	-@for dir in $(shell echo "$(WAGTAIL_CLEAN_DIRS)"); do \
+		echo "Cleaning $$dir"; \
+		$(DEL_DIR) $$dir >/dev/null 2>&1; \
+	done
+	-@for file in $(shell echo "$(WAGTAIL_CLEAN_FILES)"); do \
+		echo "Cleaning $$file"; \
+		$(DEL_FILE) $$file >/dev/null 2>&1; \
+	done
+
+wagtail-contactpage-default:
+	python manage.py startapp contactpage
+	@echo "$$WAGTAIL_CONTACT_PAGE_MODEL" > contactpage/models.py
+	@echo "$$WAGTAIL_CONTACT_PAGE_TEST" > contactpage/tests.py
+	$(ADD_DIR) contactpage/templates/contactpage/
+	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
+	@echo "$$WAGTAIL_CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
+	@echo "INSTALLED_APPS.append('contactpage')" >> $(DJANGO_SETTINGS_BASE_FILE)
+	python manage.py makemigrations contactpage
+	-$(GIT_ADD) contactpage/templates
+	-$(GIT_ADD) contactpage/*.py
+	-$(GIT_ADD) contactpage/migrations/*.py
+
+wagtail-header-prefix-template-default:
+	@echo "$$WAGTAIL_HEADER_PREFIX" > backend/templates/header.html
+
+wagtail-home-default:
+	@echo "$$WAGTAIL_HOME_PAGE_MODEL" > home/models.py
+	@echo "$$WAGTAIL_HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
+	$(ADD_DIR) home/templates/blocks
+	@echo "$$WAGTAIL_BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
+	@echo "$$WAGTAIL_BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
+	-$(GIT_ADD) home/templates
+	-$(GIT_ADD) home/*.py
+	python manage.py makemigrations home
+	-$(GIT_ADD) home/migrations/*.py
+
+wagtail-install-default:
+	$(PIP_ENSURE)
+	python -m pip install \
+        wagtail \
+        wagtailmenus \
+        wagtail-color-panel \
+        wagtail-django-recaptcha \
+        wagtail-markdown \
+        wagtail-modeladmin \
+        wagtail-seo \
+        weasyprint \
+        whitenoise \
+        xhtml2pdf
+
+wagtail-privacy-default:
+	python manage.py startapp privacy
+	@echo "$$WAGTAIL_PRIVACY_PAGE_MODEL" > privacy/models.py
+	$(ADD_DIR) privacy/templates
+	@echo "$$WAGTAIL_PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
+	@echo "INSTALLED_APPS.append('privacy')" >> $(DJANGO_SETTINGS_BASE_FILE)
+	python manage.py makemigrations privacy
+	-$(GIT_ADD) privacy/templates
+	-$(GIT_ADD) privacy/*.py
+	-$(GIT_ADD) privacy/migrations/*.py
+
+wagtail-project-default:
+	wagtail start backend .
+	-$(GIT_ADD) backend/
+	-$(GIT_ADD) .dockerignore
+	-$(GIT_ADD) Dockerfile
+	-$(GIT_ADD) manage.py
+	-$(GIT_ADD) requirements.txt
+
 wagtail-search-default:
 	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
 	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
@@ -4001,76 +4074,27 @@ wagtail-settings-default:
 	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(DJANGO_SETTINGS_BASE_FILE)
 
-wagtail-privacy-default:
-	python manage.py startapp privacy
-	@echo "$$WAGTAIL_PRIVACY_PAGE_MODEL" > privacy/models.py
-	$(ADD_DIR) privacy/templates
-	@echo "$$WAGTAIL_PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
-	@echo "INSTALLED_APPS.append('privacy')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	python manage.py makemigrations privacy
-	-$(GIT_ADD) privacy/templates
-	-$(GIT_ADD) privacy/*.py
-	-$(GIT_ADD) privacy/migrations/*.py
-
-wagtail-base-template-default:
-	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
-
-wagtail-header-prefix-template-default:
-	@echo "$$WAGTAIL_HEADER_PREFIX" > backend/templates/header.html
-
-wagtail-clean-default:
-	-@for dir in $(shell echo "$(WAGTAIL_CLEAN_DIRS)"); do \
-		echo "Cleaning $$dir"; \
-		$(DEL_DIR) $$dir >/dev/null 2>&1; \
-	done
-	-@for file in $(shell echo "$(WAGTAIL_CLEAN_FILES)"); do \
-		echo "Cleaning $$file"; \
-		$(DEL_FILE) $$file >/dev/null 2>&1; \
-	done
-
-wagtail-home-default:
-	@echo "$$WAGTAIL_HOME_PAGE_MODEL" > home/models.py
-	@echo "$$WAGTAIL_HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
-	$(ADD_DIR) home/templates/blocks
-	@echo "$$WAGTAIL_BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
-	@echo "$$WAGTAIL_BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
-	-$(GIT_ADD) home/templates
-	-$(GIT_ADD) home/*.py
-	python manage.py makemigrations home
-	-$(GIT_ADD) home/migrations/*.py
+wagtail-sitepage-default:
+	python manage.py startapp sitepage
+	@echo "$$WAGTAIL_SITEPAGE_MODEL" > sitepage/models.py
+	$(ADD_DIR) sitepage/templates/sitepage/
+	@echo "$$WAGTAIL_SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
+	@echo "INSTALLED_APPS.append('sitepage')" >> $(DJANGO_SETTINGS_BASE_FILE)
+	python manage.py makemigrations sitepage
+	-$(GIT_ADD) sitepage/templates
+	-$(GIT_ADD) sitepage/*.py
+	-$(GIT_ADD) sitepage/migrations/*.py
 
 wagtail-templates-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 	@echo "$$WAGTAIL_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/
 
-wagtail-project-default:
-	wagtail start backend .
-	-$(GIT_ADD) backend/
-	-$(GIT_ADD) .dockerignore
-	-$(GIT_ADD) Dockerfile
-	-$(GIT_ADD) manage.py
-	-$(GIT_ADD) requirements.txt
-
 wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
 wagtail-urls-home-default:
 	@echo "urlpatterns += [path('', include('wagtail.urls'))]" >> backend/urls.py
-
-wagtail-install-default:
-	$(PIP_ENSURE)
-	python -m pip install \
-        wagtail \
-        wagtailmenus \
-        wagtail-color-panel \
-        wagtail-django-recaptcha \
-        wagtail-markdown \
-        wagtail-modeladmin \
-        wagtail-seo \
-        weasyprint \
-        whitenoise \
-        xhtml2pdf
 
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
@@ -4093,30 +4117,6 @@ webpack-reveal-init-default: npm-init
 	@echo "$$WEBPACK_REVEAL_INDEX_HTML" > index.html
 	-$(GIT_ADD) index.html
 	$(MAKE) gitignore
-
-wagtail-contactpage-default:
-	python manage.py startapp contactpage
-	@echo "$$WAGTAIL_CONTACT_PAGE_MODEL" > contactpage/models.py
-	@echo "$$WAGTAIL_CONTACT_PAGE_TEST" > contactpage/tests.py
-	$(ADD_DIR) contactpage/templates/contactpage/
-	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
-	@echo "$$WAGTAIL_CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
-	@echo "INSTALLED_APPS.append('contactpage')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	python manage.py makemigrations contactpage
-	-$(GIT_ADD) contactpage/templates
-	-$(GIT_ADD) contactpage/*.py
-	-$(GIT_ADD) contactpage/migrations/*.py
-
-wagtail-sitepage-default:
-	python manage.py startapp sitepage
-	@echo "$$WAGTAIL_SITEPAGE_MODEL" > sitepage/models.py
-	$(ADD_DIR) sitepage/templates/sitepage/
-	@echo "$$WAGTAIL_SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
-	@echo "INSTALLED_APPS.append('sitepage')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	python manage.py makemigrations sitepage
-	-$(GIT_ADD) sitepage/templates
-	-$(GIT_ADD) sitepage/*.py
-	-$(GIT_ADD) sitepage/migrations/*.py
 
 # --------------------------------------------------------------------------------
 # Single-line phony target rules
