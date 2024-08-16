@@ -66,7 +66,7 @@ WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend cont
 WAGTAIL_CLEAN_FILES = .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 
 # --------------------------------------------------------------------------------
-# Include the custom makefile if it exists
+# Include $(MAKEFILE_CUSTOM_FILE) if it exists
 # --------------------------------------------------------------------------------
 
 ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
