@@ -3928,6 +3928,13 @@ reveal-serve-default:
 	npm run watch &
 	python -m http.server
 
+review-default:
+ifeq ($(UNAME), Darwin)
+	$(EDITOR_REVIEW) `find backend/ -name \*.py` `find backend/ -name \*.html` `find frontend/ -name \*.js` `find frontend/ -name \*.js`
+else
+	@echo "Unsupported"
+endif
+
 separator:
 	@echo "$$SEPARATOR"
 
@@ -3955,13 +3962,6 @@ sphinx-theme-init-default:
 	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME/static/js ; \
 	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/static/js/script.js ; \
 	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/static
-
-review-default:
-ifeq ($(UNAME), Darwin)
-	$(EDITOR_REVIEW) `find backend/ -name \*.py` `find backend/ -name \*.html` `find frontend/ -name \*.js` `find frontend/ -name \*.js`
-else
-	@echo "Unsupported"
-endif
 
 sphinx-install-default:
 	echo "Sphinx\n" > requirements.txt
