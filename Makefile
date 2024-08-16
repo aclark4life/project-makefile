@@ -3675,14 +3675,11 @@ eb-logs-default:
 eb-print-env-default:
 	eb printenv
 
-favicon-default:
+favicon-init-default:
 	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
 	convert favicon.png favicon.ico
 	-$(GIT_ADD) favicon.ico
 	$(DEL_FILE) favicon.png
-
-gh-default:
-	gh browse
 
 git-ignore-default:
 	@echo "$$GIT_IGNORE" > .gitignore
