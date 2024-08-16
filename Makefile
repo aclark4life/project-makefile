@@ -2991,18 +2991,18 @@ aws-secret-default: aws-check-env
 aws-sg-default: aws-check-env
 	aws ec2 describe-security-groups $(AWS_OPTS)
 
-aws-vol-default: aws-check-env
-	aws ec2 describe-volumes --output table
-
-aws-vol-available-default: aws-check-env
-	aws ec2 describe-volumes --filters Name=status,Values=available --query "Volumes[*].{ID:VolumeId,Size:Size}" --output table
-
 aws-ssm-default: aws-check-env
 	aws ssm describe-parameters $(AWS_OPTS)
 	@echo "Get parameter values with: aws ssm getparameter --name <Name>."
 
 aws-subnet-default: aws-check-env
 	aws ec2 describe-subnets $(AWS_OPTS)
+
+aws-vol-default: aws-check-env
+	aws ec2 describe-volumes --output table
+
+aws-vol-available-default: aws-check-env
+	aws ec2 describe-volumes --filters Name=status,Values=available --query "Volumes[*].{ID:VolumeId,Size:Size}" --output table
 
 aws-vpc-default: aws-check-env
 	aws ec2 describe-vpcs $(AWS_OPTS)
