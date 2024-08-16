@@ -5,7 +5,7 @@
 # https://github.com/aclark4life/project-makefile
 #
 # --------------------------------------------------------------------------------
-# Set the default goal to `git commit -a` and `git push` with GIT_MESSAGE
+# Set the default goal to be `git commit -a -m $(GIT_MESSAGE)` and `git push`
 # --------------------------------------------------------------------------------
 
 .DEFAULT_GOAL := git-commit-push
