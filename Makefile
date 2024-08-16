@@ -5,7 +5,7 @@
 # https://github.com/aclark4life/project-makefile
 
 # --------------------------------------------------------------------------------
-# Single line variables to be used in phony target rules
+# Single line variables to be used by phony target rules
 # --------------------------------------------------------------------------------
 
 .DEFAULT_GOAL := git-commit-push
