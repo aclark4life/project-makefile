@@ -3007,123 +3007,6 @@ aws-vol-available-default: aws-check-env
 aws-vpc-default: aws-check-env
 	aws ec2 describe-vpcs $(AWS_OPTS)
 
-docker-build-default:
-	podman build -t $(PROJECT_NAME) .
-
-docker-shell-default:
-	podman run -it $(PROJECT_NAME) /bin/bash
-
-docker-list-default:
-	podman container list --all
-	podman images --all
-
-docker-compose-default:
-	podman compose up
-
-docker-serve-default:
-	podman run -p 8000:8000 $(PROJECT_NAME)
-
-docker-run-default:
-	podman run $(PROJECT_NAME)
-
-eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
-ifndef EB_SSH_KEY
-	$(error EB_SSH_KEY is undefined)
-endif
-ifndef VPC_ID
-	$(error VPC_ID is undefined)
-endif
-ifndef VPC_SG
-	$(error VPC_SG is undefined)
-endif
-ifndef VPC_SUBNET_EC2
-	$(error VPC_SUBNET_EC2 is undefined)
-endif
-ifndef VPC_SUBNET_ELB
-	$(error VPC_SUBNET_ELB is undefined)
-endif
-
-eb-create-default: aws-check-env eb-check-env
-	eb create $(EB_ENV_NAME) \
-         -im $(EC2_INSTANCE_MIN) \
-         -ix $(EC2_INSTANCE_MAX) \
-         -ip $(EC2_INSTANCE_PROFILE) \
-         -i $(EC2_INSTANCE_TYPE) \
-         -k $(EB_SSH_KEY) \
-         -p $(EB_PLATFORM) \
-         --elb-type $(EC2_LB_TYPE) \
-         --vpc \
-         --vpc.id $(VPC_ID) \
-         --vpc.elbpublic \
-         --vpc.publicip \
-         --vpc.ec2subnets $(VPC_SUBNET_EC2) \
-         --vpc.elbsubnets $(VPC_SUBNET_ELB) \
-         --vpc.securitygroups $(VPC_SG)
-
-eb-custom-env-default:
-	$(ADD_DIR) .ebextensions
-	@echo "$$EB_CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
-	-$(GIT_ADD) .ebextensions/bash.config
-	$(ADD_DIR) .platform/hooks/postdeploy
-	@echo "$$EB_CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
-	-$(GIT_ADD) .platform/hooks/postdeploy/setenv.sh
-
-eb-deploy-default:
-	eb deploy
-
-eb-pg-export-default: aws-check-env eb-check-env
-	@if [ ! -d $(EB_DIR_NAME) ]; then \
-        echo "Directory $(EB_DIR_NAME) does not exist"; \
-    else \
-        echo "Directory $(EB_DIR_NAME) does exist!"; \
-        eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); pg_dump -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)" > $(DJANGO_DB_NAME).sql; \
-        echo "Wrote $(DJANGO_DB_NAME).sql"; \
-    fi
-
-eb-restart-default:
-	eb ssh -c "systemctl restart web"
-
-eb-rebuild-default:
-	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
-
-eb-upgrade-default:
-	eb upgrade
-
-eb-init-default: aws-check-env-profile
-	eb init --profile=$(AWS_PROFILE)
-
-eb-list-platforms-default:
-	aws elasticbeanstalk list-platform-versions
-
-eb-list-databases-default:
-	@eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); psql -l -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)"
-
-eb-logs-default:
-	eb logs
-
-eb-print-env-default:
-	eb printenv
-
-npm-init-default:
-	npm init -y
-	-$(GIT_ADD) package.json
-	-$(GIT_ADD) package-lock.json
-
-npm-build-default:
-	npm run build
-
-npm-install-default:
-	npm install
-	-$(GIT_ADD) package-lock.json
-
-npm-clean-default:
-	$(DEL_DIR) dist/
-	$(DEL_DIR) node_modules/
-	$(DEL_FILE) package-lock.json
-
-npm-serve-default:
-	npm run start
-
 db-mysql-init-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
@@ -3695,6 +3578,103 @@ else
 	@echo "Unable to open on: $(UNAME)"
 endif
 
+docker-build-default:
+	podman build -t $(PROJECT_NAME) .
+
+docker-compose-default:
+	podman compose up
+
+docker-list-default:
+	podman container list --all
+	podman images --all
+
+docker-run-default:
+	podman run $(PROJECT_NAME)
+
+docker-serve-default:
+	podman run -p 8000:8000 $(PROJECT_NAME)
+
+docker-shell-default:
+	podman run -it $(PROJECT_NAME) /bin/bash
+
+eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
+ifndef EB_SSH_KEY
+	$(error EB_SSH_KEY is undefined)
+endif
+ifndef VPC_ID
+	$(error VPC_ID is undefined)
+endif
+ifndef VPC_SG
+	$(error VPC_SG is undefined)
+endif
+ifndef VPC_SUBNET_EC2
+	$(error VPC_SUBNET_EC2 is undefined)
+endif
+ifndef VPC_SUBNET_ELB
+	$(error VPC_SUBNET_ELB is undefined)
+endif
+
+eb-create-default: aws-check-env eb-check-env
+	eb create $(EB_ENV_NAME) \
+         -im $(EC2_INSTANCE_MIN) \
+         -ix $(EC2_INSTANCE_MAX) \
+         -ip $(EC2_INSTANCE_PROFILE) \
+         -i $(EC2_INSTANCE_TYPE) \
+         -k $(EB_SSH_KEY) \
+         -p $(EB_PLATFORM) \
+         --elb-type $(EC2_LB_TYPE) \
+         --vpc \
+         --vpc.id $(VPC_ID) \
+         --vpc.elbpublic \
+         --vpc.publicip \
+         --vpc.ec2subnets $(VPC_SUBNET_EC2) \
+         --vpc.elbsubnets $(VPC_SUBNET_ELB) \
+         --vpc.securitygroups $(VPC_SG)
+
+eb-custom-env-default:
+	$(ADD_DIR) .ebextensions
+	@echo "$$EB_CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
+	-$(GIT_ADD) .ebextensions/bash.config
+	$(ADD_DIR) .platform/hooks/postdeploy
+	@echo "$$EB_CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
+	-$(GIT_ADD) .platform/hooks/postdeploy/setenv.sh
+
+eb-deploy-default:
+	eb deploy
+
+eb-pg-export-default: aws-check-env eb-check-env
+	@if [ ! -d $(EB_DIR_NAME) ]; then \
+        echo "Directory $(EB_DIR_NAME) does not exist"; \
+    else \
+        echo "Directory $(EB_DIR_NAME) does exist!"; \
+        eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); pg_dump -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)" > $(DJANGO_DB_NAME).sql; \
+        echo "Wrote $(DJANGO_DB_NAME).sql"; \
+    fi
+
+eb-restart-default:
+	eb ssh -c "systemctl restart web"
+
+eb-rebuild-default:
+	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
+
+eb-upgrade-default:
+	eb upgrade
+
+eb-init-default: aws-check-env-profile
+	eb init --profile=$(AWS_PROFILE)
+
+eb-list-platforms-default:
+	aws elasticbeanstalk list-platform-versions
+
+eb-list-databases-default:
+	@eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); psql -l -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)"
+
+eb-logs-default:
+	eb logs
+
+eb-print-env-default:
+	eb printenv
+
 favicon-default:
 	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
 	convert favicon.png favicon.ico
@@ -3785,6 +3765,26 @@ make-default:
 	-$(GIT_ADD) Makefile
 	-git commit Makefile -m "Add/update project-makefile files"
 	-git push
+
+npm-init-default:
+	npm init -y
+	-$(GIT_ADD) package.json
+	-$(GIT_ADD) package-lock.json
+
+npm-build-default:
+	npm run build
+
+npm-install-default:
+	npm install
+	-$(GIT_ADD) package-lock.json
+
+npm-clean-default:
+	$(DEL_DIR) dist/
+	$(DEL_DIR) node_modules/
+	$(DEL_FILE) package-lock.json
+
+npm-serve-default:
+	npm run start
 
 pip-freeze-default:
 	$(PIP_ENSURE)
