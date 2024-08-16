@@ -65,6 +65,10 @@ UNAME := $(shell uname)
 WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
 WAGTAIL_CLEAN_FILES = .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
 
+# --------------------------------------------------------------------------------
+# Include the custom makefile if it exists.
+# --------------------------------------------------------------------------------
+
 ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
     include $(MAKEFILE_CUSTOM_FILE)
 endif
