@@ -3850,6 +3850,8 @@ plone-init-default:
 	cat backend/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
 	mv -f $(TMPDIR)/zope.ini backend/etc/zope.ini
 	@echo "Created Plone instance in backend/!"
+	-$(GIT_ADD) backend/etc/site.zcml
+	-$(GIT_ADD) backend/etc/zope.conf
 	-$(GIT_ADD) backend/etc/zope.ini
 	$(MAKE) plone-serve
 
