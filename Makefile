@@ -1703,6 +1703,7 @@ _build/
 .elasticbeanstalk/
 db.sqlite3
 home/static
+backend/var
 endef
 
 define HTML_INDEX
