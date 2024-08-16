@@ -60,7 +60,7 @@ MAKEFILE_CUSTOM_FILE := project.mk
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 PAGER ?= less
 PIP_ENSURE = python -m ensurepip
-PIP_CONSTRAINTS_PLONE = https://dist.plone.org/release/6.0.11.1/constraints.txt
+PIP_INSTALL_PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
 PROJECT_DIRS = backend contactpage home privacy siteuser
 PROJECT_EMAIL := aclark@aclark.net
 PROJECT_NAME = project-makefile
@@ -3846,7 +3846,7 @@ plone-clean-default:
 
 plone-init-default: gitignore
 	$(PIP_ENSURE)
-	python -m pip install plone -c $(PIP_CONSTRAINTS_PLONE)
+	python -m pip install plone -c $(PIP_INSTALL_PLONE_CONSTRAINTS)
 	mkwsgiinstance -d backend -u admin:admin
 	cat backend/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
 	mv -f $(TMPDIR)/zope.ini backend/etc/zope.ini
