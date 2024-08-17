@@ -1407,6 +1407,7 @@ endef
 
 define DJANGO_SETTINGS_DEV
 from .base import *  # noqa
+import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -1421,12 +1422,44 @@ try:
 except ImportError:
     pass
 
-LOG_LEVEL = os.environ.get("LOG_LEVEL", "DEBUG")                                  
-LOGGING = {                                                            
-    "version": 1,                                                             
-    "disable_existing_loggers": False,                                    
-    "handlers": {"console": {"class": "logging.StreamHandler"}},    
-    "root": {"handlers": ["console"], "level": "WARNING"},     
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
 }
 endef
 
