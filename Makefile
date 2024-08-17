@@ -3486,6 +3486,7 @@ django-logging-demo-default:
 	@echo "$$DJANGO_LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('logging-demo/', include('logging_demo.urls'))]" >> backend/urls.py
+	export APP_DIR="logging_demo"; $(MAKE) django-app-tests
 	-$(GIT_ADD) logging_demo/*.py
 	-$(GIT_ADD) logging_demo/migrations/*.py
 
