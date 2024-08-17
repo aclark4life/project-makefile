@@ -3201,7 +3201,6 @@ django-wagtail-init-default: separator \
 	django-frontend \
 	django-migrate \
 	readme \
-	pack \
 	su \
 	serve
 
