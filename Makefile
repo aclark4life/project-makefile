@@ -86,6 +86,64 @@ define DJANGO_ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
 
+define DJANGO_APP_TESTS
+from django.test import TestCase
+from django.urls import reverse
+from .models import YourModel
+from .forms import YourForm
+
+class YourModelTest(TestCase):
+    def setUp(self):
+        self.instance = YourModel.objects.create(field1='value1', field2='value2')
+
+    def test_instance_creation(self):
+        self.assertIsInstance(self.instance, YourModel)
+        self.assertEqual(self.instance.field1, 'value1')
+        self.assertEqual(self.instance.field2, 'value2')
+
+    def test_str_method(self):
+        self.assertEqual(str(self.instance), 'Expected String Representation')
+
+class YourViewTest(TestCase):
+    def setUp(self):
+        self.instance = YourModel.objects.create(field1='value1', field2='value2')
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/your-url/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('your-view-name'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('your-view-name'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'your_template.html')
+
+    def test_view_context(self):
+        response = self.client.get(reverse('your-view-name'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('context_variable', response.context)
+
+class YourFormTest(TestCase):
+    def test_form_valid_data(self):
+        form = YourForm(data={'field1': 'value1', 'field2': 'value2'})
+        self.assertTrue(form.is_valid())
+
+    def test_form_invalid_data(self):
+        form = YourForm(data={'field1': '', 'field2': 'value2'})
+        self.assertFalse(form.is_valid())
+        self.assertIn('field1', form.errors)
+
+    def test_form_save(self):
+        form = YourForm(data={'field1': 'value1', 'field2': 'value2'})
+        if form.is_valid():
+            instance = form.save()
+            self.assertEqual(instance.field1, 'value1')
+            self.assertEqual(instance.field2, 'value2')
+endef
+
 define DJANGO_AUTHENTICATION_BACKENDS
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -3059,6 +3117,9 @@ django-allauth-template-default:
 django-allauth-default:
 	@echo "urlpatterns += [path('accounts/', include('allauth.urls'))]" >> backend/urls.py
 
+django-app-tests-default:
+	@echo "$$DJANGO_APP_TESTS" > $(APP_DIR)
+
 django-project-default:
 	django-admin startproject backend .
 	-$(GIT_ADD) backend
@@ -3305,6 +3366,7 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
 	@echo "INSTALLED_APPS.append('home')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('', include('home.urls'))]" >> backend/urls.py
+	export APP_DIR="home"; $(MAKE) django-app-tests
 	-$(GIT_ADD) home/templates
 	-$(GIT_ADD) home/*.py
 	-$(GIT_ADD) home/migrations/*.py
