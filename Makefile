@@ -3128,7 +3128,6 @@ django-init-minimal-default: separator \
 	django-migrate \
 	gitignore \
 	readme \
-	lint \
 	su \
 	serve
 
@@ -3164,7 +3163,6 @@ django-init-default: separator \
 	django-frontend \
 	django-migrate \
 	readme \
-	lint \
 	su \
 	serve
 
@@ -3207,7 +3205,7 @@ django-wagtail-init-default: separator \
 	django-frontend \
 	django-migrate \
 	readme \
-	lint \
+	pack \
 	su \
 	serve
 
