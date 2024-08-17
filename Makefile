@@ -3768,6 +3768,9 @@ makefile-custom-default:
 	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
 	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
 
+makefile-list-defines-default:
+	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
+
 make-default:
 	-$(GIT_ADD) Makefile
 	-git commit Makefile -m "Add/update project-makefile files"
@@ -4183,7 +4186,9 @@ install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 l-default: lint
 last-default: git-commit-last
+ld-default: makefile-list-defines
 license-default: python-license
+list-defines-default: makefile-list-defines
 logs-default: eb-logs
 m-default: django-migrate
 migrate-default: django-migrate
