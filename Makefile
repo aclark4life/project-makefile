@@ -67,8 +67,8 @@ PROJECT_NAME = project-makefile
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
-WAGTAIL_CLEAN_DIRS = home search backend sitepage siteuser privacy frontend contactpage model_form_demo logging_demo payments node_modules
-WAGTAIL_CLEAN_FILES = .dockerignore Dockerfile manage.py requirements.txt requirements-test.txt docker-compose.yml .babelrc .browserslistrc .eslintrc .gitignore .nvmrc .stylelintrc.json package-lock.json package.json postcss.config.js
+WAGTAIL_CLEAN_DIRS = backend contactpage frontend home logging_demo model_form_demo node_modules payments privacy search sitepage siteuser
+WAGTAIL_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc .stylelintrc.json Dockerfile docker-compose.yml manage.py package-lock.json package.json postcss.config.js requirements-test.txt requirements.txt
 
 # --------------------------------------------------------------------------------
 # Include $(MAKEFILE_CUSTOM_FILE) if it exists
