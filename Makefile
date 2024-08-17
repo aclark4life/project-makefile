@@ -1407,7 +1407,6 @@ endef
 
 define DJANGO_SETTINGS_DEV
 from .base import *  # noqa
-import os
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -1439,12 +1438,6 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django_debug.log'),
             'formatter': 'verbose',
         },
     },
