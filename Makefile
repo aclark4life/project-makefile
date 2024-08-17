@@ -68,7 +68,7 @@ RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
 WAGTAIL_CLEAN_DIRS = backend contactpage frontend home logging_demo model_form_demo node_modules payments privacy search sitepage siteuser
-WAGTAIL_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc .stylelintrc.json Dockerfile docker-compose.yml manage.py package-lock.json package.json postcss.config.js requirements-test.txt requirements.txt
+WAGTAIL_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py package-lock.json package.json postcss.config.js requirements-test.txt requirements.txt
 
 # --------------------------------------------------------------------------------
 # Include $(MAKEFILE_CUSTOM_FILE) if it exists
