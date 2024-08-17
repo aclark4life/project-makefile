@@ -924,6 +924,61 @@ class ModelFormDemo(models.Model):
         return reverse('model_form_demo_detail', kwargs={'pk': self.pk})
 endef
 
+define DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Test Model Detail: {{ model_form_demo.name }}</h1>
+    <p>Name: {{ model_form_demo.name }}</p>
+    <p>Email: {{ model_form_demo.email }}</p>
+    <p>Age: {{ model_form_demo.age }}</p>
+    <p>Active: {{ model_form_demo.is_active }}</p>
+    <p>Created At: {{ model_form_demo.created_at }}</p>
+    <a href="{% url 'model_form_demo_update' model_form_demo.pk %}">Edit Test Model</a>
+{% endblock %}
+endef
+
+define DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{% if form.instance.pk %}Update Test Model{% else %}Create Test Model{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+{% endblock %}
+endef
+
+define DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Test Models List</h1>
+    <ul>
+        {% for model_form_demo in model_form_demos %}
+            <li><a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a></li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
+{% endblock %}
+endef
+
+define DJANGO_MODEL_FORM_DEMO_URLS
+from django.urls import path
+from .views import (
+    ModelFormDemoListView,
+    ModelFormDemoCreateView,
+    ModelFormDemoUpdateView,
+    ModelFormDemoDetailView,
+)
+
+urlpatterns = [
+    path('', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
+    path('create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
+    path('<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
+    path('<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
+]
+endef
+
 define DJANGO_MODEL_FORM_DEMO_VIEWS
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from .models import ModelFormDemo
@@ -956,61 +1011,6 @@ class ModelFormDemoDetailView(DetailView):
     model = ModelFormDemo
     template_name = "model_form_demo_detail.html"
     context_object_name = "model_form_demo"
-endef
-
-define DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM
-{% extends 'base.html' %}
-{% block content %}
-    <h1>{% if form.instance.pk %}Update Test Model{% else %}Create Test Model{% endif %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
-{% endblock %}
-endef
-
-define DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL
-{% extends 'base.html' %}
-{% block content %}
-    <h1>Test Model Detail: {{ model_form_demo.name }}</h1>
-    <p>Name: {{ model_form_demo.name }}</p>
-    <p>Email: {{ model_form_demo.email }}</p>
-    <p>Age: {{ model_form_demo.age }}</p>
-    <p>Active: {{ model_form_demo.is_active }}</p>
-    <p>Created At: {{ model_form_demo.created_at }}</p>
-    <a href="{% url 'model_form_demo_update' model_form_demo.pk %}">Edit Test Model</a>
-{% endblock %}
-endef
-
-define DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST
-{% extends 'base.html' %}
-{% block content %}
-    <h1>Test Models List</h1>
-    <ul>
-        {% for model_form_demo in model_form_demos %}
-            <li><a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a></li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
-{% endblock %}
-endef
-
-define DJANGO_MODEL_FORM_DEMO_URLS
-from django.urls import path
-from .views import (
-    ModelFormDemoListView,
-    ModelFormDemoCreateView,
-    ModelFormDemoUpdateView,
-    ModelFormDemoDetailView,
-)
-
-urlpatterns = [
-    path('', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
-    path('create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
-    path('<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
-    path('<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
-]
 endef
 
 define DJANGO_PAYMENTS_ADMIN
@@ -1118,6 +1118,76 @@ class Order(models.Model):
         return f"Order {self.id} for {self.product.name}"
 endef
 
+define DJANGO_PAYMENTS_TEMPLATE_CANCEL
+{% extends "base.html" %}
+
+{% block title %}Cancel{% endblock %}
+
+{% block content %}
+<h1>Payment Cancelled</h1>
+<p>Your payment was cancelled.</p>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_CHECKOUT
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h1>Checkout</h1>
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Pay</button>
+</form>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+<p>Price: ${{ product.price }}</p>
+<form action="{% url 'checkout' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="product_id" value="{{ product.id }}">
+    <button type="submit">Buy Now</button>
+</form>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
+{% extends "base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<h1>Products</h1>
+<ul>
+    {% for product in products %}
+    <li>
+        <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+endef
+
+define DJANGO_PAYMENTS_TEMPLATE_SUCCESS
+{% extends "base.html" %}
+
+{% block title %}Success{% endblock %}
+
+{% block content %}
+<h1>Payment Successful</h1>
+<p>Thank you for your purchase!</p>
+{% endblock %}
+endef
+
 define DJANGO_PAYMENTS_URLS
 from django.urls import path
 from .views import CheckoutView, SuccessView, CancelView, ProductListView, ProductDetailView
@@ -1190,76 +1260,6 @@ class CancelView(TemplateView):
     template_name = 'payments/cancel.html'
 endef
 
-define DJANGO_PAYMENTS_TEMPLATE_CANCEL
-{% extends "base.html" %}
-
-{% block title %}Cancel{% endblock %}
-
-{% block content %}
-<h1>Payment Cancelled</h1>
-<p>Your payment was cancelled.</p>
-{% endblock %}
-endef
-
-define DJANGO_PAYMENTS_TEMPLATE_CHECKOUT
-{% extends "base.html" %}
-
-{% block title %}Checkout{% endblock %}
-
-{% block content %}
-<h1>Checkout</h1>
-<form action="{% url 'checkout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Pay</button>
-</form>
-{% endblock %}
-endef
-
-define DJANGO_PAYMENTS_TEMPLATE_SUCCESS
-{% extends "base.html" %}
-
-{% block title %}Success{% endblock %}
-
-{% block content %}
-<h1>Payment Successful</h1>
-<p>Thank you for your purchase!</p>
-{% endblock %}
-endef
-
-define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL
-{% extends "base.html" %}
-
-{% block title %}{{ product.name }}{% endblock %}
-
-{% block content %}
-<h1>{{ product.name }}</h1>
-<p>{{ product.description }}</p>
-<p>Price: ${{ product.price }}</p>
-<form action="{% url 'checkout' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="product_id" value="{{ product.id }}">
-    <button type="submit">Buy Now</button>
-</form>
-{% endblock %}
-endef
-
-define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
-{% extends "base.html" %}
-
-{% block title %}Products{% endblock %}
-
-{% block content %}
-<h1>Products</h1>
-<ul>
-    {% for product in products %}
-    <li>
-        <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
-    </li>
-    {% endfor %}
-</ul>
-{% endblock %}
-endef
-
 define DJANGO_REST_SERIALIZERS
 from rest_framework import serializers
 from siteuser.models import User
@@ -1295,68 +1295,6 @@ from django import forms
 class SearchForm(forms.Form):
     query = forms.CharField(max_length=100, required=True, label='Search')
 
-endef
-
-define DJANGO_SEARCH_UTILS
-from django.apps import apps
-from django.conf import settings
-
-def get_search_models():
-    models = []
-    for model_path in settings.SEARCH_MODELS:
-        app_label, model_name = model_path.split('.')
-        model = apps.get_model(app_label, model_name)
-        models.append(model)
-    return models
-endef
-
-define DJANGO_SEARCH_URLS
-from django.urls import path
-from .views import SearchView
-
-urlpatterns = [
-    path('search/', SearchView.as_view(), name='search'),
-]
-endef
-
-define DJANGO_SEARCH_VIEWS
-from django.views.generic import ListView
-from django.db import models
-from django.db.models import Q 
-from .forms import SearchForm
-from .utils import get_search_models
-
-class SearchView(ListView):
-    template_name = 'your_app/search_results.html'
-    context_object_name = 'results'
-    paginate_by = 10
-
-    def get_queryset(self):
-        form = SearchForm(self.request.GET)
-        query = None
-        results = []
-
-        if form.is_valid():
-            query = form.cleaned_data['query']
-            search_models = get_search_models()
-
-            for model in search_models:
-                fields = [f.name for f in model._meta.fields if isinstance(f, (models.CharField, models.TextField))]
-                queries = [Q(**{f"{field}__icontains": query}) for field in fields]
-                model_results = model.objects.filter(queries.pop())
-
-                for item in queries:
-                    model_results = model_results.filter(item)
-
-                results.extend(model_results)
-
-        return results
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = SearchForm(self.request.GET)
-        context['query'] = self.request.GET.get('query', '')
-        return context
 endef
 
 define DJANGO_SEARCH_SETTINGS
@@ -1403,6 +1341,68 @@ define DJANGO_SEARCH_TEMPLATE
 		No results found. Try a <a href="?query=test">test query</a>?
     {% endif %}
 {% endblock %}
+endef
+
+define DJANGO_SEARCH_URLS
+from django.urls import path
+from .views import SearchView
+
+urlpatterns = [
+    path('search/', SearchView.as_view(), name='search'),
+]
+endef
+
+define DJANGO_SEARCH_UTILS
+from django.apps import apps
+from django.conf import settings
+
+def get_search_models():
+    models = []
+    for model_path in settings.SEARCH_MODELS:
+        app_label, model_name = model_path.split('.')
+        model = apps.get_model(app_label, model_name)
+        models.append(model)
+    return models
+endef
+
+define DJANGO_SEARCH_VIEWS
+from django.views.generic import ListView
+from django.db import models
+from django.db.models import Q 
+from .forms import SearchForm
+from .utils import get_search_models
+
+class SearchView(ListView):
+    template_name = 'your_app/search_results.html'
+    context_object_name = 'results'
+    paginate_by = 10
+
+    def get_queryset(self):
+        form = SearchForm(self.request.GET)
+        query = None
+        results = []
+
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            search_models = get_search_models()
+
+            for model in search_models:
+                fields = [f.name for f in model._meta.fields if isinstance(f, (models.CharField, models.TextField))]
+                queries = [Q(**{f"{field}__icontains": query}) for field in fields]
+                model_results = model.objects.filter(queries.pop())
+
+                for item in queries:
+                    model_results = model_results.filter(item)
+
+                results.extend(model_results)
+
+        return results
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = SearchForm(self.request.GET)
+        context['query'] = self.request.GET.get('query', '')
+        return context
 endef
 
 define DJANGO_SETTINGS_DEV
@@ -1532,21 +1532,6 @@ urlpatterns = [
 ]
 endef
 
-define DJANGO_SITEUSER_VIEW_TEMPLATE
-{% extends 'base.html' %}
-
-{% block content %}
-<h2>User Profile</h2>
-<div class="d-flex justify-content-end">
-    <a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
-</div>
-<p>Username: {{ user.username }}</p>
-<p>Theme: {{ user.user_theme_preference }}</p>
-<p>Bio: {{ user.bio|default:""|safe }}</p>
-<p>Rate: {{ user.rate|default:"" }}</p>
-{% endblock %}
-endef
-
 define DJANGO_SITEUSER_VIEW
 import json
 
@@ -1597,6 +1582,21 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
         return reverse_lazy('user-profile')
+endef
+
+define DJANGO_SITEUSER_VIEW_TEMPLATE
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>User Profile</h2>
+<div class="d-flex justify-content-end">
+    <a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
+</div>
+<p>Username: {{ user.username }}</p>
+<p>Theme: {{ user.user_theme_preference }}</p>
+<p>Bio: {{ user.bio|default:""|safe }}</p>
+<p>Rate: {{ user.rate|default:"" }}</p>
+{% endblock %}
 endef
 
 define DJANGO_URLS
@@ -1653,6 +1653,26 @@ def remove_urlpattern(urlpatterns, route_to_remove):
     )]
 endef
 
+define EB_CUSTOM_ENV_EC2_USER
+files:
+    "/home/ec2-user/.bashrc":
+        mode: "000644"
+        owner: ec2-user
+        group: ec2-user
+        content: |
+            # .bashrc
+
+            # Source global definitions
+            if [ -f /etc/bashrc ]; then
+                    . /etc/bashrc
+            fi
+
+            # User specific aliases and functions
+            set -o vi
+
+            source <(sed -E -n 's/[^#]+/export &/ p' /opt/elasticbeanstalk/deployment/custom_env_var)
+endef
+
 define EB_CUSTOM_ENV_VAR_FILE
 #!/bin/bash
 
@@ -1674,26 +1694,6 @@ EOF
 rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
-define EB_CUSTOM_ENV_EC2_USER
-files:
-    "/home/ec2-user/.bashrc":
-        mode: "000644"
-        owner: ec2-user
-        group: ec2-user
-        content: |
-            # .bashrc
-
-            # Source global definitions
-            if [ -f /etc/bashrc ]; then
-                    . /etc/bashrc
-            fi
-
-            # User specific aliases and functions
-            set -o vi
-
-            source <(sed -E -n 's/[^#]+/export &/ p' /opt/elasticbeanstalk/deployment/custom_env_var)
-endef
-
 define GIT_IGNORE
 __pycache__
 *.pyc
@@ -1706,12 +1706,12 @@ home/static
 backend/var
 endef
 
-define HTML_INDEX
-<h1>Hello world</h1>
-endef
-
 define HTML_ERROR
 <h1>500</h1>
+endef
+
+define HTML_INDEX
+<h1>Hello world</h1>
 endef
 
 define JENKINS_FILE
@@ -2416,6 +2416,47 @@ define WAGTAIL_BLOCK_MARKETING
 </div>
 endef
 
+define WAGTAIL_CONTACT_PAGE_LANDING
+{% extends 'base.html' %}
+{% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
+endef
+
+define WAGTAIL_CONTACT_PAGE_MODEL
+from django.db import models
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import (
+    FieldPanel, FieldRowPanel,
+    InlinePanel, MultiFieldPanel
+)
+from wagtail.fields import RichTextField
+from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+
+
+class FormField(AbstractFormField):
+    page = ParentalKey('ContactPage', on_delete=models.CASCADE, related_name='form_fields')
+
+
+class ContactPage(AbstractEmailForm):
+    intro = RichTextField(blank=True)
+    thank_you_text = RichTextField(blank=True)
+
+    content_panels = AbstractEmailForm.content_panels + [
+        FieldPanel('intro'),
+        InlinePanel('form_fields', label="Form fields"),
+        FieldPanel('thank_you_text'),
+        MultiFieldPanel([
+            FieldRowPanel([
+                FieldPanel('from_address', classname="col6"),
+                FieldPanel('to_address', classname="col6"),
+            ]),
+            FieldPanel('subject'),
+        ], "Email"),
+    ]
+
+    class Meta:
+        verbose_name = "Contact Page"
+endef
+
 define WAGTAIL_CONTACT_PAGE_TEMPLATE
 {% extends 'base.html' %}
 {% load crispy_forms_tags static wagtailcore_tags %}
@@ -2498,47 +2539,6 @@ class ContactPageTest(TestCase, WagtailPageTestCase):
         self.assertEqual(response.status_code, 302)
         
         # You may add more assertions based on your specific requirements
-endef
-
-define WAGTAIL_CONTACT_PAGE_MODEL
-from django.db import models
-from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import (
-    FieldPanel, FieldRowPanel,
-    InlinePanel, MultiFieldPanel
-)
-from wagtail.fields import RichTextField
-from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
-
-
-class FormField(AbstractFormField):
-    page = ParentalKey('ContactPage', on_delete=models.CASCADE, related_name='form_fields')
-
-
-class ContactPage(AbstractEmailForm):
-    intro = RichTextField(blank=True)
-    thank_you_text = RichTextField(blank=True)
-
-    content_panels = AbstractEmailForm.content_panels + [
-        FieldPanel('intro'),
-        InlinePanel('form_fields', label="Form fields"),
-        FieldPanel('thank_you_text'),
-        MultiFieldPanel([
-            FieldRowPanel([
-                FieldPanel('from_address', classname="col6"),
-                FieldPanel('to_address', classname="col6"),
-            ]),
-            FieldPanel('subject'),
-        ], "Email"),
-    ]
-
-    class Meta:
-        verbose_name = "Contact Page"
-endef
-
-define WAGTAIL_CONTACT_PAGE_LANDING
-{% extends 'base.html' %}
-{% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
 endef
 
 define WAGTAIL_HEADER_PREFIX
