@@ -4151,6 +4151,7 @@ cp-lint-default: git-commit-lint git-push
 cp-upgrade-default: git-commit-upgrade git-push
 cp-wording-default: git-commit-wording git-push
 create-default: eb-create
+cu-default: git-commit-clean-up git-push
 d-default: deploy
 db-dump-default: eb-pg-export
 db-export-default: eb-pg-export
