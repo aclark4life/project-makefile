@@ -2939,6 +2939,7 @@ endef
 # ------------------------------------------------------------------------------  
 
 export DJANGO_ALLAUTH_LAYOUT_BASE
+export DJANGO_APP_TESTS
 export DJANGO_AUTHENTICATION_BACKENDS
 export DJANGO_BACKEND_APPS
 export DJANGO_BASE_TEMPLATE
