@@ -82,47 +82,6 @@ endif
 # Multi-line variables to be used in phony target rules
 # --------------------------------------------------------------------------------
 
-define EB_CUSTOM_ENV_VAR_FILE
-#!/bin/bash
-
-# Via https://aws.amazon.com/premiumsupport/knowledge-center/elastic-beanstalk-env-variables-linux2/
-
-#Create a copy of the environment variable file.
-cat /opt/elasticbeanstalk/deployment/env | perl -p -e 's/(.*)=(.*)/export $$1="$$2"/;' > /opt/elasticbeanstalk/deployment/custom_env_var
-
-#Set permissions to the custom_env_var file so this file can be accessed by any user on the instance. You can restrict permissions as per your requirements.
-chmod 644 /opt/elasticbeanstalk/deployment/custom_env_var
-
-# add the virtual env path in.
-VENV=/var/app/venv/`ls /var/app/venv`
-cat <<EOF >> /opt/elasticbeanstalk/deployment/custom_env_var
-VENV=$$ENV
-EOF
-
-#Remove duplicate files upon deployment.
-rm -f /opt/elasticbeanstalk/deployment/*.bak
-endef
-
-define EB_CUSTOM_ENV_EC2_USER
-files:
-    "/home/ec2-user/.bashrc":
-        mode: "000644"
-        owner: ec2-user
-        group: ec2-user
-        content: |
-            # .bashrc
-
-            # Source global definitions
-            if [ -f /etc/bashrc ]; then
-                    . /etc/bashrc
-            fi
-
-            # User specific aliases and functions
-            set -o vi
-
-            source <(sed -E -n 's/[^#]+/export &/ p' /opt/elasticbeanstalk/deployment/custom_env_var)
-endef
-
 define DJANGO_ALLAUTH_LAYOUT_BASE
 {% extends 'base.html' %}
 endef
@@ -231,26 +190,6 @@ class CustomAdminSite(AdminSite):
 custom_admin_site = CustomAdminSite(name='custom_admin')
 endef
 
-define DJANGO_DOCKERFILE
-FROM amazonlinux:2023
-RUN dnf install -y shadow-utils python3.11 python3.11-pip make nodejs20-npm nodejs postgresql15 postgresql15-server
-USER postgres
-RUN initdb -D /var/lib/pgsql/data
-USER root
-RUN useradd wagtail
-EXPOSE 8000
-ENV PYTHONUNBUFFERED=1 PORT=8000
-COPY requirements.txt /
-RUN python3.11 -m pip install -r /requirements.txt
-WORKDIR /app
-RUN chown wagtail:wagtail /app
-COPY --chown=wagtail:wagtail . .
-USER wagtail
-RUN npm-20 install; npm-20 run build
-RUN python3.11 manage.py collectstatic --noinput --clear
-CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
-endef
-
 define DJANGO_DOCKERCOMPOSE
 version: '3'
 
@@ -278,6 +217,26 @@ services:
 
 volumes:
   postgres_data:
+endef
+
+define DJANGO_DOCKERFILE
+FROM amazonlinux:2023
+RUN dnf install -y shadow-utils python3.11 python3.11-pip make nodejs20-npm nodejs postgresql15 postgresql15-server
+USER postgres
+RUN initdb -D /var/lib/pgsql/data
+USER root
+RUN useradd wagtail
+EXPOSE 8000
+ENV PYTHONUNBUFFERED=1 PORT=8000
+COPY requirements.txt /
+RUN python3.11 -m pip install -r /requirements.txt
+WORKDIR /app
+RUN chown wagtail:wagtail /app
+COPY --chown=wagtail:wagtail . .
+USER wagtail
+RUN npm-20 install; npm-20 run build
+RUN python3.11 manage.py collectstatic --noinput --clear
+CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
 endef
 
 define DJANGO_FAVICON_TEMPLATE
@@ -355,69 +314,6 @@ endef
 define DJANGO_FRONTEND_COMPONENTS
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
-endef
-
-define DJANGO_FRONTEND_CONTEXT_INDEX
-export { UserContextProvider as default } from './UserContextProvider';
-endef
-
-define DJANGO_FRONTEND_CONTEXT_USER_PROVIDER
-// UserContextProvider.js
-import React, { createContext, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-
-const UserContext = createContext();
-
-export const UserContextProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const login = () => {
-    try {
-      // Add logic to handle login, set isAuthenticated to true
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error('Login error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  const logout = () => {
-    try {
-      // Add logic to handle logout, set isAuthenticated to false
-      setIsAuthenticated(false);
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Handle error, e.g., show an error message to the user
-    }
-  };
-
-  return (
-    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </UserContext.Provider>
-  );
-};
-
-UserContextProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export const useUserContext = () => {
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error('useUserContext must be used within a UserContextProvider');
-  }
-
-  return context;
-};
-
-// Add PropTypes for the return value of useUserContext
-useUserContext.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-};
 endef
 
 define DJANGO_FRONTEND_COMPONENT_CLOCK
@@ -557,6 +453,69 @@ UserMenu.propTypes = {
 export default UserMenu;
 endef
 
+define DJANGO_FRONTEND_CONTEXT_INDEX
+export { UserContextProvider as default } from './UserContextProvider';
+endef
+
+define DJANGO_FRONTEND_CONTEXT_USER_PROVIDER
+// UserContextProvider.js
+import React, { createContext, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
+
+const UserContext = createContext();
+
+export const UserContextProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const login = () => {
+    try {
+      // Add logic to handle login, set isAuthenticated to true
+      setIsAuthenticated(true);
+    } catch (error) {
+      console.error('Login error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  const logout = () => {
+    try {
+      // Add logic to handle logout, set isAuthenticated to false
+      setIsAuthenticated(false);
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Handle error, e.g., show an error message to the user
+    }
+  };
+
+  return (
+    <UserContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+UserContextProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export const useUserContext = () => {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error('useUserContext must be used within a UserContextProvider');
+  }
+
+  return context;
+};
+
+// Add PropTypes for the return value of useUserContext
+useUserContext.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+};
+endef
+
 define DJANGO_FRONTEND_ESLINTRC
 {
     "env": {
@@ -626,31 +585,6 @@ define DJANGO_FRONTEND_OFFCANVAS_TEMPLATE
 </div>
 endef
 
-define DJANGO_FRONTEND_STYLES
-// If you comment out code below, bootstrap will use red as primary color
-// and btn-primary will become red
-
-// $primary: red;
-
-@import "~bootstrap/scss/bootstrap.scss";
-
-.jumbotron {
-  // should be relative path of the entry scss file
-  background-image: url("../../vendors/images/sample.jpg");
-  background-size: cover;
-}
-
-#theme-toggler-authenticated:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-
-#theme-toggler-anonymous:hover {
-    cursor: pointer; /* Change cursor to pointer on hover */
-    color: #007bff; /* Change color on hover */
-}
-endef
-
 define DJANGO_FRONTEND_PORTAL
 // Via pwellever
 import React from 'react';
@@ -705,6 +639,31 @@ export default function getPageComponents (components) {
   };
 
   return Array.from(document.querySelectorAll('[data-component]')).map(getPortalComponent);
+}
+endef
+
+define DJANGO_FRONTEND_STYLES
+// If you comment out code below, bootstrap will use red as primary color
+// and btn-primary will become red
+
+// $primary: red;
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+.jumbotron {
+  // should be relative path of the entry scss file
+  background-image: url("../../vendors/images/sample.jpg");
+  background-size: cover;
+}
+
+#theme-toggler-authenticated:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
+}
+
+#theme-toggler-anonymous:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    color: #007bff; /* Change color on hover */
 }
 endef
 
@@ -842,11 +801,12 @@ define DJANGO_HEADER_TEMPLATE
 </div>
 endef 
 
-define DJANGO_HOME_PAGE_VIEWS
-from django.views.generic import TemplateView
-
-class HomeView(TemplateView):
-    template_name = "home.html"
+define DJANGO_HOME_PAGE_TEMPLATE
+{% extends "base.html" %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+    </main>
+{% endblock %}
 endef
 
 define DJANGO_HOME_PAGE_URLS
@@ -858,33 +818,11 @@ urlpatterns = [
 ]
 endef
 
-define DJANGO_HOME_PAGE_TEMPLATE
-{% extends "base.html" %}
-{% block content %}
-    <main class="{% block main_class %}{% endblock %}">
-    </main>
-{% endblock %}
-endef
+define DJANGO_HOME_PAGE_VIEWS
+from django.views.generic import TemplateView
 
-define DJANGO_LOGGING_DEMO_VIEWS
-from django.http import HttpResponse
-import logging
-
-# Get an instance of a logger
-logger = logging.getLogger(__name__)
-
-def logging_demo(request):
-    logger.debug('Hello, world!')
-    return HttpResponse("Hello, world!")
-endef
-
-define DJANGO_LOGGING_DEMO_URLS
-from django.urls import path
-from .views import logging_demo
-
-urlpatterns = [
-    path('', logging_demo, name='logging_demo'),
-]
+class HomeView(TemplateView):
+    template_name = "home.html"
 endef
 
 define DJANGO_LOGGING_DEMO_SETTINGS
@@ -901,6 +839,27 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+endef
+
+define DJANGO_LOGGING_DEMO_URLS
+from django.urls import path
+from .views import logging_demo
+
+urlpatterns = [
+    path('', logging_demo, name='logging_demo'),
+]
+endef
+
+define DJANGO_LOGGING_DEMO_VIEWS
+from django.http import HttpResponse
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+
+def logging_demo(request):
+    logger.debug('Hello, world!')
+    return HttpResponse("Hello, world!")
 endef
 
 define DJANGO_MANAGE_PY
@@ -928,6 +887,25 @@ if __name__ == "__main__":
     main()
 endef
 
+define DJANGO_MODEL_FORM_DEMO_ADMIN
+from django.contrib import admin
+from .models import ModelFormDemo
+
+@admin.register(ModelFormDemo)
+class ModelFormDemoAdmin(admin.ModelAdmin):
+    pass
+endef
+
+define DJANGO_MODEL_FORM_DEMO_FORMS
+from django import forms
+from .models import ModelFormDemo
+
+class ModelFormDemoForm(forms.ModelForm):
+    class Meta:
+        model = ModelFormDemo
+        fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
+endef
+
 define DJANGO_MODEL_FORM_DEMO_MODEL
 from django.db import models
 from django.shortcuts import reverse
@@ -944,15 +922,6 @@ class ModelFormDemo(models.Model):
 
     def get_absolute_url(self):
         return reverse('model_form_demo_detail', kwargs={'pk': self.pk})
-endef
-
-define DJANGO_MODEL_FORM_DEMO_ADMIN
-from django.contrib import admin
-from .models import ModelFormDemo
-
-@admin.register(ModelFormDemo)
-class ModelFormDemoAdmin(admin.ModelAdmin):
-    pass
 endef
 
 define DJANGO_MODEL_FORM_DEMO_VIEWS
@@ -987,16 +956,6 @@ class ModelFormDemoDetailView(DetailView):
     model = ModelFormDemo
     template_name = "model_form_demo_detail.html"
     context_object_name = "model_form_demo"
-endef
-
-define DJANGO_MODEL_FORM_DEMO_FORMS
-from django import forms
-from .models import ModelFormDemo
-
-class ModelFormDemoForm(forms.ModelForm):
-    class Meta:
-        model = ModelFormDemo
-        fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
 endef
 
 define DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM
@@ -1692,6 +1651,47 @@ def remove_urlpattern(urlpatterns, route_to_remove):
     urlpatterns[:] = [urlpattern for urlpattern in urlpatterns if not (
         isinstance(urlpattern, URLResolver) and urlpattern.pattern._route == route_to_remove
     )]
+endef
+
+define EB_CUSTOM_ENV_VAR_FILE
+#!/bin/bash
+
+# Via https://aws.amazon.com/premiumsupport/knowledge-center/elastic-beanstalk-env-variables-linux2/
+
+#Create a copy of the environment variable file.
+cat /opt/elasticbeanstalk/deployment/env | perl -p -e 's/(.*)=(.*)/export $$1="$$2"/;' > /opt/elasticbeanstalk/deployment/custom_env_var
+
+#Set permissions to the custom_env_var file so this file can be accessed by any user on the instance. You can restrict permissions as per your requirements.
+chmod 644 /opt/elasticbeanstalk/deployment/custom_env_var
+
+# add the virtual env path in.
+VENV=/var/app/venv/`ls /var/app/venv`
+cat <<EOF >> /opt/elasticbeanstalk/deployment/custom_env_var
+VENV=$$ENV
+EOF
+
+#Remove duplicate files upon deployment.
+rm -f /opt/elasticbeanstalk/deployment/*.bak
+endef
+
+define EB_CUSTOM_ENV_EC2_USER
+files:
+    "/home/ec2-user/.bashrc":
+        mode: "000644"
+        owner: ec2-user
+        group: ec2-user
+        content: |
+            # .bashrc
+
+            # Source global definitions
+            if [ -f /etc/bashrc ]; then
+                    . /etc/bashrc
+            fi
+
+            # User specific aliases and functions
+            set -o vi
+
+            source <(sed -E -n 's/[^#]+/export &/ p' /opt/elasticbeanstalk/deployment/custom_env_var)
 endef
 
 define GIT_IGNORE
