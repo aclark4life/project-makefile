@@ -245,15 +245,21 @@ define DJANGO_FAVICON_TEMPLATE
 endef
 
 define DJANGO_FOOTER_TEMPLATE
-  <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
+<footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
     <ul class="list-inline">
-      <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}" href="/">Home</a></li>
-      {% for child in current_site.root_page.get_children %}
-          <li class="list-inline-item"><a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}" href="{{ child.url }}">{{ child }}</a></li>
-      {% endfor %}
+        <li class="list-inline-item">
+            <a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}"
+               href="/">Home</a>
+        </li>
+        {% for child in current_site.root_page.get_children %}
+            <li class="list-inline-item">
+                <a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}"
+                   href="{{ child.url }}">{{ child }}</a>
+            </li>
+        {% endfor %}
     </ul>
-  </footer>
+</footer>
 endef
 
 define DJANGO_FRONTEND_APP
@@ -1422,30 +1428,30 @@ except ImportError:
     pass
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
         },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': True,
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
         },
     },
 }
@@ -1482,8 +1488,8 @@ endef
 
 define DJANGO_SETTINGS_THEMES
 THEMES = [
-    ('light', 'Light Theme'),
-    ('dark', 'Dark Theme'),
+    ("light", "Light Theme"),
+    ("dark", "Dark Theme"),
 ]
 endef
 
