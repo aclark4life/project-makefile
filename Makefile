@@ -3516,6 +3516,11 @@ django-crispy-default:
 	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
 
+django-lint-default:
+	-ruff format -v
+	-djlint --reformat --format-css --format-js .
+	-ruff check -v --fix
+
 django-shell-default:
 	python manage.py shell
 
@@ -3779,11 +3784,6 @@ html-error-default:
 
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
-
-lint-default:
-	-ruff format -v
-	-djlint --reformat --format-css --format-js .
-	-ruff check -v --fix
 
 makefile-custom-default:
 	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
@@ -4183,7 +4183,6 @@ db-shell-default: django-db-shell
 dbshell-default: django-db-shell
 deploy-default: eb-deploy
 django-clean-default: wagtail-clean
-djlint-default: lint-djlint
 e-default: edit
 eb-env-default: eb-print-env
 eb-export-default: eb-pg-export
@@ -4210,6 +4209,7 @@ l-default: lint
 last-default: git-commit-last
 ld-default: makefile-list-defines
 license-default: python-license
+lint-default: django-lint
 list-defines-default: makefile-list-defines
 logs-default: eb-logs
 m-default: django-migrate
