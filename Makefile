@@ -3119,7 +3119,7 @@ django-allauth-default:
 	@echo "urlpatterns += [path('accounts/', include('allauth.urls'))]" >> backend/urls.py
 
 django-app-tests-default:
-	@echo "$$DJANGO_APP_TESTS" > $(APP_DIR)
+	@echo "$$DJANGO_APP_TESTS" > $(APP_DIR)/tests.py
 
 django-project-default:
 	django-admin startproject backend .
