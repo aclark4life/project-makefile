@@ -892,6 +892,10 @@ class HomeView(TemplateView):
     template_name = "home.html"
 endef
 
+define DJANGO_LOGGING_DEMO_ADMIN
+# Register your models here.
+endef
+
 define DJANGO_LOGGING_DEMO_MODELS
 # Create your models here.
 endef
@@ -2974,6 +2978,7 @@ export DJANGO_HEADER_TEMPLATE
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
+export DJANGO_LOGGING_DEMO_ADMIN
 export DJANGO_LOGGING_DEMO_MODELS
 export DJANGO_LOGGING_DEMO_SETTINGS
 export DJANGO_LOGGING_DEMO_URLS
@@ -3492,6 +3497,7 @@ django-modelform-demo-default:
 
 django-logging-demo-default:
 	python manage.py startapp logging_demo
+	@echo "$$DJANGO_LOGGING_DEMO_ADMIN" > logging_demo/admin.py
 	@echo "$$DJANGO_LOGGING_DEMO_MODELS" > logging_demo/models.py
 	@echo "$$DJANGO_LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
