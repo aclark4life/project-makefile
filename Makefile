@@ -2846,6 +2846,17 @@ urlpatterns = [
 ]
 endef
 
+define WAGTAIL_SETTINGS
+INSTALLED_APPS.append("wagtail_color_panel")"
+INSTALLED_APPS.append("wagtail_modeladmin")"
+INSTALLED_APPS.append("wagtail.contrib.settings")"
+INSTALLED_APPS.append("wagtailmarkdown")"
+INSTALLED_APPS.append("wagtailmenus")"
+INSTALLED_APPS.append("wagtailseo")"
+TEMPLATES[0]["OPTIONS"]["context_processors"].append("wagtail.contrib.settings.context_processors.settings")
+TEMPLATES[0]["OPTIONS"]["context_processors"].append("wagtailmenus.context_processors.wagtailmenus")
+endef
+
 define WAGTAIL_SITEPAGE_MODEL
 from wagtail.models import Page
 
@@ -3097,6 +3108,7 @@ export WAGTAIL_PRIVACY_PAGE_MODEL
 export WAGTAIL_PRIVACY_PAGE_TEMPLATE
 export WAGTAIL_SEARCH_TEMPLATE
 export WAGTAIL_SEARCH_URLS
+export WAGTAIL_SETTINGS
 export WAGTAIL_SITEPAGE_MODEL
 export WAGTAIL_SITEPAGE_TEMPLATE
 export WAGTAIL_URLS
@@ -4203,14 +4215,7 @@ wagtail-search-default:
 	-$(GIT_ADD) search/*.py
 
 wagtail-settings-default:
-	@echo "INSTALLED_APPS.append('wagtailmenus')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('wagtailmarkdown')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('wagtail_modeladmin')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('wagtailseo')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('wagtail_color_panel')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('wagtail.contrib.settings')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtail.contrib.settings.context_processors.settings')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "TEMPLATES[0]['OPTIONS']['context_processors'].append('wagtailmenus.context_processors.wagtailmenus')">> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$WAGTAIL_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 wagtail-sitepage-default:
 	python manage.py startapp sitepage
