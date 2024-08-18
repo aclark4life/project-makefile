@@ -149,8 +149,8 @@ endef
 
 define DJANGO_AUTHENTICATION_BACKENDS
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 ]
 endef
 
@@ -3545,7 +3545,6 @@ django-settings-base-default:
 	@echo "$$DJANGO_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_THEMES" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "ALLOWED_HOSTS = ['*']" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(DJANGO_SETTINGS_BASE_FILE)
