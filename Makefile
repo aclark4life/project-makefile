@@ -3841,6 +3841,9 @@ git-commit-alpha-sort-default:
 git-commit-clean-default:
 	git commit -a -m "Clean"
 
+git-commit-freeze-default:
+	git commit -a -m "Freeze"
+
 git-commit-init-default:
 	git commit -a -m "Init"
 
@@ -4273,6 +4276,7 @@ cp-default: git-commit-push
 cp-upgrade-default: git-commit-upgrade git-push
 cp-wording-default: git-commit-wording git-push
 cpc-default: git-commit-clean git-push
+cpf-default: git-commit-freeze git-push
 cpi-default: git-commit-init git-push
 cpl-default: git-commit-lint git-push
 cps-default: git-commit-sort git-push
