@@ -3929,6 +3929,7 @@ git-set-default-default:
 git-short-default:
 	@echo $(GIT_REV)
 
+.PHONY: help-default
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
@@ -3945,10 +3946,6 @@ html-error-default:
 
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
-
-makefile-custom-default:
-	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
-	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
 
 makefile-list-defines-default:
 	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
@@ -4053,6 +4050,11 @@ programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > interview.py
 	@echo "Created interview.py!"
 	-@$(GIT_ADD) interview.py > /dev/null 2>&1
+
+.PHONY: project.mk
+project.mk:
+	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
+	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
 
 python-license-default:
 	@echo "$(PYTHON_LICENSE_TXT)" > LICENSE.txt
@@ -4347,7 +4349,10 @@ git-commit-edit-push-default: git-commit-edit git-push
 git-commit-push-default: git-commit git-push
 git-force-default: git-push-force
 gitignore-default: git-ignore
+
+.PHONY: h-default
 h-default: help
+
 i-default: install
 index-default: html-index
 init-default: django-wagtail-init django-serve
@@ -4362,10 +4367,17 @@ lint-default: django-lint
 list-defines-default: makefile-list-defines
 logs-default: eb-logs
 m-default: django-migrate
+
+.PHONY: makefile-custom-default
+makefile-custom-default: project.mk
+
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
-mk-default: makefile-custom
+
+.PHONY: mk-default
+mk-default: project.mk
+
 o-default: open
 open-default: django-open
 p-default: git-push
