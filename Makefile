@@ -39,6 +39,7 @@ DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
+DJANGO_URLS_FILE = backend/urls.py
 EB_DIR_NAME := .elasticbeanstalk
 EB_ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
 EB_PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
@@ -1801,6 +1802,10 @@ if settings.DEBUG:
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
 endef
 
+define DJANGO_URLS_LOGGING_DEMO
+urlpatterns += [path("logging-demo/", include("logging_demo.urls"))]
+endef
+
 define DJANGO_URLS_PAYMENTS
 urlpatterns += [path("payments/", include("payments.urls"))]
 endef
@@ -3127,6 +3132,7 @@ export DJANGO_URLS_ALLAUTH
 export DJANGO_URLS_API
 export DJANGO_URLS_DEBUG_TOOLBAR
 export DJANGO_URLS_HOME_PAGE
+export DJANGO_URLS_LOGGING_DEMO
 export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
 export EB_CUSTOM_ENV_VAR_FILE
@@ -3225,7 +3231,7 @@ db-pg-import-default:
 django-allauth-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$DJANGO_ALLAUTH_BASE_TEMPLATE" > backend/templates/allauth/layouts/base.html
-	@echo "$$DJANGO_URLS_ALLAUTH" >> backend/urls.py
+	@echo "$$DJANGO_URLS_ALLAUTH" >> $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
 django-app-tests-default:
@@ -3472,7 +3478,7 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
-	@echo "$$DJANGO_URLS_HOME_PAGE" >> backend/urls.py
+	@echo "$$DJANGO_URLS_HOME_PAGE" >> $(DJANGO_URLS_FILE)
 	@echo "INSTALLED_APPS.append('home')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	export APP_DIR="home"; $(MAKE) django-app-tests
 	-$(GIT_ADD) home/templates
@@ -3500,7 +3506,7 @@ django-payments-demo-default:
 	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_URLS_PAYMENTS" >> backend/urls.py
+	@echo "$$DJANGO_URLS_PAYMENTS" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="payments"; $(MAKE) django-app-tests
 	python manage.py makemigrations payments
 	@echo "$$DJANGO_PAYMENTS_MIGRATION_0002" > payments/migrations/0002_set_stripe_api_keys.py
@@ -3525,7 +3531,7 @@ django-search-default:
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
 	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('search')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('search/', include('search.urls'))]" >> backend/urls.py
+	@echo "urlpatterns += [path('search/', include('search.urls'))]" >> $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) search/templates
 	-$(GIT_ADD) search/*.py
 
@@ -3545,7 +3551,7 @@ django-siteuser-default:
 	@echo "$$DJANGO_SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
 	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('user/', include('siteuser.urls'))]" >> backend/urls.py
+	@echo "urlpatterns += [path('user/', include('siteuser.urls'))]" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="siteuser"; $(MAKE) django-app-tests
 	-$(GIT_ADD) siteuser/templates
 	-$(GIT_ADD) siteuser/*.py
@@ -3582,7 +3588,7 @@ django-modelform-demo-default:
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
 	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('model-form-demo/', include('model_form_demo.urls'))]" >> backend/urls.py
+	@echo "urlpatterns += [path('model-form-demo/', include('model_form_demo.urls'))]" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="model_form_demo"; $(MAKE) django-app-tests
 	python manage.py makemigrations
 	-$(GIT_ADD) model_form_demo/*.py
@@ -3597,7 +3603,7 @@ django-logging-demo-default:
 	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
 	@echo "$$DJANGO_LOGGING_DEMO_VIEWS" > logging_demo/views.py
 	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('logging-demo/', include('logging_demo.urls'))]" >> backend/urls.py
+	@echo "$$DJANGO_URLS_LOGGING_DEMO" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="logging_demo"; $(MAKE) django-app-tests
 	-$(GIT_ADD) logging_demo/*.py
 	-$(GIT_ADD) logging_demo/migrations/*.py
@@ -3703,15 +3709,15 @@ django-user-default:
         User.objects.create_user('user', '', 'user')"
 
 django-urls-api-default:
-	@echo "$$DJANGO_URLS_API" >> backend/urls.py
-	-$(GIT_ADD) backend/urls.py
+	@echo "$$DJANGO_URLS_API" >> $(DJANGO_URLS_FILE)
+	-$(GIT_ADD) $(DJANGO_URLS_FILE)
 
 django-urls-debug-toolbar-default:
-	@echo "$$DJANGO_URLS_DEBUG_TOOLBAR" >> backend/urls.py
+	@echo "$$DJANGO_URLS_DEBUG_TOOLBAR" >> $(DJANGO_URLS_FILE)
 
 django-urls-default:
-	@echo "$$DJANGO_URLS" > backend/urls.py
-	-$(GIT_ADD) backend/urls.py
+	@echo "$$DJANGO_URLS" > $(DJANGO_URLS_FILE)
+	-$(GIT_ADD) $(DJANGO_URLS_FILE)
 
 django-npm-save-default:
 	npm install \
@@ -4280,10 +4286,10 @@ wagtail-sitepage-default:
 	-$(GIT_ADD) sitepage/migrations/*.py
 
 wagtail-urls-default:
-	@echo "$$WAGTAIL_URLS" > backend/urls.py
+	@echo "$$WAGTAIL_URLS" > $(DJANGO_URLS_FILE)
 
 wagtail-urls-home-default:
-	@echo "$$WAGTAIL_URLS_HOME" >> backend/urls.py
+	@echo "$$WAGTAIL_URLS_HOME" >> $(DJANGO_URLS_FILE)
 
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
