@@ -147,13 +147,6 @@ class YourFormTest(TestCase):
             self.assertEqual(instance.field2, "value2")
 endef
 
-define DJANGO_AUTHENTICATION_BACKENDS
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-]
-endef
-
 define DJANGO_BACKEND_APPS
 from django.contrib.admin.apps import AdminConfig
 
@@ -1481,6 +1474,13 @@ class SearchView(ListView):
         context["form"] = SearchForm(self.request.GET)
         context["query"] = self.request.GET.get("query", "")
         return context
+endef
+
+define DJANGO_SETTINGS_AUTHENTICATION_BACKENDS
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
 endef
 
 define DJANGO_SETTINGS_DEV
@@ -2955,7 +2955,6 @@ endef
 
 export DJANGO_ALLAUTH_LAYOUT_BASE
 export DJANGO_APP_TESTS
-export DJANGO_AUTHENTICATION_BACKENDS
 export DJANGO_BACKEND_APPS
 export DJANGO_BASE_TEMPLATE
 export DJANGO_CUSTOM_ADMIN
@@ -3016,6 +3015,7 @@ export DJANGO_SEARCH_TEMPLATE
 export DJANGO_SEARCH_URLS
 export DJANGO_SEARCH_UTILS
 export DJANGO_SEARCH_VIEWS
+export DJANGO_SETTINGS_AUTHENTICATION_BACKENDS
 export DJANGO_SETTINGS_BASE_FILE
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_DEV_FILE
