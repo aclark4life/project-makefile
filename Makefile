@@ -87,9 +87,7 @@ define DJANGO_ALLAUTH_BASE_TEMPLATE
 endef
 
 define DJANGO_ALLAUTH_URLS
-urlpatterns += [
-    path("accounts/", include("allauth.urls"))
-]
+urlpatterns += [path("accounts/", include("allauth.urls"))]
 endef
 
 define DJANGO_APP_TESTS
