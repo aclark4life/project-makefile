@@ -3688,7 +3688,7 @@ django-urls-api-default:
 	-$(GIT_ADD) backend/urls.py
 
 django-urls-debug-default:
-	@echo "$$DJANGO_URLS_DEBUG" > backend/urls.py
+	@echo "$$DJANGO_URLS_DEBUG" >> backend/urls.py
 
 django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
