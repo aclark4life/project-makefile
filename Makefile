@@ -1801,6 +1801,10 @@ if settings.DEBUG:
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
 endef
 
+define DJANGO_URLS_PAYMENTS
+urlpatterns += [path("payments/", include("payments.urls"))]
+endef
+
 define DJANGO_UTILS
 from django.urls import URLResolver
 import requests
@@ -3496,7 +3500,7 @@ django-payments-demo-default:
 	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('payments/', include('payments.urls'))]" >> backend/urls.py
+	@echo "$$DJANGO_URLS_PAYMENTS" >> backend/urls.py
 	export APP_DIR="payments"; $(MAKE) django-app-tests
 	python manage.py makemigrations payments
 	@echo "$$DJANGO_PAYMENTS_MIGRATION_0002" > payments/migrations/0002_set_stripe_api_keys.py
