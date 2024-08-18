@@ -86,10 +86,6 @@ define DJANGO_ALLAUTH_BASE_TEMPLATE
 {% extends 'base.html' %}
 endef
 
-define DJANGO_ALLAUTH_URLS
-urlpatterns += [path("accounts/", include("allauth.urls"))]
-endef
-
 define DJANGO_APP_TESTS
 from django.test import TestCase
 from django.urls import reverse
@@ -1780,6 +1776,10 @@ urlpatterns = [
 ]
 endef
 
+define DJANGO_URLS_ALLAUTH
+urlpatterns += [path("accounts/", include("allauth.urls"))]
+endef
+
 define DJANGO_URLS_API
 from rest_framework import routers  # noqa
 from .api import UserViewSet, api  # noqa
@@ -3016,7 +3016,6 @@ endef
 # ------------------------------------------------------------------------------  
 
 export DJANGO_ALLAUTH_BASE_TEMPLATE
-export DJANGO_ALLAUTH_URLS
 export DJANGO_APP_TESTS
 export DJANGO_BACKEND_APPS
 export DJANGO_BASE_TEMPLATE
@@ -3097,6 +3096,7 @@ export DJANGO_SITEUSER_URLS
 export DJANGO_SITEUSER_VIEW
 export DJANGO_SITEUSER_VIEW_TEMPLATE
 export DJANGO_URLS
+export DJANGO_URLS_ALLAUTH
 export DJANGO_URLS_API
 export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
@@ -3195,7 +3195,7 @@ db-pg-import-default:
 django-allauth-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$DJANGO_ALLAUTH_BASE_TEMPLATE" > backend/templates/allauth/layouts/base.html
-	@echo "$$DJANGO_ALLAUTH_URLS" >> backend/urls.py
+	@echo "$$DJANGO_URLS_ALLAUTH" >> backend/urls.py
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
 django-app-tests-default:
