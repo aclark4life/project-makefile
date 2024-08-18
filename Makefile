@@ -1649,9 +1649,11 @@ class User(AbstractUser):
     user_permissions = models.ManyToManyField(
         Permission, related_name="siteuser_set", blank=True
     )
-    
-    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default="light")
-    
+
+    user_theme_preference = models.CharField(
+        max_length=10, choices=settings.THEMES, default="light"
+    )
+
     bio = models.TextField(blank=True, null=True)
     rate = models.FloatField(blank=True, null=True)
 endef
@@ -1721,16 +1723,16 @@ endef
 
 define DJANGO_SITEUSER_VIEW_TEMPLATE
 {% extends 'base.html' %}
-
 {% block content %}
-<h2>User Profile</h2>
-<div class="d-flex justify-content-end">
-    <a class="btn btn-outline-secondary" href="{% url 'user-edit' pk=user.id %}">Edit</a>
-</div>
-<p>Username: {{ user.username }}</p>
-<p>Theme: {{ user.user_theme_preference }}</p>
-<p>Bio: {{ user.bio|default:""|safe }}</p>
-<p>Rate: {{ user.rate|default:"" }}</p>
+    <h2>User Profile</h2>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-outline-secondary"
+           href="{% url 'user-edit' pk=user.id %}">Edit</a>
+    </div>
+    <p>Username: {{ user.username }}</p>
+    <p>Theme: {{ user.user_theme_preference }}</p>
+    <p>Bio: {{ user.bio|default:""|safe }}</p>
+    <p>Rate: {{ user.rate|default:"" }}</p>
 {% endblock %}
 endef
 
