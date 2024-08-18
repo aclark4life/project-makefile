@@ -4051,7 +4051,6 @@ programming-interview-default:
 	@echo "Created interview.py!"
 	-@$(GIT_ADD) interview.py > /dev/null 2>&1
 
-.PHONY: project.mk
 project.mk:
 	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
 	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
@@ -4367,17 +4366,9 @@ lint-default: django-lint
 list-defines-default: makefile-list-defines
 logs-default: eb-logs
 m-default: django-migrate
-
-.PHONY: makefile-custom-default
-makefile-custom-default: project.mk
-
 migrate-default: django-migrate
 migrations-default: django-migrations
 migrations-show-default: django-migrations-show
-
-.PHONY: mk-default
-mk-default: project.mk
-
 o-default: open
 open-default: django-open
 p-default: git-push
