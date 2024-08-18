@@ -82,8 +82,14 @@ endif
 # Multi-line variables to be used in phony target rules
 # --------------------------------------------------------------------------------
 
-define DJANGO_ALLAUTH_LAYOUT_BASE
+define DJANGO_ALLAUTH_BASE_TEMPLATE
 {% extends 'base.html' %}
+endef
+
+define DJANGO_ALLAUTH_URLS
+urlpatterns += [
+    path('accounts/', include('allauth.urls'))
+]
 endef
 
 define DJANGO_APP_TESTS
@@ -3011,7 +3017,8 @@ endef
 # Export variables used by phony target rules
 # ------------------------------------------------------------------------------  
 
-export DJANGO_ALLAUTH_LAYOUT_BASE
+export DJANGO_ALLAUTH_BASE_TEMPLATE
+export DJANGO_ALLAUTH_URLS
 export DJANGO_APP_TESTS
 export DJANGO_BACKEND_APPS
 export DJANGO_BASE_TEMPLATE
@@ -3187,13 +3194,11 @@ db-pg-init-test-default:
 db-pg-import-default:
 	@psql $(DJANGO_DB_NAME) < $(DJANGO_DB_NAME).sql
 
-django-allauth-template-default:
-	$(ADD_DIR) backend/templates/allauth/layouts
-	@echo "$$DJANGO_ALLAUTH_LAYOUT_BASE" > backend/templates/allauth/layouts/base.html
-	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
-
 django-allauth-default:
-	@echo "urlpatterns += [path('accounts/', include('allauth.urls'))]" >> backend/urls.py
+	$(ADD_DIR) backend/templates/allauth/layouts
+	@echo "$$DJANGO_ALLAUTH_BASE_TEMPLATE" > backend/templates/allauth/layouts/base.html
+	@echo "$$DJANGO_ALLAUTH_URLS" > backend/urls.py
+	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
 django-app-tests-default:
 	@echo "$$DJANGO_APP_TESTS" > $(APP_DIR)/tests.py
@@ -3290,7 +3295,6 @@ django-init-default: separator \
 	django-urls \
 	django-urls-debug \
 	django-allauth \
-	django-allauth-template \
 	django-favicon \
 	gitignore \
 	django-settings-base \
@@ -3327,7 +3331,6 @@ django-wagtail-init-default: separator \
 	wagtail-urls \
 	django-urls-debug \
 	django-allauth \
-	django-allauth-template \
 	django-favicon \
 	gitignore \
 	wagtail-search \
