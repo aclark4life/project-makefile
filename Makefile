@@ -1214,9 +1214,7 @@ endef
 
 define DJANGO_PAYMENTS_TEMPLATE_CANCEL
 {% extends "base.html" %}
-
 {% block title %}Cancel{% endblock %}
-
 {% block content %}
     <h1>Payment Cancelled</h1>
     <p>Your payment was cancelled.</p>
@@ -1225,9 +1223,7 @@ endef
 
 define DJANGO_PAYMENTS_TEMPLATE_CHECKOUT
 {% extends "base.html" %}
-
 {% block title %}Checkout{% endblock %}
-
 {% block content %}
     <h1>Checkout</h1>
     <form action="{% url 'checkout' %}" method="post">
@@ -1239,9 +1235,7 @@ endef
 
 define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL
 {% extends "base.html" %}
-
 {% block title %}{{ product.name }}{% endblock %}
-
 {% block content %}
     <h1>{{ product.name }}</h1>
     <p>{{ product.description }}</p>
@@ -1256,16 +1250,14 @@ endef
 
 define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
 {% extends "base.html" %}
-
 {% block title %}Products{% endblock %}
-
 {% block content %}
     <h1>Products</h1>
     <ul>
         {% for product in products %}
-        <li>
-            <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
-        </li>
+            <li>
+                <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}
@@ -1273,9 +1265,7 @@ endef
 
 define DJANGO_PAYMENTS_TEMPLATE_SUCCESS
 {% extends "base.html" %}
-
 {% block title %}Success{% endblock %}
-
 {% block content %}
     <h1>Payment Successful</h1>
     <p>Thank you for your purchase!</p>
