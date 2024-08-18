@@ -2498,41 +2498,41 @@ define WAGTAIL_BASE_TEMPLATE
 endef
 
 define WAGTAIL_BLOCK_CAROUSEL
-        <div id="carouselExampleCaptions" class="carousel slide">
-            <div class="carousel-indicators">
-                {% for image in block.value.images %}
-                    <button type="button"
-                            data-bs-target="#carouselExampleCaptions"
-                            data-bs-slide-to="{{ forloop.counter0 }}"
-                            {% if forloop.first %}class="active" aria-current="true"{% endif %}
-                            aria-label="Slide {{ forloop.counter }}"></button>
-                {% endfor %}
-            </div>
-            <div class="carousel-inner">
-                {% for image in block.value.images %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                            <h5>{{ image.title }}</h5>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-            <button class="carousel-control-prev"
-                    type="button"
+<div id="carouselExampleCaptions" class="carousel slide">
+    <div class="carousel-indicators">
+        {% for image in block.value.images %}
+            <button type="button"
                     data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next"
-                    type="button"
-                    data-bs-target="#carouselExampleCaptions"
-                    data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
+                    data-bs-slide-to="{{ forloop.counter0 }}"
+                    {% if forloop.first %}class="active" aria-current="true"{% endif %}
+                    aria-label="Slide {{ forloop.counter }}"></button>
+        {% endfor %}
+    </div>
+    <div class="carousel-inner">
+        {% for image in block.value.images %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ image.file.url }}" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ image.title }}</h5>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
 endef
 
 define WAGTAIL_BLOCK_MARKETING
@@ -3292,8 +3292,7 @@ django-wagtail-init-default: separator \
 	django-frontend \
 	django-migrate \
 	readme \
-	su \
-	serve
+	su
 
 django-install-minimal-default:
 	$(PIP_ENSURE)
@@ -4274,7 +4273,7 @@ gitignore-default: git-ignore
 h-default: help
 i-default: install
 index-default: html-index
-init-default: django-wagtail-init
+init-default: django-wagtail-init django-serve
 install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
