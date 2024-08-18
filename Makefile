@@ -2930,6 +2930,18 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 endef
 
+define WAGTAIL_URLS_HOME
+urlpatterns += [
+    # For anything not caught by a more specific rule above, hand over to
+    # Wagtail's page serving mechanism. This should be the last pattern in
+    # the list:
+    path("", include("wagtail.urls")),
+    # Alternatively, if you want Wagtail pages to be served from a subpath
+    # of your site, rather than the site root:
+    #    path("pages/", include("wagtail.urls"),
+]
+endef
+
 define WEBPACK_CONFIG_JS
 const path = require('path');
 
@@ -3144,6 +3156,7 @@ export WAGTAIL_SETTINGS
 export WAGTAIL_SITEPAGE_MODEL
 export WAGTAIL_SITEPAGE_TEMPLATE
 export WAGTAIL_URLS
+export WAGTAIL_URLS_HOME
 export WEBPACK_CONFIG_JS
 export WEBPACK_INDEX_HTML
 export WEBPACK_INDEX_JS
@@ -4263,7 +4276,7 @@ wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
 
 wagtail-urls-home-default:
-	@echo "urlpatterns += [path('', include('wagtail.urls'))]" >> backend/urls.py
+	@echo "$$WAGTAIL_URLS_HOME" >> backend/urls.py
 
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
