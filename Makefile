@@ -1806,6 +1806,10 @@ define DJANGO_URLS_LOGGING_DEMO
 urlpatterns += [path("logging-demo/", include("logging_demo.urls"))]
 endef
 
+define DJANGO_URLS_MODEL_FORM_DEMO
+urlpatterns += [path("model-form-demo/", include("model_form_demo.urls"))]
+endef
+
 define DJANGO_URLS_PAYMENTS
 urlpatterns += [path("payments/", include("payments.urls"))]
 endef
@@ -3133,6 +3137,7 @@ export DJANGO_URLS_API
 export DJANGO_URLS_DEBUG_TOOLBAR
 export DJANGO_URLS_HOME_PAGE
 export DJANGO_URLS_LOGGING_DEMO
+export DJANGO_URLS_MODEL_FORM_DEMO
 export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
 export EB_CUSTOM_ENV_VAR_FILE
@@ -3373,7 +3378,7 @@ django-wagtail-init-default: separator \
 	django-settings-prod \
 	wagtail-settings \
 	django-siteuser \
-	django-modelform-demo \
+	django-model-form-demo \
 	django-logging-demo \
 	django-payments-demo-default \
 	django-rest-serializers \
@@ -3576,7 +3581,7 @@ django-migrations-default:
 django-migrations-show-default:
 	python manage.py showmigrations
 
-django-modelform-demo-default:
+django-model-form-demo-default:
 	python manage.py startapp model_form_demo
 	@echo "$$DJANGO_MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
 	@echo "$$DJANGO_MODEL_FORM_DEMO_FORMS" > model_form_demo/forms.py
@@ -3588,7 +3593,7 @@ django-modelform-demo-default:
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
 	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('model-form-demo/', include('model_form_demo.urls'))]" >> $(DJANGO_URLS_FILE)
+	@echo "$$DJANGO_URLS_MODEL_FORM_DEMO" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="model_form_demo"; $(MAKE) django-app-tests
 	python manage.py makemigrations
 	-$(GIT_ADD) model_form_demo/*.py
