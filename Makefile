@@ -621,29 +621,43 @@ define DJANGO_FRONTEND_ESLINTRC
 endef
 
 define DJANGO_FRONTEND_OFFCANVAS_TEMPLATE
-<div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <a class="offcanvas-title text-light h5 text-decoration-none" id="offcanvasExampleLabel" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-    <button type="button" class="btn-close bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body bg-dark">
-    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      <li class="nav-item">
-        <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
-      </li>
-      {% for child in current_site.root_page.get_children %}
-      <li class="nav-item">
-        <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
-      </li>
-      {% endfor %}
-      <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
-          <span class="nav-link text-light" data-bs-toggle="tooltip" title="Toggle dark mode">
-              <i class="fas fa-circle-half-stroke"></i>
-          </span>
-      </li>
-      <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
-    </ul>
-  </div>
+<div class="offcanvas offcanvas-start bg-dark"
+     tabindex="-1"
+     id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <a class="offcanvas-title text-light h5 text-decoration-none"
+           id="offcanvasExampleLabel"
+           href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+        <button type="button"
+                class="btn-close bg-light"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body bg-dark">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+                <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
+            </li>
+            {% for child in current_site.root_page.get_children %}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
+                </li>
+            {% endfor %}
+            <li class="nav-item"
+                id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+                <span class="nav-link text-light"
+                      data-bs-toggle="tooltip"
+                      title="Toggle dark mode">
+                    <i class="fas fa-circle-half-stroke"></i>
+                </span>
+            </li>
+            <div data-component="UserMenu"
+                 data-text-color="light"
+                 data-is-authenticated="{{ request.user.is_authenticated }}"
+                 data-is-superuser="{{ request.user.is_superuser }}"></div>
+        </ul>
+    </div>
 </div>
 endef
 
@@ -2728,36 +2742,6 @@ define WAGTAIL_HOME_PAGE_TEMPLATE
 {% endblock %}
 endef
 
-define WAGTAIL_OFFCANVAS_TEMPLATE
-{% load wagtailcore_tags %}
-{% wagtail_site as current_site %}
-<div class="offcanvas offcanvas-start bg-dark" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-  <div class="offcanvas-header">
-    <a class="offcanvas-title text-light h5 text-decoration-none" id="offcanvasExampleLabel" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-    <button type="button" class="btn-close bg-light" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body bg-dark">
-    {% wagtail_site as current_site %}
-    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      <li class="nav-item">
-        <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
-      </li>
-      {% for child in current_site.root_page.get_children %}
-      <li class="nav-item">
-        <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
-      </li>
-      {% endfor %}
-      <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
-          <span class="nav-link text-light" data-bs-toggle="tooltip" title="Toggle dark mode">
-              <i class="fas fa-circle-half-stroke"></i>
-          </span>
-      </li>
-      <div data-component="UserMenu" data-text-color="light" data-is-authenticated="{{ request.user.is_authenticated }}" data-is-superuser="{{ request.user.is_superuser }}"></div>
-    </ul>
-  </div>
-</div>
-endef
-
 define WAGTAIL_PRIVACY_PAGE_MODEL
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
@@ -3080,7 +3064,6 @@ export WAGTAIL_HOME_PAGE_MODEL
 export WAGTAIL_HOME_PAGE_TEMPLATE
 export WAGTAIL_HOME_PAGE_URLS
 export WAGTAIL_HOME_PAGE_VIEWS
-export WAGTAIL_OFFCANVAS_TEMPLATE
 export WAGTAIL_PRIVACY_PAGE_MODEL
 export WAGTAIL_PRIVACY_PAGE_MODEL
 export WAGTAIL_PRIVACY_PAGE_TEMPLATE
@@ -4208,11 +4191,6 @@ wagtail-sitepage-default:
 	-$(GIT_ADD) sitepage/templates
 	-$(GIT_ADD) sitepage/*.py
 	-$(GIT_ADD) sitepage/migrations/*.py
-
-wagtail-templates-default:
-	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
-	@echo "$$WAGTAIL_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
-	-$(GIT_ADD) backend/templates/
 
 wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > backend/urls.py
