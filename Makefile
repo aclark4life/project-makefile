@@ -3286,7 +3286,7 @@ django-init-minimal-default: separator \
 	django-base-template \
 	django-manage-py \
 	django-urls \
-	django-urls-debug \
+	django-urls-debug-toolbar \
 	django-favicon \
 	django-settings-minimal \
 	django-settings-dev-minimal \
@@ -3315,7 +3315,7 @@ django-init-default: separator \
 	django-base-template \
 	django-manage-py \
 	django-urls \
-	django-urls-debug \
+	django-urls-debug-toolbar \
 	django-allauth \
 	django-favicon \
 	gitignore \
@@ -3351,7 +3351,7 @@ django-wagtail-init-default: separator \
 	django-manage-py \
 	wagtail-home \
 	wagtail-urls \
-	django-urls-debug \
+	django-urls-debug-toolbar \
 	django-allauth \
 	django-favicon \
 	gitignore \
@@ -3700,8 +3700,8 @@ django-urls-api-default:
 	@echo "$$DJANGO_URLS_API" >> backend/urls.py
 	-$(GIT_ADD) backend/urls.py
 
-django-urls-debug-default:
-	@echo "$$DJANGO_URLS_DEBUG" >> backend/urls.py
+django-urls-debug-toolbar-default:
+	@echo "$$DJANGO_URLS_DEBUG_TOOLBAR" >> backend/urls.py
 
 django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
