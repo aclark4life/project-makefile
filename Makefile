@@ -1339,7 +1339,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ["url", "username", "email", "is_staff"]
-
 endef
 
 define DJANGO_REST_VIEWS
@@ -4300,8 +4299,10 @@ install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 l-default: lint
 last-default: git-commit-last
+lcp-default: git-commit-lint git-push
 ld-default: makefile-list-defines
 license-default: python-license
+lintcp-default: git-commit-lint git-push
 lint-default: django-lint
 list-defines-default: makefile-list-defines
 logs-default: eb-logs
