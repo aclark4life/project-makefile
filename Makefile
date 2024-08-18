@@ -1483,6 +1483,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
+define DJANGO_SETTINGS_DATABASE
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)")
+DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
+endef
+
 define DJANGO_SETTINGS_DEV
 from .base import *  # noqa
 
@@ -1531,6 +1536,21 @@ endef
 
 define DJANGO_SETTINGS_DEV_INTERNAL_IPS
 INTERNAL_IPS = ["127.0.0.1",]
+endef
+
+define DJANGO_SETTINGS_INSTALLED_APPS
+INSTALLED_APPS.append("allauth")
+INSTALLED_APPS.append("allauth.account")
+INSTALLED_APPS.append("allauth.socialaccount")
+INSTALLED_APPS.append("crispy_bootstrap5")
+INSTALLED_APPS.append("crispy_forms")
+INSTALLED_APPS.append("debug_toolbar")
+INSTALLED_APPS.append("django_extensions")
+INSTALLED_APPS.append("django_recaptcha")
+INSTALLED_APPS.append("rest_framework")
+INSTALLED_APPS.append("rest_framework.authtoken")
+INSTALLED_APPS.append("webpack_boilerplate")
+INSTALLED_APPS.append("explorer")
 endef
 
 define DJANGO_SETTINGS_PROD
@@ -3016,6 +3036,8 @@ export DJANGO_SEARCH_URLS
 export DJANGO_SEARCH_UTILS
 export DJANGO_SEARCH_VIEWS
 export DJANGO_SETTINGS_AUTHENTICATION_BACKENDS
+export DJANGO_SETTINGS_INSTALLED_APPS
+export DJANGO_SETTINGS_DATABASE
 export DJANGO_SETTINGS_BASE_FILE
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_DEV_FILE
@@ -3545,23 +3567,11 @@ django-settings-base-default:
 	@echo "$$DJANGO_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_THEMES" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "DATABASES['default'] = dj_database_url.parse(DATABASE_URL)" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_DATABASE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('allauth')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('allauth.account')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('allauth.socialaccount')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('crispy_bootstrap5')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('crispy_forms')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('django_extensions')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('django_recaptcha')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('rest_framework')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('rest_framework.authtoken')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('explorer')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "LOGIN_REDIRECT_URL = '/'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3571,7 +3581,6 @@ django-settings-base-default:
 	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
-
 
 django-settings-dev-minimal-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
