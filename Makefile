@@ -4257,6 +4257,8 @@ cp-default: git-commit-push
 cp-lint-default: git-commit-lint git-push
 cp-upgrade-default: git-commit-upgrade git-push
 cp-wording-default: git-commit-wording git-push
+cpi-default: git-commit-init git-push
+cpl-default: git-commit-lint git-push
 create-default: eb-create
 cu-default: git-commit-clean-up git-push
 d-default: deploy
@@ -4286,19 +4288,15 @@ git-force-default: git-push-force
 gitignore-default: git-ignore
 h-default: help
 i-default: install
-icp-default: git-commit-init git-push
 index-default: html-index
 init-default: django-wagtail-init django-serve
-initcp-default: git-commit-init git-push
 install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 l-default: lint
 last-default: git-commit-last
-lcp-default: git-commit-lint git-push
 ld-default: makefile-list-defines
 license-default: python-license
-lintcp-default: git-commit-lint git-push
 lint-default: django-lint
 list-defines-default: makefile-list-defines
 logs-default: eb-logs
