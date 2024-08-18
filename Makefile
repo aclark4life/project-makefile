@@ -4159,6 +4159,7 @@ wagtail-privacy-default:
 
 wagtail-project-default:
 	wagtail start backend .
+	$(DEL_FILE) home/templates/home/welcome_page.html
 	-$(GIT_ADD) backend/
 	-$(GIT_ADD) .dockerignore
 	-$(GIT_ADD) Dockerfile
