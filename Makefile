@@ -1611,17 +1611,16 @@ endef
 
 define DJANGO_SITEUSER_EDIT_TEMPLATE
 {% extends 'base.html' %}
-
 {% block content %}
-  <h2>Edit User</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <div class="d-flex">
-      <button type="submit">Save changes</button>
-      <a class="text-decoration-none" href="/user/profile">Cancel</a>
-    </div>
-  </form>
+    <h2>Edit User</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div class="d-flex">
+            <button type="submit">Save changes</button>
+            <a class="text-decoration-none" href="/user/profile">Cancel</a>
+        </div>
+    </form>
 {% endblock %}
 endef
 
