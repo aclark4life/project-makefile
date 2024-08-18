@@ -1030,10 +1030,10 @@ define DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM
 {% block content %}
     <h1>
         {% if form.instance.pk %}
-	    Update Test Model
-	{% else %}
-	    Create Test Model
-	{% endif %}
+            Update Test Model
+        {% else %}
+            Create Test Model
+        {% endif %}
     </h1>
     <form method="post">
         {% csrf_token %}
@@ -1050,8 +1050,8 @@ define DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST
     <ul>
         {% for model_form_demo in model_form_demos %}
             <li>
-	        <a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a>
-	    </li>
+                <a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a>
+            </li>
         {% endfor %}
     </ul>
     <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
