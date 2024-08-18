@@ -3804,10 +3804,10 @@ git-commit-clean-up-default:
 	git commit -a -m "Clean up"
 
 git-commit-init-default:
-	git commit -a -m "`make init`"
+	git commit -a -m "Init"
 
 git-commit-lint-default:
-	git commit -a -m "`make lint`"
+	git commit -a -m "Lint"
 
 git-commit-upgrade-default:
 	git commit -a -m "Upgrade"
