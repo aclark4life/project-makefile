@@ -3804,10 +3804,10 @@ git-branches-default:
         git checkout -t $$i ; done
 
 git-commit-alpha-sort-default:
-	git commit -a -m "Alpha sort"
+	git commit -a -m "Sort"
 
 git-commit-clean-up-default:
-	git commit -a -m "Clean up"
+	git commit -a -m "Clean"
 
 git-commit-init-default:
 	git commit -a -m "Init"
@@ -3819,7 +3819,7 @@ git-commit-upgrade-default:
 	git commit -a -m "Upgrade"
 
 git-commit-wording-default:
-	git commit -a -m "Wording"
+	git commit -a -m "Reword"
 
 git-commit-default:
 	-@$(GIT_COMMIT)
