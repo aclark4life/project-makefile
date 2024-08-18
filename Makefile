@@ -892,6 +892,10 @@ class HomeView(TemplateView):
     template_name = "home.html"
 endef
 
+define DJANGO_LOGGING_DEMO_MODELS
+# Create your models here.
+endef
+
 define DJANGO_LOGGING_DEMO_SETTINGS
 LOGGING = {
     'version': 1,
@@ -2970,6 +2974,7 @@ export DJANGO_HEADER_TEMPLATE
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
+export DJANGO_LOGGING_DEMO_MODELS
 export DJANGO_LOGGING_DEMO_SETTINGS
 export DJANGO_LOGGING_DEMO_URLS
 export DJANGO_LOGGING_DEMO_VIEWS
@@ -3487,9 +3492,10 @@ django-modelform-demo-default:
 
 django-logging-demo-default:
 	python manage.py startapp logging_demo
-	@echo "$$DJANGO_LOGGING_DEMO_VIEWS" > logging_demo/views.py
-	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
+	@echo "$$DJANGO_LOGGING_DEMO_MODELS" > logging_demo/models.py
 	@echo "$$DJANGO_LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
+	@echo "$$DJANGO_LOGGING_DEMO_VIEWS" > logging_demo/views.py
 	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('logging-demo/', include('logging_demo.urls'))]" >> backend/urls.py
 	export APP_DIR="logging_demo"; $(MAKE) django-app-tests
