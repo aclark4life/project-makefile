@@ -4249,18 +4249,14 @@ build-default: pip-install
 c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
-clean-up-default: git-commit-clean-up git-push
-cp-alpha-sort-default: git-commit-alpha-sort git-push
-cp-as-default: git-commit-alpha-sort git-push
-cp-clean-up-default: git-commit-clean-up git-push
 cp-default: git-commit-push
-cp-lint-default: git-commit-lint git-push
 cp-upgrade-default: git-commit-upgrade git-push
 cp-wording-default: git-commit-wording git-push
+cpc-default: git-commit-clean git-push
 cpi-default: git-commit-init git-push
 cpl-default: git-commit-lint git-push
+cps-default: git-commit-sort git-push
 create-default: eb-create
-cu-default: git-commit-clean-up git-push
 d-default: deploy
 db-dump-default: eb-pg-export
 db-export-default: eb-pg-export
