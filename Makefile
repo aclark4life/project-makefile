@@ -4275,8 +4275,10 @@ git-force-default: git-push-force
 gitignore-default: git-ignore
 h-default: help
 i-default: install
+icp-default: django-commit-init git-push
 index-default: html-index
 init-default: django-wagtail-init django-serve
+initcp-default: django-commit-init git-push
 install-default: pip-install
 install-dev-default: pip-install-dev
 install-test-default: pip-install-test
