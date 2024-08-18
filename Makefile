@@ -842,15 +842,17 @@ define DJANGO_HEADER_TEMPLATE
                     {% for child in current_site.root_page.get_children %}
                         {% if child.show_in_menus %}
                             <li class="nav-item">
-                                <a class="nav-link {% if request.path == child.url %}active{% endif %}" aria-current="page"
-                                    href="{{ child.url }}">{{ child }}</a>
+                                <a class="nav-link {% if request.path == child.url %}active{% endif %}"
+                                   aria-current="page"
+                                   href="{{ child.url }}">{{ child }}</a>
                             </li>
                         {% endif %}
                     {% endfor %}
                     <div data-component="UserMenu"
                          data-is-authenticated="{{ request.user.is_authenticated }}"
                          data-is-superuser="{{ request.user.is_superuser }}"></div>
-                    <li class="nav-item" id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+                    <li class="nav-item"
+                        id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
                         <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
                             <i class="fas fa-circle-half-stroke"></i>
                         </span>
