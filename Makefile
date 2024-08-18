@@ -88,7 +88,7 @@ endef
 
 define DJANGO_ALLAUTH_URLS
 urlpatterns += [
-    path('accounts/', include('allauth.urls'))
+    path("accounts/", include("allauth.urls"))
 ]
 endef
 
@@ -3197,7 +3197,7 @@ db-pg-import-default:
 django-allauth-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$DJANGO_ALLAUTH_BASE_TEMPLATE" > backend/templates/allauth/layouts/base.html
-	@echo "$$DJANGO_ALLAUTH_URLS" > backend/urls.py
+	@echo "$$DJANGO_ALLAUTH_URLS" >> backend/urls.py
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
 django-app-tests-default:
