@@ -1363,10 +1363,12 @@ class CheckoutView(View):
 
 
 class SuccessView(TemplateView):
+
     template_name = "payments/success.html"
 
 
 class CancelView(TemplateView):
+
     template_name = "payments/cancel.html"
 endef
 
@@ -1796,7 +1798,7 @@ endef
 
 define DJANGO_URLS_DEBUG_TOOLBAR
 if settings.DEBUG:
-    urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
+    urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
 endef
 
 define DJANGO_UTILS
