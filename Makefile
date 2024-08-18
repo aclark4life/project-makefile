@@ -4051,7 +4051,7 @@ programming-interview-default:
 	@echo "Created interview.py!"
 	-@$(GIT_ADD) interview.py > /dev/null 2>&1
 
-project.mk:
+$(MAKEFILE_CUSTOM_FILE):
 	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
 	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
 
