@@ -932,7 +932,7 @@ from django.urls import path
 from .views import logging_demo
 
 urlpatterns = [
-    path('', logging_demo, name='logging_demo'),
+    path("", logging_demo, name="logging_demo"),
 ]
 endef
 
@@ -940,11 +940,10 @@ define DJANGO_LOGGING_DEMO_VIEWS
 from django.http import HttpResponse
 import logging
 
-# Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 def logging_demo(request):
-    logger.debug('Hello, world!')
+    logger.debug("Hello, world!")
     return HttpResponse("Hello, world!")
 endef
 
@@ -1800,11 +1799,17 @@ def get_ec2_metadata():
         print(f"Error retrieving EC2 metadata: {e}")
         return None
 
+
 # Function to remove a specific URL pattern based on its route (including catch-all)
 def remove_urlpattern(urlpatterns, route_to_remove):
-    urlpatterns[:] = [urlpattern for urlpattern in urlpatterns if not (
-        isinstance(urlpattern, URLResolver) and urlpattern.pattern._route == route_to_remove
-    )]
+    urlpatterns[:] = [
+        urlpattern
+        for urlpattern in urlpatterns
+        if not (
+            isinstance(urlpattern, URLResolver)
+            and urlpattern.pattern._route == route_to_remove
+        )
+    ]
 endef
 
 define EB_CUSTOM_ENV_EC2_USER
@@ -2763,7 +2768,7 @@ define WAGTAIL_HOME_PAGE_TEMPLATE
 {% block content %}
     <main class="{% block main_class %}{% endblock %}">
         {% for block in page.marketing_blocks %}
-           {% include_block block %}
+            {% include_block block %}
         {% endfor %}
     </main>
 {% endblock %}
