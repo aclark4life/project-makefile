@@ -3806,7 +3806,7 @@ git-branches-default:
 git-commit-alpha-sort-default:
 	git commit -a -m "Sort"
 
-git-commit-clean-up-default:
+git-commit-clean-default:
 	git commit -a -m "Clean"
 
 git-commit-init-default:
