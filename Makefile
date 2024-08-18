@@ -1794,6 +1794,11 @@ define DJANGO_URLS_HOME_PAGE
 urlpatterns += [path("", include("home.urls"))]
 endef
 
+define DJANGO_URLS_DEBUG_TOOLBAR
+if settings.DEBUG:
+    urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]
+endef
+
 define DJANGO_UTILS
 from django.urls import URLResolver
 import requests
@@ -3102,6 +3107,7 @@ export DJANGO_SITEUSER_VIEW_TEMPLATE
 export DJANGO_URLS
 export DJANGO_URLS_ALLAUTH
 export DJANGO_URLS_API
+export DJANGO_URLS_DEBUG_TOOLBAR
 export DJANGO_URLS_HOME_PAGE
 export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
@@ -3681,12 +3687,12 @@ django-urls-api-default:
 	@echo "$$DJANGO_URLS_API" >> backend/urls.py
 	-$(GIT_ADD) backend/urls.py
 
+django-urls-debug-default:
+	@echo "$$DJANGO_URLS_DEBUG" > backend/urls.py
+
 django-urls-default:
 	@echo "$$DJANGO_URLS" > backend/urls.py
 	-$(GIT_ADD) backend/urls.py
-
-django-urls-debug-default:
-	@echo "if settings.DEBUG: urlpatterns += [path('__debug__/', include('debug_toolbar.urls'))]" >> backend/urls.py
 
 django-npm-save-default:
 	npm install \
