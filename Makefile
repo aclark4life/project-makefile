@@ -2847,12 +2847,12 @@ urlpatterns = [
 endef
 
 define WAGTAIL_SETTINGS
-INSTALLED_APPS.append("wagtail_color_panel")"
-INSTALLED_APPS.append("wagtail_modeladmin")"
-INSTALLED_APPS.append("wagtail.contrib.settings")"
-INSTALLED_APPS.append("wagtailmarkdown")"
-INSTALLED_APPS.append("wagtailmenus")"
-INSTALLED_APPS.append("wagtailseo")"
+INSTALLED_APPS.append("wagtail_color_panel")
+INSTALLED_APPS.append("wagtail_modeladmin")
+INSTALLED_APPS.append("wagtail.contrib.settings")
+INSTALLED_APPS.append("wagtailmarkdown")
+INSTALLED_APPS.append("wagtailmenus")
+INSTALLED_APPS.append("wagtailseo")
 TEMPLATES[0]["OPTIONS"]["context_processors"].append("wagtail.contrib.settings.context_processors.settings")
 TEMPLATES[0]["OPTIONS"]["context_processors"].append("wagtailmenus.context_processors.wagtailmenus")
 endef
