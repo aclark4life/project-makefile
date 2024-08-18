@@ -976,6 +976,7 @@ define DJANGO_MODEL_FORM_DEMO_ADMIN
 from django.contrib import admin
 from .models import ModelFormDemo
 
+
 @admin.register(ModelFormDemo)
 class ModelFormDemoAdmin(admin.ModelAdmin):
     pass
@@ -985,15 +986,17 @@ define DJANGO_MODEL_FORM_DEMO_FORMS
 from django import forms
 from .models import ModelFormDemo
 
+
 class ModelFormDemoForm(forms.ModelForm):
     class Meta:
         model = ModelFormDemo
-        fields = ['name', 'email', 'age', 'is_active']  # Add or remove fields as needed
+        fields = ["name", "email", "age", "is_active"]
 endef
 
 define DJANGO_MODEL_FORM_DEMO_MODEL
 from django.db import models
 from django.shortcuts import reverse
+
 
 class ModelFormDemo(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
@@ -1006,7 +1009,7 @@ class ModelFormDemo(models.Model):
         return self.name or f"test-model-{self.pk}"
 
     def get_absolute_url(self):
-        return reverse('model_form_demo_detail', kwargs={'pk': self.pk})
+        return reverse("model_form_demo_detail", kwargs={"pk": self.pk})
 endef
 
 define DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL
@@ -1025,7 +1028,13 @@ endef
 define DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM
 {% extends 'base.html' %}
 {% block content %}
-    <h1>{% if form.instance.pk %}Update Test Model{% else %}Create Test Model{% endif %}</h1>
+    <h1>
+        {% if form.instance.pk %}
+	    Update Test Model
+	{% else %}
+	    Create Test Model
+	{% endif %}
+    </h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
@@ -1040,7 +1049,9 @@ define DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST
     <h1>Test Models List</h1>
     <ul>
         {% for model_form_demo in model_form_demos %}
-            <li><a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a></li>
+            <li>
+	        <a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a>
+	    </li>
         {% endfor %}
     </ul>
     <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
