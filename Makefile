@@ -1790,6 +1790,10 @@ router.register(r"users", UserViewSet)
 urlpatterns += [path("api/", api.urls)]
 endef
 
+define DJANGO_URLS_HOME_PAGE
+urlpatterns += [path("", include("home.urls"))]
+endef
+
 define DJANGO_UTILS
 from django.urls import URLResolver
 import requests
@@ -3098,6 +3102,7 @@ export DJANGO_SITEUSER_VIEW_TEMPLATE
 export DJANGO_URLS
 export DJANGO_URLS_ALLAUTH
 export DJANGO_URLS_API
+export DJANGO_URLS_HOME_PAGE
 export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
 export EB_CUSTOM_ENV_VAR_FILE
@@ -3442,8 +3447,8 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
+	@echo "$$DJANGO_URLS_HOME_PAGE" >> backend/urls.py
 	@echo "INSTALLED_APPS.append('home')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('', include('home.urls'))]" >> backend/urls.py
 	export APP_DIR="home"; $(MAKE) django-app-tests
 	-$(GIT_ADD) home/templates
 	-$(GIT_ADD) home/*.py
