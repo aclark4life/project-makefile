@@ -1112,8 +1112,6 @@ admin.site.register(Order)
 endef
 
 define DJANGO_PAYMENTS_FORM
-# forms.py
-
 from django import forms
 
 class PaymentsForm(forms.Form):
@@ -1129,16 +1127,18 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def generate_default_key():
-    return 'sk_test_' + secrets.token_hex(24)
+    return "sk_test_" + secrets.token_hex(24)
+
 
 def set_stripe_api_keys(apps, schema_editor):
     # Get the Stripe API Key model
-    APIKey = apps.get_model('djstripe', 'APIKey')
+    APIKey = apps.get_model("djstripe", "APIKey")
 
     # Fetch the keys from environment variables or generate default keys
-    test_secret_key = os.environ.get('STRIPE_TEST_SECRET_KEY', generate_default_key())
-    live_secret_key = os.environ.get('STRIPE_LIVE_SECRET_KEY', generate_default_key())
+    test_secret_key = os.environ.get("STRIPE_TEST_SECRET_KEY", generate_default_key())
+    live_secret_key = os.environ.get("STRIPE_LIVE_SECRET_KEY", generate_default_key())
 
     logger.info("STRIPE_TEST_SECRET_KEY: %s", test_secret_key)
     logger.info("STRIPE_LIVE_SECRET_KEY: %s", live_secret_key)
@@ -1156,31 +1156,34 @@ def set_stripe_api_keys(apps, schema_editor):
     else:
         logger.info("Live secret key already exists in the database.")
 
-class Migration(migrations.Migration):
 
+class Migration(migrations.Migration):
     dependencies = [
-        ('payments', '0001_initial'),
+        ("payments", "0001_initial"),
     ]
 
     operations = [
         migrations.RunPython(set_stripe_api_keys),
     ]
-
 endef
 
 define DJANGO_PAYMENTS_MIGRATION_0003
 from django.db import migrations
 
+
 def create_initial_products(apps, schema_editor):
-    Product = apps.get_model('payments', 'Product')
-    Product.objects.create(name='T-shirt', description='A cool T-shirt', price=20.00)
-    Product.objects.create(name='Mug', description='A nice mug', price=10.00)
-    Product.objects.create(name='Hat', description='A stylish hat', price=15.00)
+    Product = apps.get_model("payments", "Product")
+    Product.objects.create(name="T-shirt", description="A cool T-shirt", price=20.00)
+    Product.objects.create(name="Mug", description="A nice mug", price=10.00)
+    Product.objects.create(name="Hat", description="A stylish hat", price=15.00)
+
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('payments', '0002_set_stripe_api_keys'),  # Adjust this to match your initial migration file
+        (
+            "payments",
+            "0002_set_stripe_api_keys",
+        ),
     ]
 
     operations = [
@@ -1190,6 +1193,7 @@ endef
 
 define DJANGO_PAYMENTS_MODELS
 from django.db import models
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -1214,8 +1218,8 @@ define DJANGO_PAYMENTS_TEMPLATE_CANCEL
 {% block title %}Cancel{% endblock %}
 
 {% block content %}
-<h1>Payment Cancelled</h1>
-<p>Your payment was cancelled.</p>
+    <h1>Payment Cancelled</h1>
+    <p>Your payment was cancelled.</p>
 {% endblock %}
 endef
 
@@ -1225,11 +1229,11 @@ define DJANGO_PAYMENTS_TEMPLATE_CHECKOUT
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-<h1>Checkout</h1>
-<form action="{% url 'checkout' %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Pay</button>
-</form>
+    <h1>Checkout</h1>
+    <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Pay</button>
+    </form>
 {% endblock %}
 endef
 
@@ -1239,14 +1243,14 @@ define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL
 {% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
-<h1>{{ product.name }}</h1>
-<p>{{ product.description }}</p>
-<p>Price: ${{ product.price }}</p>
-<form action="{% url 'checkout' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="product_id" value="{{ product.id }}">
-    <button type="submit">Buy Now</button>
-</form>
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.description }}</p>
+    <p>Price: ${{ product.price }}</p>
+    <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <button type="submit">Buy Now</button>
+    </form>
 {% endblock %}
 endef
 
@@ -1256,14 +1260,14 @@ define DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
 {% block title %}Products{% endblock %}
 
 {% block content %}
-<h1>Products</h1>
-<ul>
-    {% for product in products %}
-    <li>
-        <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
-    </li>
-    {% endfor %}
-</ul>
+    <h1>Products</h1>
+    <ul>
+        {% for product in products %}
+        <li>
+            <a href="{% url 'product_detail' product.pk %}">{{ product.name }} - {{ product.price }}</a>
+        </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
 endef
 
@@ -1273,8 +1277,8 @@ define DJANGO_PAYMENTS_TEMPLATE_SUCCESS
 {% block title %}Success{% endblock %}
 
 {% block content %}
-<h1>Payment Successful</h1>
-<p>Thank you for your purchase!</p>
+    <h1>Payment Successful</h1>
+    <p>Thank you for your purchase!</p>
 {% endblock %}
 endef
 
@@ -1643,6 +1647,7 @@ define DJANGO_SITEUSER_FORM
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
 from .models import User
+
 
 class SiteUserForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
@@ -2818,7 +2823,7 @@ define WAGTAIL_SEARCH_TEMPLATE
                 <li>
                     <h4>
                         <a href="{% pageurl result %}">{{ result }}</a>
-                    </h4> 
+                    </h4>
                     {% if result.search_description %}{{ result.search_description }}{% endif %}
                 </li>
             {% endfor %}
@@ -2841,9 +2846,7 @@ define WAGTAIL_SEARCH_URLS
 from django.urls import path
 from .views import search
 
-urlpatterns = [
-    path("", search, name="search")
-]
+urlpatterns = [path("", search, name="search")]
 endef
 
 define WAGTAIL_SETTINGS
