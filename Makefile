@@ -942,6 +942,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def logging_demo(request):
     logger.debug("Hello, world!")
     return HttpResponse("Hello, world!")
@@ -1573,7 +1574,9 @@ LOGGING = {
 endef
 
 define DJANGO_SETTINGS_DEV_INTERNAL_IPS
-INTERNAL_IPS = ["127.0.0.1",]
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 endef
 
 define DJANGO_SETTINGS_INSTALLED_APPS
