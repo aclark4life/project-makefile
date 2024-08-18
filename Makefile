@@ -1058,10 +1058,14 @@ from .views import (
 )
 
 urlpatterns = [
-    path('', ModelFormDemoListView.as_view(), name='model_form_demo_list'),
-    path('create/', ModelFormDemoCreateView.as_view(), name='model_form_demo_create'),
-    path('<int:pk>/update/', ModelFormDemoUpdateView.as_view(), name='model_form_demo_update'),
-    path('<int:pk>/', ModelFormDemoDetailView.as_view(), name='model_form_demo_detail'),
+    path("", ModelFormDemoListView.as_view(), name="model_form_demo_list"),
+    path("create/", ModelFormDemoCreateView.as_view(), name="model_form_demo_create"),
+    path(
+        "<int:pk>/update/",
+        ModelFormDemoUpdateView.as_view(),
+        name="model_form_demo_update",
+    ),
+    path("<int:pk>/", ModelFormDemoDetailView.as_view(), name="model_form_demo_detail"),
 ]
 endef
 
