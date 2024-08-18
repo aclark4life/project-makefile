@@ -157,6 +157,7 @@ endef
 define DJANGO_BACKEND_APPS
 from django.contrib.admin.apps import AdminConfig
 
+
 class CustomAdminConfig(AdminConfig):
     default_site = "backend.admin.CustomAdminSite"
 endef
@@ -240,13 +241,14 @@ define DJANGO_BASE_TEMPLATE
 endef
 
 define DJANGO_CUSTOM_ADMIN
-# admin.py
 from django.contrib.admin import AdminSite
+
 
 class CustomAdminSite(AdminSite):
     site_header = "Project Makefile"
     site_title = "Project Makefile"
     index_title = "Project Makefile"
+
 
 custom_admin_site = CustomAdminSite(name="custom_admin")
 endef
@@ -1328,11 +1330,11 @@ class CheckoutView(View):
 
 class SuccessView(TemplateView):
 
-    template_name = 'payments/success.html'
+    template_name = "payments/success.html"
 
 class CancelView(TemplateView):
 
-    template_name = 'payments/cancel.html'
+    template_name = "payments/cancel.html"
 endef
 
 define DJANGO_REST_SERIALIZERS
@@ -1343,7 +1345,7 @@ from siteuser.models import User
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'username', 'email', 'is_staff']
+        fields = ["url", "username", "email", "is_staff"]
 
 endef
 
@@ -1355,9 +1357,11 @@ from .serializers import UserSerializer
 
 api = NinjaAPI()
 
+
 @api.get("/hello")
 def hello(request):
     return "Hello world"
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -1367,17 +1371,15 @@ endef
 define DJANGO_SEARCH_FORMS
 from django import forms
 
+
 class SearchForm(forms.Form):
-    query = forms.CharField(max_length=100, required=True, label='Search')
+    query = forms.CharField(max_length=100, required=True, label="Search")
 
 endef
 
 define DJANGO_SEARCH_SETTINGS
 SEARCH_MODELS = [
-    # 'app_name.Article',
-    # 'app_name.BlogPost',
-    # 'app_name.Comment',
-    # Add other models as needed
+    # Add search models here.
 ]
 endef
 
@@ -1423,7 +1425,7 @@ from django.urls import path
 from .views import SearchView
 
 urlpatterns = [
-    path('search/', SearchView.as_view(), name='search'),
+    path("search/", SearchView.as_view(), name="search"),
 ]
 endef
 
@@ -1434,7 +1436,7 @@ from django.conf import settings
 def get_search_models():
     models = []
     for model_path in settings.SEARCH_MODELS:
-        app_label, model_name = model_path.split('.')
+        app_label, model_name = model_path.split(".")
         model = apps.get_model(app_label, model_name)
         models.append(model)
     return models
@@ -1447,9 +1449,10 @@ from django.db.models import Q
 from .forms import SearchForm
 from .utils import get_search_models
 
+
 class SearchView(ListView):
-    template_name = 'your_app/search_results.html'
-    context_object_name = 'results'
+    template_name = "your_app/search_results.html"
+    context_object_name = "results"
     paginate_by = 10
 
     def get_queryset(self):
@@ -1458,7 +1461,7 @@ class SearchView(ListView):
         results = []
 
         if form.is_valid():
-            query = form.cleaned_data['query']
+            query = form.cleaned_data["query"]
             search_models = get_search_models()
 
             for model in search_models:
@@ -1475,8 +1478,8 @@ class SearchView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = SearchForm(self.request.GET)
-        context['query'] = self.request.GET.get('query', '')
+        context["form"] = SearchForm(self.request.GET)
+        context["query"] = self.request.GET.get("query", "")
         return context
 endef
 
@@ -1549,8 +1552,8 @@ define DJANGO_SETTINGS_REST_FRAMEWORK
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ]
 }
 endef
@@ -1605,13 +1608,14 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.conf import settings
 
+
 class User(AbstractUser):
-    groups = models.ManyToManyField(Group, related_name='siteuser_set', blank=True)
+    groups = models.ManyToManyField(Group, related_name="siteuser_set", blank=True)
     user_permissions = models.ManyToManyField(
-        Permission, related_name='siteuser_set', blank=True
+        Permission, related_name="siteuser_set", blank=True
     )
     
-    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default='light')
+    user_theme_preference = models.CharField(max_length=10, choices=settings.THEMES, default="light")
     
     bio = models.TextField(blank=True, null=True)
     rate = models.FloatField(blank=True, null=True)
@@ -1622,9 +1626,9 @@ from django.urls import path
 from .views import UserProfileView, UpdateThemePreferenceView, UserEditView
 
 urlpatterns = [
-    path('profile/', UserProfileView.as_view(), name='user-profile'),
-    path('update_theme_preference/', UpdateThemePreferenceView.as_view(), name='update_theme_preference'),
-    path('<int:pk>/edit/', UserEditView.as_view(), name='user-edit'),
+    path("profile/", UserProfileView.as_view(), name="user-profile"),
+    path("update_theme_preference/", UpdateThemePreferenceView.as_view(), name="update_theme_preference"),
+    path("<int:pk>/edit/", UserEditView.as_view(), name="user-edit"),
 ]
 endef
 
@@ -1672,12 +1676,12 @@ class UpdateThemePreferenceView(View):
 
 class UserEditView(LoginRequiredMixin, UpdateView):
     model = User
-    template_name = 'user_edit.html'  # Create this template in your templates folder
+    template_name = "user_edit.html"  # Create this template in your templates folder
     form_class = SiteUserForm
 
     def get_success_url(self):
-        # return reverse_lazy('user-profile', kwargs={'pk': self.object.pk})
-        return reverse_lazy('user-profile')
+        # return reverse_lazy("user-profile", kwargs={"pk": self.object.pk})
+        return reverse_lazy("user-profile")
 endef
 
 define DJANGO_SITEUSER_VIEW_TEMPLATE
@@ -1710,7 +1714,7 @@ from rest_framework import routers  # noqa
 from .api import UserViewSet, api  # noqa
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
+router.register(r"users", UserViewSet)
 # urlpatterns += [path("api/", include(router.urls))]
 urlpatterns += [path("api/", api.urls)]
 endef
