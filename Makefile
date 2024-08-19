@@ -3355,12 +3355,12 @@ django-footer-template-default:
 django-minimal-init-default: separator \
 	db-init \
 	django-minimal-install \
+	django-settings-directory \
 	django-settings-minimal \
 	django-project \
 	django-utils \
 	pip-freeze \
 	pip-init-test \
-	django-settings-directory \
 	django-custom-admin \
 	django-dockerfile \
 	django-offcanvas-template \
