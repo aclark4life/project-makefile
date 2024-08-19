@@ -4311,15 +4311,23 @@ git-commit-message-clean-default:
 git-commit-message-default:
 	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
 
+.PHONY: git-commit-message-empty-default
+git-commit-message-empty-default:
+	git commit --allow-empty -m "Empty-Commit"
+
+.PHONY: git-commit-message-init-default
+git-commit-message-empty-default:
+	git commit -a -m "Init"
+
 .PHONY: git-commit-message-last-default
 git-commit-message-last-default:
 	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
 	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
 	@$(GIT_PUSH)
 
-.PHONY: git-commit-message-empty-default
-git-commit-message-empty-default:
-	git commit --allow-empty -m "Empty-Commit"
+.PHONY: git-commit-message-lint-default
+git-commit-message-lint-default:
+	-@$(GIT_COMMIT) -a -m "Lint"
 
 .PHONY: gitignore-default
 gitignore-default: git-ignore
