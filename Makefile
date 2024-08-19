@@ -52,8 +52,8 @@ EDITOR_REVIEW = subl
 GIT_ADD := git add
 GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
-GIT_COMMIT = git commit -a -m $(GIT_MESSAGE)
-GIT_MESSAGE = "Update $(PROJECT_NAME)"
+GIT_COMMIT_MSG = "Update $(PROJECT_NAME)"
+GIT_COMMIT = git commit
 GIT_PUSH = git push
 GIT_PUSH_FORCE = git push --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
@@ -3909,32 +3909,32 @@ git-branches-default:
         git checkout -t $$i ; done
 
 git-commit-alpha-sort-default:
-	git commit -a -m "Sort"
+	-$(GIT_COMMIT) -a -m "Sort"
 
 git-commit-clean-default:
-	git commit -a -m "Clean"
+	-$(GIT_COMMIT) -a -m "Clean"
 
 git-commit-freeze-default:
-	git commit -a -m "Freeze"
+	-$(GIT_COMMIT) -a -m "Freeze"
 
 git-commit-init-default:
-	git commit -a -m "Init"
+	-$(GIT_COMMIT) -a -m "Init"
 
 git-commit-lint-default:
-	git commit -a -m "Lint"
+	-$(GIT_COMMIT) -a -m "Lint"
 
 git-commit-upgrade-default:
-	git commit -a -m "Upgrade"
+	-$(GIT_COMMIT) -a -m "Upgrade"
 
 git-commit-wording-default:
-	git commit -a -m "Reword"
+	-$(GIT_COMMIT) -a -m "Reword"
 
 git-commit-default:
-	-@$(GIT_COMMIT)
+	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
 
 git-commit-last-default:
 	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
-	git commit -a -F $(TMPDIR)/commit.txt
+	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
 	@$(GIT_PUSH)
 
 git-commit-empty-default:
@@ -3947,7 +3947,7 @@ git-push-force-default:
 	-@$(GIT_PUSH_FORCE)
 
 git-commit-edit-default:
-	-git commit -a
+	-$(GIT_COMMIT) -a
 
 git-prune-default:
 	git remote update origin --prune
@@ -3984,7 +3984,7 @@ makefile-list-defines-default:
 
 make-default:
 	-$(GIT_ADD) Makefile
-	-git commit Makefile -m "Add/update project-makefile files"
+	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
 	-git push
 
 npm-init-default:
