@@ -4371,6 +4371,9 @@ last-default: git-commit-message-last git-push
 .PHONY: lint-default
 lint-default: django-lint
 
+.PHONY: open-default
+open-default: django-open
+
 .PHONY: readme-default
 readme-default: readme-init
 
