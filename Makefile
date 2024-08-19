@@ -3673,6 +3673,11 @@ django-serve-default:
 	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
+.PHONY: django-settings-crispy-default
+django-crispy-default:
+	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
+
 .PHONY: django-settings-directory-default
 django-settings-directory-default:
 	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
@@ -3730,6 +3735,7 @@ django-minimal-settings-dev-default:
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
 
+.PHONY: django-settings-dev-default
 django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
@@ -3739,13 +3745,10 @@ django-settings-dev-default:
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
 
+.PHONY: django-settings-prod-default
 django-settings-prod-default:
 	@echo "$$DJANGO_SETTINGS_PROD" > $(DJANGO_SETTINGS_PROD_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_PROD_FILE)
-
-django-crispy-default:
-	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 django-lint-default:
 	-ruff format -v
