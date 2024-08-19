@@ -1173,6 +1173,7 @@ def set_stripe_api_keys(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
         ("payments", "0001_initial"),
     ]
@@ -1523,6 +1524,9 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+endef
+
+define DJANGO_SETTINGS_BASE
 endef
 
 define DJANGO_SETTINGS_CRISPY_FORMS
@@ -3384,7 +3388,7 @@ django-init-default: separator \
 	django-allauth \
 	django-favicon \
 	git-ignore \
-	django-settings \
+	django-settings-base \
 	django-settings-dev \
 	django-settings-prod \
 	django-siteuser \
@@ -3422,7 +3426,7 @@ django-wagtail-init-default: separator \
 	django-favicon \
 	git-ignore \
 	wagtail-search \
-	django-settings \
+	django-settings-base \
 	django-settings-dev \
 	django-settings-prod \
 	wagtail-settings \
@@ -3706,8 +3710,8 @@ django-minimal-settings-default:
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
-.PHONY: django-settings-default
-django-settings-default:
+.PHONY: django-settings-base-default
+django-settings-base-default:
 	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "# Uncomment the next two lines to enable the custom admin" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(DJANGO_SETTINGS_BASE_FILE)
