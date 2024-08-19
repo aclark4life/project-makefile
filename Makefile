@@ -4162,20 +4162,25 @@ pip-upgrade-default:
 	$(PIP_ENSURE)
 	python -m pip install -U pip
 
+.PHONY: pip-uninstall-default
 pip-uninstall-default:
 	$(PIP_ENSURE)
 	python -m pip freeze | xargs python -m pip uninstall -y
 
+.PHONY: plone-clean-default
 plone-clean-default:
 	$(DEL_DIR) $(PROJECT_NAME)
 	$(DEL_DIR) $(PACKAGE_NAME)
 
+.PHONY: plone-init-default
 plone-init-default: git-ignore plone-install plone-instance plone-serve
 
+.PHONY: plone-install-default
 plone-install-default:
 	$(PIP_ENSURE)
 	python -m pip install plone -c $(PIP_INSTALL_PLONE_CONSTRAINTS)
 
+.PHONY: plone-instance-default
 plone-instance-default:
 	mkwsgiinstance -d backend -u admin:admin
 	cat backend/etc/zope.ini | sed -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' > $(TMPDIR)/zope.ini
@@ -4184,44 +4189,56 @@ plone-instance-default:
 	-$(GIT_ADD) backend/etc/zope.conf
 	-$(GIT_ADD) backend/etc/zope.ini
 
+.PHONY: plone-serve-default
 plone-serve-default:
 	runwsgi backend/etc/zope.ini
 
+.PHONY: plone-build-default
 plone-build-default:
 	buildout
 
+.PHONY: programming-interview-default
 programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > interview.py
 	@echo "Created interview.py!"
 	-@$(GIT_ADD) interview.py > /dev/null 2>&1
 
+# .NOT_PHONY!
 $(MAKEFILE_CUSTOM_FILE):
 	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
 	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
 
+.PHONY: python-license-default
 python-license-default:
 	@echo "$(PYTHON_LICENSE_TXT)" > LICENSE.txt
 	-$(GIT_ADD) LICENSE.txt
 
+.PHONY: python-project-default
 python-project-default:
 	@echo "$(PYTHON_PROJECT_TOML)" > pyproject.toml
 	-$(GIT_ADD) pyproject.toml
 
+.PHONY: python-serve-default
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	python3 -m http.server
 
-python-setup-sdist-default:
-	python3 setup.py sdist --format=zip
+.PHONY: python-sdist-default
+python-sdist-default:
+	$(PIP_ENSURE)
+	python setup.py sdist --format=zip
 
+.PHONY: python-webpack-init-default
 python-webpack-init-default:
 	python manage.py webpack_init --no-input
 
+.PHONY: python-ci-default
 python-ci-default:
 	$(ADD_DIR) .github/workflows
 	@echo "$(PYTHON_CI_YAML)" > .github/workflows/build_wheels.yml
 	-$(GIT_ADD) .github/workflows/build_wheels.yml
 
+.PHONY: rand-default
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
 
