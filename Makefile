@@ -4316,7 +4316,7 @@ git-commit-message-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
 
 .PHONY: git-commit-message-init-default
-git-commit-message-empty-default:
+git-commit-message-init-default:
 	git commit -a -m "Init"
 
 .PHONY: git-commit-message-last-default
