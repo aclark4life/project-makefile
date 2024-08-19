@@ -3912,9 +3912,11 @@ git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         git checkout -t $$i ; done
 
+.PHONY: git-push-default
 git-push-default:
 	-@$(GIT_PUSH)
 
+.PHONY: git-push-force-default
 git-push-force-default:
 	-@$(GIT_PUSH_FORCE)
 
