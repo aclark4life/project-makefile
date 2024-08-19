@@ -4350,6 +4350,9 @@ ce-default: git-commit-edit git-push
 .PHONY: clean-default
 clean-default: wagtail-clean
 
+.PHONY: dbshell-default
+.dbshell-default: django-db-shell
+
 .PHONY: e-default
 e-default: edit
 
