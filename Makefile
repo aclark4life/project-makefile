@@ -4347,13 +4347,6 @@ c-default: clean
 ce-default: git-commit-edit-push
 clean-default: wagtail-clean
 cp-default: git-commit-push
-cp-upgrade-default: git-commit-upgrade git-push
-cp-wording-default: git-commit-wording git-push
-cpc-default: git-commit-clean git-push
-cpf-default: git-commit-freeze git-push
-cpi-default: git-commit-init git-push
-cpl-default: git-commit-lint git-push
-cps-default: git-commit-sort git-push
 create-default: eb-create
 d-default: deploy
 db-dump-default: eb-pg-export
@@ -4392,6 +4385,7 @@ install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 l-default: lint
 last-default: git-commit-last
+lcp-default: git-commit-lint git-commit-push
 ld-default: makefile-list-defines
 license-default: python-license
 lint-default: django-lint
