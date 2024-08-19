@@ -3908,17 +3908,6 @@ git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         git checkout -t $$i ; done
 
-git-commit-message-last-default:
-	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
-	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
-	@$(GIT_PUSH)
-
-git-commit-message-default:
-	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
-
-git-commit-empty-default:
-	git commit --allow-empty -m "Empty-Commit"
-
 git-push-default:
 	-@$(GIT_PUSH)
 
@@ -4313,15 +4302,32 @@ ce-default: git-commit-edit git-push
 .PHONY: clean-default
 clean-default: wagtail-clean
 
+.PHONY: e-default
+e-default: edit
+
 .PHONY: edit-default
 edit-default:
 	$(EDITOR) README.md
 
-.PHONY: e-default
-e-default: edit
+.PHONY: empty-default
+empty-default: git-commit-message-empty git-push
 
 .PHONY: git-commit-default
 git-commit-default: git-commit-message git-push
+
+.PHONY: git-commit-message-default
+git-commit-message-default:
+	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
+
+.PHONY: git-commit-message-last-default
+git-commit-message-last-default:
+	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
+	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
+	@$(GIT_PUSH)
+
+.PHONY: git-commit-message-empty-default
+git-commit-message-empty-default:
+	git commit --allow-empty -m "Empty-Commit"
 
 .PHONY: help-default
 help-default:
