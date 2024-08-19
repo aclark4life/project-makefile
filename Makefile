@@ -3979,7 +3979,6 @@ git-short-default:
 	@echo $(GIT_REV)
 
 .PHONY: help-default
-
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         echo "Commands from $$makefile:"; \
