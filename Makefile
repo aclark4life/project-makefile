@@ -3952,7 +3952,7 @@ eb-deploy-default:
 	eb deploy
 
 .PHONY: eb-export-default
-eb-export-default: aws-check-env eb-check-env
+eb-export-default:
 	@if [ ! -d $(EB_DIR_NAME) ]; then \
         echo "Directory $(EB_DIR_NAME) does not exist"; \
         else \
