@@ -1373,7 +1373,7 @@ class CancelView(TemplateView):
     template_name = "payments/cancel.html"
 endef
 
-define DJANGO_REST_SERIALIZERS
+define DJANGO_API_SERIALIZERS
 from rest_framework import serializers
 from siteuser.models import User
 
@@ -1384,7 +1384,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         fields = ["url", "username", "email", "is_staff"]
 endef
 
-define DJANGO_REST_VIEWS
+define DJANGO_API_VIEWS
 from ninja import NinjaAPI
 from rest_framework import viewsets
 from siteuser.models import User
@@ -3118,8 +3118,8 @@ export DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
 export DJANGO_PAYMENTS_TEMPLATE_SUCCESS
 export DJANGO_PAYMENTS_URLS
 export DJANGO_PAYMENTS_VIEW
-export DJANGO_REST_SERIALIZERS
-export DJANGO_REST_VIEWS
+export DJANGO_API_SERIALIZERS
+export DJANGO_API_VIEWS
 export DJANGO_SEARCH_FORMS
 export DJANGO_SEARCH_SETTINGS
 export DJANGO_SEARCH_TEMPLATE
@@ -3568,12 +3568,12 @@ django-payments-demo-default:
 
 .PHONY: django-rest-serializers-default
 django-rest-serializers-default:
-	@echo "$$DJANGO_REST_SERIALIZERS" > backend/serializers.py
+	@echo "$$DJANGO_API_SERIALIZERS" > backend/serializers.py
 	-$(GIT_ADD) backend/serializers.py
 
 .PHONY: django-rest-views-default
 django-rest-views-default:
-	@echo "$$DJANGO_REST_VIEWS" > backend/api.py
+	@echo "$$DJANGO_API_VIEWS" > backend/api.py
 	-$(GIT_ADD) backend/api.py
 
 .PHONY: django-search-default
