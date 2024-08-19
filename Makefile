@@ -3307,14 +3307,15 @@ django-footer-template-default:
 	@echo "$$DJANGO_FOOTER_TEMPLATE" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
 
-django-init-minimal-default: separator \
+.PHONY: django-minimal-init-default
+django-minimal-init-default: separator \
 	db-init \
-	django-install-minimal \
+	django-minimal-install \
 	django-project \
 	django-utils \
 	pip-freeze \
 	pip-init-test \
-	django-settings-dir \
+	django-settings-directory \
 	django-custom-admin \
 	django-dockerfile \
 	django-offcanvas-template \
@@ -3325,8 +3326,8 @@ django-init-minimal-default: separator \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-favicon \
-	django-settings-minimal \
-	django-settings-dev-minimal \
+	django-minimal-settings \
+	django-minimal-settings-dev \
 	django-settings-prod \
 	django-home \
 	django-frontend \
@@ -3343,7 +3344,7 @@ django-init-default: separator \
 	django-utils \
 	pip-freeze \
 	pip-init-test \
-	django-settings-dir \
+	django-settings-directory \
 	django-custom-admin \
 	django-dockerfile \
 	django-offcanvas-template \
@@ -3411,7 +3412,8 @@ django-wagtail-init-default: separator \
 	readme-init \
 	django-su
 
-django-install-minimal-default:
+.PHONY: django-minimal-install-default
+django-minimal-install-default:
 	$(PIP_ENSURE)
 	python -m pip install \
 	Django \
@@ -3640,13 +3642,15 @@ django-serve-default:
 	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
-django-settings-dir-default:
+.PHONY: django-settings-directory-default
+django-settings-directory-default:
 	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	-$(GIT_ADD) backend/settings/*.py
 
-django-settings-minimal-default:
+.PHONY: django-minimal-settings-default
+django-minimal-settings-default:
 	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "import os  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3659,6 +3663,7 @@ django-settings-minimal-default:
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
+.PHONY: django-settings-default
 django-settings-default:
 	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "# Uncomment the next two lines to enable the custom admin" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3684,7 +3689,8 @@ django-settings-default:
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
-django-settings-dev-minimal-default:
+.PHONY: django-settings-dev-default
+django-minimal-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
 	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
