@@ -3912,6 +3912,32 @@ git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         git checkout -t $$i ; done
 
+.PHONY: git-commit-message-clean-default
+git-commit-message-clean-default:
+	-@$(GIT_COMMIT) -a -m "Clean"
+
+.PHONY: git-commit-message-default
+git-commit-message-default:
+	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
+
+.PHONY: git-commit-message-empty-default
+git-commit-message-empty-default:
+	git commit --allow-empty -m "Empty-Commit"
+
+.PHONY: git-commit-message-init-default
+git-commit-message-init-default:
+	git commit -a -m "Init"
+
+.PHONY: git-commit-message-last-default
+git-commit-message-last-default:
+	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
+	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
+	@$(GIT_PUSH)
+
+.PHONY: git-commit-message-lint-default
+git-commit-message-lint-default:
+	-@$(GIT_COMMIT) -a -m "Lint"
+
 .PHONY: git-push-default
 git-push-default:
 	-@$(GIT_PUSH)
@@ -3934,6 +3960,15 @@ git-set-default-default:
 
 git-short-default:
 	@echo $(GIT_REV)
+
+.PHONY: help-default
+help-default:
+	@for makefile in $(MAKEFILE_LIST); do \
+        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
+            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
+            | xargs | tr ' ' '\n' \
+            | awk '{printf "%s\n", $$0}' ; done | $(PAGER) # http://stackoverflow.com/a/26339924
 
 html-index-default:
 	@echo "$$HTML_INDEX" > index.html
@@ -4293,11 +4328,11 @@ ce-default: git-commit-edit git-push
 .PHONY: clean-default
 clean-default: wagtail-clean
 
-.PHONY: edit-default
-edit-default: readme-edit
-
 .PHONY: e-default
 e-default: edit
+
+.PHONY: edit-default
+edit-default: readme-edit
 
 .PHONY: empty-default
 empty-default: git-commit-message-empty git-push
@@ -4305,43 +4340,8 @@ empty-default: git-commit-message-empty git-push
 .PHONY: git-commit-default
 git-commit-default: git-commit-message git-push
 
-.PHONY: git-commit-message-clean-default
-git-commit-message-clean-default:
-	-@$(GIT_COMMIT) -a -m "Clean"
-
-.PHONY: git-commit-message-default
-git-commit-message-default:
-	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
-
-.PHONY: git-commit-message-empty-default
-git-commit-message-empty-default:
-	git commit --allow-empty -m "Empty-Commit"
-
-.PHONY: git-commit-message-init-default
-git-commit-message-init-default:
-	git commit -a -m "Init"
-
-.PHONY: git-commit-message-last-default
-git-commit-message-last-default:
-	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
-	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
-	@$(GIT_PUSH)
-
-.PHONY: git-commit-message-lint-default
-git-commit-message-lint-default:
-	-@$(GIT_COMMIT) -a -m "Lint"
-
 .PHONY: gitignore-default
 gitignore-default: git-ignore
-
-.PHONY: help-default
-help-default:
-	@for makefile in $(MAKEFILE_LIST); do \
-        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
-            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
-            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
-            | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | $(PAGER) # http://stackoverflow.com/a/26339924
 
 .PHONY: h-default
 h-default: help
