@@ -41,7 +41,7 @@ DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
 DJANGO_URLS_FILE = backend/urls.py
 EB_DIR_NAME := .elasticbeanstalk
-EB_ENV_NAME ?= $(PACKAGE_NAME)_$(GIT_BRANCH)_$(GIT_REV)
+EB_ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
 EB_PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
 EC2_INSTANCE_MAX ?= 1
 EC2_INSTANCE_MIN ?= 1
@@ -3213,13 +3213,15 @@ ifndef AWS_REGION
 	$(error AWS_REGION is undefined)
 endif
 
+.PHONY: aws-secret-default
 aws-secret-default: aws-check-env
-	@SECRET_KEY=$$(openssl rand -base64 48); \
-    aws ssm put-parameter --name "SECRET_KEY" --value "$$SECRET_KEY" --type String
+	@SECRET_KEY=$$(openssl rand -base64 48); aws ssm put-parameter --name "SECRET_KEY" --value "$$SECRET_KEY" --type String
 
+.PHONY: aws-sg-default
 aws-sg-default: aws-check-env
 	aws ec2 describe-security-groups $(AWS_OPTS)
 
+.PHONY: aws-ssm-default
 aws-ssm-default: aws-check-env
 	aws ssm describe-parameters $(AWS_OPTS)
 	@echo "Get parameter values with: aws ssm getparameter --name <Name>."
