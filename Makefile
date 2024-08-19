@@ -3356,10 +3356,10 @@ django-footer-template-default:
 django-minimal-init-default: separator \
 	db-init \
 	django-minimal-install \
+	django-project \
 	django-settings-directory \
 	django-settings-minimal \
-	django-project \
-	django-utils \
+	django-settings-minimal-dev \
 	pip-freeze \
 	pip-init-test \
 	django-custom-admin \
@@ -3372,9 +3372,9 @@ django-minimal-init-default: separator \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-favicon \
-	django-settings-minimal-dev \
 	django-settings-prod \
 	django-home \
+	django-utils \
 	django-frontend \
 	django-migrate \
 	git-ignore \
