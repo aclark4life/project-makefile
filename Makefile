@@ -3332,7 +3332,7 @@ django-init-minimal-default: separator \
 	django-frontend \
 	django-migrate \
 	git-ignore \
-	readme \
+	readme-init \
 	su \
 	serve
 
@@ -3366,7 +3366,7 @@ django-init-default: separator \
 	django-urls-api \
 	django-frontend \
 	django-migrate \
-	readme \
+	readme-init \
 	su \
 	serve
 
@@ -3407,7 +3407,7 @@ django-wagtail-init-default: separator \
 	wagtail-urls-home \
 	django-frontend \
 	django-migrate \
-	readme \
+	readme-init \
 	su
 
 django-install-minimal-default:
@@ -4341,6 +4341,9 @@ init-default: django-wagtail-init
 
 .PHONY: last-default
 last-default: git-commit-message-last git-push
+
+.PHONY: readme-default
+readme-default: readme-init
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
