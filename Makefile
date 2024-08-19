@@ -1615,6 +1615,20 @@ define DJANGO_SETTINGS_MIDDLEWARE
 MIDDLEWARE.append("allauth.account.middleware.AccountMiddleware")
 endef
 
+define DJANGO_SETTINGS_MINIMAL_BASE
+# $(PROJECT_NAME)
+import os  # noqa
+import dj_database_url  # noqa
+INSTALLED_APPS.append("debug_toolbar")
+INSTALLED_APPS.append("webpack_boilerplate")
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+STATICFILES_DIRS = []
+STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
+TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
+WEBPACK_LOADER = { "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"), }
+endef
+
 define DJANGO_SETTINGS_PROD
 from .base import *  # noqa
 from backend.utils import get_ec2_metadata
@@ -3356,8 +3370,8 @@ django-minimal-init-default: separator \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-favicon \
-	django-minimal-settings \
-	django-minimal-settings-dev \
+	django-settings-minimal \
+	django-settings-minimal-dev \
 	django-settings-prod \
 	django-home \
 	django-frontend \
@@ -3696,19 +3710,9 @@ django-settings-directory-default:
 	@$(DEL_FILE) backend/settings.py
 	-$(GIT_ADD) backend/settings/*.py
 
-.PHONY: django-minimal-settings-default
-django-minimal-settings-default:
-	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "import os  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('webpack_boilerplate')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('debug_toolbar')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "STATICFILES_DIRS = []" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
+.PHONY: django-settings-minimal-default
+django-settings-minimal-default:
+	@echo "$$DJANGO_SETTINGS_MINIMAL_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-base-default
 django-settings-base-default:
@@ -3738,7 +3742,7 @@ django-settings-base-default:
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-dev-default
-django-minimal-settings-dev-default:
+django-settings-minimal-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
 	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
