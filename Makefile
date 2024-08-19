@@ -1525,6 +1525,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
+define DJANGO_SETTINGS_CRISPY_FORMS
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+endef
+
 define DJANGO_SETTINGS_DATABASE
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
@@ -3673,11 +3678,6 @@ django-serve-default:
 	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
-.PHONY: django-settings-crispy-default
-django-crispy-default:
-	@echo "CRISPY_TEMPLATE_PACK = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'" >> $(DJANGO_SETTINGS_BASE_FILE)
-
 .PHONY: django-settings-directory-default
 django-settings-directory-default:
 	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
@@ -3713,6 +3713,7 @@ django-settings-default:
 	@echo "$$DJANGO_SETTINGS_DATABASE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_BASE_FILE)
