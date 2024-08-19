@@ -4329,6 +4329,9 @@ help-default:
 .PHONY: h-default
 h-default: help
 
+.PHONY: init-default
+init-default: wagtail-init
+
 .PHONY: last-default
 last-default: git-commit-message-last git-push
 
