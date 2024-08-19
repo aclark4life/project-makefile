@@ -3378,7 +3378,6 @@ django-init-minimal-default: separator \
 	django-frontend \
 	django-migrate \
 	git-ignore \
-	readme-init \
 	django-su \
 	serve
 
@@ -3413,7 +3412,6 @@ django-init-default: separator \
 	django-urls-api \
 	django-frontend \
 	django-migrate \
-	readme-init \
 	su \
 	serve
 
@@ -3455,7 +3453,6 @@ django-wagtail-init-default: separator \
 	wagtail-urls-home \
 	django-frontend \
 	django-migrate \
-	readme-init \
 	django-su
 
 .PHONY: django-install-minimal-default
