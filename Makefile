@@ -4005,6 +4005,7 @@ jenkins-init-default:
 makefile-list-defines-default:
 	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
 
+.PHONY: make-default
 make-default:
 	-$(GIT_ADD) Makefile project.mk
 	-$(GIT_COMMIT) Makefile project.mk -m "Add/update project-makefile files"
