@@ -4007,7 +4007,7 @@ makefile-list-defines-default:
 
 make-default:
 	-$(GIT_ADD) Makefile project.mk
-	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
+	-$(GIT_COMMIT) Makefile project.mk -m "Add/update project-makefile files"
 	-git push
 
 npm-init-default:
