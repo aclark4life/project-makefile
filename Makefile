@@ -8,7 +8,7 @@
 # Set the default goal to be `git commit -a -m $(GIT_MESSAGE)` and `git push`
 # --------------------------------------------------------------------------------
 
-.DEFAULT_GOAL := git-commit-push
+.DEFAULT_GOAL := git-commit
 
 # --------------------------------------------------------------------------------
 # Single line variables to be used by phony target rules
@@ -3908,34 +3908,13 @@ git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         git checkout -t $$i ; done
 
-git-commit-alpha-sort-default:
-	-$(GIT_COMMIT) -a -m "Sort"
-
-git-commit-clean-default:
-	-$(GIT_COMMIT) -a -m "Clean"
-
-git-commit-freeze-default:
-	-$(GIT_COMMIT) -a -m "Freeze"
-
-git-commit-init-default:
-	-$(GIT_COMMIT) -a -m "Init"
-
-git-commit-lint-default:
-	-$(GIT_COMMIT) -a -m "Lint"
-
-git-commit-upgrade-default:
-	-$(GIT_COMMIT) -a -m "Upgrade"
-
-git-commit-wording-default:
-	-$(GIT_COMMIT) -a -m "Reword"
-
-git-commit-default:
-	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
-
-git-commit-last-default:
+git-commit-message-last-default:
 	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
 	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
 	@$(GIT_PUSH)
+
+git-commit-message-default:
+	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
 
 git-commit-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
@@ -4341,6 +4320,9 @@ edit-default:
 .PHONY: e-default
 e-default: edit
 
+.PHONY: git-commit-default
+git-commit-default: git-commit-message git-push
+
 .PHONY: help-default
 help-default:
 	@for makefile in $(MAKEFILE_LIST); do \
@@ -4354,7 +4336,7 @@ help-default:
 h-default: help
 
 .PHONY: last-default
-last-default: git-commit-last git-push
+last-default: git-commit-message-last git-push
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
