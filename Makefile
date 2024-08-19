@@ -3234,19 +3234,23 @@ aws-vol-available-default: aws-check-env
 aws-vpc-default: aws-check-env
 	aws ec2 describe-vpcs $(AWS_OPTS)
 
-db-mysql-init-default:
-	-mysqladmin -u root drop $(PROJECT_NAME)
-	-mysqladmin -u root create $(PROJECT_NAME)
-
-db-pg-init-default: separator
+.PHONY: db-init-default
+db-init-default:
 	-dropdb $(PROJECT_NAME)
 	-createdb $(PROJECT_NAME)
 
-db-pg-init-test-default:
+.PHONY: db-init-test-default
+db-init-test-default:
 	-dropdb test_$(PROJECT_NAME)
 	-createdb test_$(PROJECT_NAME)
 
-db-pg-import-default:
+.PHONY: db-init-mysql-default
+db-init-mysql-default:
+	-mysqladmin -u root drop $(PROJECT_NAME)
+	-mysqladmin -u root create $(PROJECT_NAME)
+
+.PHONY: db-import-default
+db-import-default:
 	@psql $(DJANGO_DB_NAME) < $(DJANGO_DB_NAME).sql
 
 django-allauth-default:
