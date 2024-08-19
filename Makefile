@@ -4235,7 +4235,7 @@ readme-edit-default:
 	$(EDITOR) README.md
 
 .PHONY: reveal-init-default
-reveal-init-default: webpack-reveal-init
+reveal-init-default: webpack-init-reveal
 	npm install \
 	css-loader \
 	mini-css-extract-plugin \
@@ -4317,9 +4317,11 @@ usage-default:
 	@echo "   make makefile-list-defines  list all defines in the Makefile"
 	@echo "   make makefile-list-targets  list all targets in the Makefile"
 
+.PHONY: wagtail-base-template-default
 wagtail-base-template-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 
+.PHONY: wagtail-clean-default
 wagtail-clean-default:
 	-@for dir in $(shell echo "$(WAGTAIL_CLEAN_DIRS)"); do \
 		echo "Cleaning $$dir"; \
@@ -4330,6 +4332,7 @@ wagtail-clean-default:
 		$(DEL_FILE) $$file >/dev/null 2>&1; \
 	done
 
+.PHONY: wagtail-contactpage-default
 wagtail-contactpage-default:
 	python manage.py startapp contactpage
 	@echo "$$WAGTAIL_CONTACT_PAGE_MODEL" > contactpage/models.py
@@ -4343,9 +4346,11 @@ wagtail-contactpage-default:
 	-$(GIT_ADD) contactpage/*.py
 	-$(GIT_ADD) contactpage/migrations/*.py
 
+.PHONY: wagtail-header-prefix-template-default
 wagtail-header-prefix-template-default:
 	@echo "$$WAGTAIL_HEADER_PREFIX" > backend/templates/header.html
 
+.PHONY: wagtail-home-default
 wagtail-home-default:
 	@echo "$$WAGTAIL_HOME_PAGE_MODEL" > home/models.py
 	@echo "$$WAGTAIL_HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
@@ -4357,6 +4362,7 @@ wagtail-home-default:
 	python manage.py makemigrations home
 	-$(GIT_ADD) home/migrations/*.py
 
+.PHONY: wagtail-install-default
 wagtail-install-default:
 	$(PIP_ENSURE)
 	python -m pip install \
@@ -4371,6 +4377,7 @@ wagtail-install-default:
         whitenoise \
         xhtml2pdf
 
+.PHONY: wagtail-private-default
 wagtail-privacy-default:
 	python manage.py startapp privacy
 	@echo "$$WAGTAIL_PRIVACY_PAGE_MODEL" > privacy/models.py
@@ -4382,6 +4389,7 @@ wagtail-privacy-default:
 	-$(GIT_ADD) privacy/*.py
 	-$(GIT_ADD) privacy/migrations/*.py
 
+.PHONY: wagtail-project-default
 wagtail-project-default:
 	wagtail start backend .
 	$(DEL_FILE) home/templates/home/welcome_page.html
@@ -4391,15 +4399,18 @@ wagtail-project-default:
 	-$(GIT_ADD) manage.py
 	-$(GIT_ADD) requirements.txt
 
+.PHONY: wagtail-search-default
 wagtail-search-default:
 	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
 	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
 	-$(GIT_ADD) search/templates
 	-$(GIT_ADD) search/*.py
 
+.PHONY: wagtail-settings-default
 wagtail-settings-default:
 	@echo "$$WAGTAIL_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
+.PHONY: wagtail-sitepage-default
 wagtail-sitepage-default:
 	python manage.py startapp sitepage
 	@echo "$$WAGTAIL_SITEPAGE_MODEL" > sitepage/models.py
@@ -4411,12 +4422,15 @@ wagtail-sitepage-default:
 	-$(GIT_ADD) sitepage/*.py
 	-$(GIT_ADD) sitepage/migrations/*.py
 
+.PHONY: wagtail-urls-default
 wagtail-urls-default:
 	@echo "$$WAGTAIL_URLS" > $(DJANGO_URLS_FILE)
 
+.PHONY: wagtail-urls-home-default
 wagtail-urls-home-default:
 	@echo "$$WAGTAIL_URLS_HOME" >> $(DJANGO_URLS_FILE)
 
+.PHONY: webpack-init-default
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
 	-$(GIT_ADD) webpack.config.js
@@ -4428,7 +4442,8 @@ webpack-init-default: npm-init
 	-$(GIT_ADD) index.html
 	$(MAKE) git-ignore
 
-webpack-reveal-init-default: npm-init
+.PHONY: webpack-init-reveal-default
+webpack-init-reveal-default: npm-init
 	@echo "$$WEBPACK_REVEAL_CONFIG_JS" > webpack.config.js
 	-$(GIT_ADD) webpack.config.js
 	npm install --save-dev webpack webpack-cli webpack-dev-server
