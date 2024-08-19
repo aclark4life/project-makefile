@@ -4380,6 +4380,12 @@ o-default: django-open
 .PHONY: readme-default
 readme-default: readme-init
 
+.PHONY: serve-default
+serve-default: django-serve
+
+.PHONY: s-default
+s-default: django-serve
+
 .PHONY: su-default
 su-default: django-su
 
