@@ -4315,6 +4315,10 @@ empty-default: git-commit-message-empty git-push
 .PHONY: git-commit-default
 git-commit-default: git-commit-message git-push
 
+.PHONY: git-commit-message-clean-default
+git-commit-message-clean-default:
+	-@$(GIT_COMMIT) -a -m "Clean"
+
 .PHONY: git-commit-message-default
 git-commit-message-default:
 	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
