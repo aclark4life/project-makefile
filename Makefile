@@ -3370,6 +3370,7 @@ django-init-default: separator \
 	su \
 	serve
 
+.PHONY: django-wagtail-init-default
 django-wagtail-init-default: separator \
 	db-init \
 	django-install \
@@ -3418,6 +3419,7 @@ django-install-minimal-default:
 	django-debug-toolbar \
 	python-webpack-boilerplate
 
+.PHONY: django-install-default
 django-install-default:
 	$(PIP_ENSURE)
 	python -m pip install \
@@ -3473,6 +3475,7 @@ django-install-default:
         reportlab \
         texttable
 
+.PHONY: django-frontend-default
 django-frontend-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
