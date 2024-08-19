@@ -1823,7 +1823,7 @@ define DJANGO_URLS_PAYMENTS
 urlpatterns += [path("payments/", include("payments.urls"))]
 endef
 
-define DJANGO_URLS_PAYMENTS
+define DJANGO_URLS_SITEUSER
 urlpatterns += [path("user/", include("siteuser.urls"))]
 endef
 
