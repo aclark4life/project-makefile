@@ -4344,6 +4344,9 @@ webpack-reveal-init-default: npm-init
 # Single-line phony target rules
 # --------------------------------------------------------------------------------
 
+.PHONY: aws-check-env-default
+aws-check-env-default: aws-check-env-profile aws-check-env-region
+
 .PHONY: ce-default
 ce-default: git-commit-edit git-push
 
