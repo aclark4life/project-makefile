@@ -1582,6 +1582,11 @@ INTERNAL_IPS = [
 ]
 endef
 
+define DJANGO_SETTINGS_DEV_MIDDLEWARE
+MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa
+MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")  # noqa
+endef
+
 define DJANGO_SETTINGS_INSTALLED_APPS
 INSTALLED_APPS.append("allauth")
 INSTALLED_APPS.append("allauth.account")
@@ -3124,6 +3129,7 @@ export DJANGO_SETTINGS_BASE_FILE
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_DEV_FILE
 export DJANGO_SETTINGS_DEV_INTERNAL_IPS
+export DJANGO_SETTINGS_DEV_MIDDLEWARE
 export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_PROD_FILE
 export DJANGO_SETTINGS_REST_FRAMEWORK
@@ -3679,9 +3685,8 @@ django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
 	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
+	@echo "$$DJANGO_SETTINGS_DEV_MIDDLEWARE" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
-	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
-	@echo "MIDDLEWARE.append('hijack.middleware.HijackUserMiddleware')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
 
