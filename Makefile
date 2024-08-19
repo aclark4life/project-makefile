@@ -4331,6 +4331,9 @@ webpack-reveal-init-default: npm-init
 .PHONY: ce-default
 ce-default: git-commit-edit git-push
 
+.PHONY: clean-default
+clean-default: wagtail-clean
+
 .PHONY: edit-default
 edit-default:
 	$(EDITOR) README.md
@@ -4349,6 +4352,9 @@ help-default:
 
 .PHONY: h-default
 h-default: help
+
+.PHONY: last-default
+last-default: git-commit-last git-push
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
