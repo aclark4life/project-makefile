@@ -4385,8 +4385,6 @@ install-dev-default: pip-install-dev
 install-test-default: pip-install-test
 l-default: lint
 last-default: git-commit-last
-lcp-default: git-commit-lint git-commit-push
-ld-default: makefile-list-defines
 license-default: python-license
 lint-default: django-lint
 list-defines-default: makefile-list-defines
