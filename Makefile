@@ -4511,6 +4511,15 @@ fp-default: git-push-force
 .PHONY: git-commit-default
 git-commit-default: git-commit-message git-push
 
+.PHONY: git-commit-clean-default
+git-commit-clean-default: git-commit-message-clean git-push
+
+.PHONY: git-commit-init-default
+git-commit-init-default: git-commit-message-init git-push
+
+.PHONY: git-commit-lint-default
+git-commit-lint-default: git-commit-message-lint git-push
+
 .PHONY: gitignore-default
 gitignore-default: git-ignore
 
