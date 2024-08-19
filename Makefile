@@ -52,6 +52,7 @@ EDITOR_REVIEW = subl
 GIT_ADD := git add
 GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
+GIT_CHECKOUT = git checkout
 GIT_COMMIT_MSG = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit
 GIT_PUSH = git push
@@ -4004,7 +4005,7 @@ git-ignore-default:
 .PHONY: git-branches-default
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
-        git checkout -t $$i ; done
+        -@$(GIT_CHECKOUT) -t $$i ; done
 
 .PHONY: git-commit-message-clean-default
 git-commit-message-clean-default:
@@ -4016,17 +4017,16 @@ git-commit-message-default:
 
 .PHONY: git-commit-message-empty-default
 git-commit-message-empty-default:
-	git commit --allow-empty -m "Empty-Commit"
+	-@$(GIT_COMMIT) --allow-empty -m "Empty-Commit"
 
 .PHONY: git-commit-message-init-default
 git-commit-message-init-default:
-	git commit -a -m "Init"
+	-@$(GIT_COMMIT) -a -m "Init"
 
 .PHONY: git-commit-message-last-default
 git-commit-message-last-default:
 	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
 	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
-	@$(GIT_PUSH)
 
 .PHONY: git-commit-message-lint-default
 git-commit-message-lint-default:
@@ -4296,7 +4296,7 @@ sphinx-init-default: sphinx-install
 	-$(GIT_ADD) index.rst
 	-$(GIT_ADD) conf.py
 	$(DEL_FILE) make.bat
-	git checkout Makefile
+	-@$(GIT_CHECKOUT) Makefile
 	$(MAKE) git-ignore
 
 .PHONY: sphinx-theme-init-default
