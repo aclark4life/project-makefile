@@ -4146,7 +4146,8 @@ else
 	@echo "Unsupported"
 endif
 
-separator:
+.PHONY: separator-default
+separator-default:
 	@echo "$$SEPARATOR"
 
 sphinx-init-default: sphinx-install
