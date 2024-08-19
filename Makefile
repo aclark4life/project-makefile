@@ -4006,7 +4006,7 @@ makefile-list-defines-default:
 	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
 
 make-default:
-	-$(GIT_ADD) Makefile
+	-$(GIT_ADD) Makefile project.mk
 	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
 	-git push
 
