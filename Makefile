@@ -4072,29 +4072,14 @@ python-ci-default:
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
 
-readme-build-default:
-	rst2pdf README.rst
-
-readme-edit-rst-default:
-	$(EDITOR) README.rst
-
-readme-edit-md-default:
-	$(EDITOR) README.md
-
-readme-init-rst-default:
-	@echo "$(PROJECT_NAME)" > README.rst
-	@echo "================================================================================" >> README.rst
-	-$(GIT_ADD) README.rst
-
-readme-init-md-default:
+.PHONY: readme-init-default
+readme-init-default:
 	@echo "# $(PROJECT_NAME)" > README.md
 	-$(GIT_ADD) README.md
 
-readme-open-default:
-	open README.pdf
-
-reveal-build-default:
-	npm run build
+.PHONY: readme-edit-default
+readme-edit-default:
+	$(EDITOR) README.md
 
 reveal-init-default: webpack-reveal-init
 	npm install \
@@ -4293,7 +4278,7 @@ webpack-reveal-init-default: npm-init
 	$(MAKE) gitignore
 
 # --------------------------------------------------------------------------------
-# Phony target rules
+# Single-line phony target rules
 # --------------------------------------------------------------------------------
 
 .PHONY: ce-default
@@ -4302,12 +4287,11 @@ ce-default: git-commit-edit git-push
 .PHONY: clean-default
 clean-default: wagtail-clean
 
+.PHONY: edit-default
+edit-default: readme-edit
+
 .PHONY: e-default
 e-default: edit
-
-.PHONY: edit-default
-edit-default:
-	$(EDITOR) README.md
 
 .PHONY: empty-default
 empty-default: git-commit-message-empty git-push
