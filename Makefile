@@ -3331,7 +3331,7 @@ django-init-minimal-default: separator \
 	django-home \
 	django-frontend \
 	django-migrate \
-	gitignore \
+	git-ignore \
 	readme \
 	su \
 	serve
@@ -3355,7 +3355,7 @@ django-init-default: separator \
 	django-urls-debug-toolbar \
 	django-allauth \
 	django-favicon \
-	gitignore \
+	git-ignore \
 	django-settings \
 	django-settings-dev \
 	django-settings-prod \
@@ -3391,7 +3391,7 @@ django-wagtail-init-default: separator \
 	django-urls-debug-toolbar \
 	django-allauth \
 	django-favicon \
-	gitignore \
+	git-ignore \
 	wagtail-search \
 	django-settings \
 	django-settings-dev \
@@ -4021,7 +4021,7 @@ plone-clean-default:
 	$(DEL_DIR) $(PROJECT_NAME)
 	$(DEL_DIR) $(PACKAGE_NAME)
 
-plone-init-default: gitignore plone-install plone-instance plone-serve
+plone-init-default: git-ignore plone-install plone-instance plone-serve
 
 plone-install-default:
 	$(PIP_ENSURE)
@@ -4120,7 +4120,7 @@ sphinx-init-default: sphinx-install
 	-$(GIT_ADD) conf.py
 	$(DEL_FILE) make.bat
 	git checkout Makefile
-	$(MAKE) gitignore
+	$(MAKE) git-ignore
 
 sphinx-theme-init-default:
 	export DJANGO_FRONTEND_THEME_NAME=$(PROJECT_NAME)_theme; \
@@ -4268,7 +4268,7 @@ webpack-init-default: npm-init
 	-$(GIT_ADD) src/index.js
 	@echo "$$WEBPACK_INDEX_HTML" > index.html
 	-$(GIT_ADD) index.html
-	$(MAKE) gitignore
+	$(MAKE) git-ignore
 
 webpack-reveal-init-default: npm-init
 	@echo "$$WEBPACK_REVEAL_CONFIG_JS" > webpack.config.js
@@ -4279,7 +4279,7 @@ webpack-reveal-init-default: npm-init
 	-$(GIT_ADD) src/index.js
 	@echo "$$WEBPACK_REVEAL_INDEX_HTML" > index.html
 	-$(GIT_ADD) index.html
-	$(MAKE) gitignore
+	$(MAKE) git-ignore
 
 # --------------------------------------------------------------------------------
 # Single-line phony target rules
@@ -4320,6 +4320,9 @@ git-commit-message-last-default:
 .PHONY: git-commit-message-empty-default
 git-commit-message-empty-default:
 	git commit --allow-empty -m "Empty-Commit"
+
+.PHONY: gitignore-default
+gitignore-default: git-ignore
 
 .PHONY: help-default
 help-default:
