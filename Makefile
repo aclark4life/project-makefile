@@ -4499,6 +4499,9 @@ edit-default: readme-edit
 .PHONY: empty-default
 empty-default: git-commit-message-empty git-push
 
+.PHONY: fp-default
+fp-default: git-push-force
+
 .PHONY: git-commit-default
 git-commit-default: git-commit-message git-push
 
