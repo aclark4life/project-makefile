@@ -3333,7 +3333,7 @@ django-init-minimal-default: separator \
 	django-migrate \
 	git-ignore \
 	readme-init \
-	su \
+	django-su \
 	serve
 
 django-init-default: separator \
@@ -3408,7 +3408,7 @@ django-wagtail-init-default: separator \
 	django-frontend \
 	django-migrate \
 	readme-init \
-	su
+	django-su
 
 django-install-minimal-default:
 	$(PIP_ENSURE)
@@ -4344,6 +4344,9 @@ last-default: git-commit-message-last git-push
 
 .PHONY: readme-default
 readme-default: readme-init
+
+.PHONY: su-default
+su-default: django-su
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
