@@ -8,3 +8,5 @@ edit:
 logo:
 	python logo.py
 
+review:
+	$(EDITOR_REVIEW) Makefile
