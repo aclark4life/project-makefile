@@ -3226,15 +3226,19 @@ aws-ssm-default: aws-check-env
 	aws ssm describe-parameters $(AWS_OPTS)
 	@echo "Get parameter values with: aws ssm getparameter --name <Name>."
 
+.PHONY: aws-subnet-default
 aws-subnet-default: aws-check-env
 	aws ec2 describe-subnets $(AWS_OPTS)
 
+.PHONY: aws-vol-default
 aws-vol-default: aws-check-env
 	aws ec2 describe-volumes --output table
 
+.PHONY: aws-vol-available-default
 aws-vol-available-default: aws-check-env
 	aws ec2 describe-volumes --filters Name=status,Values=available --query "Volumes[*].{ID:VolumeId,Size:Size}" --output table
 
+.PHONY: aws-vpc-default
 aws-vpc-default: aws-check-env
 	aws ec2 describe-vpcs $(AWS_OPTS)
 
@@ -3257,56 +3261,68 @@ db-init-mysql-default:
 db-import-default:
 	@psql $(DJANGO_DB_NAME) < $(DJANGO_DB_NAME).sql
 
+.PHONY: django-allauth-default
 django-allauth-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$DJANGO_ALLAUTH_BASE_TEMPLATE" > backend/templates/allauth/layouts/base.html
 	@echo "$$DJANGO_URLS_ALLAUTH" >> $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
+.PHONY: django-app-tests-default
 django-app-tests-default:
 	@echo "$$DJANGO_APP_TESTS" > $(APP_DIR)/tests.py
 
+.PHONY: django-project-default
 django-project-default:
 	django-admin startproject backend .
 	-$(GIT_ADD) backend
 
+.PHONY: django-utils-default
 django-utils-default:
 	@echo "$$DJANGO_UTILS" > backend/utils.py
 	-$(GIT_ADD) backend/utils.py
 
+.PHONY: django-custom-admin-default
 django-custom-admin-default:
 	@echo "$$DJANGO_CUSTOM_ADMIN" > $(DJANGO_CUSTOM_ADMIN_FILE)
 	@echo "$$DJANGO_BACKEND_APPS" > $(DJANGO_BACKEND_APPS_FILE)
 	-$(GIT_ADD) backend/*.py
 
+.PHONY: django-dockerfile-default
 django-dockerfile-default:
 	@echo "$$DJANGO_DOCKERFILE" > Dockerfile
 	-$(GIT_ADD) Dockerfile
 	@echo "$$DJANGO_DOCKERCOMPOSE" > docker-compose.yml
 	-$(GIT_ADD) docker-compose.yml
 
+.PHONY: django-offcanvas-template-default
 django-offcanvas-template-default:
 	-$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/offcanvas.html
 
+.PHONY: django-manage-py-default
 django-manage-py-default:
 	@echo "$$DJANGO_MANAGE_PY" > manage.py
 	-$(GIT_ADD) manage.py
 
+.PHONY: django-base-template-default
 django-base-template-default:
 	@$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	-$(GIT_ADD) backend/templates/base.html
 
+.PHONY: django-favicon-default
 django-favicon-default:
 	@echo "$$DJANGO_FAVICON_TEMPLATE" > backend/templates/favicon.html
 	-$(GIT_ADD) backend/templates/favicon.html
 
+.PHONY: django-header-template-default
 django-header-template-default:
 	@echo "$$DJANGO_HEADER_TEMPLATE" > backend/templates/header.html
 	-$(GIT_ADD) backend/templates/header.html
 
+.PHONY: django-footer-template-default
 django-footer-template-default:
 	@echo "$$DJANGO_FOOTER_TEMPLATE" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
@@ -3341,6 +3357,7 @@ django-minimal-init-default: separator \
 	django-su \
 	serve
 
+.PHONY: django-init-default
 django-init-default: separator \
 	db-init \
 	django-install \
@@ -3506,6 +3523,7 @@ django-frontend-default: python-webpack-init
 	@$(MAKE) npm-install
 	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
 
+.PHONY: django-home-default
 django-home-default:
 	python manage.py startapp home
 	$(ADD_DIR) home/templates
@@ -3519,6 +3537,7 @@ django-home-default:
 	-$(GIT_ADD) home/*.py
 	-$(GIT_ADD) home/migrations/*.py
 
+.PHONY: django-payments-demo-default
 django-payments-demo-default:
 	python manage.py startapp payments
 	@echo "$$DJANGO_PAYMENTS_FORM" > payments/forms.py
@@ -3547,14 +3566,17 @@ django-payments-demo-default:
 	@echo "$$DJANGO_PAYMENTS_MIGRATION_0003" > payments/migrations/0003_create_initial_products.py
 	-$(GIT_ADD) payments/
 
+.PHONY: django-rest-serializers-default
 django-rest-serializers-default:
 	@echo "$$DJANGO_REST_SERIALIZERS" > backend/serializers.py
 	-$(GIT_ADD) backend/serializers.py
 
+.PHONY: django-rest-views-default
 django-rest-views-default:
 	@echo "$$DJANGO_REST_VIEWS" > backend/api.py
 	-$(GIT_ADD) backend/api.py
 
+.PHONY: django-search-default
 django-search-default:
 	python manage.py startapp search
 	$(ADD_DIR) search/templates
