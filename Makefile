@@ -3597,12 +3597,15 @@ django-show-urls-default:
 django-loaddata-default:
 	python manage.py loaddata
 
+.PHONY: django-migrate-default
 django-migrate-default:
 	python manage.py migrate
 
-django-migrations-default:
+.PHONY: django-migrations-make-default
+django-migrations-make-default:
 	python manage.py makemigrations
 
+.PHONY: django-migrations-show-default
 django-migrations-show-default:
 	python manage.py showmigrations
 
@@ -3638,6 +3641,7 @@ django-logging-demo-default:
 	-$(GIT_ADD) logging_demo/*.py
 	-$(GIT_ADD) logging_demo/migrations/*.py
 
+.PHONY: django-serve-default
 django-serve-default:
 	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
@@ -3799,6 +3803,7 @@ django-npm-test-default:
 django-npm-build-default:
 	npm run build
 
+.PHONY: django-open-default
 django-open-default:
 ifeq ($(UNAME), Linux)
 	@echo "Opening on Linux."
@@ -4370,6 +4375,15 @@ last-default: git-commit-message-last git-push
 
 .PHONY: lint-default
 lint-default: django-lint
+
+.PHONY: migrate-default
+migrate-default: django-migrate
+
+.PHONY: migrations-default
+migrations-default: django-migrations-make
+
+.PHONY: migrations-show-default
+migrations-show-default: django-migrations-show
 
 .PHONY: open-default
 open-default: django-open
