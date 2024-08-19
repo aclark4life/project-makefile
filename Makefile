@@ -3961,15 +3961,6 @@ git-set-default-default:
 git-short-default:
 	@echo $(GIT_REV)
 
-.PHONY: help-default
-help-default:
-	@for makefile in $(MAKEFILE_LIST); do \
-        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
-            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
-            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
-            | xargs | tr ' ' '\n' \
-            | awk '{printf "%s\n", $$0}' ; done | $(PAGER) # http://stackoverflow.com/a/26339924
-
 html-index-default:
 	@echo "$$HTML_INDEX" > index.html
 
@@ -4334,91 +4325,30 @@ webpack-reveal-init-default: npm-init
 	$(MAKE) gitignore
 
 # --------------------------------------------------------------------------------
-# Single-line phony target rules
+# Phony target rules
 # --------------------------------------------------------------------------------
 
-as-default: git-commit-alpha-sort git-push
-alpha-default: git-commit-alpha-sort git-push
-alpha-sort-default: git-commit-alpha-sort git-push
-aws-check-env-default: aws-check-env-profile aws-check-env-region
-b-default: build
-build-default: pip-install
-c-default: clean
-ce-default: git-commit-edit-push
-clean-default: wagtail-clean
-cp-default: git-commit-push
-create-default: eb-create
-d-default: deploy
-db-dump-default: eb-pg-export
-db-export-default: eb-pg-export
-db-import-default: db-pg-import
-db-init-default: db-pg-init
-db-init-test-default: db-pg-init-test
-db-shell-default: django-db-shell
-dbshell-default: django-db-shell
-deploy-default: eb-deploy
-django-clean-default: wagtail-clean
+.PHONY: ce-default
+ce-default: git-commit-edit git-push
+
+.PHONY: edit-default
+edit-default:
+	$(EDITOR) README.md
+
+.PHONY: e-default
 e-default: edit
-eb-env-default: eb-print-env
-eb-export-default: eb-pg-export
-eb-up-default: eb-upgrade
-edit-default: readme-edit-md
-empty-default: git-commit-empty
-error-default: html-error
-force-push-default: git-push-force
-force: git-push-force
-fp-default: git-push-force
-freeze-default: pip-freeze
-git-commit-edit-push-default: git-commit-edit git-push
-git-commit-push-default: git-commit git-push
-git-force-default: git-push-force
-gitignore-default: git-ignore
+
+.PHONY: help-default
+help-default:
+	@for makefile in $(MAKEFILE_LIST); do \
+        $(MAKE) -pRrq -f $$makefile : 2>/dev/null \
+            | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' \
+            | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' \
+            | xargs | tr ' ' '\n' \
+            | awk '{printf "%s\n", $$0}' ; done | $(PAGER) # http://stackoverflow.com/a/26339924
 
 .PHONY: h-default
 h-default: help
-
-i-default: install
-index-default: html-index
-init-default: django-wagtail-init django-serve
-install-default: pip-install
-install-dev-default: pip-install-dev
-install-test-default: pip-install-test
-l-default: lint
-last-default: git-commit-last
-license-default: python-license
-lint-default: django-lint
-list-defines-default: makefile-list-defines
-logs-default: eb-logs
-m-default: django-migrate
-migrate-default: django-migrate
-migrations-default: django-migrations
-migrations-show-default: django-migrations-show
-o-default: open
-open-default: django-open
-p-default: git-push
-pack-default: django-npm-build
-pip-install-up: pip-install-upgrade
-pyproject-default: python-project
-readme-default: readme-init-md
-restart-default: eb-restart
-reveal-default: reveal-init
-s-default: serve
-sdist-default: python-setup-sdist
-secret-default: django-secret-key
-serve-default: django-serve
-shell-default: django-shell
-show-migrations-default: migrations-show
-show-urls-default: django-show-urls
-ssm-list-default: aws-ssm
-static-default: django-static
-su-default: django-su
-test-default: django-test
-u-default: usage
-upgrade-default: pip-install-upgrade
-urls-default: django-show-urls
-wagtail-init-default: django-wagtail-init
-webpack-default: webpack-init
-wording: git-commit-wording git-push
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
