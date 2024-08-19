@@ -1654,31 +1654,42 @@ endef
 
 define DJANGO_SITEUSER_EDIT_TEMPLATE
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
     <h2>Edit User</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <div class="d-flex">
-            <button type="submit">Save changes</button>
-            <a class="text-decoration-none" href="/user/profile">Cancel</a>
-        </div>
-    </form>
+    {% crispy form %}
 {% endblock %}
 endef
 
 define DJANGO_SITEUSER_FORM
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit
 from .models import User
 
 
 class SiteUserForm(UserChangeForm):
+    bio = forms.CharField(widget=forms.Textarea(attrs={"id": "editor"}), required=False)
+
     class Meta(UserChangeForm.Meta):
         model = User
         fields = ("username", "user_theme_preference", "bio", "rate")
 
-    bio = forms.CharField(widget=forms.Textarea(attrs={"id": "editor"}), required=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.layout = Layout(
+            Fieldset(
+                "Edit Your Profile",
+                "username",
+                "user_theme_preference",
+                "bio",
+                "rate",
+            ),
+            ButtonHolder(Submit("submit", "Save", css_class="btn btn-primary")),
+        )
 endef
 
 define DJANGO_SITEUSER_MODEL
