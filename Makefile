@@ -4342,6 +4342,9 @@ init-default: django-wagtail-init
 .PHONY: last-default
 last-default: git-commit-message-last git-push
 
+.PHONY: lint-default
+lint-default: django-lint
+
 .PHONY: readme-default
 readme-default: readme-init
 
