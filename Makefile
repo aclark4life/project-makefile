@@ -1814,6 +1814,10 @@ define DJANGO_URLS_PAYMENTS
 urlpatterns += [path("payments/", include("payments.urls"))]
 endef
 
+define DJANGO_URLS_PAYMENTS
+urlpatterns += [path("user/", include("siteuser.urls"))]
+endef
+
 define DJANGO_UTILS
 from django.urls import URLResolver
 import requests
@@ -3138,6 +3142,7 @@ export DJANGO_URLS_DEBUG_TOOLBAR
 export DJANGO_URLS_HOME_PAGE
 export DJANGO_URLS_LOGGING_DEMO
 export DJANGO_URLS_MODEL_FORM_DEMO
+export DJANGO_URLS_SITEUSER
 export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
 export EB_CUSTOM_ENV_VAR_FILE
@@ -3556,7 +3561,7 @@ django-siteuser-default:
 	@echo "$$DJANGO_SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
 	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('user/', include('siteuser.urls'))]" >> $(DJANGO_URLS_FILE)
+	@echo "$$DJANGO_URLS_SITEUSER" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="siteuser"; $(MAKE) django-app-tests
 	-$(GIT_ADD) siteuser/templates
 	-$(GIT_ADD) siteuser/*.py
