@@ -4052,8 +4052,16 @@ git-set-default-default:
 git-short-default:
 	@echo $(GIT_REV)
 
-.PHONY: help-default
-help-default:
+.PHONY: jenkins-init-default
+jenkins-init-default:
+	@echo "$$JENKINS_FILE" > Jenkinsfile
+
+.PHONY: makefile-list-defines-default
+makefile-list-defines-default:
+	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
+
+.PHONY: makefile-list-targets-default
+makefile-list-targets-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         echo "Commands from $$makefile:"; \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null | \
@@ -4065,12 +4073,6 @@ help-default:
         awk '{print $$0}' ; \
         echo; \
     	done | $(PAGER)
-
-jenkins-init-default:
-	@echo "$$JENKINS_FILE" > Jenkinsfile
-
-makefile-list-defines-default:
-	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
 
 .PHONY: make-default
 make-default:
@@ -4213,6 +4215,7 @@ readme-init-default:
 readme-edit-default:
 	$(EDITOR) README.md
 
+.PHONY: reveal-init-default
 reveal-init-default: webpack-reveal-init
 	npm install \
 	css-loader \
@@ -4226,10 +4229,12 @@ reveal-init-default: webpack-reveal-init
 	jq '.scripts += {"watch": "webpack watch --mode development"}' package.json > \
 	$(TMPDIR)/tmp.json && mv $(TMPDIR)/tmp.json package.json
 
+.PHONY: reveal-serve-default
 reveal-serve-default:
 	npm run watch &
 	python -m http.server
 
+.PHONY: review-default
 review-default:
 ifeq ($(UNAME), Darwin)
 	$(EDITOR_REVIEW) `find backend/ -name \*.py` `find backend/ -name \*.html` `find frontend/ -name \*.js` `find frontend/ -name \*.js`
@@ -4241,6 +4246,7 @@ endif
 separator-default:
 	@echo "$$SEPARATOR"
 
+.PHONY: sphinx-init-default
 sphinx-init-default: sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
 	$(COPY_DIR) $(RANDIR)/* .
@@ -4251,6 +4257,7 @@ sphinx-init-default: sphinx-install
 	git checkout Makefile
 	$(MAKE) git-ignore
 
+.PHONY: sphinx-theme-init-default
 sphinx-theme-init-default:
 	export DJANGO_FRONTEND_THEME_NAME=$(PROJECT_NAME)_theme; \
 	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME ; \
@@ -4266,27 +4273,30 @@ sphinx-theme-init-default:
 	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/static/js/script.js ; \
 	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/static
 
+.PHONY: sphinx-install-default
 sphinx-install-default:
 	echo "Sphinx\n" > requirements.txt
 	@$(MAKE) pip-install
 	@$(MAKE) pip-freeze
 	-$(GIT_ADD) requirements.txt
 
+.PHONY: sphinx-build-default
 sphinx-build-default:
 	sphinx-build -b html -d _build/doctrees . _build/html
-
-sphinx-build-pdf-default:
 	sphinx-build -b rinoh . _build/rinoh
 
+.PHONY: sphinx-serve-default
 sphinx-serve-default:
 	cd _build/html;python3 -m http.server
 
+.PHONY: usage-default
 usage-default:
 	@echo "Project Makefile 🤷"
 	@echo "Usage: make [options] [target] ..."
 	@echo "Examples:"
-	@echo "   make help    Print all targets"
-	@echo "   make usage   Print this message"
+	@echo "   make help                   Print this message"
+	@echo "   make makefile-list-defines  list all defines in the Makefile"
+	@echo "   make makefile-list-targets  list all targets in the Makefile"
 
 wagtail-base-template-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
@@ -4445,7 +4455,10 @@ git-commit-default: git-commit-message git-push
 gitignore-default: git-ignore
 
 .PHONY: h-default
-h-default: help
+h-default: usage
+
+.PHONY: l-default
+l-default: makefile-list-targets
 
 .PHONY: init-default
 init-default: django-wagtail-init
