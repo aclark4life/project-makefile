@@ -3607,9 +3607,11 @@ django-search-default:
 	-$(GIT_ADD) search/templates
 	-$(GIT_ADD) search/*.py
 
+.PHONY: django-secret-key-default
 django-secret-key-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
 
+.PHONY: django-siteuser-default
 django-siteuser-default:
 	python manage.py startapp siteuser
 	$(ADD_DIR) siteuser/templates/
@@ -3630,6 +3632,7 @@ django-siteuser-default:
 	python manage.py makemigrations siteuser
 	-$(GIT_ADD) siteuser/migrations/*.py
 
+.PHONY: django-graph-default
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
@@ -3637,6 +3640,7 @@ django-graph-default:
 django-urls-show-default:
 	python manage.py show_urls
 
+.PHONY: django-loaddata-default
 django-loaddata-default:
 	python manage.py loaddata
 
@@ -3652,6 +3656,7 @@ django-migrations-make-default:
 django-migrations-show-default:
 	python manage.py showmigrations
 
+.PHONY: django-model-form-demo-default
 django-model-form-demo-default:
 	python manage.py startapp model_form_demo
 	@echo "$$DJANGO_MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
@@ -3671,6 +3676,7 @@ django-model-form-demo-default:
 	-$(GIT_ADD) model_form_demo/templates
 	-$(GIT_ADD) model_form_demo/migrations
 
+.PHONY: django-logging-demo-default
 django-logging-demo-default:
 	python manage.py startapp logging_demo
 	@echo "$$DJANGO_LOGGING_DEMO_ADMIN" > logging_demo/admin.py
@@ -3762,42 +3768,53 @@ django-settings-prod-default:
 	@echo "$$DJANGO_SETTINGS_PROD" > $(DJANGO_SETTINGS_PROD_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_PROD_FILE)
 
+.PHONY: django-lint-default
 django-lint-default:
 	-ruff format -v
 	-djlint --reformat --format-css --format-js .
 	-ruff check -v --fix
 
+.PHONY: django-shell-default
 django-shell-default:
 	python manage.py shell
 
+.PHONY: django-db-shell-default
 django-db-shell-default:
 	python manage.py dbshell
 
+.PHONY: django-static-default
 django-static-default:
 	python manage.py collectstatic --noinput
 
+.PHONY: django-su-default
 django-su-default:
 	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
 
+.PHONY: django-test-default
 django-test-default: django-npm-install django-npm-build django-static
 	-$(MAKE) pip-install-test
 	python manage.py test
 
+.PHONY: django-user-default
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
         User.objects.create_user('user', '', 'user')"
 
+.PHONY: django-urls-api-default
 django-urls-api-default:
 	@echo "$$DJANGO_URLS_API" >> $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) $(DJANGO_URLS_FILE)
 
+.PHONY: django-urls-debug-toolbar-default
 django-urls-debug-toolbar-default:
 	@echo "$$DJANGO_URLS_DEBUG_TOOLBAR" >> $(DJANGO_URLS_FILE)
 
+.PHONY: django-urls-default
 django-urls-default:
 	@echo "$$DJANGO_URLS" > $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) $(DJANGO_URLS_FILE)
 
+.PHONY: django-npm-save-default
 django-npm-save-default:
 	npm install \
         @fortawesome/fontawesome-free \
@@ -3829,6 +3846,7 @@ django-npm-save-default:
         url-join \
         viewport-mercator-project
 
+.PHONY: django-npm-save-dev-default
 django-npm-save-dev-default:
 	npm install \
         eslint-plugin-react \
@@ -3839,9 +3857,11 @@ django-npm-save-dev-default:
         @babel/preset-react \
         --save-dev
 
+.PHONY: django-npm-test-default
 django-npm-test-default:
 	npm run test
 
+.PHONY: django-npm-build-default
 django-npm-build-default:
 	npm run build
 
@@ -3857,25 +3877,32 @@ else
 	@echo "Unable to open on: $(UNAME)"
 endif
 
+.PHONY: docker-build-default
 docker-build-default:
 	podman build -t $(PROJECT_NAME) .
 
+.PHONY: docker-compose-default
 docker-compose-default:
 	podman compose up
 
+.PHONY: docker-list-default
 docker-list-default:
 	podman container list --all
 	podman images --all
 
+.PHONY: docker-run-default
 docker-run-default:
 	podman run $(PROJECT_NAME)
 
+.PHONY: docker-serve-default
 docker-serve-default:
 	podman run -p 8000:8000 $(PROJECT_NAME)
 
+.PHONY: docker-shell-default
 docker-shell-default:
 	podman run -it $(PROJECT_NAME) /bin/bash
 
+.PHONY: eb-check-env-default
 eb-check-env-default:  # https://stackoverflow.com/a/4731504/185820
 ifndef EB_SSH_KEY
 	$(error EB_SSH_KEY is undefined)
@@ -3893,6 +3920,7 @@ ifndef VPC_SUBNET_ELB
 	$(error VPC_SUBNET_ELB is undefined)
 endif
 
+.PHONY: eb-create-default
 eb-create-default: aws-check-env eb-check-env
 	eb create $(EB_ENV_NAME) \
          -im $(EC2_INSTANCE_MIN) \
@@ -3910,6 +3938,7 @@ eb-create-default: aws-check-env eb-check-env
          --vpc.elbsubnets $(VPC_SUBNET_ELB) \
          --vpc.securitygroups $(VPC_SG)
 
+.PHONY: eb-custom-env-default
 eb-custom-env-default:
 	$(ADD_DIR) .ebextensions
 	@echo "$$EB_CUSTOM_ENV_EC2_USER" > .ebextensions/bash.config
@@ -3918,42 +3947,53 @@ eb-custom-env-default:
 	@echo "$$EB_CUSTOM_ENV_VAR_FILE" > .platform/hooks/postdeploy/setenv.sh
 	-$(GIT_ADD) .platform/hooks/postdeploy/setenv.sh
 
+.PHONY: eb-deploy-default
 eb-deploy-default:
 	eb deploy
 
-eb-pg-export-default: aws-check-env eb-check-env
+.PHONY: eb-export-default
+eb-export-default: aws-check-env eb-check-env
 	@if [ ! -d $(EB_DIR_NAME) ]; then \
         echo "Directory $(EB_DIR_NAME) does not exist"; \
-    else \
+        else \
         echo "Directory $(EB_DIR_NAME) does exist!"; \
         eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); pg_dump -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)" > $(DJANGO_DB_NAME).sql; \
         echo "Wrote $(DJANGO_DB_NAME).sql"; \
-    fi
+        fi
 
+.PHONY: eb-restart-default
 eb-restart-default:
 	eb ssh -c "systemctl restart web"
 
+.PHONY: eb-rebuild-default
 eb-rebuild-default:
 	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
 
+.PHONY: eb-upgrade-default
 eb-upgrade-default:
 	eb upgrade
 
+.PHONY: eb-init-default
 eb-init-default: aws-check-env-profile
 	eb init --profile=$(AWS_PROFILE)
 
+.PHONY: eb-list-default
 eb-list-platforms-default:
 	aws elasticbeanstalk list-platform-versions
 
+.PHONY: eb-list-databases-default
 eb-list-databases-default:
 	@eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); psql -l -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)"
 
+.PHONY: eb-logs-default
 eb-logs-default:
 	eb logs
 
+.PHONY: eb-print-env-default
 eb-print-env-default:
 	eb printenv
 
+.PHONY: favicon-default
 favicon-init-default:
 	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
 	convert favicon.png favicon.ico
@@ -4393,6 +4433,9 @@ ce-default: git-commit-edit git-push
 
 .PHONY: clean-default
 clean-default: wagtail-clean
+
+.PHONY: db-dump-default
+db-dump-default: eb-export
 
 .PHONY: dbshell-default
 dbshell-default: django-db-shell
