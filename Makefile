@@ -1602,6 +1602,10 @@ INSTALLED_APPS.append("webpack_boilerplate")
 INSTALLED_APPS.append("explorer")
 endef
 
+define DJANGO_SETTINGS_MIDDLEWARE
+MIDDLEWARE.append("allauth.account.middleware.AccountMiddleware")
+endef
+
 define DJANGO_SETTINGS_PROD
 from .base import *  # noqa
 from backend.utils import get_ec2_metadata
@@ -3130,6 +3134,7 @@ export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_DEV_FILE
 export DJANGO_SETTINGS_DEV_INTERNAL_IPS
 export DJANGO_SETTINGS_DEV_MIDDLEWARE
+export DJANGO_SETTINGS_MIDDLEWARE
 export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_PROD_FILE
 export DJANGO_SETTINGS_REST_FRAMEWORK
@@ -3347,7 +3352,7 @@ django-init-default: separator \
 	django-allauth \
 	django-favicon \
 	gitignore \
-	django-settings-base \
+	django-settings \
 	django-settings-dev \
 	django-settings-prod \
 	django-siteuser \
@@ -3384,7 +3389,7 @@ django-wagtail-init-default: separator \
 	django-favicon \
 	gitignore \
 	wagtail-search \
-	django-settings-base \
+	django-settings \
 	django-settings-dev \
 	django-settings-prod \
 	wagtail-settings \
@@ -3647,7 +3652,7 @@ django-settings-minimal-default:
 	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
-django-settings-base-default:
+django-settings-default:
 	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "# Uncomment the next two lines to enable the custom admin" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3659,11 +3664,11 @@ django-settings-base-default:
 	@echo "$$DJANGO_SETTINGS_THEMES" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_DATABASE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "LOGIN_REDIRECT_URL = '/'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "MIDDLEWARE.append('allauth.account.middleware.AccountMiddleware')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_BASE_FILE)
