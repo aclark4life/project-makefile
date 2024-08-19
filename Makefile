@@ -1936,14 +1936,6 @@ home/static
 backend/var
 endef
 
-define HTML_ERROR
-<h1>500</h1>
-endef
-
-define HTML_INDEX
-<h1>Hello world</h1>
-endef
-
 define JENKINS_FILE
 pipeline {
     agent any
@@ -3174,8 +3166,6 @@ export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
 export EB_CUSTOM_ENV_VAR_FILE
 export GIT_IGNORE
-export HTML_ERROR
-export HTML_INDEX
 export JENKINS_FILE
 export MAKEFILE_CUSTOM
 export PROGRAMMING_INTERVIEW
@@ -4042,18 +4032,23 @@ git-push-default:
 git-push-force-default:
 	-@$(GIT_PUSH_FORCE)
 
+.PHONY: git-commit-edit-default
 git-commit-edit-default:
 	-$(GIT_COMMIT) -a
 
+.PHONY: git-prune-default
 git-prune-default:
 	git remote update origin --prune
 
+.PHONY: git-set-upstream-default
 git-set-upstream-default:
 	git push --set-upstream origin main
 
+.PHONY: git-set-default-default
 git-set-default-default:
 	gh repo set-default
 
+.PHONY: git-short-default
 git-short-default:
 	@echo $(GIT_REV)
 
@@ -4070,12 +4065,6 @@ help-default:
         awk '{print $$0}' ; \
         echo; \
     	done | $(PAGER)
-
-html-index-default:
-	@echo "$$HTML_INDEX" > index.html
-
-html-error-default:
-	@echo "$$HTML_ERROR" > error.html
 
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
