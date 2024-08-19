@@ -3352,10 +3352,10 @@ django-footer-template-default:
 	@echo "$$DJANGO_FOOTER_TEMPLATE" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
 
-.PHONY: django-minimal-init-default
-django-minimal-init-default: separator \
+.PHONY: django-init-minimal-default
+django-init-minimal-default: separator \
 	db-init \
-	django-minimal-install \
+	django-install-minimal \
 	django-project \
 	django-settings-directory \
 	django-settings-minimal \
@@ -3458,8 +3458,8 @@ django-wagtail-init-default: separator \
 	readme-init \
 	django-su
 
-.PHONY: django-minimal-install-default
-django-minimal-install-default:
+.PHONY: django-install-minimal-default
+django-install-minimal-default:
 	$(PIP_ENSURE)
 	python -m pip install \
 	Django \
