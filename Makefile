@@ -3990,10 +3990,12 @@ favicon-init-default:
 	-$(GIT_ADD) favicon.ico
 	$(DEL_FILE) favicon.png
 
+.PHONY: git-ignore-default
 git-ignore-default:
 	@echo "$$GIT_IGNORE" > .gitignore
 	-$(GIT_ADD) .gitignore
 
+.PHONY: git-branches-default
 git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         git checkout -t $$i ; done
@@ -4080,54 +4082,73 @@ make-default:
 	-$(GIT_COMMIT) Makefile project.mk -m "Add/update project-makefile files"
 	-git push
 
+.PHONY: npm-init-default
 npm-init-default:
 	npm init -y
 	-$(GIT_ADD) package.json
 	-$(GIT_ADD) package-lock.json
 
+.PHONY: npm-build-default
 npm-build-default:
 	npm run build
 
+.PHONY: npm-install-default
 npm-install-default:
 	npm install
 	-$(GIT_ADD) package-lock.json
 
+.PHONY: npm-clean-default
 npm-clean-default:
 	$(DEL_DIR) dist/
 	$(DEL_DIR) node_modules/
 	$(DEL_FILE) package-lock.json
 
+.PHONY: npm-serve-default
 npm-serve-default:
 	npm run start
 
+.PHONY: pip-deps-default
+pip-deps-default:
+	$(PIP_ENSURE)
+	python -m pip install pipdeptree
+	python -m pipdeptree
+	pipdeptree
+
+.PHONY: pip-freeze-default
 pip-freeze-default:
 	$(PIP_ENSURE)
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 	-$(GIT_ADD) requirements.txt
 
+.PHONY: pip-init-default
 pip-init-default:
 	touch requirements.txt
 	-$(GIT_ADD) requirements.txt
 
+.PHONY: pip-init-test-default
 pip-init-test-default:
 	@echo "$$PIP_INSTALL_REQUIREMENTS_TEST" > requirements-test.txt
 	-$(GIT_ADD) requirements-test.txt
 
+.PHONY: pip-install-default
 pip-install-default:
 	$(PIP_ENSURE)
 	$(MAKE) pip-upgrade
 	python -m pip install wheel
 	python -m pip install -r requirements.txt
 
+.PHONY: pip-install-dev-default
 pip-install-dev-default:
 	$(PIP_ENSURE)
 	python -m pip install -r requirements-dev.txt
 
+.PHONY: pip-install-test-default
 pip-install-test-default:
 	$(PIP_ENSURE)
 	python -m pip install -r requirements-test.txt
 
+.PHONY: pip-install-upgrade-default
 pip-install-upgrade-default:
 	cat requirements.txt | awk -F\= '{print $$1}' > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
@@ -4136,9 +4157,7 @@ pip-install-upgrade-default:
 	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
 	mv -f $(TMPDIR)/requirements.txt .
 
-pip-deps-default:
-	pipdeptree
-
+.PHONY: pip-upgrade-default
 pip-upgrade-default:
 	$(PIP_ENSURE)
 	python -m pip install -U pip
@@ -4483,6 +4502,9 @@ open-default: django-open
 
 .PHONY: o-default
 o-default: django-open
+
+.PHONY: deps-default
+deps-default: pip-deps
 
 .PHONY: readme-default
 readme-default: readme-init
