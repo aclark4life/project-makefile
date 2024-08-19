@@ -3201,11 +3201,13 @@ export WEBPACK_REVEAL_INDEX_JS
 # Multi-line phony target rules
 # ------------------------------------------------------------------------------
 
+.PHONY: aws-check-env-profile-default
 aws-check-env-profile-default:
 ifndef AWS_PROFILE
 	$(error AWS_PROFILE is undefined)
 endif
 
+.PHONY: aws-check-env-region-default
 aws-check-env-region-default:
 ifndef AWS_REGION
 	$(error AWS_REGION is undefined)
