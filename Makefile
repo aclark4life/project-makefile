@@ -3591,7 +3591,8 @@ django-siteuser-default:
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
-django-show-urls-default:
+.PHONY: django-urls-show-default
+django-urls-show-default:
 	python manage.py show_urls
 
 django-loaddata-default:
@@ -4402,6 +4403,9 @@ s-default: django-serve
 
 .PHONY: su-default
 su-default: django-su
+
+.PHONY: urls-default
+urls-default: django-urls-show
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
