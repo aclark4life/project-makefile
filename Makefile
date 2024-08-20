@@ -3459,8 +3459,8 @@ django-init-default: separator \
 	django-migrate \
 	su \
 
-.PHONY: django-wagtail-init-default
-django-wagtail-init-default: separator \
+.PHONY: django-init-wagtail-default
+django-init-wagtail-default: separator \
 	db-init \
 	django-install \
 	wagtail-install \
@@ -4551,7 +4551,7 @@ h-default: usage
 l-default: makefile-list-targets
 
 .PHONY: init-default
-init-default: django-wagtail-init django-serve
+init-default: django-init-wagtail django-serve
 
 .PHONY: last-default
 last-default: git-commit-message-last git-push
