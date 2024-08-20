@@ -3361,6 +3361,10 @@ django-custom-admin-default:
 	@echo "$$DJANGO_BACKEND_APPS" > $(DJANGO_BACKEND_APPS_FILE)
 	-$(GIT_ADD) backend/*.py
 
+.PHONY: django-db-shell-default
+django-db-shell-default:
+	python manage.py dbshell
+
 .PHONY: django-dockerfile-default
 django-dockerfile-default:
 	@echo "$$DJANGO_DOCKERFILE" > Dockerfile
@@ -3594,6 +3598,72 @@ django-install-minimal-default:
 	django-debug-toolbar \
 	python-webpack-boilerplate
 
+.PHONY: django-lint-default
+django-lint-default:
+	-ruff format -v
+	-djlint --reformat --format-css --format-js .
+	-ruff check -v --fix
+
+.PHONY: django-loaddata-default
+django-loaddata-default:
+	python manage.py loaddata
+
+.PHONY: django-logging-demo-default
+django-logging-demo-default:
+	python manage.py startapp logging_demo
+	@echo "$$DJANGO_LOGGING_DEMO_ADMIN" > logging_demo/admin.py
+	@echo "$$DJANGO_LOGGING_DEMO_MODELS" > logging_demo/models.py
+	@echo "$$DJANGO_LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
+	@echo "$$DJANGO_LOGGING_DEMO_VIEWS" > logging_demo/views.py
+	@echo "$$DJANGO_URLS_LOGGING_DEMO" >> $(DJANGO_URLS_FILE)
+	export APP_DIR="logging_demo"; $(MAKE) django-app-tests
+	-$(GIT_ADD) logging_demo/*.py
+	-$(GIT_ADD) logging_demo/migrations/*.py
+
+.PHONY: django-manage-py-default
+django-manage-py-default:
+	@echo "$$DJANGO_MANAGE_PY" > manage.py
+	-$(GIT_ADD) manage.py
+
+.PHONY: django-migrate-default
+django-migrate-default:
+	python manage.py migrate
+
+.PHONY: django-migrations-make-default
+django-migrations-make-default:
+	python manage.py makemigrations
+
+.PHONY: django-migrations-show-default
+django-migrations-show-default:
+	python manage.py showmigrations
+
+.PHONY: django-model-form-demo-default
+django-model-form-demo-default:
+	python manage.py startapp model_form_demo
+	@echo "$$DJANGO_MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_FORMS" > model_form_demo/forms.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_MODEL" > model_form_demo/models.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_URLS" > model_form_demo/urls.py
+	@echo "$$DJANGO_MODEL_FORM_DEMO_VIEWS" > model_form_demo/views.py
+	$(ADD_DIR) model_form_demo/templates
+	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
+	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
+	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
+	@echo "$$DJANGO_SETTINGS_MODEL_FORM_DEMO" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_URLS_MODEL_FORM_DEMO" >> $(DJANGO_URLS_FILE)
+	export APP_DIR="model_form_demo"; $(MAKE) django-app-tests
+	python manage.py makemigrations
+	-$(GIT_ADD) model_form_demo/*.py
+	-$(GIT_ADD) model_form_demo/templates
+	-$(GIT_ADD) model_form_demo/migrations
+
+.PHONY: django-offcanvas-template-default
+django-offcanvas-template-default:
+	-$(ADD_DIR) backend/templates
+	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
+	-$(GIT_ADD) backend/templates/offcanvas.html
+
 .PHONY: django-payments-demo-default
 django-payments-demo-default:
 	python manage.py startapp payments
@@ -3651,95 +3721,6 @@ django-search-default:
 django-secret-key-default:
 	@python -c "from secrets import token_urlsafe; print(token_urlsafe(50))"
 
-.PHONY: django-siteuser-default
-django-siteuser-default:
-	python manage.py startapp siteuser
-	$(ADD_DIR) siteuser/templates/
-	@echo "$$DJANGO_SITEUSER_FORM" > siteuser/forms.py
-	@echo "$$DJANGO_SITEUSER_MODEL" > siteuser/models.py
-	@echo "$$DJANGO_SITEUSER_ADMIN" > siteuser/admin.py
-	@echo "$$DJANGO_SITEUSER_VIEW" > siteuser/views.py
-	@echo "$$DJANGO_SITEUSER_URLS" > siteuser/urls.py
-	@echo "$$DJANGO_SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
-	@echo "$$DJANGO_SITEUSER_TEMPLATE" > siteuser/templates/user.html
-	@echo "$$DJANGO_SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
-	@echo "$$DJANGO_URLS_SITEUSER" >> $(DJANGO_URLS_FILE)
-	@echo "$$DJANGO_SETTINGS_SITEUSER" >> $(DJANGO_SETTINGS_BASE_FILE)
-	export APP_DIR="siteuser"; $(MAKE) django-app-tests
-	-$(GIT_ADD) siteuser/templates
-	-$(GIT_ADD) siteuser/*.py
-	python manage.py makemigrations siteuser
-	-$(GIT_ADD) siteuser/migrations/*.py
-
-.PHONY: django-urls-show-default
-django-urls-show-default:
-	python manage.py show_urls
-
-.PHONY: django-utils-default
-django-utils-default:
-	@echo "$$DJANGO_UTILS" > backend/utils.py
-	-$(GIT_ADD) backend/utils.py
-
-.PHONY: django-loaddata-default
-django-loaddata-default:
-	python manage.py loaddata
-
-.PHONY: django-manage-py-default
-django-manage-py-default:
-	@echo "$$DJANGO_MANAGE_PY" > manage.py
-	-$(GIT_ADD) manage.py
-
-.PHONY: django-offcanvas-template-default
-django-offcanvas-template-default:
-	-$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
-	-$(GIT_ADD) backend/templates/offcanvas.html
-
-.PHONY: django-migrate-default
-django-migrate-default:
-	python manage.py migrate
-
-.PHONY: django-migrations-make-default
-django-migrations-make-default:
-	python manage.py makemigrations
-
-.PHONY: django-migrations-show-default
-django-migrations-show-default:
-	python manage.py showmigrations
-
-.PHONY: django-model-form-demo-default
-django-model-form-demo-default:
-	python manage.py startapp model_form_demo
-	@echo "$$DJANGO_MODEL_FORM_DEMO_ADMIN" > model_form_demo/admin.py
-	@echo "$$DJANGO_MODEL_FORM_DEMO_FORMS" > model_form_demo/forms.py
-	@echo "$$DJANGO_MODEL_FORM_DEMO_MODEL" > model_form_demo/models.py
-	@echo "$$DJANGO_MODEL_FORM_DEMO_URLS" > model_form_demo/urls.py
-	@echo "$$DJANGO_MODEL_FORM_DEMO_VIEWS" > model_form_demo/views.py
-	$(ADD_DIR) model_form_demo/templates
-	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
-	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
-	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
-	@echo "$$DJANGO_SETTINGS_MODEL_FORM_DEMO" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_URLS_MODEL_FORM_DEMO" >> $(DJANGO_URLS_FILE)
-	export APP_DIR="model_form_demo"; $(MAKE) django-app-tests
-	python manage.py makemigrations
-	-$(GIT_ADD) model_form_demo/*.py
-	-$(GIT_ADD) model_form_demo/templates
-	-$(GIT_ADD) model_form_demo/migrations
-
-.PHONY: django-logging-demo-default
-django-logging-demo-default:
-	python manage.py startapp logging_demo
-	@echo "$$DJANGO_LOGGING_DEMO_ADMIN" > logging_demo/admin.py
-	@echo "$$DJANGO_LOGGING_DEMO_MODELS" > logging_demo/models.py
-	@echo "$$DJANGO_LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
-	@echo "$$DJANGO_LOGGING_DEMO_VIEWS" > logging_demo/views.py
-	@echo "$$DJANGO_URLS_LOGGING_DEMO" >> $(DJANGO_URLS_FILE)
-	export APP_DIR="logging_demo"; $(MAKE) django-app-tests
-	-$(GIT_ADD) logging_demo/*.py
-	-$(GIT_ADD) logging_demo/migrations/*.py
-
 .PHONY: django-serve-default
 django-serve-default:
 	npm run watch &
@@ -3778,19 +3759,38 @@ django-settings-prod-default:
 	@echo "$$DJANGO_SETTINGS_PROD" > $(DJANGO_SETTINGS_PROD_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_PROD_FILE)
 
-.PHONY: django-lint-default
-django-lint-default:
-	-ruff format -v
-	-djlint --reformat --format-css --format-js .
-	-ruff check -v --fix
+.PHONY: django-siteuser-default
+django-siteuser-default:
+	python manage.py startapp siteuser
+	$(ADD_DIR) siteuser/templates/
+	@echo "$$DJANGO_SITEUSER_FORM" > siteuser/forms.py
+	@echo "$$DJANGO_SITEUSER_MODEL" > siteuser/models.py
+	@echo "$$DJANGO_SITEUSER_ADMIN" > siteuser/admin.py
+	@echo "$$DJANGO_SITEUSER_VIEW" > siteuser/views.py
+	@echo "$$DJANGO_SITEUSER_URLS" > siteuser/urls.py
+	@echo "$$DJANGO_SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
+	@echo "$$DJANGO_SITEUSER_TEMPLATE" > siteuser/templates/user.html
+	@echo "$$DJANGO_SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
+	@echo "$$DJANGO_URLS_SITEUSER" >> $(DJANGO_URLS_FILE)
+	@echo "$$DJANGO_SETTINGS_SITEUSER" >> $(DJANGO_SETTINGS_BASE_FILE)
+	export APP_DIR="siteuser"; $(MAKE) django-app-tests
+	-$(GIT_ADD) siteuser/templates
+	-$(GIT_ADD) siteuser/*.py
+	python manage.py makemigrations siteuser
+	-$(GIT_ADD) siteuser/migrations/*.py
+
+.PHONY: django-urls-show-default
+django-urls-show-default:
+	python manage.py show_urls
+
+.PHONY: django-utils-default
+django-utils-default:
+	@echo "$$DJANGO_UTILS" > backend/utils.py
+	-$(GIT_ADD) backend/utils.py
 
 .PHONY: django-shell-default
 django-shell-default:
 	python manage.py shell
-
-.PHONY: django-db-shell-default
-django-db-shell-default:
-	python manage.py dbshell
 
 .PHONY: django-static-default
 django-static-default:
