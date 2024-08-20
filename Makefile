@@ -4081,20 +4081,21 @@ git-set-default-default:
 git-short-default:
 	@echo $(GIT_REV)
 
+.PHONY: help-default
+help-default:
+	@echo "Project Makefile 🤷"
+	@echo "Usage: make [options] [target] ..."
+	@echo "Examples:"
+	@echo "   make help                   Print this message"
+	@echo "   make list-defines  list all defines in the Makefile"
+	@echo "   make list-commands  list all targets in the Makefile"
+
 .PHONY: jenkins-init-default
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
-.PHONY: makefile-list-defines-default
-makefile-list-defines-default:
-	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
-
-.PHONY: makefile-list-exports-default
-makefile-list-exports-default:
-	@grep '^export [A-Z][A-Z_]*' Makefile
-
-.PHONY: makefile-list-targets-default
-makefile-list-targets-default:
+.PHONY: makefile-list-commands-default
+makefile-list-commands-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         echo "Commands from $$makefile:"; \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null | \
@@ -4106,6 +4107,18 @@ makefile-list-targets-default:
         awk '{print $$0}' ; \
         echo; \
     	done | $(PAGER)
+
+.PHONY: makefile-list-defines-default
+makefile-list-defines-default:
+	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
+
+.PHONY: makefile-list-exports-default
+makefile-list-exports-default:
+	@grep '^export [A-Z][A-Z_]*' Makefile
+
+.PHONY: makefile-list-targets-default
+makefile-list-targets-default:
+	@perl -ne 'print if /^\s*\.PHONY:/ .. /^[a-zA-Z0-9_-]+:/;' Makefile | grep -v .PHONY
 
 .PHONY: make-default
 make-default:
@@ -4356,15 +4369,6 @@ sphinx-build-default:
 sphinx-serve-default:
 	cd _build/html;python3 -m http.server
 
-.PHONY: usage-default
-usage-default:
-	@echo "Project Makefile 🤷"
-	@echo "Usage: make [options] [target] ..."
-	@echo "Examples:"
-	@echo "   make help                   Print this message"
-	@echo "   make list-defines  list all defines in the Makefile"
-	@echo "   make list-targets  list all targets in the Makefile"
-
 .PHONY: wagtail-base-template-default
 wagtail-base-template-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
@@ -4552,16 +4556,22 @@ git-commit-lint-default: git-commit-message-lint git-push
 gitignore-default: git-ignore
 
 .PHONY: h-default
-h-default: usage
+h-default: help
 
 .PHONY: l-default
-l-default: makefile-list-targets
+l-default: makefile-list-commands
+
+.PHONY: list-commands-default
+list-commands-default: makefile-list-commands
 
 .PHONY: list-defines-default
 list-defines-default: makefile-list-defines
 
+.PHONY: list-exports-default
+list-exports-default: makefile-exports-defines
+
 .PHONY: list-targets-default
-list-targets-default: makefile-list-targets
+list-targets-default: makefile-targets-defines
 
 .PHONY: init-default
 init-default: django-init-wagtail django-serve
@@ -4605,8 +4615,11 @@ sort-default: git-commit-message-sort git-push
 .PHONY: su-default
 su-default: django-su
 
+.PHONY: t-default
+t-default: makefile-list-targets
+
 .PHONY: u-default
-u-default: usage
+u-default: help
 
 .PHONY: urls-default
 urls-default: django-urls-show
