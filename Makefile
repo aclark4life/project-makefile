@@ -39,6 +39,7 @@ DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
+DJANGO_SETTINGS_SECRET_KEY := $(openssl rand -base64 48)
 DJANGO_URLS_FILE = backend/urls.py
 EB_DIR_NAME := .elasticbeanstalk
 EB_ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
@@ -1591,6 +1592,7 @@ INTERNAL_IPS = [
 MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa
 MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")  # noqa
 INSTALLED_APPS.append("django.contrib.admindocs")  # noqa
+SECRET_KEY = $(DJANGO_SETTINGS_SECRET_KEY)
 endef
 
 
@@ -3747,7 +3749,6 @@ django-settings-base-default:
 django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
-	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
 
 .PHONY: django-settings-prod-default
