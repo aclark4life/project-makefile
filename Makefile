@@ -877,6 +877,12 @@ define DJANGO_HEADER_TEMPLATE
 </div>
 endef 
 
+define DJANGO_HOME_PAGE_ADMIN
+from django.contrib import admin  # noqa
+
+# Register your models here.
+endef
+
 define DJANGO_HOME_PAGE_MODELS
 from django.db import models  # noqa
 
@@ -3123,6 +3129,7 @@ export DJANGO_FRONTEND_STYLES
 export DJANGO_FRONTEND_THEME_BLUE
 export DJANGO_FRONTEND_THEME_TOGGLER
 export DJANGO_HEADER_TEMPLATE
+export DJANGO_HOME_PAGE_ADMIN
 export DJANGO_HOME_PAGE_MODELS
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_HOME_PAGE_URLS
@@ -3555,6 +3562,7 @@ django-frontend-default: python-webpack-init
 django-home-default:
 	python manage.py startapp home
 	$(ADD_DIR) home/templates
+	@echo "$$DJANGO_HOME_PAGE_ADMIN" > home/admin.py
 	@echo "$$DJANGO_HOME_PAGE_MODELS" > home/models.py
 	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
