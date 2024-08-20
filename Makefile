@@ -1635,7 +1635,9 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 STATICFILES_DIRS = []
-WEBPACK_LOADER = {"MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),}
+WEBPACK_LOADER = {
+    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
 STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
 TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
 endef
