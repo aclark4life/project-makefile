@@ -159,46 +159,43 @@ endef
 
 define DJANGO_BASE_TEMPLATE
 {% load static webpack_loader %}
-
 <!DOCTYPE html>
-<html lang="en" class="h-100" data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
+<html lang="en"
+      class="h-100"
+      data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
     <head>
         <meta charset="utf-8" />
         <title>
-            {% block title %}
-            {% endblock %}
-            {% block title_suffix %}
-            {% endblock %}
+            {% block title %}{% endblock %}
+            {% block title_suffix %}{% endblock %}
         </title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
         {% stylesheet_pack 'app' %}
-
-        {% block extra_css %}
-        {# Override this in templates to add extra stylesheets #}
-        {% endblock %}
-
+        {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
         <style>
-          .success {
-              background-color: #d4edda;
-              border-color: #c3e6cb;
-              color: #155724;
-          }
-          .info {
-              background-color: #d1ecf1;
-              border-color: #bee5eb;
-              color: #0c5460;
-          }
-          .warning {
-              background-color: #fff3cd;
-              border-color: #ffeeba;
-              color: #856404;
-          }
-          .danger {
-              background-color: #f8d7da;
-              border-color: #f5c6cb;
-              color: #721c24;
-          }
+            .success {
+                background-color: #d4edda;
+                border-color: #c3e6cb;
+                color: #155724;
+            }
+
+            .info {
+                background-color: #d1ecf1;
+                border-color: #bee5eb;
+                color: #0c5460;
+            }
+
+            .warning {
+                background-color: #fff3cd;
+                border-color: #ffeeba;
+                color: #856404;
+            }
+
+            .danger {
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+                color: #721c24;
+            }
         </style>
         {% include 'favicon.html' %}
         {% csrf_token %}
@@ -228,9 +225,7 @@ define DJANGO_BASE_TEMPLATE
         {% include 'footer.html' %}
         {% include 'offcanvas.html' %}
         {% javascript_pack 'app' %}
-        {% block extra_js %}
-        {# Override this in templates to add extra javascript #}
-        {% endblock %}
+        {% block extra_js %}{# Override this in templates to add extra javascript #}{% endblock %}
     </body>
 </html>
 endef
