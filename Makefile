@@ -3369,8 +3369,8 @@ django-init-minimal-default: separator \
 	django-install-minimal \
 	django-project \
 	django-settings-directory \
-	django-settings-minimal \
-	django-settings-minimal-dev \
+	django-settings-base-minimal \
+	django-settings-dev-minimal \
 	pip-freeze \
 	pip-init-test \
 	django-custom-admin \
@@ -3718,8 +3718,8 @@ django-settings-directory-default:
 	@$(DEL_FILE) backend/settings.py
 	-$(GIT_ADD) backend/settings/*.py
 
-.PHONY: django-settings-minimal-default
-django-settings-minimal-default:
+.PHONY: django-settings-base-minimal-default
+django-settings-base-minimal-default:
 	@echo "$$DJANGO_SETTINGS_MINIMAL_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-base-default
@@ -3750,7 +3750,7 @@ django-settings-base-default:
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-dev-default
-django-settings-minimal-dev-default:
+django-settings-dev-minimal-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
 	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
@@ -4040,6 +4040,10 @@ git-commit-message-last-default:
 .PHONY: git-commit-message-lint-default
 git-commit-message-lint-default:
 	-@$(GIT_COMMIT) -a -m "Lint"
+
+.PHONY: git-commit-message-rename-default
+git-commit-message-rename-default:
+	-@$(GIT_COMMIT) -a -m "Rename"
 
 .PHONY: git-push-default
 git-push-default:
@@ -4505,6 +4509,9 @@ db-dump-default: eb-export
 .PHONY: dbshell-default
 dbshell-default: django-db-shell
 
+.PHONY: deps-default
+deps-default: pip-deps
+
 .PHONY: e-default
 e-default: edit
 
@@ -4562,11 +4569,11 @@ open-default: django-open
 .PHONY: o-default
 o-default: django-open
 
-.PHONY: deps-default
-deps-default: pip-deps
-
 .PHONY: readme-default
 readme-default: readme-init
+
+.PHONY: rename-default
+rename-default: git-commit-message-rename
 
 .PHONY: serve-default
 serve-default: django-serve
