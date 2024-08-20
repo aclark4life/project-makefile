@@ -1674,6 +1674,16 @@ LOCAL_IPV4 = get_ec2_metadata()
 ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
 endef
 
+define DJANGO_SETTINGS_PAYMENTS
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+DJSTRIPE_WEBHOOK_VALIDATION = "retrieve_event"
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
+INSTALLED_APPS.append("payments")  # noqa
+INSTALLED_APPS.append("djstripe")  # noqa
+endef
+
 define DJANGO_SETTINGS_REST_FRAMEWORK
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -3204,6 +3214,7 @@ export DJANGO_SETTINGS_DEV_FILE
 export DJANGO_SETTINGS_HOME_PAGE
 export DJANGO_SETTINGS_MIDDLEWARE
 export DJANGO_SETTINGS_MODEL_FORM_DEMO
+export DJANGO_SETTINGS_PAYMENTS
 export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_PROD_FILE
 export DJANGO_SETTINGS_REST_FRAMEWORK
@@ -3617,13 +3628,7 @@ django-payments-demo-default:
 	@echo "$$DJANGO_PAYMENTS_TEMPLATE_SUCCESS" > payments/templates/payments/success.html
 	@echo "$$DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST" > payments/templates/payments/product_list.html
 	@echo "$$DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL" > payments/templates/payments/product_detail.html
-	@echo "DJSTRIPE_FOREIGN_KEY_TO_FIELD = 'id'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "DJSTRIPE_WEBHOOK_VALIDATION = 'retrieve_event'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('payments')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('djstripe')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_PAYMENTS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_URLS_PAYMENTS" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="payments"; $(MAKE) django-app-tests
 	python manage.py makemigrations payments
