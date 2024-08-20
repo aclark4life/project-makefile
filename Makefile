@@ -1626,7 +1626,7 @@ define DJANGO_SETTINGS_MIDDLEWARE
 MIDDLEWARE.append("allauth.account.middleware.AccountMiddleware")
 endef
 
-define DJANGO_SETTINGS_MINIMAL_BASE
+define DJANGO_SETTINGS_BASE_MINIMAL
 # $(PROJECT_NAME)
 import os  # noqa
 import dj_database_url  # noqa
@@ -3169,7 +3169,7 @@ export DJANGO_SEARCH_URLS
 export DJANGO_SEARCH_UTILS
 export DJANGO_SEARCH_VIEWS
 export DJANGO_SETTINGS_AUTHENTICATION_BACKENDS
-export DJANGO_SETTINGS_MINIMAL_BASE
+export DJANGO_SETTINGS_BASE_MINIMAL
 export DJANGO_SETTINGS_INSTALLED_APPS
 export DJANGO_SETTINGS_DATABASE
 export DJANGO_SETTINGS_CRISPY_FORMS
@@ -3725,7 +3725,7 @@ django-settings-directory-default:
 
 .PHONY: django-settings-base-minimal-default
 django-settings-base-minimal-default:
-	@echo "$$DJANGO_SETTINGS_MINIMAL_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_BASE_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-base-default
 django-settings-base-default:
@@ -3735,7 +3735,7 @@ django-settings-base-default:
 	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "import os  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_THEMES" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_DATABASE" >> $(DJANGO_SETTINGS_BASE_FILE)
