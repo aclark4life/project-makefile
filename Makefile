@@ -3403,6 +3403,10 @@ django-frontend-default: python-webpack-init
 	@$(MAKE) npm-install
 	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
 
+.PHONY: django-graph-default
+django-graph-default:
+	python manage.py graph_models -a -o $(PROJECT_NAME).png
+
 .PHONY: django-header-template-default
 django-header-template-default:
 	@echo "$$DJANGO_HEADER_TEMPLATE" > backend/templates/header.html
@@ -3666,10 +3670,6 @@ django-siteuser-default:
 	-$(GIT_ADD) siteuser/*.py
 	python manage.py makemigrations siteuser
 	-$(GIT_ADD) siteuser/migrations/*.py
-
-.PHONY: django-graph-default
-django-graph-default:
-	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
 .PHONY: django-urls-show-default
 django-urls-show-default:
