@@ -4573,7 +4573,7 @@ o-default: django-open
 readme-default: readme-init
 
 .PHONY: rename-default
-rename-default: git-commit-message-rename
+rename-default: git-commit-message-rename git-push
 
 .PHONY: serve-default
 serve-default: django-serve
