@@ -2967,8 +2967,12 @@ INSTALLED_APPS.append("wagtail.contrib.settings")
 INSTALLED_APPS.append("wagtailmarkdown")
 INSTALLED_APPS.append("wagtailmenus")
 INSTALLED_APPS.append("wagtailseo")
-TEMPLATES[0]["OPTIONS"]["context_processors"].append("wagtail.contrib.settings.context_processors.settings")
-TEMPLATES[0]["OPTIONS"]["context_processors"].append("wagtailmenus.context_processors.wagtailmenus")
+TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+    "wagtail.contrib.settings.context_processors.settings"
+)
+TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+    "wagtailmenus.context_processors.wagtailmenus"
+)
 endef
 
 define WAGTAIL_SITEPAGE_MODEL
