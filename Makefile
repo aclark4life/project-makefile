@@ -1583,18 +1583,16 @@ LOGGING = {
         },
     },
 }
-endef
 
-define DJANGO_SETTINGS_DEV_INTERNAL_IPS
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-endef
 
-define DJANGO_SETTINGS_DEV_MIDDLEWARE
 MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa
 MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")  # noqa
+INSTALLED_APPS.append("django.contrib.admindocs")  # noqa
 endef
+
 
 define DJANGO_SETTINGS_HOME_PAGE
 INSTALLED_APPS.append("home")
@@ -3167,8 +3165,6 @@ export DJANGO_SETTINGS_DATABASE
 export DJANGO_SETTINGS_CRISPY_FORMS
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_DEV_FILE
-export DJANGO_SETTINGS_DEV_INTERNAL_IPS
-export DJANGO_SETTINGS_DEV_MIDDLEWARE
 export DJANGO_SETTINGS_HOME_PAGE
 export DJANGO_SETTINGS_MIDDLEWARE
 export DJANGO_SETTINGS_PROD
@@ -3748,22 +3744,9 @@ django-settings-base-default:
 	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-dev-default
-django-settings-dev-minimal-default:
-	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
-	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
-	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
-	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
-	@echo "MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
-	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
-	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
-
-.PHONY: django-settings-dev-default
 django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
-	@echo "$$DJANGO_SETTINGS_DEV_INTERNAL_IPS" >> $(DJANGO_SETTINGS_DEV_FILE)
-	@echo "$$DJANGO_SETTINGS_DEV_MIDDLEWARE" >> $(DJANGO_SETTINGS_DEV_FILE)
-	@echo "INSTALLED_APPS.append('django.contrib.admindocs')  # noqa" >> $(DJANGO_SETTINGS_DEV_FILE)
 	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
 
