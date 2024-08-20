@@ -923,19 +923,7 @@ from django.db import models  # noqa
 endef
 
 define DJANGO_LOGGING_DEMO_SETTINGS
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
-    },
-}
+INSTALLED_APPS.append("logging_demo")  # noqa
 endef
 
 define DJANGO_LOGGING_DEMO_URLS
@@ -3735,7 +3723,6 @@ django-logging-demo-default:
 	@echo "$$DJANGO_LOGGING_DEMO_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_LOGGING_DEMO_URLS" > logging_demo/urls.py
 	@echo "$$DJANGO_LOGGING_DEMO_VIEWS" > logging_demo/views.py
-	@echo "INSTALLED_APPS.append('logging_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_URLS_LOGGING_DEMO" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="logging_demo"; $(MAKE) django-app-tests
 	-$(GIT_ADD) logging_demo/*.py
