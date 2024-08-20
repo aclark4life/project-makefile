@@ -4602,11 +4602,14 @@ readme-default: readme-init
 .PHONY: rename-default
 rename-default: git-commit-message-rename git-push
 
-.PHONY: serve-default
-serve-default: django-serve
-
 .PHONY: s-default
 s-default: django-serve
+
+.PHONY: shell-default
+shell-default: django-shell
+
+.PHONY: serve-default
+serve-default: django-serve
 
 .PHONY: sort-default
 sort-default: git-commit-message-sort git-push
