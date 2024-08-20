@@ -1628,7 +1628,9 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 STATICFILES_DIRS = []
 STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
 TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
-WEBPACK_LOADER = { "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"), }
+WEBPACK_LOADER = {
+    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
 endef
 
 define DJANGO_SETTINGS_PROD
