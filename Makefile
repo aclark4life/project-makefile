@@ -3993,6 +3993,10 @@ git-commit-message-last-default:
 git-commit-message-lint-default:
 	-@$(GIT_COMMIT) -a -m "Lint"
 
+.PHONY: git-commit-message-mk-default
+git-commit-message-mk-default:
+	-@$(GIT_COMMIT) -a -m "Add/update $(MAKEFILE_CUSTOM_FILE)"
+
 .PHONY: git-commit-message-rename-default
 git-commit-message-rename-default:
 	-@$(GIT_COMMIT) -a -m "Rename"
@@ -4073,9 +4077,6 @@ make-default:
 	-$(GIT_ADD) Makefile
 	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
 	-git push
-
-.PHONY: mk-default
-mk-default: project.mk git-push
 
 .PHONY: npm-init-default
 npm-init-default:
@@ -4585,6 +4586,9 @@ migrations-default: django-migrations-make
 
 .PHONY: migrations-show-default
 migrations-show-default: django-migrations-show
+
+.PHONY: mk-default
+mk-default: project.mk git-commit-mk git-push
 
 .PHONY: open-default
 open-default: django-open
