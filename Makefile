@@ -4074,6 +4074,10 @@ make-default:
 	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
 	-git push
 
+.PHONY: mk-default
+mk-default: project.mk
+	git-push
+
 .PHONY: npm-init-default
 npm-init-default:
 	npm init -y
