@@ -1529,9 +1529,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
-define DJANGO_SETTINGS_BASE
-endef
-
 define DJANGO_SETTINGS_CRISPY_FORMS
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -1626,6 +1623,7 @@ define DJANGO_SETTINGS_MINIMAL_BASE
 # $(PROJECT_NAME)
 import os  # noqa
 import dj_database_url  # noqa
+
 INSTALLED_APPS.append("debug_toolbar")
 INSTALLED_APPS.append("webpack_boilerplate")
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
