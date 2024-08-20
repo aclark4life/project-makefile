@@ -1598,6 +1598,10 @@ MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa
 MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")  # noqa
 endef
 
+define DJANGO_SETTINGS_HOME_PAGE
+INSTALLED_APPS.append("home")
+endef
+
 define DJANGO_SETTINGS_INSTALLED_APPS
 INSTALLED_APPS.append("allauth")
 INSTALLED_APPS.append("allauth.account")
@@ -3166,6 +3170,7 @@ export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_DEV_FILE
 export DJANGO_SETTINGS_DEV_INTERNAL_IPS
 export DJANGO_SETTINGS_DEV_MIDDLEWARE
+export DJANGO_SETTINGS_HOME_PAGE
 export DJANGO_SETTINGS_MIDDLEWARE
 export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_PROD_FILE
@@ -3557,7 +3562,7 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
 	@echo "$$DJANGO_URLS_HOME_PAGE" >> $(DJANGO_URLS_FILE)
-	@echo "INSTALLED_APPS.append('home')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_HOME_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	export APP_DIR="home"; $(MAKE) django-app-tests
 	-$(GIT_ADD) home/templates
 	-$(GIT_ADD) home/*.py
