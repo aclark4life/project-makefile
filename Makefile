@@ -4615,8 +4615,11 @@ sort-default: git-commit-message-sort git-push
 .PHONY: su-default
 su-default: django-su
 
+.PHONY: test-default
+test-default: django-test
+
 .PHONY: t-default
-t-default: makefile-list-targets
+t-default: django-test
 
 .PHONY: u-default
 u-default: help
