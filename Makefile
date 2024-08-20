@@ -3140,6 +3140,8 @@ endef
 # ------------------------------------------------------------------------------  
 
 export DJANGO_ALLAUTH_BASE_TEMPLATE
+export DJANGO_API_SERIALIZERS
+export DJANGO_API_VIEWS
 export DJANGO_APP_TESTS
 export DJANGO_BACKEND_APPS
 export DJANGO_BASE_TEMPLATE
@@ -3195,8 +3197,6 @@ export DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST
 export DJANGO_PAYMENTS_TEMPLATE_SUCCESS
 export DJANGO_PAYMENTS_URLS
 export DJANGO_PAYMENTS_VIEW
-export DJANGO_API_SERIALIZERS
-export DJANGO_API_VIEWS
 export DJANGO_SEARCH_FORMS
 export DJANGO_SEARCH_SETTINGS
 export DJANGO_SEARCH_TEMPLATE
@@ -3206,11 +3206,11 @@ export DJANGO_SEARCH_VIEWS
 export DJANGO_SETTINGS_AUTHENTICATION_BACKENDS
 export DJANGO_SETTINGS_BASE
 export DJANGO_SETTINGS_BASE_MINIMAL
-export DJANGO_SETTINGS_INSTALLED_APPS
-export DJANGO_SETTINGS_DATABASE
 export DJANGO_SETTINGS_CRISPY_FORMS
+export DJANGO_SETTINGS_DATABASE
 export DJANGO_SETTINGS_DEV
 export DJANGO_SETTINGS_HOME_PAGE
+export DJANGO_SETTINGS_INSTALLED_APPS
 export DJANGO_SETTINGS_MIDDLEWARE
 export DJANGO_SETTINGS_MODEL_FORM_DEMO
 export DJANGO_SETTINGS_PAYMENTS
@@ -3239,11 +3239,11 @@ export EB_CUSTOM_ENV_VAR_FILE
 export GIT_IGNORE
 export JENKINS_FILE
 export MAKEFILE_CUSTOM
+export PIP_INSTALL_REQUIREMENTS_TEST
 export PROGRAMMING_INTERVIEW
 export PYTHON_CI_YAML
 export PYTHON_LICENSE_TXT
 export PYTHON_PROJECT_TOML
-export PIP_INSTALL_REQUIREMENTS_TEST
 export SEPARATOR
 export TINYMCE_JS
 export WAGTAIL_BASE_TEMPLATE
@@ -4088,6 +4088,10 @@ jenkins-init-default:
 .PHONY: makefile-list-defines-default
 makefile-list-defines-default:
 	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
+
+.PHONY: makefile-list-exports-default
+makefile-list-exports-default:
+	@grep '^export [A-Z][A-Z_]*' Makefile
 
 .PHONY: makefile-list-targets-default
 makefile-list-targets-default:
