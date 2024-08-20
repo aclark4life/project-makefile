@@ -3859,15 +3859,6 @@ django-test-default: django-npm-install django-npm-build django-static
 	-$(MAKE) pip-install-test
 	python manage.py test
 
-.PHONY: django-urls-show-default
-django-urls-show-default:
-	python manage.py show_urls
-
-.PHONY: django-utils-default
-django-utils-default:
-	@echo "$$DJANGO_UTILS" > backend/utils.py
-	-$(GIT_ADD) backend/utils.py
-
 .PHONY: django-urls-api-default
 django-urls-api-default:
 	@echo "$$DJANGO_URLS_API" >> $(DJANGO_URLS_FILE)
@@ -3882,10 +3873,19 @@ django-urls-default:
 	@echo "$$DJANGO_URLS" > $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) $(DJANGO_URLS_FILE)
 
+.PHONY: django-urls-show-default
+django-urls-show-default:
+	python manage.py show_urls
+
 .PHONY: django-user-default
 django-user-default:
 	python manage.py shell -c "from django.contrib.auth.models import User; \
         User.objects.create_user('user', '', 'user')"
+
+.PHONY: django-utils-default
+django-utils-default:
+	@echo "$$DJANGO_UTILS" > backend/utils.py
+	-$(GIT_ADD) backend/utils.py
 
 .PHONY: docker-build-default
 docker-build-default:
