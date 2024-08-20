@@ -3349,16 +3349,6 @@ django-allauth-default:
 django-app-tests-default:
 	@echo "$$DJANGO_APP_TESTS" > $(APP_DIR)/tests.py
 
-.PHONY: django-project-default
-django-project-default:
-	django-admin startproject backend .
-	-$(GIT_ADD) backend
-
-.PHONY: django-utils-default
-django-utils-default:
-	@echo "$$DJANGO_UTILS" > backend/utils.py
-	-$(GIT_ADD) backend/utils.py
-
 .PHONY: django-custom-admin-default
 django-custom-admin-default:
 	@echo "$$DJANGO_CUSTOM_ADMIN" > $(DJANGO_CUSTOM_ADMIN_FILE)
@@ -3634,6 +3624,11 @@ django-payments-demo-default:
 	@echo "$$DJANGO_PAYMENTS_MIGRATION_0003" > payments/migrations/0003_create_initial_products.py
 	-$(GIT_ADD) payments/
 
+.PHONY: django-project-default
+django-project-default:
+	django-admin startproject backend .
+	-$(GIT_ADD) backend
+
 .PHONY: django-rest-serializers-default
 django-rest-serializers-default:
 	@echo "$$DJANGO_API_SERIALIZERS" > backend/serializers.py
@@ -3690,6 +3685,11 @@ django-graph-default:
 .PHONY: django-urls-show-default
 django-urls-show-default:
 	python manage.py show_urls
+
+.PHONY: django-utils-default
+django-utils-default:
+	@echo "$$DJANGO_UTILS" > backend/utils.py
+	-$(GIT_ADD) backend/utils.py
 
 .PHONY: django-loaddata-default
 django-loaddata-default:
