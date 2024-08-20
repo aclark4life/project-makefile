@@ -901,6 +901,7 @@ endef
 define DJANGO_HOME_PAGE_VIEWS
 from django.views.generic import TemplateView
 
+
 class HomeView(TemplateView):
     template_name = "home.html"
 endef
