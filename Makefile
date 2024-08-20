@@ -4596,7 +4596,7 @@ serve-default: django-serve
 s-default: django-serve
 
 .PHONY: sort-default
-sort-default: git-commit-message-sort
+sort-default: git-commit-message-sort git-push
 
 .PHONY: su-default
 su-default: django-su
