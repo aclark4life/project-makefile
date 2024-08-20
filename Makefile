@@ -3380,7 +3380,6 @@ django-init-minimal-default: separator \
 	django-migrate \
 	git-ignore \
 	django-su \
-	serve
 
 .PHONY: django-init-default
 django-init-default: separator \
@@ -3414,7 +3413,6 @@ django-init-default: separator \
 	django-frontend \
 	django-migrate \
 	su \
-	serve
 
 .PHONY: django-wagtail-init-default
 django-wagtail-init-default: separator \
@@ -4530,7 +4528,7 @@ h-default: usage
 l-default: makefile-list-targets
 
 .PHONY: init-default
-init-default: django-wagtail-init
+init-default: django-wagtail-init django-serve
 
 .PHONY: last-default
 last-default: git-commit-message-last git-push
