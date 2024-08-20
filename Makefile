@@ -1692,6 +1692,11 @@ REST_FRAMEWORK = {
 }
 endef
 
+define DJANGO_SETTINGS_SITEUSER
+INSTALLED_APPS.append("siteuser")  # noqa
+AUTH_USER_MODEL = "siteuser.User"
+endef
+
 define DJANGO_SETTINGS_THEMES
 THEMES = [
     ("light", "Light Theme"),
@@ -3205,6 +3210,7 @@ export DJANGO_SETTINGS_MIDDLEWARE
 export DJANGO_SETTINGS_PROD
 export DJANGO_SETTINGS_PROD_FILE
 export DJANGO_SETTINGS_REST_FRAMEWORK
+export DJANGO_SETTINGS_SITEUSER
 export DJANGO_SETTINGS_THEMES
 export DJANGO_SITEUSER_ADMIN
 export DJANGO_SITEUSER_EDIT_TEMPLATE
@@ -3669,9 +3675,8 @@ django-siteuser-default:
 	@echo "$$DJANGO_SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
 	@echo "$$DJANGO_SITEUSER_TEMPLATE" > siteuser/templates/user.html
 	@echo "$$DJANGO_SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
-	@echo "INSTALLED_APPS.append('siteuser')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "AUTH_USER_MODEL = 'siteuser.User'" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_URLS_SITEUSER" >> $(DJANGO_URLS_FILE)
+	@echo "$$DJANGO_SETTINGS_SITEUSER" >> $(DJANGO_SETTINGS_BASE_FILE)
 	export APP_DIR="siteuser"; $(MAKE) django-app-tests
 	-$(GIT_ADD) siteuser/templates
 	-$(GIT_ADD) siteuser/*.py
