@@ -3658,11 +3658,74 @@ django-model-form-demo-default:
 	-$(GIT_ADD) model_form_demo/templates
 	-$(GIT_ADD) model_form_demo/migrations
 
+.PHONY: django-npm-build-default
+django-npm-build-default:
+	npm run build
+
+.PHONY: django-npm-save-default
+django-npm-save-default:
+	npm install \
+        @fortawesome/fontawesome-free \
+        @fortawesome/fontawesome-svg-core \
+        @fortawesome/free-brands-svg-icons \
+        @fortawesome/free-solid-svg-icons \
+        @fortawesome/react-fontawesome \
+        	bootstrap \
+        camelize \
+        date-fns \
+        history \
+        mapbox-gl \
+        query-string \
+        react-animate-height \
+        react-chartjs-2 \
+        react-copy-to-clipboard \
+        react-date-range \
+        react-dom \
+        react-dropzone \
+        react-hook-form \
+        react-image-crop \
+        react-map-gl \
+        react-modal \
+        react-resize-detector \
+        react-select \
+        react-swipeable \
+        snakeize \
+        striptags \
+        url-join \
+        viewport-mercator-project
+
+.PHONY: django-npm-save-dev-default
+django-npm-save-dev-default:
+	npm install \
+        eslint-plugin-react \
+        eslint-config-standard \
+        eslint-config-standard-jsx \
+        @babel/core \
+        @babel/preset-env \
+        @babel/preset-react \
+        --save-dev
+
+.PHONY: django-npm-test-default
+django-npm-test-default:
+	npm run test
+
 .PHONY: django-offcanvas-template-default
 django-offcanvas-template-default:
 	-$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/offcanvas.html
+
+.PHONY: django-open-default
+django-open-default:
+ifeq ($(UNAME), Linux)
+	@echo "Opening on Linux."
+	xdg-open http://0.0.0.0:8000
+else ifeq ($(UNAME), Darwin)
+	@echo "Opening on macOS (Darwin)."
+	open http://0.0.0.0:8000
+else
+	@echo "Unable to open on: $(UNAME)"
+endif
 
 .PHONY: django-payments-demo-default
 django-payments-demo-default:
@@ -3726,17 +3789,6 @@ django-serve-default:
 	npm run watch &
 	python manage.py runserver 0.0.0.0:8000
 
-.PHONY: django-settings-directory-default
-django-settings-directory-default:
-	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
-	@$(COPY_FILE) backend/settings.py backend/settings/base.py
-	@$(DEL_FILE) backend/settings.py
-	-$(GIT_ADD) backend/settings/*.py
-
-.PHONY: django-settings-base-minimal-default
-django-settings-base-minimal-default:
-	@echo "$$DJANGO_SETTINGS_BASE_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
-
 .PHONY: django-settings-base-default
 django-settings-base-default:
 	@echo "$$DJANGO_SETTINGS_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
@@ -3748,16 +3800,31 @@ django-settings-base-default:
 	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
+.PHONY: django-settings-base-minimal-default
+django-settings-base-minimal-default:
+	@echo "$$DJANGO_SETTINGS_BASE_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
+
 .PHONY: django-settings-dev-default
 django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
 	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
 
+.PHONY: django-settings-directory-default
+django-settings-directory-default:
+	@$(ADD_DIR) $(DJANGO_SETTINGS_DIR)
+	@$(COPY_FILE) backend/settings.py backend/settings/base.py
+	@$(DEL_FILE) backend/settings.py
+	-$(GIT_ADD) backend/settings/*.py
+
 .PHONY: django-settings-prod-default
 django-settings-prod-default:
 	@echo "$$DJANGO_SETTINGS_PROD" > $(DJANGO_SETTINGS_PROD_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_PROD_FILE)
+
+.PHONY: django-shell-default
+django-shell-default:
+	python manage.py shell
 
 .PHONY: django-siteuser-default
 django-siteuser-default:
@@ -3779,19 +3846,6 @@ django-siteuser-default:
 	python manage.py makemigrations siteuser
 	-$(GIT_ADD) siteuser/migrations/*.py
 
-.PHONY: django-urls-show-default
-django-urls-show-default:
-	python manage.py show_urls
-
-.PHONY: django-utils-default
-django-utils-default:
-	@echo "$$DJANGO_UTILS" > backend/utils.py
-	-$(GIT_ADD) backend/utils.py
-
-.PHONY: django-shell-default
-django-shell-default:
-	python manage.py shell
-
 .PHONY: django-static-default
 django-static-default:
 	python manage.py collectstatic --noinput
@@ -3805,10 +3859,14 @@ django-test-default: django-npm-install django-npm-build django-static
 	-$(MAKE) pip-install-test
 	python manage.py test
 
-.PHONY: django-user-default
-django-user-default:
-	python manage.py shell -c "from django.contrib.auth.models import User; \
-        User.objects.create_user('user', '', 'user')"
+.PHONY: django-urls-show-default
+django-urls-show-default:
+	python manage.py show_urls
+
+.PHONY: django-utils-default
+django-utils-default:
+	@echo "$$DJANGO_UTILS" > backend/utils.py
+	-$(GIT_ADD) backend/utils.py
 
 .PHONY: django-urls-api-default
 django-urls-api-default:
@@ -3824,68 +3882,10 @@ django-urls-default:
 	@echo "$$DJANGO_URLS" > $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) $(DJANGO_URLS_FILE)
 
-.PHONY: django-npm-save-default
-django-npm-save-default:
-	npm install \
-        @fortawesome/fontawesome-free \
-        @fortawesome/fontawesome-svg-core \
-        @fortawesome/free-brands-svg-icons \
-        @fortawesome/free-solid-svg-icons \
-        @fortawesome/react-fontawesome \
-        	bootstrap \
-        camelize \
-        date-fns \
-        history \
-        mapbox-gl \
-        query-string \
-        react-animate-height \
-        react-chartjs-2 \
-        react-copy-to-clipboard \
-        react-date-range \
-        react-dom \
-        react-dropzone \
-        react-hook-form \
-        react-image-crop \
-        react-map-gl \
-        react-modal \
-        react-resize-detector \
-        react-select \
-        react-swipeable \
-        snakeize \
-        striptags \
-        url-join \
-        viewport-mercator-project
-
-.PHONY: django-npm-save-dev-default
-django-npm-save-dev-default:
-	npm install \
-        eslint-plugin-react \
-        eslint-config-standard \
-        eslint-config-standard-jsx \
-        @babel/core \
-        @babel/preset-env \
-        @babel/preset-react \
-        --save-dev
-
-.PHONY: django-npm-test-default
-django-npm-test-default:
-	npm run test
-
-.PHONY: django-npm-build-default
-django-npm-build-default:
-	npm run build
-
-.PHONY: django-open-default
-django-open-default:
-ifeq ($(UNAME), Linux)
-	@echo "Opening on Linux."
-	xdg-open http://0.0.0.0:8000
-else ifeq ($(UNAME), Darwin)
-	@echo "Opening on macOS (Darwin)."
-	open http://0.0.0.0:8000
-else
-	@echo "Unable to open on: $(UNAME)"
-endif
+.PHONY: django-user-default
+django-user-default:
+	python manage.py shell -c "from django.contrib.auth.models import User; \
+        User.objects.create_user('user', '', 'user')"
 
 .PHONY: docker-build-default
 docker-build-default:
