@@ -1628,6 +1628,16 @@ endef
 
 define DJANGO_SETTINGS_BASE
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+EXPLORER_CONNECTIONS = {"Default": "default"}
+EXPLORER_DEFAULT_CONNECTION = "default"
+LOGIN_REDIRECT_URL = "/"
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+STATICFILES_DIRS = []
+WEBPACK_LOADER = {"MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),}
+STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
+TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
 endef
 
 define DJANGO_SETTINGS_BASE_MINIMAL
@@ -3748,16 +3758,6 @@ django-settings-base-default:
 	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "EXPLORER_CONNECTIONS = { 'Default': 'default' }" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "EXPLORER_DEFAULT_CONNECTION = 'default'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "LOGIN_REDIRECT_URL = '/'" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "BASE_DIR = os.path.dirname(PROJECT_DIR)" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "STATICFILES_DIRS = []" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "STATICFILES_DIRS.append(os.path.join(BASE_DIR, 'frontend/build'))" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "TEMPLATES[0]['DIRS'].append(os.path.join(PROJECT_DIR, 'templates'))" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "WEBPACK_LOADER = { 'MANIFEST_FILE': os.path.join(BASE_DIR, 'frontend/build/manifest.json'), }" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-dev-default
 django-settings-dev-default:
