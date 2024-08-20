@@ -4075,8 +4075,7 @@ make-default:
 	-git push
 
 .PHONY: mk-default
-mk-default: project.mk
-	git-push
+mk-default: project.mk git-push
 
 .PHONY: npm-init-default
 npm-init-default:
