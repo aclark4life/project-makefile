@@ -1572,7 +1572,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 endef
 
 define DJANGO_SETTINGS_DATABASE
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)")
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/$(PROJECT_NAME)")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
 endef
 
