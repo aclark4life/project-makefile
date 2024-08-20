@@ -70,7 +70,7 @@ PROJECT_NAME = project-makefile
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
-WAGTAIL_CLEAN_DIRS = backend contactpage frontend home logging_demo model_form_demo node_modules payments privacy search sitepage siteuser
+WAGTAIL_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo node_modules payments privacy search sitepage siteuser
 WAGTAIL_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py package-lock.json package.json postcss.config.js requirements-test.txt requirements.txt
 
 # --------------------------------------------------------------------------------
@@ -3402,9 +3402,8 @@ django-frontend-default: python-webpack-init
 	@echo "$$DJANGO_FRONTEND_THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$DJANGO_FRONTEND_THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
-	@$(MAKE) django-npm-save
+	@$(MAKE) npm-install-django
 	@$(MAKE) django-npm-save-dev
-	@$(MAKE) npm-install
 	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
 
 .PHONY: django-graph-default
@@ -3658,42 +3657,6 @@ django-model-form-demo-default:
 	-$(GIT_ADD) model_form_demo/templates
 	-$(GIT_ADD) model_form_demo/migrations
 
-.PHONY: django-npm-build-default
-django-npm-build-default:
-	npm run build
-
-.PHONY: django-npm-save-default
-django-npm-save-default:
-	npm install \
-        @fortawesome/fontawesome-free \
-        @fortawesome/fontawesome-svg-core \
-        @fortawesome/free-brands-svg-icons \
-        @fortawesome/free-solid-svg-icons \
-        @fortawesome/react-fontawesome \
-        	bootstrap \
-        camelize \
-        date-fns \
-        history \
-        mapbox-gl \
-        query-string \
-        react-animate-height \
-        react-chartjs-2 \
-        react-copy-to-clipboard \
-        react-date-range \
-        react-dom \
-        react-dropzone \
-        react-hook-form \
-        react-image-crop \
-        react-map-gl \
-        react-modal \
-        react-resize-detector \
-        react-select \
-        react-swipeable \
-        snakeize \
-        striptags \
-        url-join \
-        viewport-mercator-project
-
 .PHONY: django-npm-save-dev-default
 django-npm-save-dev-default:
 	npm install \
@@ -3855,7 +3818,7 @@ django-su-default:
 	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
 
 .PHONY: django-test-default
-django-test-default: django-npm-install django-npm-build django-static
+django-test-default: npm-install-django npm-build django-static
 	-$(MAKE) pip-install-test
 	python manage.py test
 
@@ -4141,11 +4104,37 @@ npm-install-default:
 	npm install
 	-$(GIT_ADD) package-lock.json
 
-.PHONY: npm-clean-default
-npm-clean-default:
-	$(DEL_DIR) dist/
-	$(DEL_DIR) node_modules/
-	$(DEL_FILE) package-lock.json
+.PHONY: npm-install-django-default
+npm-install-django-default:
+	npm install \
+        @fortawesome/fontawesome-free \
+        @fortawesome/fontawesome-svg-core \
+        @fortawesome/free-brands-svg-icons \
+        @fortawesome/free-solid-svg-icons \
+        @fortawesome/react-fontawesome \
+        	bootstrap \
+        camelize \
+        date-fns \
+        history \
+        mapbox-gl \
+        query-string \
+        react-animate-height \
+        react-chartjs-2 \
+        react-copy-to-clipboard \
+        react-date-range \
+        react-dom \
+        react-dropzone \
+        react-hook-form \
+        react-image-crop \
+        react-map-gl \
+        react-modal \
+        react-resize-detector \
+        react-select \
+        react-swipeable \
+        snakeize \
+        striptags \
+        url-join \
+        viewport-mercator-project
 
 .PHONY: npm-serve-default
 npm-serve-default:
