@@ -1627,6 +1627,14 @@ MIDDLEWARE.append("allauth.account.middleware.AccountMiddleware")
 endef
 
 define DJANGO_SETTINGS_BASE
+# $(PROJECT_NAME)
+#
+# Uncomment next two lines to enable custom admin
+# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']
+# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')
+import os  # noqa
+import dj_database_url  # noqa
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EXPLORER_CONNECTIONS = {"Default": "default"}
 EXPLORER_DEFAULT_CONNECTION = "default"
@@ -3746,12 +3754,6 @@ django-settings-base-minimal-default:
 
 .PHONY: django-settings-base-default
 django-settings-base-default:
-	@echo "# $(PROJECT_NAME)" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "# Uncomment the next two lines to enable the custom admin" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "import os  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "import dj_database_url  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
