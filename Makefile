@@ -3349,6 +3349,12 @@ django-allauth-default:
 django-app-tests-default:
 	@echo "$$DJANGO_APP_TESTS" > $(APP_DIR)/tests.py
 
+.PHONY: django-base-template-default
+django-base-template-default:
+	@$(ADD_DIR) backend/templates
+	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
+	-$(GIT_ADD) backend/templates/base.html
+
 .PHONY: django-custom-admin-default
 django-custom-admin-default:
 	@echo "$$DJANGO_CUSTOM_ADMIN" > $(DJANGO_CUSTOM_ADMIN_FILE)
@@ -3362,65 +3368,61 @@ django-dockerfile-default:
 	@echo "$$DJANGO_DOCKERCOMPOSE" > docker-compose.yml
 	-$(GIT_ADD) docker-compose.yml
 
-.PHONY: django-offcanvas-template-default
-django-offcanvas-template-default:
-	-$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
-	-$(GIT_ADD) backend/templates/offcanvas.html
-
-.PHONY: django-manage-py-default
-django-manage-py-default:
-	@echo "$$DJANGO_MANAGE_PY" > manage.py
-	-$(GIT_ADD) manage.py
-
-.PHONY: django-base-template-default
-django-base-template-default:
-	@$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
-	-$(GIT_ADD) backend/templates/base.html
-
 .PHONY: django-favicon-default
 django-favicon-default:
 	@echo "$$DJANGO_FAVICON_TEMPLATE" > backend/templates/favicon.html
 	-$(GIT_ADD) backend/templates/favicon.html
-
-.PHONY: django-header-template-default
-django-header-template-default:
-	@echo "$$DJANGO_HEADER_TEMPLATE" > backend/templates/header.html
-	-$(GIT_ADD) backend/templates/header.html
 
 .PHONY: django-footer-template-default
 django-footer-template-default:
 	@echo "$$DJANGO_FOOTER_TEMPLATE" > backend/templates/footer.html
 	-$(GIT_ADD) backend/templates/footer.html
 
-.PHONY: django-init-minimal-default
-django-init-minimal-default: separator \
-	db-init \
-	django-install-minimal \
-	django-project \
-	django-settings-directory \
-	django-settings-base-minimal \
-	django-settings-dev \
-	pip-freeze \
-	pip-init-test \
-	django-custom-admin \
-	django-dockerfile \
-	django-offcanvas-template \
-	django-header-template \
-	django-footer-template \
-	django-base-template \
-	django-manage-py \
-	django-urls \
-	django-urls-debug-toolbar \
-	django-favicon \
-	django-settings-prod \
-	django-home \
-	django-utils \
-	django-frontend \
-	django-migrate \
-	git-ignore \
-	django-su \
+.PHONY: django-frontend-default
+django-frontend-default: python-webpack-init
+	$(ADD_DIR) frontend/src/context
+	$(ADD_DIR) frontend/src/images
+	$(ADD_DIR) frontend/src/utils
+	@echo "$$DJANGO_FRONTEND_APP" > frontend/src/application/app.js
+	@echo "$$DJANGO_FRONTEND_APP_CONFIG" > frontend/src/application/config.js
+	@echo "$$DJANGO_FRONTEND_BABELRC" > frontend/.babelrc
+	@echo "$$DJANGO_FRONTEND_COMPONENT_CLOCK" > frontend/src/components/Clock.js
+	@echo "$$DJANGO_FRONTEND_COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
+	@echo "$$DJANGO_FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
+	@echo "$$DJANGO_FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
+	@echo "$$DJANGO_FRONTEND_COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
+	@echo "$$DJANGO_FRONTEND_COMPONENTS" > frontend/src/components/index.js
+	@echo "$$DJANGO_FRONTEND_ESLINTRC" > frontend/.eslintrc
+	@echo "$$DJANGO_FRONTEND_PORTAL" > frontend/src/dataComponents.js
+	@echo "$$DJANGO_FRONTEND_STYLES" > frontend/src/styles/index.scss
+	@echo "$$DJANGO_FRONTEND_THEME_BLUE" > frontend/src/styles/theme-blue.scss
+	@echo "$$DJANGO_FRONTEND_THEME_TOGGLER" > frontend/src/utils/themeToggler.js
+	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
+	@$(MAKE) django-npm-save
+	@$(MAKE) django-npm-save-dev
+	@$(MAKE) npm-install
+	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
+
+.PHONY: django-header-template-default
+django-header-template-default:
+	@echo "$$DJANGO_HEADER_TEMPLATE" > backend/templates/header.html
+	-$(GIT_ADD) backend/templates/header.html
+
+.PHONY: django-home-default
+django-home-default:
+	python manage.py startapp home
+	$(ADD_DIR) home/templates
+	@echo "$$DJANGO_HOME_PAGE_ADMIN" > home/admin.py
+	@echo "$$DJANGO_HOME_PAGE_MODELS" > home/models.py
+	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
+	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
+	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
+	@echo "$$DJANGO_URLS_HOME_PAGE" >> $(DJANGO_URLS_FILE)
+	@echo "$$DJANGO_SETTINGS_HOME_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	export APP_DIR="home"; $(MAKE) django-app-tests
+	-$(GIT_ADD) home/templates
+	-$(GIT_ADD) home/*.py
+	-$(GIT_ADD) home/migrations/*.py
 
 .PHONY: django-init-default
 django-init-default: separator \
@@ -3453,7 +3455,35 @@ django-init-default: separator \
 	django-urls-api \
 	django-frontend \
 	django-migrate \
-	su \
+	django-su
+
+.PHONY: django-init-minimal-default
+django-init-minimal-default: separator \
+	db-init \
+	django-install-minimal \
+	django-project \
+	django-settings-directory \
+	django-settings-base-minimal \
+	django-settings-dev \
+	pip-freeze \
+	pip-init-test \
+	django-custom-admin \
+	django-dockerfile \
+	django-offcanvas-template \
+	django-header-template \
+	django-footer-template \
+	django-base-template \
+	django-manage-py \
+	django-urls \
+	django-urls-debug-toolbar \
+	django-favicon \
+	django-settings-prod \
+	django-home \
+	django-utils \
+	django-frontend \
+	django-migrate \
+	git-ignore \
+	django-su
 
 .PHONY: django-init-wagtail-default
 django-init-wagtail-default: separator \
@@ -3495,15 +3525,6 @@ django-init-wagtail-default: separator \
 	django-migrate \
 	django-su
 
-.PHONY: django-install-minimal-default
-django-install-minimal-default:
-	$(PIP_ENSURE)
-	python -m pip install \
-	Django \
-	dj-database-url \
-	django-debug-toolbar \
-	python-webpack-boilerplate
-
 .PHONY: django-install-default
 django-install-default:
 	$(PIP_ENSURE)
@@ -3540,7 +3561,7 @@ django-install-default:
         django-storages \
         django-tables2 \
         django-timezone-field \
-		django-widget-tweaks \
+	django-widget-tweaks \
         dj-database-url \
         dj-rest-auth \
         dj-stripe \
@@ -3560,46 +3581,14 @@ django-install-default:
         reportlab \
         texttable
 
-.PHONY: django-frontend-default
-django-frontend-default: python-webpack-init
-	$(ADD_DIR) frontend/src/context
-	$(ADD_DIR) frontend/src/images
-	$(ADD_DIR) frontend/src/utils
-	@echo "$$DJANGO_FRONTEND_APP" > frontend/src/application/app.js
-	@echo "$$DJANGO_FRONTEND_APP_CONFIG" > frontend/src/application/config.js
-	@echo "$$DJANGO_FRONTEND_BABELRC" > frontend/.babelrc
-	@echo "$$DJANGO_FRONTEND_COMPONENT_CLOCK" > frontend/src/components/Clock.js
-	@echo "$$DJANGO_FRONTEND_COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
-	@echo "$$DJANGO_FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
-	@echo "$$DJANGO_FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
-	@echo "$$DJANGO_FRONTEND_COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
-	@echo "$$DJANGO_FRONTEND_COMPONENTS" > frontend/src/components/index.js
-	@echo "$$DJANGO_FRONTEND_ESLINTRC" > frontend/.eslintrc
-	@echo "$$DJANGO_FRONTEND_PORTAL" > frontend/src/dataComponents.js
-	@echo "$$DJANGO_FRONTEND_STYLES" > frontend/src/styles/index.scss
-	@echo "$$DJANGO_FRONTEND_THEME_BLUE" > frontend/src/styles/theme-blue.scss
-	@echo "$$DJANGO_FRONTEND_THEME_TOGGLER" > frontend/src/utils/themeToggler.js
-	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
-	@$(MAKE) django-npm-save
-	@$(MAKE) django-npm-save-dev
-	@$(MAKE) npm-install
-	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
-
-.PHONY: django-home-default
-django-home-default:
-	python manage.py startapp home
-	$(ADD_DIR) home/templates
-	@echo "$$DJANGO_HOME_PAGE_ADMIN" > home/admin.py
-	@echo "$$DJANGO_HOME_PAGE_MODELS" > home/models.py
-	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
-	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
-	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
-	@echo "$$DJANGO_URLS_HOME_PAGE" >> $(DJANGO_URLS_FILE)
-	@echo "$$DJANGO_SETTINGS_HOME_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
-	export APP_DIR="home"; $(MAKE) django-app-tests
-	-$(GIT_ADD) home/templates
-	-$(GIT_ADD) home/*.py
-	-$(GIT_ADD) home/migrations/*.py
+.PHONY: django-install-minimal-default
+django-install-minimal-default:
+	$(PIP_ENSURE)
+	python -m pip install \
+	Django \
+	dj-database-url \
+	django-debug-toolbar \
+	python-webpack-boilerplate
 
 .PHONY: django-payments-demo-default
 django-payments-demo-default:
@@ -3694,6 +3683,17 @@ django-utils-default:
 .PHONY: django-loaddata-default
 django-loaddata-default:
 	python manage.py loaddata
+
+.PHONY: django-manage-py-default
+django-manage-py-default:
+	@echo "$$DJANGO_MANAGE_PY" > manage.py
+	-$(GIT_ADD) manage.py
+
+.PHONY: django-offcanvas-template-default
+django-offcanvas-template-default:
+	-$(ADD_DIR) backend/templates
+	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
+	-$(GIT_ADD) backend/templates/offcanvas.html
 
 .PHONY: django-migrate-default
 django-migrate-default:
