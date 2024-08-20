@@ -3803,7 +3803,7 @@ django-su-default:
 	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
 
 .PHONY: django-test-default
-django-test-default: npm-install-django npm-build django-static
+django-test-default: npm-install django-static
 	-$(MAKE) pip-install-test
 	python manage.py test
 
