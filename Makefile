@@ -29,8 +29,6 @@ DJANGO_DB_NAME = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
 	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
 DJANGO_DB_PASS = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
 	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
-DJANGO_DB_PORT = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
-	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PORT"])')
 DJANGO_DB_USER = $(shell $(DJANGO_DB_URL) | $(DJANGO_DB_COL) |\
 	python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
 DJANGO_BACKEND_APPS_FILE := backend/apps.py
@@ -41,7 +39,6 @@ DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
-DJANGO_SETTINGS_SECRET_KEY = $(openssl rand -base64 48)
 DJANGO_URLS_FILE = backend/urls.py
 EB_DIR_NAME := .elasticbeanstalk
 EB_ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
@@ -903,7 +900,6 @@ endef
 define DJANGO_HOME_PAGE_VIEWS
 from django.views.generic import TemplateView
 
-
 class HomeView(TemplateView):
     template_name = "home.html"
 endef
@@ -1539,7 +1535,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 endef
 
 define DJANGO_SETTINGS_DATABASE
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://$(DJANGO_DB_USER):$(DJANGO_DB_PASS)@$(DJANGO_DB_HOST):$(DJANGO_DB_PORT)/$(PROJECT_NAME)")
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(PROJECT_NAME)")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
 endef
 
@@ -1595,7 +1591,6 @@ INTERNAL_IPS = [
 MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa
 MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")  # noqa
 INSTALLED_APPS.append("django.contrib.admindocs")  # noqa
-SECRET_KEY = $(DJANGO_SETTINGS_SECRET_KEY)
 endef
 
 
@@ -3752,6 +3747,7 @@ django-settings-base-default:
 django-settings-dev-default:
 	@echo "# $(PROJECT_NAME)" > $(DJANGO_SETTINGS_DEV_FILE)
 	@echo "$$DJANGO_SETTINGS_DEV" >> backend/settings/dev.py
+	@SECRET_KEY=$$(openssl rand -base64 48); echo "SECRET_KEY = '$$SECRET_KEY'" >> $(DJANGO_SETTINGS_DEV_FILE)
 	-$(GIT_ADD) $(DJANGO_SETTINGS_DEV_FILE)
 
 .PHONY: django-settings-prod-default
