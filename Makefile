@@ -1995,7 +1995,7 @@ node_modules/
 _build/
 .elasticbeanstalk/
 db.sqlite3
-home/static
+static/
 backend/var
 endef
 
