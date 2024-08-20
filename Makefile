@@ -4356,8 +4356,8 @@ usage-default:
 	@echo "Usage: make [options] [target] ..."
 	@echo "Examples:"
 	@echo "   make help                   Print this message"
-	@echo "   make makefile-list-defines  list all defines in the Makefile"
-	@echo "   make makefile-list-targets  list all targets in the Makefile"
+	@echo "   make list-defines  list all defines in the Makefile"
+	@echo "   make list-targets  list all targets in the Makefile"
 
 .PHONY: wagtail-base-template-default
 wagtail-base-template-default:
@@ -4550,6 +4550,12 @@ h-default: usage
 
 .PHONY: l-default
 l-default: makefile-list-targets
+
+.PHONY: list-defines-default
+list-defines-default: makefile-list-defines
+
+.PHONY: list-targets-default
+list-targets-default: makefile-list-targets
 
 .PHONY: init-default
 init-default: django-init-wagtail django-serve
