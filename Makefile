@@ -4568,10 +4568,10 @@ list-commands-default: makefile-list-commands
 list-defines-default: makefile-list-defines
 
 .PHONY: list-exports-default
-list-exports-default: makefile-exports-defines
+list-exports-default: makefile-list-exports
 
 .PHONY: list-targets-default
-list-targets-default: makefile-targets-defines
+list-targets-default: makefile-list-targets
 
 .PHONY: init-default
 init-default: django-init-wagtail django-serve
