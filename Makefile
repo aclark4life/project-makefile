@@ -876,6 +876,12 @@ define DJANGO_HEADER_TEMPLATE
 </div>
 endef 
 
+define DJANGO_HOME_PAGE_MODELS
+from django.db import models  # noqa
+
+# Create your models here.
+endef
+
 define DJANGO_HOME_PAGE_TEMPLATE
 {% extends "base.html" %}
 {% block content %}
@@ -888,9 +894,7 @@ define DJANGO_HOME_PAGE_URLS
 from django.urls import path
 from .views import HomeView
 
-urlpatterns = [
-    path("", HomeView.as_view(), name="home")
-]
+urlpatterns = [path("", HomeView.as_view(), name="home")]
 endef
 
 define DJANGO_HOME_PAGE_VIEWS
@@ -905,6 +909,8 @@ define DJANGO_LOGGING_DEMO_ADMIN
 endef
 
 define DJANGO_LOGGING_DEMO_MODELS
+from django.db import models  # noqa
+
 # Create your models here.
 endef
 
@@ -3111,6 +3117,7 @@ export DJANGO_FRONTEND_STYLES
 export DJANGO_FRONTEND_THEME_BLUE
 export DJANGO_FRONTEND_THEME_TOGGLER
 export DJANGO_HEADER_TEMPLATE
+export DJANGO_HOME_PAGE_MODELS
 export DJANGO_HOME_PAGE_TEMPLATE
 export DJANGO_HOME_PAGE_URLS
 export DJANGO_HOME_PAGE_VIEWS
@@ -3543,6 +3550,7 @@ django-frontend-default: python-webpack-init
 django-home-default:
 	python manage.py startapp home
 	$(ADD_DIR) home/templates
+	@echo "$$DJANGO_HOME_PAGE_MODELS" > home/models.py
 	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
