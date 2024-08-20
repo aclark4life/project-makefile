@@ -1525,6 +1525,47 @@ AUTHENTICATION_BACKENDS = [
 ]
 endef
 
+define DJANGO_SETTINGS_BASE
+# $(PROJECT_NAME)
+#
+# Uncomment next two lines to enable custom admin
+# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']
+# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')
+import os  # noqa
+import dj_database_url  # noqa
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+EXPLORER_CONNECTIONS = {"Default": "default"}
+EXPLORER_DEFAULT_CONNECTION = "default"
+LOGIN_REDIRECT_URL = "/"
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+STATICFILES_DIRS = []
+WEBPACK_LOADER = {
+    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
+STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
+TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
+endef
+
+define DJANGO_SETTINGS_BASE_MINIMAL
+# $(PROJECT_NAME)
+import os  # noqa
+import dj_database_url  # noqa
+
+INSTALLED_APPS.append("debug_toolbar")
+INSTALLED_APPS.append("webpack_boilerplate")
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+STATICFILES_DIRS = []
+STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
+TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
+WEBPACK_LOADER = {
+    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
+endef
+
 define DJANGO_SETTINGS_CRISPY_FORMS
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -1614,45 +1655,8 @@ define DJANGO_SETTINGS_MIDDLEWARE
 MIDDLEWARE.append("allauth.account.middleware.AccountMiddleware")
 endef
 
-define DJANGO_SETTINGS_BASE
-# $(PROJECT_NAME)
-#
-# Uncomment next two lines to enable custom admin
-# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']
-# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')
-import os  # noqa
-import dj_database_url  # noqa
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-EXPLORER_CONNECTIONS = {"Default": "default"}
-EXPLORER_DEFAULT_CONNECTION = "default"
-LOGIN_REDIRECT_URL = "/"
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
-BASE_DIR = os.path.dirname(PROJECT_DIR)
-STATICFILES_DIRS = []
-WEBPACK_LOADER = {
-    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
-}
-STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
-TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
-endef
-
-define DJANGO_SETTINGS_BASE_MINIMAL
-# $(PROJECT_NAME)
-import os  # noqa
-import dj_database_url  # noqa
-
-INSTALLED_APPS.append("debug_toolbar")
-INSTALLED_APPS.append("webpack_boilerplate")
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(PROJECT_DIR)
-STATICFILES_DIRS = []
-STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
-TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
-WEBPACK_LOADER = {
-    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
-}
+define DJANGO_SETTINGS_MODEL_FORM_DEMO
+INSTALLED_APPS.append("model_form_demo")  # noqa
 endef
 
 define DJANGO_SETTINGS_PROD
@@ -3711,7 +3715,7 @@ django-model-form-demo-default:
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
-	@echo "INSTALLED_APPS.append('model_form_demo')  # noqa" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_MODEL_FORM_DEMO" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_URLS_MODEL_FORM_DEMO" >> $(DJANGO_URLS_FILE)
 	export APP_DIR="model_form_demo"; $(MAKE) django-app-tests
 	python manage.py makemigrations
