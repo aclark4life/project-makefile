@@ -4122,8 +4122,8 @@ makefile-list-targets-default:
 
 .PHONY: make-default
 make-default:
-	-$(GIT_ADD) Makefile project.mk
-	-$(GIT_COMMIT) Makefile project.mk -m "Add/update project-makefile files"
+	-$(GIT_ADD) Makefile
+	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
 	-git push
 
 .PHONY: npm-init-default
