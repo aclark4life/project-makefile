@@ -3364,7 +3364,7 @@ django-init-minimal-default: separator \
 	django-project \
 	django-settings-directory \
 	django-settings-base-minimal \
-	django-settings-dev-minimal \
+	django-settings-dev \
 	pip-freeze \
 	pip-init-test \
 	django-custom-admin \
