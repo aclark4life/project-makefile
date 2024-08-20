@@ -3403,7 +3403,7 @@ django-frontend-default: python-webpack-init
 	@echo "$$DJANGO_FRONTEND_THEME_TOGGLER" > frontend/src/utils/themeToggler.js
 	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
 	@$(MAKE) npm-install-django
-	@$(MAKE) django-npm-save-dev
+	@$(MAKE) npm-install-django-dev
 	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
 
 .PHONY: django-graph-default
@@ -3656,21 +3656,6 @@ django-model-form-demo-default:
 	-$(GIT_ADD) model_form_demo/*.py
 	-$(GIT_ADD) model_form_demo/templates
 	-$(GIT_ADD) model_form_demo/migrations
-
-.PHONY: django-npm-save-dev-default
-django-npm-save-dev-default:
-	npm install \
-        eslint-plugin-react \
-        eslint-config-standard \
-        eslint-config-standard-jsx \
-        @babel/core \
-        @babel/preset-env \
-        @babel/preset-react \
-        --save-dev
-
-.PHONY: django-npm-test-default
-django-npm-test-default:
-	npm run test
 
 .PHONY: django-offcanvas-template-default
 django-offcanvas-template-default:
@@ -4136,9 +4121,24 @@ npm-install-django-default:
         url-join \
         viewport-mercator-project
 
+.PHONY: npm-install-django-dev-default
+npm-install-django-dev-default:
+	npm install \
+        eslint-plugin-react \
+        eslint-config-standard \
+        eslint-config-standard-jsx \
+        @babel/core \
+        @babel/preset-env \
+        @babel/preset-react \
+        --save-dev
+
 .PHONY: npm-serve-default
 npm-serve-default:
 	npm run start
+
+.PHONY: npm-test-default
+npm-test-default:
+	npm run test
 
 .PHONY: pip-deps-default
 pip-deps-default:
