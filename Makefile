@@ -89,6 +89,36 @@ define DJANGO_ALLAUTH_BASE_TEMPLATE
 {% extends 'base.html' %}
 endef
 
+define DJANGO_API_SERIALIZERS
+from rest_framework import serializers
+from siteuser.models import User
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ["url", "username", "email", "is_staff"]
+endef
+
+define DJANGO_API_VIEWS
+from ninja import NinjaAPI
+from rest_framework import viewsets
+from siteuser.models import User
+from .serializers import UserSerializer
+
+api = NinjaAPI()
+
+
+@api.get("/hello")
+def hello(request):
+    return "Hello world"
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+endef
+
 define DJANGO_APP_TESTS
 from django.test import TestCase
 from django.urls import reverse
@@ -1373,36 +1403,6 @@ class CancelView(TemplateView):
     template_name = "payments/cancel.html"
 endef
 
-define DJANGO_API_SERIALIZERS
-from rest_framework import serializers
-from siteuser.models import User
-
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ["url", "username", "email", "is_staff"]
-endef
-
-define DJANGO_API_VIEWS
-from ninja import NinjaAPI
-from rest_framework import viewsets
-from siteuser.models import User
-from .serializers import UserSerializer
-
-api = NinjaAPI()
-
-
-@api.get("/hello")
-def hello(request):
-    return "Hello world"
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-endef
-
 define DJANGO_SEARCH_FORMS
 from django import forms
 
@@ -1659,21 +1659,6 @@ define DJANGO_SETTINGS_MODEL_FORM_DEMO
 INSTALLED_APPS.append("model_form_demo")  # noqa
 endef
 
-define DJANGO_SETTINGS_PROD
-from .base import *  # noqa
-from backend.utils import get_ec2_metadata
-
-DEBUG = False
-
-try:
-    from .local import *  # noqa
-except ImportError:
-    pass
-
-LOCAL_IPV4 = get_ec2_metadata()
-ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
-endef
-
 define DJANGO_SETTINGS_PAYMENTS
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 DJSTRIPE_WEBHOOK_VALIDATION = "retrieve_event"
@@ -1697,6 +1682,21 @@ endef
 define DJANGO_SETTINGS_SITEUSER
 INSTALLED_APPS.append("siteuser")  # noqa
 AUTH_USER_MODEL = "siteuser.User"
+endef
+
+define DJANGO_SETTINGS_PROD
+from .base import *  # noqa
+from backend.utils import get_ec2_metadata
+
+DEBUG = False
+
+try:
+    from .local import *  # noqa
+except ImportError:
+    pass
+
+LOCAL_IPV4 = get_ec2_metadata()
+ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
 endef
 
 define DJANGO_SETTINGS_THEMES
@@ -1881,13 +1881,13 @@ router.register(r"users", UserViewSet)
 urlpatterns += [path("api/", api.urls)]
 endef
 
-define DJANGO_URLS_HOME_PAGE
-urlpatterns += [path("", include("home.urls"))]
-endef
-
 define DJANGO_URLS_DEBUG_TOOLBAR
 if settings.DEBUG:
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
+endef
+
+define DJANGO_URLS_HOME_PAGE
+urlpatterns += [path("", include("home.urls"))]
 endef
 
 define DJANGO_URLS_LOGGING_DEMO
@@ -3210,13 +3210,11 @@ export DJANGO_SETTINGS_INSTALLED_APPS
 export DJANGO_SETTINGS_DATABASE
 export DJANGO_SETTINGS_CRISPY_FORMS
 export DJANGO_SETTINGS_DEV
-export DJANGO_SETTINGS_DEV_FILE
 export DJANGO_SETTINGS_HOME_PAGE
 export DJANGO_SETTINGS_MIDDLEWARE
 export DJANGO_SETTINGS_MODEL_FORM_DEMO
 export DJANGO_SETTINGS_PAYMENTS
 export DJANGO_SETTINGS_PROD
-export DJANGO_SETTINGS_PROD_FILE
 export DJANGO_SETTINGS_REST_FRAMEWORK
 export DJANGO_SETTINGS_SITEUSER
 export DJANGO_SETTINGS_THEMES
@@ -4051,6 +4049,10 @@ git-commit-message-lint-default:
 git-commit-message-rename-default:
 	-@$(GIT_COMMIT) -a -m "Rename"
 
+.PHONY: git-commit-message-sort-default
+git-commit-message-sort-default:
+	-@$(GIT_COMMIT) -a -m "Sort"
+
 .PHONY: git-push-default
 git-push-default:
 	-@$(GIT_PUSH)
@@ -4593,8 +4595,14 @@ serve-default: django-serve
 .PHONY: s-default
 s-default: django-serve
 
+.PHONY: sort-default
+sort-default: git-commit-message-sort
+
 .PHONY: su-default
 su-default: django-su
+
+.PHONY: u-default
+u-default: usage
 
 .PHONY: urls-default
 urls-default: django-urls-show
