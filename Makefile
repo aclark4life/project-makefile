@@ -4588,7 +4588,7 @@ migrations-default: django-migrations-make
 migrations-show-default: django-migrations-show
 
 .PHONY: mk-default
-mk-default: project.mk git-commit-mk git-push
+mk-default: project.mk git-commit-message-mk git-push
 
 .PHONY: open-default
 open-default: django-open
