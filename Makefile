@@ -4512,6 +4512,9 @@ ce-default: git-commit-edit git-push
 .PHONY: clean-default
 clean-default: wagtail-clean
 
+.PHONY: cp-default
+cp-default: git-commit-message git-push
+
 .PHONY: db-dump-default
 db-dump-default: eb-export
 
