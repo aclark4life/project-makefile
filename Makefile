@@ -4623,6 +4623,9 @@ shell-default: django-shell
 .PHONY: serve-default
 serve-default: django-serve
 
+.PHONY: static-default
+static-default: django-static
+
 .PHONY: sort-default
 sort-default: git-commit-message-sort git-push
 
