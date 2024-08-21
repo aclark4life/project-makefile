@@ -4535,6 +4535,9 @@ deploy-default: eb-deploy
 .PHONY: deps-default
 deps-default: pip-deps
 
+.PHONY: dump-default
+dump-default: db-dump
+
 .PHONY: edit-default
 edit-default: readme-edit
 
