@@ -4533,6 +4533,9 @@ empty-default: git-commit-message-empty git-push
 .PHONY: fp-default
 fp-default: git-push-force
 
+.PHONY: freeze-default
+freeze-default: pip-freeze
+
 .PHONY: git-commit-default
 git-commit-default: git-commit-message git-push
 
