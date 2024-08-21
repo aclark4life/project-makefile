@@ -3981,6 +3981,10 @@ git-commit-message-default:
 git-commit-message-empty-default:
 	-@$(GIT_COMMIT) --allow-empty -m "Empty-Commit"
 
+.PHONY: git-commit-message-freeze-default
+git-commit-message-freeze-default:
+	-@$(GIT_COMMIT) -a -m "Freeze"
+
 .PHONY: git-commit-message-ignore-default
 git-commit-message-ignore-default:
 	-@$(GIT_COMMIT) -a -m "Ignore"
@@ -4558,6 +4562,9 @@ git-commit-default: git-commit-message git-push
 
 .PHONY: git-commit-clean-default
 git-commit-clean-default: git-commit-message-clean git-push
+
+.PHONY: git-commit-freeze-default
+git-commit-freeze-default: git-commit-message-freeze git-push
 
 .PHONY: git-commit-ignore-default
 git-commit-ignore-default: git-commit-message-ignore git-push
