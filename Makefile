@@ -4521,6 +4521,9 @@ dbshell-default: django-db-shell
 .PHONY: deploy-default
 deploy-default: eb-deploy
 
+.PHONY: d-default
+d-default: eb-deploy
+
 .PHONY: deps-default
 deps-default: pip-deps
 
