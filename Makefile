@@ -4518,6 +4518,9 @@ db-dump-default: eb-export
 .PHONY: dbshell-default
 dbshell-default: django-db-shell
 
+.PHONY: deploy-default
+deploy-default: eb-deploy
+
 .PHONY: deps-default
 deps-default: pip-deps
 
