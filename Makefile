@@ -3980,6 +3980,10 @@ git-commit-message-default:
 git-commit-message-empty-default:
 	-@$(GIT_COMMIT) --allow-empty -m "Empty-Commit"
 
+.PHONY: git-commit-message-ignore-default
+git-commit-message-ignore-default:
+	-@$(GIT_COMMIT) -a -m "Ignore"
+
 .PHONY: git-commit-message-init-default
 git-commit-message-init-default:
 	-@$(GIT_COMMIT) -a -m "Init"
@@ -4563,6 +4567,9 @@ gitignore-default: git-ignore
 
 .PHONY: h-default
 h-default: help
+
+.PHONY: ignore-default
+ignore-default: git-commit-message-ignore git-push
 
 .PHONY: init-default
 init-default: django-init-wagtail django-serve
