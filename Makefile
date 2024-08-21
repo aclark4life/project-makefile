@@ -3995,7 +3995,7 @@ git-commit-message-lint-default:
 
 .PHONY: git-commit-message-mk-default
 git-commit-message-mk-default:
-	-@$(GIT_COMMIT) -a -m "Add/update $(MAKEFILE_CUSTOM_FILE)"
+	-@$(GIT_COMMIT) project.mk -m "Add/update $(MAKEFILE_CUSTOM_FILE)"
 
 .PHONY: git-commit-message-rename-default
 git-commit-message-rename-default:
