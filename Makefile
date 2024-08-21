@@ -4556,6 +4556,9 @@ git-commit-default: git-commit-message git-push
 .PHONY: git-commit-clean-default
 git-commit-clean-default: git-commit-message-clean git-push
 
+.PHONY: git-commit-ignore-default
+git-commit-ignore-default: git-commit-message-ignore git-push
+
 .PHONY: git-commit-init-default
 git-commit-init-default: git-commit-message-init git-push
 
