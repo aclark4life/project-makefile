@@ -4229,7 +4229,10 @@ plone-install-default:
 .PHONY: plone-instance-default
 plone-instance-default:
 	mkwsgiinstance -d backend -u admin:admin
-	sed -i -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' backend/etc/zope.ini
+	@sed -i -e 's/host = 127.0.0.1/host = 0.0.0.0/; s/port = 8080/port = 8000/' backend/etc/zope.ini
+	@python -c "with open('backend/etc/zope.conf', 'r+') as f: lines = f.readlines(); f.seek(0);\
+		f.writelines([line + '     blob-dir \$$INSTANCE/blobstorage\n' if 'path \$$INSTANCE/var/Data.fs'\
+		in line else line for line in lines])"
 	-$(GIT_ADD) backend/etc/site.zcml
 	-$(GIT_ADD) backend/etc/zope.conf
 	-$(GIT_ADD) backend/etc/zope.ini
