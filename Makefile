@@ -4596,7 +4596,7 @@ init-wagtail-default: django-init-wagtail
 install-default: pip-install
 
 .PHONY: i-default
-i-default: install-default
+i-default: install
 
 .PHONY: l-default
 l-default: makefile-list-commands
