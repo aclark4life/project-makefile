@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.1.0 (202X-XX-XX)
+------------------
+
+- Rebased in January 2024 with commitment to meaningful commit messages (pun intended)
+- Settled on supporting three project types:
+        - django-init
+        - django-init-minimal
+        - django-init-wagtail
+        
+
 0.0.9 (2022-03-06)
 ------------------
 
