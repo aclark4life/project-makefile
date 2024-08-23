@@ -1,4 +1,5 @@
 name: Django CI
+run-name: ${{ github.actor }} is developing Project Makefile 🚀
 
 on:
   push:
