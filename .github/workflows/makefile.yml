@@ -1,4 +1,4 @@
-name: Test Make Help Workflow
+name: Make Help Workflow
 run-name: ${{ github.actor }} is developing Project Makefile 🚀
 on: [push]
 jobs:

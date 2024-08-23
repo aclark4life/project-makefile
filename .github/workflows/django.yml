@@ -1,4 +1,4 @@
-name: Django CI
+name: Django CI Workflow
 run-name: ${{ github.actor }} is developing Project Makefile 🚀
 
 on:
@@ -8,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  Django-CI-Job:
 
     runs-on: ubuntu-latest
     strategy:
