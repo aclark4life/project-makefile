@@ -2,7 +2,7 @@
 
 [![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml) [![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml)
 
-![Logo](https://raw.githubusercontent.com/project-makefile/project-makefile/main/docs/logo.png)
+![Logo](logo.png)
 
 I like to type `make <target>` to perform tasks 🤷
 
