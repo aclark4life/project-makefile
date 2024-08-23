@@ -1,8 +1,6 @@
 # Project Makefile
 
-[![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml)
-
-[![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml)
+[![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml) [![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml)
 
 I like to type `make <target>` to perform tasks 🤷
 
