@@ -44,3 +44,14 @@ jobs:
       run: |
         cd test/django-init-minimal
         python manage.py test
+
+    # Steps for django-init-wagtail
+    - name: Install Dependencies for django-init-wagtail
+      run: |
+        cd test/django-init-wagtail
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests for django-init-wagtail
+      run: |
+        cd test/django-init-wagtail
+        python manage.py test
