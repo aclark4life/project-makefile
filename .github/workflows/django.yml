@@ -22,12 +22,25 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
+
+    # Steps for django-init
+    - name: Install Dependencies for django-init
       run: |
         cd test/django-init
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Run Tests
+    - name: Run Tests for django-init
       run: |
         cd test/django-init
+        python manage.py test
+
+    # Steps for django-init-minimal
+    - name: Install Dependencies for django-init-minimal
+      run: |
+        cd test/django-init-minimal
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run Tests for django-init-minimal
+      run: |
+        cd test/django-init-minimal
         python manage.py test
