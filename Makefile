@@ -3402,8 +3402,6 @@ django-frontend-default: python-webpack-init
 	@echo "$$DJANGO_FRONTEND_STYLES" > frontend/src/styles/index.scss
 	@echo "$$DJANGO_FRONTEND_THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$DJANGO_FRONTEND_THEME_TOGGLER" > frontend/src/utils/themeToggler.js
-	@$(MAKE) npm-install-django
-	@$(MAKE) npm-install-django-dev
 	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
 
 .PHONY: django-graph-default
@@ -3451,7 +3449,6 @@ django-init-default: separator \
 	django-urls-debug-toolbar \
 	django-allauth \
 	django-favicon \
-	git-ignore \
 	django-settings-base \
 	django-settings-dev \
 	django-settings-prod \
@@ -3461,7 +3458,10 @@ django-init-default: separator \
 	django-rest-views \
 	django-urls-api \
 	django-frontend \
+	npm-install-react \
+	npm-install-react-dev \
 	django-migrate \
+	git-ignore \
 	django-su
 
 .PHONY: django-init-minimal-default
@@ -3488,6 +3488,8 @@ django-init-minimal-default: separator \
 	django-home \
 	django-utils \
 	django-frontend \
+	npm-install-react \
+	npm-install-react-dev \
 	django-migrate \
 	git-ignore \
 	django-su
@@ -3514,7 +3516,6 @@ django-init-wagtail-default: separator \
 	django-urls-debug-toolbar \
 	django-allauth \
 	django-favicon \
-	git-ignore \
 	wagtail-search \
 	django-settings-base \
 	django-settings-dev \
@@ -3529,7 +3530,10 @@ django-init-wagtail-default: separator \
 	django-urls-api \
 	wagtail-urls-home \
 	django-frontend \
+	npm-install-react \
+	npm-install-react-dev \
 	django-migrate \
+	git-ignore \
 	django-su
 
 .PHONY: django-install-default
@@ -4105,8 +4109,8 @@ npm-install-default:
 	npm install
 	-$(GIT_ADD) package-lock.json
 
-.PHONY: npm-install-django-default
-npm-install-django-default:
+.PHONY: npm-install-react-default
+npm-install-react-default:
 	npm install \
         @fortawesome/fontawesome-free \
         @fortawesome/fontawesome-svg-core \
@@ -4137,8 +4141,8 @@ npm-install-django-default:
         url-join \
         viewport-mercator-project
 
-.PHONY: npm-install-django-dev-default
-npm-install-django-dev-default:
+.PHONY: npm-install-react-dev-default
+npm-install-react-dev-default:
 	npm install \
         eslint-plugin-react \
         eslint-config-standard \
