@@ -1,5 +1,5 @@
 name: Django CI Workflow
-run-name: ${{ github.actor }} is developing Project Makefile 🚀
+run-name: ${{ github.actor }} is running Django CI Workflow 🚀
 
 on:
   push:
