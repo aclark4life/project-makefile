@@ -1,8 +1,8 @@
-name: Make Help Workflow
-run-name: ${{ github.actor }} is running Make Help Workflow 🚀
+name: Make CI Workflow
+run-name: ${{ github.actor }} is running Make CI Workflow 🚀
 on: [push]
 jobs:
-  Test-Make-Help-Job:
+  Test-Make-CI-Job:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
