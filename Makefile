@@ -1,6 +1,6 @@
 # Project Makefile
 #
-# A makefile to automate setup of a Wagtail CMS project and related tasks.
+# A Makefile to automate the setup of Django projects and related tasks
 #
 # https://github.com/aclark4life/project-makefile
 #
@@ -4014,6 +4014,10 @@ git-commit-message-rename-default:
 git-commit-message-sort-default:
 	-@$(GIT_COMMIT) -a -m "Sort"
 
+.PHONY: git-commit-message-reword-default
+git-commit-message-reword-default:
+	-@$(GIT_COMMIT) -a -m "Reword"
+
 .PHONY: git-push-default
 git-push-default:
 	-@$(GIT_PUSH)
@@ -4642,6 +4646,9 @@ readme-default: readme-init
 
 .PHONY: rename-default
 rename-default: git-commit-message-rename git-push
+
+.PHONY: reword-default
+reword-default: git-commit-message-reword git-push
 
 .PHONY: s-default
 s-default: serve
