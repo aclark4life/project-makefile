@@ -845,6 +845,29 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 endef
 
+define DJANGO_FRONTEND_TINYMCE_JS
+import tinymce from 'tinymce';
+import 'tinymce/icons/default';
+import 'tinymce/themes/silver';
+import 'tinymce/skins/ui/oxide/skin.css';
+import 'tinymce/plugins/advlist';
+import 'tinymce/plugins/code';
+import 'tinymce/plugins/emoticons';
+import 'tinymce/plugins/emoticons/js/emojis';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/table';
+import 'tinymce/models/dom';
+
+tinymce.init({
+  selector: 'textarea#editor',
+  plugins: 'advlist code emoticons link lists table',
+  toolbar: 'bold italic | bullist numlist | link emoticons',
+  skin: false,
+  content_css: false,
+});
+endef
+
 define DJANGO_HEADER_TEMPLATE
 <div class="app-header">
     <div class="container py-4 app-navbar">
@@ -2539,29 +2562,6 @@ define SEPARATOR
 `=========================================================================================================================================='
 endef
 
-define TINYMCE_JS
-import tinymce from 'tinymce';
-import 'tinymce/icons/default';
-import 'tinymce/themes/silver';
-import 'tinymce/skins/ui/oxide/skin.css';
-import 'tinymce/plugins/advlist';
-import 'tinymce/plugins/code';
-import 'tinymce/plugins/emoticons';
-import 'tinymce/plugins/emoticons/js/emojis';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/lists';
-import 'tinymce/plugins/table';
-import 'tinymce/models/dom';
-
-tinymce.init({
-  selector: 'textarea#editor',
-  plugins: 'advlist code emoticons link lists table',
-  toolbar: 'bold italic | bullist numlist | link emoticons',
-  skin: false,
-  content_css: false,
-});
-endef
-
 define WAGTAIL_BASE_TEMPLATE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 <!DOCTYPE html>
@@ -3166,6 +3166,7 @@ export DJANGO_FRONTEND_PORTAL
 export DJANGO_FRONTEND_STYLES
 export DJANGO_FRONTEND_THEME_BLUE
 export DJANGO_FRONTEND_THEME_TOGGLER
+export DJANGO_FRONTEND_TINYMCE_JS
 export DJANGO_HEADER_TEMPLATE
 export DJANGO_HOME_PAGE_ADMIN
 export DJANGO_HOME_PAGE_MODELS
@@ -3246,7 +3247,6 @@ export PYTHON_CI_YAML
 export PYTHON_LICENSE_TXT
 export PYTHON_PROJECT_TOML
 export SEPARATOR
-export TINYMCE_JS
 export WAGTAIL_BASE_TEMPLATE
 export WAGTAIL_BLOCK_CAROUSEL
 export WAGTAIL_BLOCK_MARKETING
@@ -3402,7 +3402,6 @@ django-frontend-default: python-webpack-init
 	@echo "$$DJANGO_FRONTEND_STYLES" > frontend/src/styles/index.scss
 	@echo "$$DJANGO_FRONTEND_THEME_BLUE" > frontend/src/styles/theme-blue.scss
 	@echo "$$DJANGO_FRONTEND_THEME_TOGGLER" > frontend/src/utils/themeToggler.js
-	# @echo "$$TINYMCE_JS" > frontend/src/utils/tinymce.js
 	@$(MAKE) npm-install-django
 	@$(MAKE) npm-install-django-dev
 	-$(GIT_ADD) $(DJANGO_FRONTEND_FILES)
