@@ -38,7 +38,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Wait for PostgreSQL
-      run: sleep 10
+      run: sleep 15
 
     # Steps for django-init
     - name: Install Dependencies for django-init
