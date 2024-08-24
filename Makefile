@@ -3673,10 +3673,10 @@ django-model-form-demo-default:
 	@echo "$$DJANGO_MODEL_FORM_DEMO_URLS" > model_form_demo/urls.py
 	@echo "$$DJANGO_MODEL_FORM_DEMO_VIEWS" > model_form_demo/views.py
 	$(ADD_DIR) model_form_demo/templates
-	-$(GIT_ADD) model_form_demo/templates
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_DETAIL" > model_form_demo/templates/model_form_demo_detail.html
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_FORM" > model_form_demo/templates/model_form_demo_form.html
 	@echo "$$DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST" > model_form_demo/templates/model_form_demo_list.html
+	-$(GIT_ADD) model_form_demo/templates
 	@echo "$$DJANGO_SETTINGS_MODEL_FORM_DEMO" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_URLS_MODEL_FORM_DEMO" >> $(DJANGO_URLS_FILE)
 	python manage.py makemigrations
