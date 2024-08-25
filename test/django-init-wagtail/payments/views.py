@@ -54,10 +54,8 @@ class CheckoutView(View):
 
 
 class SuccessView(TemplateView):
-
     template_name = "payments/success.html"
 
 
 class CancelView(TemplateView):
-
     template_name = "payments/cancel.html"

@@ -4560,7 +4560,7 @@ webpack-init-reveal-default: npm-init
 # --------------------------------------------------------------------------------
 
 .PHONY: Lint-default
-Lint-default: git-commit-message-lint
+Lint-default: git-commit-message-lint git-push
 
 .PHONY: aws-check-env-default
 aws-check-env-default: aws-check-env-profile aws-check-env-region

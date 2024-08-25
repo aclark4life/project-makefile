@@ -36,7 +36,6 @@ def set_stripe_api_keys(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("payments", "0001_initial"),
     ]

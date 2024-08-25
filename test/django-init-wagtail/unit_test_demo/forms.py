@@ -1,6 +1,7 @@
 from django import forms
 from .models import UnitTestDemoModel
 
+
 class UnitTestDemoForm(forms.ModelForm):
     class Meta:
         model = UnitTestDemoModel
