@@ -54,7 +54,6 @@ GIT_ADD := git add
 GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
 GIT_CHECKOUT = git checkout
-GIT_COMMIT_MSG = "Update $(PROJECT_NAME)"
 GIT_COMMIT = git commit
 GIT_PUSH = git push
 GIT_PUSH_FORCE = git push --force-with-lease
@@ -2035,6 +2034,10 @@ EOF
 rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
+define GIT_COMMIT_MESSAGE
+$(1)
+endef
+
 define GIT_IGNORE
 __pycache__
 *.pyc
@@ -3267,6 +3270,7 @@ export DJANGO_URLS_SITEUSER
 export DJANGO_UTILS
 export EB_CUSTOM_ENV_EC2_USER
 export EB_CUSTOM_ENV_VAR_FILE
+export GIT_COMMIT_MESSAGE
 export GIT_IGNORE
 export JENKINS_FILE
 export MAKEFILE_CUSTOM
@@ -3988,70 +3992,71 @@ eb-print-env-default:
 	eb printenv
 
 .PHONY: favicon-default
-favicon-init-default:
-	dd if=/dev/urandom bs=64 count=1 status=none | base64 | convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
-	convert favicon.png favicon.ico
+favicon-default:
+	@dd if=/dev/urandom bs=64 count=1 status=none | base64 |\
+		convert -size 16x16 -depth 8 -background none -fill white label:@- favicon.png
+	@convert favicon.png favicon.ico
+	@$(DEL_FILE) favicon.png
 	-$(GIT_ADD) favicon.ico
-	$(DEL_FILE) favicon.png
 
-.PHONY: git-ignore-default
-git-ignore-default:
-	@echo "$$GIT_IGNORE" > .gitignore
-	-$(GIT_ADD) .gitignore
-
-.PHONY: git-branches-default
-git-branches-default:
+.PHONY: git-checkout-branches-default
+git-checkout-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         -@$(GIT_CHECKOUT) -t $$i ; done
 
 .PHONY: git-commit-default
 git-commit-default:
-	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Update $(PROJECT_NAME) files")
+
+.PHONY: git-commit-empty-default
+git-commit-empty-default:
+	-@$(GIT_COMMIT) --allow-empty -m $(call GIT_COMMIT_MESSAGE,"Empty commit")
+
+.PHONY: git-commit-last-default
+git-commit-last-default:
+	@git log -1 --pretty=%B > $(TMPDIR)/commit.txt
+	-@$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
 
 .PHONY: git-commit-message-clean-default
 git-commit-message-clean-default:
-	-@$(GIT_COMMIT) -a -m "Clean"
-
-.PHONY: git-commit-message-empty-default
-git-commit-message-empty-default:
-	-@$(GIT_COMMIT) --allow-empty -m "Empty-Commit"
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Clean")
 
 .PHONY: git-commit-message-freeze-default
 git-commit-message-freeze-default:
-	-@$(GIT_COMMIT) -a -m "Freeze"
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Freeze")
 
 .PHONY: git-commit-message-ignore-default
 git-commit-message-ignore-default:
-	-@$(GIT_COMMIT) -a -m "Ignore"
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Ignore")
 
 .PHONY: git-commit-message-init-default
 git-commit-message-init-default:
-	-@$(GIT_COMMIT) -a -m "Init"
-
-.PHONY: git-commit-message-last-default
-git-commit-message-last-default:
-	git log -1 --pretty=%B > $(TMPDIR)/commit.txt
-	-$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Init")
 
 .PHONY: git-commit-message-lint-default
 git-commit-message-lint-default:
-	-@$(GIT_COMMIT) -a -m "Lint"
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Lint")
 
 .PHONY: git-commit-message-mk-default
 git-commit-message-mk-default:
-	-@$(GIT_COMMIT) project.mk -m "Add/update $(MAKEFILE_CUSTOM_FILE)"
+	-@$(GIT_COMMIT) project.mk -m $(call GIT_COMMIT_MESSAGE,"Add/update $(MAKEFILE_CUSTOM_FILE)")
 
 .PHONY: git-commit-message-rename-default
 git-commit-message-rename-default:
-	-@$(GIT_COMMIT) -a -m "Rename"
-
-.PHONY: git-commit-message-sort-default
-git-commit-message-sort-default:
-	-@$(GIT_COMMIT) -a -m "Sort"
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Rename")
 
 .PHONY: git-commit-message-reword-default
 git-commit-message-reword-default:
-	-@$(GIT_COMMIT) -a -m "Reword"
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Reword")
+
+.PHONY: git-commit-message-sort-default
+git-commit-message-sort-default:
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Sort")
+
+.PHONY: git-ignore-default
+git-ignore-default:
+	@echo "$$GIT_IGNORE" > .gitignore
+	-$(GIT_ADD) .gitignore
 
 .PHONY: git-push-default
 git-push-default:
@@ -4589,9 +4594,6 @@ edit-default: readme-edit
 .PHONY: e-default
 e-default: edit
 
-.PHONY: empty-default
-empty-default: git-commit-message-empty git-push
-
 .PHONY: fp-default
 fp-default: git-push-force
 
@@ -4601,29 +4603,11 @@ freeze-default: pip-freeze git-push
 .PHONY: git-commit-push-default
 git-commit-push-default: git-commit git-push
 
-.PHONY: git-commit-clean-default
-git-commit-clean-default: git-commit-message-clean git-push
-
-.PHONY: git-commit-freeze-default
-git-commit-freeze-default: git-commit-message-freeze git-push
-
-.PHONY: git-commit-ignore-default
-git-commit-ignore-default: git-commit-message-ignore git-push
-
-.PHONY: git-commit-init-default
-git-commit-init-default: git-commit-message-init git-push
-
-.PHONY: git-commit-lint-default
-git-commit-lint-default: git-commit-message-lint git-push
-
 .PHONY: gitignore-default
 gitignore-default: git-ignore
 
 .PHONY: h-default
 h-default: help
-
-.PHONY: ignore-default
-ignore-default: git-commit-message-ignore git-push
 
 .PHONY: init-default
 init-default: django-init-wagtail django-serve
@@ -4639,9 +4623,6 @@ i-default: install
 
 .PHONY: l-default
 l-default: makefile-list-commands
-
-.PHONY: last-default
-last-default: git-commit-message-last git-push
 
 .PHONY: lint-default
 lint-default: django-lint
@@ -4667,9 +4648,6 @@ migrations-default: django-migrations-make
 .PHONY: migrations-show-default
 migrations-show-default: django-migrations-show
 
-.PHONY: mk-default
-mk-default: project.mk git-commit-message-mk git-push
-
 .PHONY: o-default
 o-default: django-open
 
@@ -4678,12 +4656,6 @@ open-default: open
 
 .PHONY: readme-default
 readme-default: readme-init
-
-.PHONY: rename-default
-rename-default: git-commit-message-rename git-push
-
-.PHONY: reword-default
-reword-default: git-commit-message-reword git-push
 
 .PHONY: s-default
 s-default: serve
@@ -4696,9 +4668,6 @@ shell-default: django-shell
 
 .PHONY: static-default
 static-default: django-static
-
-.PHONY: sort-default
-sort-default: git-commit-message-sort git-push
 
 .PHONY: su-default
 su-default: django-su
