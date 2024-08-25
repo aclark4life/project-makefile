@@ -3693,12 +3693,6 @@ django-model-form-demo-default:
 	-$(GIT_ADD) model_form_demo/*.py
 	-$(GIT_ADD) model_form_demo/migrations/*.py
 
-.PHONY: django-offcanvas-template-default
-django-offcanvas-template-default:
-	-$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_TEMPLATE_OFFCANVAS" > backend/templates/offcanvas.html
-	-$(GIT_ADD) backend/templates/offcanvas.html
-
 .PHONY: django-open-default
 django-open-default:
 ifeq ($(UNAME), Linux)
@@ -3852,6 +3846,12 @@ django-template-footer-default:
 django-template-header-default:
 	@echo "$$DJANGO_TEMPLATE_HEADER" > backend/templates/header.html
 	-$(GIT_ADD) backend/templates/header.html
+
+.PHONY: django-template-offcanvas-default
+django-template-offcanvas-default:
+	-$(ADD_DIR) backend/templates
+	@echo "$$DJANGO_TEMPLATE_OFFCANVAS" > backend/templates/offcanvas.html
+	-$(GIT_ADD) backend/templates/offcanvas.html
 
 .PHONY: django-test-default
 django-test-default: npm-install django-static
