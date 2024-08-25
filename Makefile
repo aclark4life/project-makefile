@@ -3981,13 +3981,13 @@ eb-export-default:
         echo "Wrote $(DJANGO_DATABASE_NAME).sql"; \
         fi
 
-.PHONY: eb-restart-default
-eb-restart-default:
-	eb ssh -c "systemctl restart web"
-
 .PHONY: eb-rebuild-default
 eb-rebuild-default:
 	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
+
+.PHONY: eb-restart-default
+eb-restart-default:
+	eb ssh -c "systemctl restart web"
 
 .PHONY: eb-upgrade-default
 eb-upgrade-default:
@@ -4718,6 +4718,9 @@ serve-default: django-serve
 
 .PHONY: shell-default
 shell-default: django-shell
+
+.PHONY: sort-default
+sort-default: git-commit-message-sort git-push
 
 .PHONY: static-default
 static-default: django-static
