@@ -3949,7 +3949,7 @@ eb-export-default:
 	@if [ ! -d $(EB_DIR_NAME) ]; then \
         echo "Directory $(EB_DIR_NAME) does not exist"; \
         else \
-        echo "Directory $(EB_DIR_NAME) does exist!"; \
+        echo "Found $(EB_DIR_NAME) directory"; \
         eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); pg_dump -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)" > $(DJANGO_DB_NAME).sql; \
         echo "Wrote $(DJANGO_DB_NAME).sql"; \
         fi
