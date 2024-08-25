@@ -1,4 +1,5 @@
 name: Django CI
+run-name: ${{ github.actor }} is running Django Workflow 🚀
 
 on:
   push:
@@ -7,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  Django-CI:
 
     runs-on: ubuntu-latest
     strategy:
