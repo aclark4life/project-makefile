@@ -11,8 +11,30 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: echo "🙋 Ask for help"
+      - run: echo "🖥️  The workflow is now ready to test your code on the runner."
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Specify the Python version you need
+      - name: Install PostgreSQL
+        run: sudo apt-get install -y postgresql postgresql-contrib
+      - name: Set up PostgreSQL
         run: |
-          make help
+          sudo service postgresql start
+          sudo -u postgres psql -c "CREATE DATABASE mydatabase;"
+          sudo -u postgres psql -c "CREATE USER myuser WITH PASSWORD 'mypassword';"
+          sudo -u postgres psql -c "ALTER ROLE myuser SET client_encoding TO 'utf8';"
+          sudo -u postgres psql -c "ALTER ROLE myuser SET default_transaction_isolation TO 'read committed';"
+          sudo -u postgres psql -c "ALTER ROLE myuser SET timezone TO 'UTC';"
+          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;"
+      - name: Set up virtual environment
+        run: python -m venv venv
+      - name: Activate virtual environment and install dependencies
+        run: |
+          source venv/bin/activate
+          pip install -r requirements.txt  # Ensure you have a requirements.txt file with necessary dependencies
+      - name: Run make django-init-wagtail
+        run: |
+          source venv/bin/activate
+          make django-init-wagtail
       - run: echo "🍏 This job's status is ${{ job.status }}."
