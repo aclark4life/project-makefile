@@ -491,47 +491,6 @@ define DJANGO_FRONTEND_ESLINTRC
 }
 endef
 
-define DJANGO_FRONTEND_OFFCANVAS_TEMPLATE
-<div class="offcanvas offcanvas-start bg-dark"
-     tabindex="-1"
-     id="offcanvasExample"
-     aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-        <a class="offcanvas-title text-light h5 text-decoration-none"
-           id="offcanvasExampleLabel"
-           href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-        <button type="button"
-                class="btn-close bg-light"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body bg-dark">
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-                <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
-            </li>
-            {% for child in current_site.root_page.get_children %}
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
-                </li>
-            {% endfor %}
-            <li class="nav-item"
-                id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
-                <span class="nav-link text-light"
-                      data-bs-toggle="tooltip"
-                      title="Toggle dark mode">
-                    <i class="fas fa-circle-half-stroke"></i>
-                </span>
-            </li>
-            <div data-component="UserMenu"
-                 data-text-color="light"
-                 data-is-authenticated="{{ request.user.is_authenticated }}"
-                 data-is-superuser="{{ request.user.is_superuser }}"></div>
-        </ul>
-    </div>
-</div>
-endef
-
 define DJANGO_FRONTEND_PORTAL
 // Via pwellever
 import React from 'react';
@@ -1826,6 +1785,47 @@ define DJANGO_TEMPLATE_HEADER
     </div>
 </div>
 endef 
+
+define DJANGO_TEMPLATE_OFFCANVAS
+<div class="offcanvas offcanvas-start bg-dark"
+     tabindex="-1"
+     id="offcanvasExample"
+     aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <a class="offcanvas-title text-light h5 text-decoration-none"
+           id="offcanvasExampleLabel"
+           href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+        <button type="button"
+                class="btn-close bg-light"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body bg-dark">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+                <a class="nav-link text-light active" aria-current="page" href="/">Home</a>
+            </li>
+            {% for child in current_site.root_page.get_children %}
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="{{ child.url }}">{{ child }}</a>
+                </li>
+            {% endfor %}
+            <li class="nav-item"
+                id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+                <span class="nav-link text-light"
+                      data-bs-toggle="tooltip"
+                      title="Toggle dark mode">
+                    <i class="fas fa-circle-half-stroke"></i>
+                </span>
+            </li>
+            <div data-component="UserMenu"
+                 data-text-color="light"
+                 data-is-authenticated="{{ request.user.is_authenticated }}"
+                 data-is-superuser="{{ request.user.is_superuser }}"></div>
+        </ul>
+    </div>
+</div>
+endef
 
 define DJANGO_UNIT_TEST_DEMO_FORMS
 from django import forms
@@ -3191,7 +3191,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_FRONTEND_CONTEXT_INDEX \
         DJANGO_FRONTEND_CONTEXT_USER_PROVIDER \
         DJANGO_FRONTEND_ESLINTRC \
-        DJANGO_FRONTEND_OFFCANVAS_TEMPLATE \
         DJANGO_FRONTEND_PORTAL \
         DJANGO_FRONTEND_STYLES \
         DJANGO_FRONTEND_THEME_BLUE \
@@ -3262,6 +3261,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_TEMPLATE_FAVICON \
         DJANGO_TEMPLATE_FOOTER \
         DJANGO_TEMPLATE_HEADER \
+        DJANGO_TEMPLATE_OFFCANVAS \
         DJANGO_UNIT_TEST_DEMO_FORMS \
         DJANGO_UNIT_TEST_DEMO_MODELS \
         DJANGO_UNIT_TEST_DEMO_TESTS \
@@ -3470,11 +3470,11 @@ django-init-default: separator \
 	django-settings-directory \
 	django-custom-admin \
 	django-dockerfile \
-	django-offcanvas-template \
+	django-template-base \
 	django-template-header \
 	django-template-favicon \
 	django-template-footer \
-	django-template-base \
+	django-template-offcanvas \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
@@ -3507,10 +3507,10 @@ django-init-minimal-default: separator \
 	pip-init-test \
 	django-custom-admin \
 	django-dockerfile \
-	django-offcanvas-template \
 	django-template-header \
 	django-template-favicon \
 	django-template-footer \
+	django-template-offcanvas \
 	django-base-template \
 	django-manage-py \
 	django-urls \
@@ -3537,12 +3537,12 @@ django-init-wagtail-default: separator \
 	pip-init-test \
         django-custom-admin \
         django-dockerfile \
-	django-offcanvas-template \
 	wagtail-header-prefix-template \
 	wagtail-base-template \
 	django-template-favicon \
 	django-template-footer \
 	django-template-header \
+	django-template-offcanvas \
 	django-manage-py \
 	wagtail-home \
 	wagtail-urls \
@@ -3696,7 +3696,7 @@ django-model-form-demo-default:
 .PHONY: django-offcanvas-template-default
 django-offcanvas-template-default:
 	-$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_FRONTEND_OFFCANVAS_TEMPLATE" > backend/templates/offcanvas.html
+	@echo "$$DJANGO_TEMPLATE_OFFCANVAS" > backend/templates/offcanvas.html
 	-$(GIT_ADD) backend/templates/offcanvas.html
 
 .PHONY: django-open-default
