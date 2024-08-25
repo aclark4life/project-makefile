@@ -37,14 +37,10 @@ jobs:
             sleep 1
           done
       - name: Set up virtual environment
-        run: python -m venv venv
-      - name: Activate virtual environment and install dependencies
-        run: |
-          source venv/bin/activate
-          pip install -r requirements.txt  # Ensure you have a requirements.txt file with necessary dependencies
+        run: python -m venv .venv
       - name: Change directory and run make django-init-wagtail
         run: |
           cd test/django-init-wagtail
-          source ../../venv/bin/activate
+          source ../../.venv/bin/activate
           make django-init-wagtail
       - run: echo "🍏 This job's status is ${{ job.status }}."
