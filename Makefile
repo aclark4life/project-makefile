@@ -67,6 +67,7 @@ PLONE_VERSION_FILE = https://dist.plone.org/release/6.0.11.1/constraints.txt
 PROJECT_DIRS = backend contactpage home privacy siteuser
 PROJECT_EMAIL := aclark@aclark.net
 PROJECT_NAME = project-makefile
+PYTHON_HTTP = python -m http.server
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
@@ -4257,15 +4258,15 @@ pip-ensure-default:
 
 .PHONY: pip-install-default
 pip-install-default: pip-ensure
-	python -m $(PIP_INSTALL) -r requirements.txt
+	$(PIP_INSTALL) -r requirements.txt
 
 .PHONY: pip-install-dev-default
 pip-install-dev-default: pip-ensure
-	python -m $(PIP_INSTALL) -r requirements-dev.txt
+	$(PIP_INSTALL) -r requirements-dev.txt
 
 .PHONY: pip-install-test-default
 pip-install-test-default: pip-ensure
-	python -m $(PIP_INSTALL) -r requirements-test.txt
+	$(PIP_INSTALL) -r requirements-test.txt
 
 .PHONY: pip-install-upgrade-default
 pip-install-upgrade-default: pip-ensure
@@ -4384,7 +4385,7 @@ reveal-init-default: webpack-init-reveal
 .PHONY: reveal-serve-default
 reveal-serve-default:
 	npm run watch &
-	python -m http.server
+	$(PYTHON_HTTP)
 
 .PHONY: review-default
 review-default:
