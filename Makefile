@@ -22,7 +22,7 @@ COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
 DJANGO_BACKEND_APPS_FILE := backend/apps.py
-DJANGO_CUSTOM_ADMIN_FILE := backend/admin.py
+DJANGO_BACKEND_ADMIN_FILE := backend/admin.py
 DJANGO_DATABASE_HOST = $(call DJANGO_DATABASE,HOST)
 DJANGO_DATABASE_NAME = $(call DJANGO_DATABASE,NAME)
 DJANGO_DATABASE_PASS = $(call DJANGO_DATABASE,PASSWORD)
@@ -123,7 +123,7 @@ class CustomAdminConfig(AdminConfig):
     default_site = "backend.admin.CustomAdminSite"
 endef
 
-define DJANGO_CUSTOM_ADMIN
+define DJANGO_BACKEND_ADMIN
 from django.contrib.admin import AdminSite
 
 
@@ -3178,7 +3178,7 @@ endef
 export DJANGO_API_SERIALIZERS \
         DJANGO_API_VIEWS \
         DJANGO_BACKEND_APPS \
-        DJANGO_CUSTOM_ADMIN \
+        DJANGO_BACKEND_ADMIN \
         DJANGO_DOCKERCOMPOSE \
         DJANGO_DOCKERFILE \
         DJANGO_FRONTEND_APP \
@@ -3402,9 +3402,9 @@ django-clean-default:
 		$(DEL_FILE) $$file >/dev/null 2>&1; \
 	done
 
-.PHONY: django-custom-admin-default
-django-custom-admin-default:
-	@echo "$$DJANGO_CUSTOM_ADMIN" > $(DJANGO_CUSTOM_ADMIN_FILE)
+.PHONY: django-admin-default
+django-admin-default:
+	@echo "$$DJANGO_BACKEND_ADMIN" > $(DJANGO_BACKEND_ADMIN_FILE)
 	@echo "$$DJANGO_BACKEND_APPS" > $(DJANGO_BACKEND_APPS_FILE)
 	-$(GIT_ADD) backend/*.py
 
@@ -3468,7 +3468,7 @@ django-init-default: separator \
 	pip-freeze \
 	pip-init-test \
 	django-settings-directory \
-	django-custom-admin \
+	django-admin \
 	django-dockerfile \
 	django-template-base \
 	django-template-header \
@@ -3505,7 +3505,7 @@ django-init-minimal-default: separator \
 	django-settings-dev \
 	pip-freeze \
 	pip-init-test \
-	django-custom-admin \
+	django-admin \
 	django-dockerfile \
 	django-template-header \
 	django-template-favicon \
@@ -3535,7 +3535,7 @@ django-init-wagtail-default: separator \
 	django-utils \
 	pip-freeze \
 	pip-init-test \
-        django-custom-admin \
+        django-admin \
         django-dockerfile \
 	wagtail-header-prefix-template \
 	wagtail-base-template \
