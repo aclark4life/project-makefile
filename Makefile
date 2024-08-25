@@ -4599,6 +4599,9 @@ Lint-default: git-commit-message-lint git-push
 .PHONY: aws-check-env-default
 aws-check-env-default: aws-check-env-profile aws-check-env-region
 
+.PHONY: c-default
+c-default: git-commit-message git-push
+
 .PHONY: ce-default
 ce-default: git-commit-edit git-push
 
