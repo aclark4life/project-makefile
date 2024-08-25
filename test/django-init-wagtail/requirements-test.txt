@@ -1,0 +1,11 @@
+pytest
+pytest-runner
+coverage
+pytest-mock
+pytest-cov
+hypothesis
+selenium
+pytest-django
+factory-boy
+flake8
+tox
