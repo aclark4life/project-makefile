@@ -4585,6 +4585,9 @@ webpack-init-reveal-default: npm-init
 .PHONY: Clean-default
 Clean-default: git-commit-message-clean git-push
 
+.PHONY: Init-default
+Init-default: git-commit-message-init git-push
+
 .PHONY: Lint-default
 Lint-default: git-commit-message-lint git-push
 

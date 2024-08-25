@@ -189,3 +189,80 @@ WAGTAILDOCS_EXTENSIONS = [
     "xlsx",
     "zip",
 ]
+# project-makefile
+#
+# Uncomment next two lines to enable custom admin
+# INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admin']
+# INSTALLED_APPS.append('backend.apps.CustomAdminConfig')
+import os  # noqa
+import dj_database_url  # noqa
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+EXPLORER_CONNECTIONS = {"Default": "default"}
+EXPLORER_DEFAULT_CONNECTION = "default"
+LOGIN_REDIRECT_URL = "/"
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+STATICFILES_DIRS = []
+WEBPACK_LOADER = {
+    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
+STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
+TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ]
+}
+THEMES = [
+    ("light", "Light Theme"),
+    ("dark", "Dark Theme"),
+]
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/project-makefile")
+DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
+INSTALLED_APPS.append("allauth")
+INSTALLED_APPS.append("allauth.account")
+INSTALLED_APPS.append("allauth.socialaccount")
+INSTALLED_APPS.append("crispy_bootstrap5")
+INSTALLED_APPS.append("crispy_forms")
+INSTALLED_APPS.append("debug_toolbar")
+INSTALLED_APPS.append("django_extensions")
+INSTALLED_APPS.append("django_recaptcha")
+INSTALLED_APPS.append("rest_framework")
+INSTALLED_APPS.append("rest_framework.authtoken")
+INSTALLED_APPS.append("webpack_boilerplate")
+INSTALLED_APPS.append("explorer")
+MIDDLEWARE.append("allauth.account.middleware.AccountMiddleware")
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+INSTALLED_APPS.append("wagtail_color_panel")
+INSTALLED_APPS.append("wagtail_modeladmin")
+INSTALLED_APPS.append("wagtail.contrib.settings")
+INSTALLED_APPS.append("wagtailmarkdown")
+INSTALLED_APPS.append("wagtailmenus")
+INSTALLED_APPS.append("wagtailseo")
+TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+    "wagtail.contrib.settings.context_processors.settings"
+)
+TEMPLATES[0]["OPTIONS"]["context_processors"].append(
+    "wagtailmenus.context_processors.wagtailmenus"
+)
+INSTALLED_APPS.append("siteuser")  # noqa
+AUTH_USER_MODEL = "siteuser.User"
+INSTALLED_APPS.append("model_form_demo")  # noqa
+INSTALLED_APPS.append("unit_test_demo")  # noqa
+INSTALLED_APPS.append("logging_demo")  # noqa
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+DJSTRIPE_WEBHOOK_VALIDATION = "retrieve_event"
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
+INSTALLED_APPS.append("payments")  # noqa
+INSTALLED_APPS.append("djstripe")  # noqa

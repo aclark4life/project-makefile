@@ -1,18 +1,53 @@
-from .base import *
+# project-makefile
+from .base import *  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-kl7oyg%=11m3nd7bd(r$eofu&x=-+h0o8n@s64k0=wslx2&pen"
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-
 try:
-    from .local import *
+    from .local import *  # noqa
 except ImportError:
     pass
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "{levelname} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+    },
+}
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa
+MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")  # noqa
+INSTALLED_APPS.append("django.contrib.admindocs")  # noqa
+SECRET_KEY = "+pduAxIg9hz+p03kSYzd0QarfIQhP93dXNHEGgJdXePJ5HPAH/0vvRxoUzN1U4hl"
