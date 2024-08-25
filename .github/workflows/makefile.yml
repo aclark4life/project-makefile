@@ -10,8 +10,6 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Switch to test/django-init-wagtail branch
-        run: git checkout test/django-init-wagtail
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️  The workflow is now ready to test your code on the runner."
       - name: Set up Python
@@ -25,7 +23,7 @@ jobs:
           sudo service postgresql start
           sudo -u postgres psql -c "CREATE DATABASE mydatabase;"
           sudo -u postgres psql -c "CREATE USER myuser WITH PASSWORD 'mypassword';"
-          sudo -u postgres psql -c "ALTER ROLE myuser SET client_encoding TO 'utf8';"
+          sudo -u postgres psql -c "ALTER ROLE myuser SET client_encoding 'utf8';"
           sudo -u postgres psql -c "ALTER ROLE myuser SET default_transaction_isolation TO 'read committed';"
           sudo -u postgres psql -c "ALTER ROLE myuser SET timezone TO 'UTC';"
           sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;"
@@ -35,8 +33,9 @@ jobs:
         run: |
           source venv/bin/activate
           pip install -r requirements.txt  # Ensure you have a requirements.txt file with necessary dependencies
-      - name: Run make django-init-wagtail
+      - name: Change directory and run make django-init-wagtail
         run: |
-          source venv/bin/activate
+          cd test/django-init-wagtail
+          source ../../venv/bin/activate
           make django-init-wagtail
       - run: echo "🍏 This job's status is ${{ job.status }}."
