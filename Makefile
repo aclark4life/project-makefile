@@ -811,68 +811,6 @@ tinymce.init({
 });
 endef
 
-define DJANGO_HEADER_TEMPLATE
-<div class="app-header">
-    <div class="container py-4 app-navbar">
-        <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
-            <a class="navbar-brand me-auto" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample"
-                    aria-controls="offcanvasExample"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="d-none d-md-block">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a id="home-nav"
-                           class="nav-link {% if request.path == '/' %}active{% endif %}"
-                           aria-current="page"
-                           href="/">Home</a>
-                    </li>
-                    {% for child in current_site.root_page.get_children %}
-                        {% if child.show_in_menus %}
-                            <li class="nav-item">
-                                <a class="nav-link {% if request.path == child.url %}active{% endif %}"
-                                   aria-current="page"
-                                   href="{{ child.url }}">{{ child }}</a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                    <div data-component="UserMenu"
-                         data-is-authenticated="{{ request.user.is_authenticated }}"
-                         data-is-superuser="{{ request.user.is_superuser }}"></div>
-                    <li class="nav-item"
-                        id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
-                        <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
-                            <i class="fas fa-circle-half-stroke"></i>
-                        </span>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form" action="/search">
-                            <div class="row">
-                                <div class="col-8">
-                                    <input class="form-control"
-                                           type="search"
-                                           name="query"
-                                           {% if search_query %}value="{{ search_query }}"{% endif %}>
-                                </div>
-                                <div class="col-4">
-                                    <input type="submit" value="Search" class="form-control">
-                                </div>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-</div>
-endef 
-
 define DJANGO_HOME_PAGE_ADMIN
 from django.contrib import admin  # noqa
 
@@ -1826,6 +1764,68 @@ define DJANGO_SITEUSER_VIEW_TEMPLATE
     <p>Rate: {{ user.rate|default:"" }}</p>
 {% endblock %}
 endef
+
+define DJANGO_TEMPLATE_HEADER
+<div class="app-header">
+    <div class="container py-4 app-navbar">
+        <nav class="navbar navbar-transparent navbar-padded navbar-expand-md">
+            <a class="navbar-brand me-auto" href="/">{{ current_site.site_name|default:"Project Makefile" }}</a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasExample"
+                    aria-controls="offcanvasExample"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-none d-md-block">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a id="home-nav"
+                           class="nav-link {% if request.path == '/' %}active{% endif %}"
+                           aria-current="page"
+                           href="/">Home</a>
+                    </li>
+                    {% for child in current_site.root_page.get_children %}
+                        {% if child.show_in_menus %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path == child.url %}active{% endif %}"
+                                   aria-current="page"
+                                   href="{{ child.url }}">{{ child }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    <div data-component="UserMenu"
+                         data-is-authenticated="{{ request.user.is_authenticated }}"
+                         data-is-superuser="{{ request.user.is_superuser }}"></div>
+                    <li class="nav-item"
+                        id="{% if request.user.is_authenticated %}theme-toggler-authenticated{% else %}theme-toggler-anonymous{% endif %}">
+                        <span class="nav-link" data-bs-toggle="tooltip" title="Toggle dark mode">
+                            <i class="fas fa-circle-half-stroke"></i>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form" action="/search">
+                            <div class="row">
+                                <div class="col-8">
+                                    <input class="form-control"
+                                           type="search"
+                                           name="query"
+                                           {% if search_query %}value="{{ search_query }}"{% endif %}>
+                                </div>
+                                <div class="col-4">
+                                    <input type="submit" value="Search" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+endef 
 
 define DJANGO_UNIT_TEST_DEMO_FORMS
 from django import forms
@@ -3201,7 +3201,6 @@ export DJANGO_ALLAUTH_BASE_TEMPLATE \
        DJANGO_FRONTEND_THEME_BLUE \
        DJANGO_FRONTEND_THEME_TOGGLER \
        DJANGO_FRONTEND_TINYMCE_JS \
-       DJANGO_HEADER_TEMPLATE \
        DJANGO_HOME_PAGE_ADMIN \
        DJANGO_HOME_PAGE_MODELS \
        DJANGO_HOME_PAGE_TEMPLATE \
@@ -3262,6 +3261,7 @@ export DJANGO_ALLAUTH_BASE_TEMPLATE \
        DJANGO_SITEUSER_URLS \
        DJANGO_SITEUSER_VIEW \
        DJANGO_SITEUSER_VIEW_TEMPLATE \
+       DJANGO_TEMPLATE_HEADER \
        DJANGO_UNIT_TEST_DEMO_FORMS \
        DJANGO_UNIT_TEST_DEMO_MODELS \
        DJANGO_UNIT_TEST_DEMO_TESTS \
@@ -3453,11 +3453,6 @@ django-frontend-default: python-webpack-init
 .PHONY: django-graph-default
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
-
-.PHONY: django-header-template-default
-django-header-template-default:
-	@echo "$$DJANGO_HEADER_TEMPLATE" > backend/templates/header.html
-	-$(GIT_ADD) backend/templates/header.html
 
 .PHONY: django-home-default
 django-home-default:
@@ -3852,6 +3847,11 @@ django-static-default:
 .PHONY: django-su-default
 django-su-default:
 	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
+
+.PHONY: django-template-header-default
+django-template-header-default:
+	@echo "$$DJANGO_TEMPLATE_HEADER" > backend/templates/header.html
+	-$(GIT_ADD) backend/templates/header.html
 
 .PHONY: django-test-default
 django-test-default: npm-install django-static
