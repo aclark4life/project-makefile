@@ -4652,9 +4652,6 @@ ignore-default: git-commit-message-ignore git-push
 .PHONY: init-default
 init-default: django-init-wagtail django-serve
 
-.PHONY: init-wagtail-default
-init-wagtail-default: django-init-wagtail
-
 .PHONY: install-default
 install-default: pip-install
 
@@ -4738,6 +4735,9 @@ upstream-default: git-set-upstream
 
 .PHONY: urls-default
 urls-default: django-urls-show
+
+.PHONY: wagtail-init-default
+wagtail-init-default: django-wagtail-init
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
