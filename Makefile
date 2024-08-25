@@ -4630,6 +4630,9 @@ gitignore-default: git-ignore
 .PHONY: h-default
 h-default: help
 
+.PHONY: ignore-default
+ignore-default: git-commit-message-ignore git-push
+
 .PHONY: init-default
 init-default: django-init-wagtail django-serve
 
