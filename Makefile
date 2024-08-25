@@ -4108,13 +4108,13 @@ git-commit-edit-default:
 git-prune-default:
 	git remote update origin --prune
 
-.PHONY: git-set-upstream-default
-git-set-upstream-default:
-	git push --set-upstream origin main
-
 .PHONY: git-set-default-default
 git-set-default-default:
 	gh repo set-default
+
+.PHONY: git-set-upstream-default
+git-set-upstream-default:
+	git push --set-upstream origin main
 
 .PHONY: git-short-default
 git-short-default:
@@ -4739,6 +4739,9 @@ typo-default: git-commit-message-typo git-push
 
 .PHONY: u-default
 u-default: help
+
+.PHONY: upstream-default
+upstream-default: git-set-upstream
 
 .PHONY: urls-default
 urls-default: django-urls-show
