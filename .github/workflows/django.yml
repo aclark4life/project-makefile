@@ -24,7 +24,7 @@ jobs:
     - name: Install Dependencies
       run: |
         cd test/django-init
-        make install
+        make -f ../../Makefile install
     - name: Run Tests
       run: |
-        make test
+        make -f ../../Makefile test
