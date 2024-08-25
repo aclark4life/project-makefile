@@ -8,7 +8,7 @@
 # Set the default goal to be `git commit -a -m $(GIT_MESSAGE)` and `git push`
 # --------------------------------------------------------------------------------
 
-.DEFAULT_GOAL := git-commit
+.DEFAULT_GOAL := git-commit-push
 
 # --------------------------------------------------------------------------------
 # Single line variables to be used by phony target rules
@@ -4004,13 +4004,13 @@ git-branches-default:
 	-for i in $(GIT_BRANCHES) ; do \
         -@$(GIT_CHECKOUT) -t $$i ; done
 
+.PHONY: git-commit-default
+git-commit-default:
+	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
+
 .PHONY: git-commit-message-clean-default
 git-commit-message-clean-default:
 	-@$(GIT_COMMIT) -a -m "Clean"
-
-.PHONY: git-commit-message-default
-git-commit-message-default:
-	-@$(GIT_COMMIT) -a -m $(GIT_COMMIT_MSG)
 
 .PHONY: git-commit-message-empty-default
 git-commit-message-empty-default:
@@ -4598,8 +4598,8 @@ fp-default: git-push-force
 .PHONY: freeze-default
 freeze-default: pip-freeze git-push
 
-.PHONY: git-commit-default
-git-commit-default: git-commit-message git-push
+.PHONY: git-commit-push-default
+git-commit-push-default: git-commit git-push
 
 .PHONY: git-commit-clean-default
 git-commit-clean-default: git-commit-message-clean git-push
