@@ -123,79 +123,6 @@ class CustomAdminConfig(AdminConfig):
     default_site = "backend.admin.CustomAdminSite"
 endef
 
-define DJANGO_BASE_TEMPLATE
-{% load static webpack_loader %}
-<!DOCTYPE html>
-<html lang="en"
-      class="h-100"
-      data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
-    <head>
-        <meta charset="utf-8" />
-        <title>
-            {% block title %}{% endblock %}
-            {% block title_suffix %}{% endblock %}
-        </title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {% stylesheet_pack 'app' %}
-        {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
-        <style>
-            .success {
-                background-color: #d4edda;
-                border-color: #c3e6cb;
-                color: #155724;
-            }
-
-            .info {
-                background-color: #d1ecf1;
-                border-color: #bee5eb;
-                color: #0c5460;
-            }
-
-            .warning {
-                background-color: #fff3cd;
-                border-color: #ffeeba;
-                color: #856404;
-            }
-
-            .danger {
-                background-color: #f8d7da;
-                border-color: #f5c6cb;
-                color: #721c24;
-            }
-        </style>
-        {% include 'favicon.html' %}
-        {% csrf_token %}
-    </head>
-    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
-        <main class="flex-shrink-0">
-            <div id="app"></div>
-            {% include 'header.html' %}
-            {% if messages %}
-                <div class="messages container">
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show"
-                             role="alert">
-                            {{ message }}
-                            <button type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="container">
-                {% block content %}{% endblock %}
-            </div>
-        </main>
-        {% include 'footer.html' %}
-        {% include 'offcanvas.html' %}
-        {% javascript_pack 'app' %}
-        {% block extra_js %}{# Override this in templates to add extra javascript #}{% endblock %}
-    </body>
-</html>
-endef
-
 define DJANGO_CUSTOM_ADMIN
 from django.contrib.admin import AdminSite
 
@@ -1765,6 +1692,79 @@ define DJANGO_TEMPLATE_ALLAUTH
 {% extends 'base.html' %}
 endef
 
+define DJANGO_TEMPLATE_BASE
+{% load static webpack_loader %}
+<!DOCTYPE html>
+<html lang="en"
+      class="h-100"
+      data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}{% endblock %}
+            {% block title_suffix %}{% endblock %}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% stylesheet_pack 'app' %}
+        {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
+        <style>
+            .success {
+                background-color: #d4edda;
+                border-color: #c3e6cb;
+                color: #155724;
+            }
+
+            .info {
+                background-color: #d1ecf1;
+                border-color: #bee5eb;
+                color: #0c5460;
+            }
+
+            .warning {
+                background-color: #fff3cd;
+                border-color: #ffeeba;
+                color: #856404;
+            }
+
+            .danger {
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+                color: #721c24;
+            }
+        </style>
+        {% include 'favicon.html' %}
+        {% csrf_token %}
+    </head>
+    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            <div id="app"></div>
+            {% include 'header.html' %}
+            {% if messages %}
+                <div class="messages container">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        {% include 'footer.html' %}
+        {% include 'offcanvas.html' %}
+        {% javascript_pack 'app' %}
+        {% block extra_js %}{# Override this in templates to add extra javascript #}{% endblock %}
+    </body>
+</html>
+endef
+
 define DJANGO_TEMPLATE_HEADER
 <div class="app-header">
     <div class="container py-4 app-navbar">
@@ -3178,7 +3178,6 @@ endef
 export DJANGO_API_SERIALIZERS \
         DJANGO_API_VIEWS \
         DJANGO_BACKEND_APPS \
-        DJANGO_BASE_TEMPLATE \
         DJANGO_CUSTOM_ADMIN \
         DJANGO_DOCKERCOMPOSE \
         DJANGO_DOCKERFILE \
@@ -3261,6 +3260,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SITEUSER_VIEW \
         DJANGO_SITEUSER_VIEW_TEMPLATE \
         DJANGO_TEMPLATE_ALLAUTH \
+        DJANGO_TEMPLATE_BASE \
         DJANGO_TEMPLATE_HEADER \
         DJANGO_UNIT_TEST_DEMO_FORMS \
         DJANGO_UNIT_TEST_DEMO_MODELS \
@@ -3385,10 +3385,10 @@ django-allauth-default:
 	@echo "$$DJANGO_URLS_ALLAUTH" >> $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
-.PHONY: django-base-template-default
-django-base-template-default:
+.PHONY: django-template-base-default
+django-template-base-default:
 	@$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$DJANGO_TEMPLATE_BASE" > backend/templates/base.html
 	-$(GIT_ADD) backend/templates/base.html
 
 .PHONY: django-clean-default
@@ -3481,9 +3481,9 @@ django-init-default: separator \
 	django-custom-admin \
 	django-dockerfile \
 	django-offcanvas-template \
-	django-header-template \
+	django-template-header \
 	django-footer-template \
-	django-base-template \
+	django-template-base \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
@@ -3518,7 +3518,7 @@ django-init-minimal-default: separator \
 	django-custom-admin \
 	django-dockerfile \
 	django-offcanvas-template \
-	django-header-template \
+	django-template-header \
 	django-footer-template \
 	django-base-template \
 	django-manage-py \
@@ -3549,7 +3549,7 @@ django-init-wagtail-default: separator \
         django-dockerfile \
 	django-offcanvas-template \
 	wagtail-header-prefix-template \
-	django-header-template \
+	django-template-header \
 	wagtail-base-template \
 	django-footer-template \
 	django-manage-py \
