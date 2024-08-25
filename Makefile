@@ -3728,12 +3728,14 @@ django-payments-demo-default:
 	@echo "$$DJANGO_PAYMENTS_TEMPLATE_SUCCESS" > payments/templates/payments/success.html
 	@echo "$$DJANGO_PAYMENTS_TEMPLATE_PRODUCT_LIST" > payments/templates/payments/product_list.html
 	@echo "$$DJANGO_PAYMENTS_TEMPLATE_PRODUCT_DETAIL" > payments/templates/payments/product_detail.html
+	-$(GIT_ADD) payments/templates/payments
 	@echo "$$DJANGO_SETTINGS_PAYMENTS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_URLS_PAYMENTS" >> $(DJANGO_URLS_FILE)
 	python manage.py makemigrations payments
 	@echo "$$DJANGO_PAYMENTS_MIGRATION_0002" > payments/migrations/0002_set_stripe_api_keys.py
 	@echo "$$DJANGO_PAYMENTS_MIGRATION_0003" > payments/migrations/0003_create_initial_products.py
-	-$(GIT_ADD) payments/
+	-$(GIT_ADD) payments/*.py
+	-$(GIT_ADD) payments/migrations/*.py
 
 .PHONY: django-project-default
 django-project-default:
