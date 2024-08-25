@@ -189,24 +189,6 @@ RUN python3.11 manage.py collectstatic --noinput --clear
 CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
 endef
 
-define DJANGO_FOOTER_TEMPLATE
-<footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
-    <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
-    <ul class="list-inline">
-        <li class="list-inline-item">
-            <a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}"
-               href="/">Home</a>
-        </li>
-        {% for child in current_site.root_page.get_children %}
-            <li class="list-inline-item">
-                <a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}"
-                   href="{{ child.url }}">{{ child }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-</footer>
-endef
-
 define DJANGO_FRONTEND_APP
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -1765,6 +1747,24 @@ define DJANGO_TEMPLATE_FAVICON
 <link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
 endef
 
+define DJANGO_TEMPLATE_FOOTER
+<footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
+    <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
+    <ul class="list-inline">
+        <li class="list-inline-item">
+            <a class="text-secondary text-decoration-none {% if request.path == '/' %}active{% endif %}"
+               href="/">Home</a>
+        </li>
+        {% for child in current_site.root_page.get_children %}
+            <li class="list-inline-item">
+                <a class="text-secondary text-decoration-none {% if request.path == child.url %}active{% endif %}"
+                   href="{{ child.url }}">{{ child }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</footer>
+endef
+
 define DJANGO_TEMPLATE_HEADER
 <div class="app-header">
     <div class="container py-4 app-navbar">
@@ -3181,7 +3181,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_CUSTOM_ADMIN \
         DJANGO_DOCKERCOMPOSE \
         DJANGO_DOCKERFILE \
-        DJANGO_FOOTER_TEMPLATE \
         DJANGO_FRONTEND_APP \
         DJANGO_FRONTEND_APP_CONFIG \
         DJANGO_FRONTEND_BABELRC \
@@ -3261,6 +3260,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_TEMPLATE_ALLAUTH \
         DJANGO_TEMPLATE_BASE \
         DJANGO_TEMPLATE_FAVICON \
+        DJANGO_TEMPLATE_FOOTER \
         DJANGO_TEMPLATE_HEADER \
         DJANGO_UNIT_TEST_DEMO_FORMS \
         DJANGO_UNIT_TEST_DEMO_MODELS \
@@ -3419,16 +3419,6 @@ django-dockerfile-default:
 	@echo "$$DJANGO_DOCKERCOMPOSE" > docker-compose.yml
 	-$(GIT_ADD) docker-compose.yml
 
-.PHONY: django-favicon-default
-django-favicon-default:
-	@echo "$$DJANGO_TEMPLATE_FAVICON" > backend/templates/favicon.html
-	-$(GIT_ADD) backend/templates/favicon.html
-
-.PHONY: django-footer-template-default
-django-footer-template-default:
-	@echo "$$DJANGO_FOOTER_TEMPLATE" > backend/templates/footer.html
-	-$(GIT_ADD) backend/templates/footer.html
-
 .PHONY: django-frontend-default
 django-frontend-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
@@ -3482,13 +3472,13 @@ django-init-default: separator \
 	django-dockerfile \
 	django-offcanvas-template \
 	django-template-header \
-	django-footer-template \
+	django-template-favicon \
+	django-template-footer \
 	django-template-base \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-allauth \
-	django-favicon \
 	django-settings-base \
 	django-settings-dev \
 	django-settings-prod \
@@ -3519,12 +3509,12 @@ django-init-minimal-default: separator \
 	django-dockerfile \
 	django-offcanvas-template \
 	django-template-header \
-	django-footer-template \
+	django-template-favicon \
+	django-template-footer \
 	django-base-template \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
-	django-favicon \
 	django-settings-prod \
 	django-home \
 	django-utils \
@@ -3549,15 +3539,15 @@ django-init-wagtail-default: separator \
         django-dockerfile \
 	django-offcanvas-template \
 	wagtail-header-prefix-template \
-	django-template-header \
 	wagtail-base-template \
-	django-footer-template \
+	django-template-favicon \
+	django-template-footer \
+	django-template-header \
 	django-manage-py \
 	wagtail-home \
 	wagtail-urls \
 	django-urls-debug-toolbar \
 	django-allauth \
-	django-favicon \
 	wagtail-search \
 	django-settings-base \
 	django-settings-dev \
@@ -3847,6 +3837,16 @@ django-static-default:
 .PHONY: django-su-default
 django-su-default:
 	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
+
+.PHONY: django-template-favicon-default
+django-template-favicon-default:
+	@echo "$$DJANGO_TEMPLATE_FAVICON" > backend/templates/favicon.html
+	-$(GIT_ADD) backend/templates/favicon.html
+
+.PHONY: django-template-footer-default
+django-template-footer-default:
+	@echo "$$DJANGO_TEMPLATE_FOOTER" > backend/templates/footer.html
+	-$(GIT_ADD) backend/templates/footer.html
 
 .PHONY: django-template-header-default
 django-template-header-default:
