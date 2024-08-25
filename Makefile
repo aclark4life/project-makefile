@@ -1887,6 +1887,7 @@ class UnitTestDemoViewTest(TestCase):
  
  
 class UnitTestDemoFormTest(TestCase):
+
      def test_form_valid_data(self):
          form = UnitTestDemoForm(data={"field1": "value1", "field2": "value2"})
          self.assertTrue(form.is_valid())
@@ -4557,6 +4558,9 @@ webpack-init-reveal-default: npm-init
 # --------------------------------------------------------------------------------
 # Single-line phony target rules
 # --------------------------------------------------------------------------------
+
+.PHONY: Lint-default
+Lint-default: git-commit-message-lint
 
 .PHONY: aws-check-env-default
 aws-check-env-default: aws-check-env-profile aws-check-env-region
