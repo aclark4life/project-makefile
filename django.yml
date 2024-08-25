@@ -15,17 +15,27 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: [3.12]
+        node-version: [22.x]
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        registry-url: 'https://registry.npmjs.org/'
+
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install Dependencies
       run: |
         cd test/django-init
         make -f ../../Makefile install
+
     - name: Run Tests
       run: |
         cd test/django-init

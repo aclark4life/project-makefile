@@ -5,7 +5,7 @@
 # https://github.com/aclark4life/project-makefile
 #
 # --------------------------------------------------------------------------------
-# Set the default goal to be `git commit -a -m $(GIT_MESSAGE)` and `git push`
+# Set the default goal to be `git commit -a -m $(GIT_COMMIT_MESSAGE)` and `git push`
 # --------------------------------------------------------------------------------
 
 .DEFAULT_GOAL := git-commit-push
@@ -53,8 +53,9 @@ GIT_BRANCHES = $(shell git branch -a)
 GIT_CHECKOUT = git checkout
 GIT_COMMIT = git commit
 GIT_PUSH = git push
-GIT_PUSH_FORCE = git push --force-with-lease
+GIT_PUSH_FORCE = $(GIT_PUSH) --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
+GIT_STATUS = git status
 MAKEFILE_CUSTOM_FILE := project.mk
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 PAGER ?= less
@@ -87,7 +88,7 @@ ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
 endif
 
 # --------------------------------------------------------------------------------
-# Multi-line variables to be used in phony target rules
+# Multi-line variables to be used by phony target rules
 # --------------------------------------------------------------------------------
 
 define DJANGO_API_SERIALIZERS
@@ -3460,9 +3461,9 @@ django-home-default:
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
 	@echo "$$DJANGO_URLS_HOME_PAGE" >> $(DJANGO_URLS_FILE)
 	@echo "$$DJANGO_SETTINGS_HOME_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
-	-$(GIT_ADD) home/templates
 	-$(GIT_ADD) home/*.py
 	-$(GIT_ADD) home/migrations/*.py
+	-$(GIT_ADD) home/templates
 
 .PHONY: django-init-default
 django-init-default: separator \
@@ -3736,7 +3737,7 @@ django-payments-demo-default:
 .PHONY: django-project-default
 django-project-default:
 	django-admin startproject backend .
-	-$(GIT_ADD) backend
+	-$(GIT_ADD) backend/*.py
 
 .PHONY: django-rest-serializers-default
 django-rest-serializers-default:
@@ -3753,15 +3754,15 @@ django-search-default:
 	python manage.py startapp search
 	$(ADD_DIR) search/templates
 	@echo "$$DJANGO_SEARCH_TEMPLATE" > search/templates/search.html
+	-$(GIT_ADD) search/templates
 	@echo "$$DJANGO_SEARCH_FORMS" > search/forms.py
 	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
 	@echo "$$DJANGO_SEARCH_UTILS" > search/utils.py
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
+	-$(GIT_ADD) search/*.py
 	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "INSTALLED_APPS.append('search')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "urlpatterns += [path('search/', include('search.urls'))]" >> $(DJANGO_URLS_FILE)
-	-$(GIT_ADD) search/templates
-	-$(GIT_ADD) search/*.py
 
 .PHONY: django-secret-key-default
 django-secret-key-default:
@@ -4083,7 +4084,7 @@ git-commit-message-rename-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Rename")
 
 .PHONY: git-commit-message-reword-default
-git-commit-message-reword-default:
+git-commit-reword-reword-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Reword")
 
 .PHONY: git-commit-message-sort-default
@@ -4121,11 +4122,15 @@ git-set-default-default:
 
 .PHONY: git-set-upstream-default
 git-set-upstream-default:
-	git push --set-upstream origin main
+	$(GIT_PUSH) --set-upstream origin main
 
 .PHONY: git-short-default
 git-short-default:
 	@echo $(GIT_REV)
+
+.PHONY: git-status-default
+git-status-default:
+	-@$(GIT_STATUS)
 
 .PHONY: help-default
 help-default:
@@ -4166,7 +4171,7 @@ makefile-list-targets-default:
 make-default:
 	-$(GIT_ADD) Makefile
 	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
-	-git push
+	-$(GIT_PUSH)
 
 .PHONY: npm-audit-fix-default
 npm-audit-fix-default:
@@ -4294,7 +4299,7 @@ plone-clean-default:
 	$(DEL_DIR) $(PACKAGE_NAME)
 
 .PHONY: plone-init-default
-plone-init-default: git-ignore plone-install plone-instance plone-serve
+plone-init-default: plone-install plone-instance plone-serve
 
 .PHONY: plone-install-default
 plone-install-default: pip-ensure
@@ -4323,7 +4328,7 @@ plone-build-default:
 programming-interview-default:
 	@echo "$$PROGRAMMING_INTERVIEW" > interview.py
 	@echo "Created interview.py!"
-	-@$(GIT_ADD) interview.py > /dev/null 2>&1
+	-$(GIT_ADD) interview.py > /dev/null 2>&1
 
 # .NOT_PHONY!
 $(MAKEFILE_CUSTOM_FILE):
@@ -4372,7 +4377,7 @@ readme-init-default:
 readme-edit-default:
 	$(EDITOR) README.md
 
-.PHONY: git-ignore reveal-init-default
+.PHONY: reveal-init-default
 reveal-init-default: webpack-init-reveal
 	npm install \
 	css-loader \
@@ -4404,7 +4409,7 @@ separator-default:
 	@echo "$$SEPARATOR"
 
 .PHONY: sphinx-init-default
-sphinx-init-default: git-ignore sphinx-install
+sphinx-init-default: sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
 	$(COPY_DIR) $(RANDIR)/* .
 	$(DEL_DIR) $(RANDIR)
@@ -4414,7 +4419,7 @@ sphinx-init-default: git-ignore sphinx-install
 	-@$(GIT_CHECKOUT) Makefile
 
 .PHONY: sphinx-theme-init-default
-sphinx-theme-init-default: git-ignore
+sphinx-theme-init-default:
 	export DJANGO_FRONTEND_THEME_NAME=$(PROJECT_NAME)_theme; \
 	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME ; \
 	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/__init__.py ; \
@@ -4508,7 +4513,9 @@ wagtail-privacy-default:
 wagtail-project-default:
 	wagtail start backend .
 	$(DEL_FILE) home/templates/home/welcome_page.html
-	-$(GIT_ADD) backend/
+	-$(GIT_ADD) backend/*.py
+	-$(GIT_ADD) backend/settings/*.py
+	-$(GIT_ADD) backend/templates/
 	-$(GIT_ADD) .dockerignore
 	-$(GIT_ADD) Dockerfile
 	-$(GIT_ADD) manage.py
@@ -4518,8 +4525,8 @@ wagtail-project-default:
 wagtail-search-default:
 	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
 	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
-	-$(GIT_ADD) search/templates
 	-$(GIT_ADD) search/*.py
+	-$(GIT_ADD) search/templates
 
 .PHONY: wagtail-settings-default
 wagtail-settings-default:
@@ -4529,12 +4536,12 @@ wagtail-settings-default:
 wagtail-sitepage-default:
 	python manage.py startapp sitepage
 	@echo "$$WAGTAIL_SITEPAGE_MODEL" > sitepage/models.py
+	-$(GIT_ADD) sitepage/*.py
 	$(ADD_DIR) sitepage/templates/sitepage/
 	@echo "$$WAGTAIL_SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
+	-$(GIT_ADD) sitepage/templates
 	@echo "INSTALLED_APPS.append('sitepage')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations sitepage
-	-$(GIT_ADD) sitepage/templates
-	-$(GIT_ADD) sitepage/*.py
 	-$(GIT_ADD) sitepage/migrations/*.py
 
 .PHONY: wagtail-urls-default
