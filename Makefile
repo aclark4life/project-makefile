@@ -3997,13 +3997,13 @@ eb-upgrade-default:
 eb-init-default: aws-check-env-profile
 	eb init --profile=$(AWS_PROFILE)
 
-.PHONY: eb-list-default
-eb-list-platforms-default:
-	aws elasticbeanstalk list-platform-versions
-
 .PHONY: eb-list-databases-default
 eb-list-databases-default:
 	@eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DATABASE_PASS); psql -l -U $(DJANGO_DATABASE_USER) -h $(DJANGO_DATABASE_HOST) $(DJANGO_DATABASE_NAME)"
+
+.PHONY: eb-list-platforms-default
+eb-list-platforms-default:
+	aws elasticbeanstalk list-platform-versions
 
 .PHONY: eb-logs-default
 eb-logs-default:
