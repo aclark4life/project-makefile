@@ -22,10 +22,12 @@ COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
 DJANGO_DB_URL = $(shell eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | awk -F= '{print $$2}')
-DJANGO_DB_HOST = $(shell echo $(DJANGO_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["HOST"])')
-DJANGO_DB_NAME = $(shell echo $(DJANGO_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["NAME"])')
-DJANGO_DB_PASS = $(shell echo $(DJANGO_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["PASSWORD"])')
-DJANGO_DB_USER = $(shell echo $(DJANGO_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["USER"])')
+
+DJANGO_DB_HOST = $(call DJANGO_DATABASE,HOST)
+DJANGO_DB_NAME = $(call DJANGO_DATABASE,NAME)
+DJANGO_DB_PASS = $(call DJANGO_DATABASE,PASSWORD)
+DJANGO_DB_USER = $(call DJANGO_DATABASE,USER)
+
 DJANGO_BACKEND_APPS_FILE := backend/apps.py
 DJANGO_CUSTOM_ADMIN_FILE := backend/admin.py
 DJANGO_FRONTEND_FILES = .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json frontend package-lock.json \
@@ -205,6 +207,10 @@ class CustomAdminSite(AdminSite):
 
 
 custom_admin_site = CustomAdminSite(name="custom_admin")
+endef
+
+define DJANGO_DATABASE
+$(shell echo $(DJANGO_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
 endef
 
 define DJANGO_DOCKERCOMPOSE
