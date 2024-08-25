@@ -4559,6 +4559,9 @@ webpack-init-reveal-default: npm-init
 # Single-line phony target rules
 # --------------------------------------------------------------------------------
 
+.PHONY: Clean-default
+Clean-default: git-commit-message-clean git-push
+
 .PHONY: Lint-default
 Lint-default: git-commit-message-lint git-push
 
