@@ -4655,6 +4655,9 @@ i-default: install
 .PHONY: l-default
 l-default: makefile-list-commands
 
+.PHONY: last-default
+last-default: git-commit-last git-push
+
 .PHONY: lint-default
 lint-default: django-lint
 
