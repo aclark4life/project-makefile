@@ -3567,6 +3567,7 @@ django-init-wagtail-default: separator \
 	django-frontend \
 	npm-install-react \
 	npm-install-react-dev \
+	npm-audit-fix \
 	django-migrate \
 	git-ignore \
 	django-su
@@ -4141,15 +4142,19 @@ make-default:
 	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
 	-git push
 
+.PHONY: npm-audit-fix-default
+npm-autid-fix-default:
+	npm audit fix
+
+.PHONY: npm-build-default
+npm-build-default:
+	npm run build
+
 .PHONY: npm-init-default
 npm-init-default:
 	npm init -y
 	-$(GIT_ADD) package.json
 	-$(GIT_ADD) package-lock.json
-
-.PHONY: npm-build-default
-npm-build-default:
-	npm run build
 
 .PHONY: npm-install-default
 npm-install-default:
