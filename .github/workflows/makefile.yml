@@ -4,6 +4,20 @@ on: [push]
 jobs:
   Make-Job:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: mydatabase
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -15,26 +29,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Specify the Python version you need
-      - name: Install PostgreSQL
-        run: sudo apt-get install -y postgresql postgresql-contrib
-      - name: Set up PostgreSQL
+          python-version: '3.12'  # Specify the Python version you need
+      - name: Wait for PostgreSQL to be ready
         run: |
-          sudo service postgresql start
-          sudo -u postgres psql -c "CREATE DATABASE mydatabase;"
-          sudo -u postgres psql -c "CREATE USER myuser WITH PASSWORD 'mypassword';"
-          sudo -u postgres psql -c "ALTER ROLE myuser SET client_encoding TO 'utf8';"
-          sudo -u postgres psql -c "ALTER ROLE myuser SET default_transaction_isolation TO 'read committed';"
-          sudo -u postgres psql -c "ALTER ROLE myuser SET timezone TO 'UTC';"
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;"
-        shell: /usr/bin/bash -e {0}
-        env:
-          pythonLocation: /opt/hostedtoolcache/Python/3.9.19/x64
-          PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.9.19/x64/lib/pkgconfig
-          Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.19/x64
-          Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.19/x64
-          Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.9.19/x64
-          LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.9.19/x64/lib
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 1
+          done
       - name: Set up virtual environment
         run: python -m venv venv
       - name: Activate virtual environment and install dependencies
