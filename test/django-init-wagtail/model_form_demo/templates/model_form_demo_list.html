@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Test Models List</h1>
+    <ul>
+        {% for model_form_demo in model_form_demos %}
+            <li>
+                <a href="{% url 'model_form_demo_detail' model_form_demo.pk %}">{{ model_form_demo.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'model_form_demo_create' %}">Create New Test Model</a>
+{% endblock %}
