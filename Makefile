@@ -4151,10 +4151,6 @@ makefile-list-commands-default:
 makefile-list-defines-default:
 	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
 
-.PHONY: makefile-list-exports-default
-makefile-list-exports-default:
-	@grep '^export [A-Z][A-Z_]*' Makefile
-
 .PHONY: makefile-list-targets-default
 makefile-list-targets-default:
 	@perl -ne 'print if /^\s*\.PHONY:/ .. /^[a-zA-Z0-9_-]+:/;' Makefile | grep -v .PHONY
@@ -4679,9 +4675,6 @@ list-commands-default: makefile-list-commands
 
 .PHONY: list-defines-default
 list-defines-default: makefile-list-defines
-
-.PHONY: list-exports-default
-list-exports-default: makefile-list-exports
 
 .PHONY: list-targets-default
 list-targets-default: makefile-list-targets
