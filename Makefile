@@ -4020,7 +4020,11 @@ git-commit-last-default:
 
 .PHONY: git-commit-message-clean-default
 git-commit-message-clean-default:
-	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Clean")
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Clean up")
+
+.PHONY: git-commit-message-comment-default
+git-commit-message-comment-default:
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add comment")
 
 .PHONY: git-commit-message-freeze-default
 git-commit-message-freeze-default:
@@ -4028,7 +4032,7 @@ git-commit-message-freeze-default:
 
 .PHONY: git-commit-message-ignore-default
 git-commit-message-ignore-default:
-	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Ignore")
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add .gitignore")
 
 .PHONY: git-commit-message-init-default
 git-commit-message-init-default:
@@ -4344,7 +4348,7 @@ readme-init-default:
 readme-edit-default:
 	$(EDITOR) README.md
 
-.PHONY: reveal-init-default
+.PHONY: git-ignore reveal-init-default
 reveal-init-default: webpack-init-reveal
 	npm install \
 	css-loader \
@@ -4376,7 +4380,7 @@ separator-default:
 	@echo "$$SEPARATOR"
 
 .PHONY: sphinx-init-default
-sphinx-init-default: sphinx-install
+sphinx-init-default: git-ignore sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
 	$(COPY_DIR) $(RANDIR)/* .
 	$(DEL_DIR) $(RANDIR)
@@ -4384,10 +4388,9 @@ sphinx-init-default: sphinx-install
 	-$(GIT_ADD) conf.py
 	$(DEL_FILE) make.bat
 	-@$(GIT_CHECKOUT) Makefile
-	$(MAKE) git-ignore
 
 .PHONY: sphinx-theme-init-default
-sphinx-theme-init-default:
+sphinx-theme-init-default: git-ignore
 	export DJANGO_FRONTEND_THEME_NAME=$(PROJECT_NAME)_theme; \
 	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME ; \
 	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/__init__.py ; \
@@ -4541,7 +4544,6 @@ webpack-init-default: npm-init
 	-$(GIT_ADD) src/index.js
 	@echo "$$WEBPACK_INDEX_HTML" > index.html
 	-$(GIT_ADD) index.html
-	$(MAKE) git-ignore
 
 .PHONY: webpack-init-reveal-default
 webpack-init-reveal-default: npm-init
@@ -4553,11 +4555,14 @@ webpack-init-reveal-default: npm-init
 	-$(GIT_ADD) src/index.js
 	@echo "$$WEBPACK_REVEAL_INDEX_HTML" > index.html
 	-$(GIT_ADD) index.html
-	$(MAKE) git-ignore
 
 # --------------------------------------------------------------------------------
-# Single-line phony target rules
+# Title-case single-line phony target rules
 # --------------------------------------------------------------------------------
+# Use Title case for some phony targets
+#    
+# E.g. `make lint` performs linting and can't be used to commit & push the
+# results. Use Lint instead for such cases.
 
 .PHONY: Clean-default
 Clean-default: git-commit-message-clean git-push
@@ -4565,6 +4570,10 @@ Clean-default: git-commit-message-clean git-push
 .PHONY: Lint-default
 Lint-default: git-commit-message-lint git-push
 
+# --------------------------------------------------------------------------------
+# Single-line phony target rules
+# --------------------------------------------------------------------------------
+#
 .PHONY: aws-check-env-default
 aws-check-env-default: aws-check-env-profile aws-check-env-region
 
