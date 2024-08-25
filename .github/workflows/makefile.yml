@@ -1,8 +1,8 @@
-name: `make django-init-wagtail` Workflow
-run-name: ${{ github.actor }} is running `make django-init-wagtail` 🚀
+name: Make Workflow
+run-name: ${{ github.actor }} is running Make Workflow 🚀
 on: [push]
 jobs:
-  Django-Init-Wagtail:
+  Make-Job:
     runs-on: ubuntu-latest
     services:
       postgres:
