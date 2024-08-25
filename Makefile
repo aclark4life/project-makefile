@@ -58,7 +58,12 @@ GIT_REV = $(shell git rev-parse --short HEAD)
 MAKEFILE_CUSTOM_FILE := project.mk
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 PAGER ?= less
-PIP_INSTALL_PLONE_CONSTRAINTS = https://dist.plone.org/release/6.0.11.1/constraints.txt
+PIP_DEPS = python -m pipdeptree
+PIP_ENSURE = python -m ensurepip
+PIP_FREEZE = python -m pip freeze
+PIP_INSTALL = python -m pip install
+PIP_UNINSTALL = python -m pip uninstall -y
+PLONE_VERSION_FILE = https://dist.plone.org/release/6.0.11.1/constraints.txt
 PROJECT_DIRS = backend contactpage home privacy siteuser
 PROJECT_EMAIL := aclark@aclark.net
 PROJECT_NAME = project-makefile
@@ -3570,11 +3575,12 @@ django-init-wagtail-default: separator \
 	django-su
 
 .PHONY: django-install-default
-django-install-default: pip-ensure-pip
-	python -m pip install \
+django-install-default: pip-ensure
+	$(PIP_INSTALL) \
 	Django \
         Faker \
         boto3 \
+	build \
         crispy-bootstrap5 \
         djangorestframework \
         django-allauth \
@@ -3616,17 +3622,17 @@ django-install-default: pip-ensure-pip
         mailchimp-marketing \
         mailchimp-transactional \
         phonenumbers \
-        pipdeptree \
         psycopg2-binary \
         pydotplus \
         python-webpack-boilerplate \
         python-docx \
         reportlab \
-        texttable
+        texttable \
+	wheel
 
 .PHONY: django-install-minimal-default
-django-install-minimal-default: pip-ensure-pip
-	python -m pip install \
+django-install-minimal-default: pip-ensure
+	$(PIP_INSTALL) \
 	Django \
 	dj-database-url \
 	django-debug-toolbar \
@@ -3851,8 +3857,7 @@ django-template-offcanvas-default:
 	-$(GIT_ADD) backend/templates/offcanvas.html
 
 .PHONY: django-test-default
-django-test-default: npm-install django-static
-	-$(MAKE) pip-install-test
+django-test-default: npm-install django-static pip-install-test
 	python manage.py test
 
 .PHONY: django-unit-test-demo-default
@@ -4228,16 +4233,12 @@ npm-serve-default:
 npm-test-default:
 	npm run test
 
-.PHONY: pip-deps-default
-pip-deps-default: pip-ensure-pip
-	python -m pip install pipdeptree
-	python -m pipdeptree
-	pipdeptree
+pip-deps-default: pip-ensure
+	$(PIP_DEPS)
 
 .PHONY: pip-freeze-default
-pip-freeze-default: pip-ensure-pip
-	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
-	mv -f $(TMPDIR)/requirements.txt .
+pip-freeze-default: pip-ensure
+	$(PIP_FREEZE) | sort > requirements.txt
 	-$(GIT_ADD) requirements.txt
 
 .PHONY: pip-init-default
@@ -4250,38 +4251,37 @@ pip-init-test-default:
 	@echo "$$PIP_INSTALL_REQUIREMENTS_TEST" > requirements-test.txt
 	-$(GIT_ADD) requirements-test.txt
 
-.PHONY: pip-ensure-pip-default
-pip-ensure-pip-default:
-	python -m ensurepip
+.PHONY: pip-ensure-default
+pip-ensure-default:
+	$(PIP_ENSURE)
 
 .PHONY: pip-install-default
-pip-install-default: pip-ensure-pip
-	python -m pip install wheel
-	python -m pip install -r requirements.txt
+pip-install-default: pip-ensure
+	python -m $(PIP_INSTALL) -r requirements.txt
 
 .PHONY: pip-install-dev-default
-pip-install-dev-default: pip-ensure-pip
-	python -m pip install -r requirements-dev.txt
+pip-install-dev-default: pip-ensure
+	python -m $(PIP_INSTALL) -r requirements-dev.txt
 
 .PHONY: pip-install-test-default
-pip-install-test-default: pip-ensure-pip
-	python -m pip install -r requirements-test.txt
+pip-install-test-default: pip-ensure
+	python -m $(PIP_INSTALL) -r requirements-test.txt
 
 .PHONY: pip-install-upgrade-default
-pip-install-upgrade-default: pip-ensure-pip
-	cat requirements.txt | awk -F\= '{print $$1}' > $(TMPDIR)/requirements.txt
-	mv -f $(TMPDIR)/requirements.txt .
-	python -m pip install -U -r requirements.txt
-	python -m pip freeze | sort > $(TMPDIR)/requirements.txt
-	mv -f $(TMPDIR)/requirements.txt .
+pip-install-upgrade-default: pip-ensure
+	awk -F\= '{print $$1}' requirements.txt > $(TMPDIR)/requirements.txt
+	$(COPY_FILE) $(TMPDIR)/requirements.txt .
+	$(PIP_INSTALL) -U -r requirements.txt
+	$(PIP_FREEZE) | sort > $(TMPDIR)/requirements.txt
+	$(COPY_FILE) $(TMPDIR)/requirements.txt .
 
 .PHONY: pip-upgrade-default
-pip-upgrade-default: pip-ensure-pip
-	python -m pip install -U pip
+pip-upgrade-default: pip-ensure
+	$(PIP_INSTALL) -U pip
 
 .PHONY: pip-uninstall-default
-pip-uninstall-default: pip-ensure-pip
-	python -m pip freeze | xargs python -m pip uninstall -y
+pip-uninstall-default: pip-ensure
+	$(PIP_FREEZE) | xargs $(PIP_UNINSTALL)
 
 .PHONY: plone-clean-default
 plone-clean-default:
@@ -4292,8 +4292,8 @@ plone-clean-default:
 plone-init-default: git-ignore plone-install plone-instance plone-serve
 
 .PHONY: plone-install-default
-plone-install-default: pip-ensure-pip
-	python -m pip install plone -c $(PIP_INSTALL_PLONE_CONSTRAINTS)
+plone-install-default: pip-ensure
+	$(PIP_INSTALL) plone -c $(PLONE_VERSION_FILE)
 
 .PHONY: plone-instance-default
 plone-instance-default:
@@ -4341,7 +4341,7 @@ python-serve-default:
 	python3 -m http.server
 
 .PHONY: python-sdist-default
-python-sdist-default: pip-ensure-pip
+python-sdist-default: pip-ensure
 	python setup.py sdist --format=zip
 
 .PHONY: python-webpack-init-default
@@ -4426,9 +4426,8 @@ sphinx-theme-init-default: git-ignore
 
 .PHONY: sphinx-install-default
 sphinx-install-default:
-	echo "Sphinx\n" > requirements.txt
-	@$(MAKE) pip-install
-	@$(MAKE) pip-freeze
+	$(PIP_INSTALL) Sphinx
+	$(PIP_FREEZE) | sort > requirements.txt
 	-$(GIT_ADD) requirements.txt
 
 .PHONY: sphinx-build-default
@@ -4475,8 +4474,8 @@ wagtail-home-default:
 	-$(GIT_ADD) home/migrations/*.py
 
 .PHONY: wagtail-install-default
-wagtail-install-default: pip-ensure-pip
-	python -m pip install \
+wagtail-install-default: pip-ensure
+	$(PIP_INSTALL) \
         wagtail \
         wagtailmenus \
         wagtail-color-panel \
