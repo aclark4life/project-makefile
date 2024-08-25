@@ -4701,6 +4701,9 @@ o-default: django-open
 .PHONY: open-default
 open-default: open
 
+.PHONY: r-default
+r-default: review
+
 .PHONY: readme-default
 readme-default: readme-init
 
