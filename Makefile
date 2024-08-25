@@ -4066,6 +4066,10 @@ git-commit-message-reword-default:
 git-commit-message-sort-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Sort")
 
+.PHONY: git-commit-message-typo-default
+git-commit-message-typo-default:
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Fix typo")
+
 .PHONY: git-ignore-default
 git-ignore-default:
 	@echo "$$GIT_IGNORE" > .gitignore
@@ -4145,7 +4149,7 @@ make-default:
 	-git push
 
 .PHONY: npm-audit-fix-default
-npm-autid-fix-default:
+npm-audit-fix-default:
 	npm audit fix
 
 .PHONY: npm-build-default
@@ -4711,6 +4715,9 @@ test-default: django-test
 
 .PHONY: t-default
 t-default: test
+
+.PHONY: typo-default
+typo-default: git-commit-message-typo git-push
 
 .PHONY: u-default
 u-default: help
