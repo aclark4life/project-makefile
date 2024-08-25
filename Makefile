@@ -3981,18 +3981,6 @@ eb-export-default:
         echo "Wrote $(DJANGO_DATABASE_NAME).sql"; \
         fi
 
-.PHONY: eb-rebuild-default
-eb-rebuild-default:
-	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
-
-.PHONY: eb-restart-default
-eb-restart-default:
-	eb ssh -c "systemctl restart web"
-
-.PHONY: eb-upgrade-default
-eb-upgrade-default:
-	eb upgrade
-
 .PHONY: eb-init-default
 eb-init-default: aws-check-env-profile
 	eb init --profile=$(AWS_PROFILE)
@@ -4012,6 +4000,18 @@ eb-logs-default:
 .PHONY: eb-print-env-default
 eb-print-env-default:
 	eb printenv
+
+.PHONY: eb-rebuild-default
+eb-rebuild-default:
+	aws elasticbeanstalk rebuild-environment --environment-name $(ENV_NAME)
+
+.PHONY: eb-restart-default
+eb-restart-default:
+	eb ssh -c "systemctl restart web"
+
+.PHONY: eb-upgrade-default
+eb-upgrade-default:
+	eb upgrade
 
 .PHONY: favicon-default
 favicon-default:
