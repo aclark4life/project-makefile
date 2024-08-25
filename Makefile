@@ -2896,6 +2896,7 @@ class MarketingBlock(blocks.StructBlock):
 
 
 class HomePage(Page):
+
     template = "home/home_page.html"  # Create a template for rendering the home page
 
     marketing_blocks = StreamField(
