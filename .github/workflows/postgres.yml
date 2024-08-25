@@ -1,5 +1,5 @@
-name: Make Workflow
-run-name: ${{ github.actor }} is running Make Workflow 🚀
+name: Postgres Workflow
+run-name: ${{ github.actor }} is running Postgres Workflow 🚀
 on: [push]
 jobs:
   Make-Job:
@@ -36,28 +36,4 @@ jobs:
             echo "Waiting for PostgreSQL to be ready..."
             sleep 1
           done
-      - name: Set up virtual environment
-        run: python -m venv .venv
-      - name: Activate virtual environment and install dependencies
-        run: |
-          source .venv/bin/activate
-          pip install -r requirements.txt  # Ensure you have a requirements.txt file with necessary dependencies
-      - name: Change directory and run make django-init-wagtail
-        run: |
-          if [ -d "test/django-init-wagtail" ]; then
-            cd test/django-init-wagtail
-            source ../../.venv/bin/activate
-            make django-init-wagtail
-          else
-            echo "Directory test/django-init-wagtail does not exist."
-            exit 1
-          fi
-        shell: /usr/bin/bash -e {0}
-        env:
-          pythonLocation: /opt/hostedtoolcache/Python/3.12.5/x64
-          PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.5/x64/lib/pkgconfig
-          Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.5/x64
-          Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.5/x64
-          Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.5/x64
-          LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.5/x64/lib
       - run: echo "🍏 This job's status is ${{ job.status }}."
