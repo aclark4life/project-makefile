@@ -28,4 +28,5 @@ jobs:
         make -f ../../Makefile install
     - name: Run Tests
       run: |
+        cd test/django-init
         make -f ../../Makefile test

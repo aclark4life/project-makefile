@@ -4046,6 +4046,10 @@ git-commit-last-default:
 git-commit-message-default:
 	-@$(GIT_COMMIT) -a -m "$(m)"
 
+.PHONY: git-commit-message-actions-default
+git-commit-message-actions-default:
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Update actions")
+
 .PHONY: git-commit-message-clean-default
 git-commit-message-clean-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Clean up")
@@ -4584,6 +4588,9 @@ Lint-default: git-commit-message-lint git-push
 # Single-line phony target rules
 # --------------------------------------------------------------------------------
 #
+.PHONY: actions-default
+actions-default: git-commit-message-actions git-push
+
 .PHONY: aws-check-env-default
 aws-check-env-default: aws-check-env-profile aws-check-env-region
 
