@@ -21,23 +21,23 @@ COPY_DIR := cp -rv
 COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
-DJANGO_DB_URL = $(shell eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; env | grep DATABASE_URL" | awk -F= '{print $$2}')
-
-DJANGO_DB_HOST = $(call DJANGO_DATABASE,HOST)
-DJANGO_DB_NAME = $(call DJANGO_DATABASE,NAME)
-DJANGO_DB_PASS = $(call DJANGO_DATABASE,PASSWORD)
-DJANGO_DB_USER = $(call DJANGO_DATABASE,USER)
-
 DJANGO_BACKEND_APPS_FILE := backend/apps.py
 DJANGO_CUSTOM_ADMIN_FILE := backend/admin.py
-DJANGO_FRONTEND_FILES = .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json frontend package-lock.json \
-	package.json postcss.config.js
+DJANGO_DATABASE_HOST = $(call DJANGO_DATABASE,HOST)
+DJANGO_DATABASE_NAME = $(call DJANGO_DATABASE,NAME)
+DJANGO_DATABASE_PASS = $(call DJANGO_DATABASE,PASSWORD)
+DJANGO_DATABASE_USER = $(call DJANGO_DATABASE,USER)
+DJANGO_FRONTEND_FILES = .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json \
+			frontend package-lock.json \
+			package.json postcss.config.js
 DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
 DJANGO_SETTINGS_SECRET_KEY = $(shell openssl rand -base64 48)
 DJANGO_URLS_FILE = backend/urls.py
+EB_DB_URL = $(shell eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; \
+	    env | grep DATABASE_URL" | awk -F= '{print $$2}')
 EB_DIR_NAME := .elasticbeanstalk
 EB_ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
 EB_PLATFORM ?= "Python 3.11 running on 64bit Amazon Linux 2023"
@@ -210,7 +210,7 @@ custom_admin_site = CustomAdminSite(name="custom_admin")
 endef
 
 define DJANGO_DATABASE
-$(shell echo $(DJANGO_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
+$(shell echo $(EB_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
 endef
 
 define DJANGO_DOCKERCOMPOSE
@@ -3357,7 +3357,7 @@ aws-vpc-default: aws-check-env
 
 .PHONY: db-import-default
 db-import-default:
-	@psql $(DJANGO_DB_NAME) < $(DJANGO_DB_NAME).sql
+	@psql $(DJANGO_DATABASE_NAME) < $(DJANGO_DATABASE_NAME).sql
 
 .PHONY: db-init-default
 db-init-default:
@@ -3957,8 +3957,8 @@ eb-export-default:
         echo "Directory $(EB_DIR_NAME) does not exist"; \
         else \
         echo "Found $(EB_DIR_NAME) directory"; \
-        eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); pg_dump -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)" > $(DJANGO_DB_NAME).sql; \
-        echo "Wrote $(DJANGO_DB_NAME).sql"; \
+        eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DATABASE_PASS); pg_dump -U $(DJANGO_DATABASE_USER) -h $(DJANGO_DATABASE_HOST) $(DJANGO_DATABASE_NAME)" > $(DJANGO_DATABASE_NAME).sql; \
+        echo "Wrote $(DJANGO_DATABASE_NAME).sql"; \
         fi
 
 .PHONY: eb-restart-default
@@ -3983,7 +3983,7 @@ eb-list-platforms-default:
 
 .PHONY: eb-list-databases-default
 eb-list-databases-default:
-	@eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DB_PASS); psql -l -U $(DJANGO_DB_USER) -h $(DJANGO_DB_HOST) $(DJANGO_DB_NAME)"
+	@eb ssh --quiet -c "export PGPASSWORD=$(DJANGO_DATABASE_PASS); psql -l -U $(DJANGO_DATABASE_USER) -h $(DJANGO_DATABASE_HOST) $(DJANGO_DATABASE_NAME)"
 
 .PHONY: eb-logs-default
 eb-logs-default:
