@@ -4028,6 +4028,10 @@ git-commit-last-default:
 	@git log -1 --pretty=%B > $(TMPDIR)/commit.txt
 	-@$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
 
+.PHONY: git-commit-message-default
+git-commit-message-default:
+	-@$(GIT_COMMIT) -a -m "$(m)"
+
 .PHONY: git-commit-message-clean-default
 git-commit-message-clean-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Clean up")
