@@ -189,11 +189,6 @@ RUN python3.11 manage.py collectstatic --noinput --clear
 CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
 endef
 
-define DJANGO_FAVICON_TEMPLATE
-{% load static %}
-<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
-endef
-
 define DJANGO_FOOTER_TEMPLATE
 <footer class="footer mt-auto py-3 bg-body-tertiary pt-5 text-center text-small">
     <p class="mb-1">&copy; {% now "Y" %} {{ current_site.site_name|default:"Project Makefile" }}</p>
@@ -1765,6 +1760,11 @@ define DJANGO_TEMPLATE_BASE
 </html>
 endef
 
+define DJANGO_TEMPLATE_FAVICON
+{% load static %}
+<link href="{% static 'wagtailadmin/images/favicon.ico' %}" rel="icon">
+endef
+
 define DJANGO_TEMPLATE_HEADER
 <div class="app-header">
     <div class="container py-4 app-navbar">
@@ -3181,7 +3181,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_CUSTOM_ADMIN \
         DJANGO_DOCKERCOMPOSE \
         DJANGO_DOCKERFILE \
-        DJANGO_FAVICON_TEMPLATE \
         DJANGO_FOOTER_TEMPLATE \
         DJANGO_FRONTEND_APP \
         DJANGO_FRONTEND_APP_CONFIG \
@@ -3261,6 +3260,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SITEUSER_VIEW_TEMPLATE \
         DJANGO_TEMPLATE_ALLAUTH \
         DJANGO_TEMPLATE_BASE \
+        DJANGO_TEMPLATE_FAVICON \
         DJANGO_TEMPLATE_HEADER \
         DJANGO_UNIT_TEST_DEMO_FORMS \
         DJANGO_UNIT_TEST_DEMO_MODELS \
@@ -3421,7 +3421,7 @@ django-dockerfile-default:
 
 .PHONY: django-favicon-default
 django-favicon-default:
-	@echo "$$DJANGO_FAVICON_TEMPLATE" > backend/templates/favicon.html
+	@echo "$$DJANGO_TEMPLATE_FAVICON" > backend/templates/favicon.html
 	-$(GIT_ADD) backend/templates/favicon.html
 
 .PHONY: django-footer-template-default
