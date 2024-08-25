@@ -3494,6 +3494,7 @@ django-init-default: separator \
 	django-frontend \
 	npm-install-react \
 	npm-install-react-dev \
+	npm-audit-fix \
 	django-migrate \
 	git-ignore \
 	django-su
@@ -3524,6 +3525,7 @@ django-init-minimal-default: separator \
 	django-frontend \
 	npm-install-react \
 	npm-install-react-dev \
+	npm-audit-fix \
 	django-migrate \
 	git-ignore \
 	django-su
