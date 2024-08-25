@@ -1,0 +1,63 @@
+name: Make Workflow
+run-name: ${{ github.actor }} is running Make Workflow 🚀
+on: [push]
+jobs:
+  Make-Job:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: mydatabase
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️  The workflow is now ready to test your code on the runner."
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'  # Specify the Python version you need
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 1
+          done
+      - name: Set up virtual environment
+        run: python -m venv .venv
+      - name: Activate virtual environment and install dependencies
+        run: |
+          source .venv/bin/activate
+          pip install -r requirements.txt  # Ensure you have a requirements.txt file with necessary dependencies
+      - name: Change directory and run make django-init-wagtail
+        run: |
+          if [ -d "test/django-init-wagtail" ]; then
+            cd test/django-init-wagtail
+            source ../../.venv/bin/activate
+            make django-init-wagtail
+          else
+            echo "Directory test/django-init-wagtail does not exist."
+            exit 1
+          fi
+        shell: /usr/bin/bash -e {0}
+        env:
+          pythonLocation: /opt/hostedtoolcache/Python/3.12.5/x64
+          PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.5/x64/lib/pkgconfig
+          Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.5/x64
+          Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.5/x64
+          Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.5/x64
+          LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.5/x64/lib
+      - run: echo "🍏 This job's status is ${{ job.status }}."
