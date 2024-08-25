@@ -66,9 +66,9 @@ PROJECT_NAME = project-makefile
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
-WAGTAIL_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
+DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
 		     node_modules payments privacy search sitepage siteuser unit_test_demo
-WAGTAIL_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
+DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
 		      .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py \
 		      package-lock.json package.json postcss.config.js requirements-test.txt \
 		      requirements.txt
@@ -3391,6 +3391,17 @@ django-base-template-default:
 	@echo "$$DJANGO_BASE_TEMPLATE" > backend/templates/base.html
 	-$(GIT_ADD) backend/templates/base.html
 
+.PHONY: django-clean-default
+django-clean-default:
+	-@for dir in $(shell echo "$(DJANGO_CLEAN_DIRS)"); do \
+		echo "Cleaning $$dir"; \
+		$(DEL_DIR) $$dir >/dev/null 2>&1; \
+	done
+	-@for file in $(shell echo "$(DJANGO_CLEAN_FILES)"); do \
+		echo "Cleaning $$file"; \
+		$(DEL_FILE) $$file >/dev/null 2>&1; \
+	done
+
 .PHONY: django-custom-admin-default
 django-custom-admin-default:
 	@echo "$$DJANGO_CUSTOM_ADMIN" > $(DJANGO_CUSTOM_ADMIN_FILE)
@@ -4447,17 +4458,6 @@ sphinx-serve-default:
 wagtail-base-template-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 
-.PHONY: wagtail-clean-default
-wagtail-clean-default:
-	-@for dir in $(shell echo "$(WAGTAIL_CLEAN_DIRS)"); do \
-		echo "Cleaning $$dir"; \
-		$(DEL_DIR) $$dir >/dev/null 2>&1; \
-	done
-	-@for file in $(shell echo "$(WAGTAIL_CLEAN_FILES)"); do \
-		echo "Cleaning $$file"; \
-		$(DEL_FILE) $$file >/dev/null 2>&1; \
-	done
-
 .PHONY: wagtail-contactpage-default
 wagtail-contactpage-default:
 	python manage.py startapp contactpage
@@ -4606,7 +4606,7 @@ c-default: git-commit-message git-push
 ce-default: git-commit-edit git-push
 
 .PHONY: clean-default
-clean-default: wagtail-clean
+clean-default: django-clean
 
 .PHONY: cp-default
 cp-default: git-commit-message git-push
@@ -4706,6 +4706,9 @@ r-default: review
 
 .PHONY: readme-default
 readme-default: readme-init
+
+.PHONY: rename-default
+rename-default: git-commit-message-rename git-push
 
 .PHONY: s-default
 s-default: serve
