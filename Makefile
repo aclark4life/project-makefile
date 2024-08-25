@@ -4737,7 +4737,7 @@ upstream-default: git-set-upstream
 urls-default: django-urls-show
 
 .PHONY: wagtail-init-default
-wagtail-init-default: django-wagtail-init
+wagtail-init-default: django-init-wagtail
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
