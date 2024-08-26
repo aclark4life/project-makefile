@@ -21,7 +21,6 @@ COPY_DIR := cp -rv
 COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
-
 DJANGO_BACKEND_APPS_FILE := backend/apps.py
 DJANGO_BACKEND_ADMIN_FILE := backend/admin.py
 DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
@@ -43,7 +42,6 @@ DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
 DJANGO_SETTINGS_SECRET_KEY = $(shell openssl rand -base64 48)
 DJANGO_URLS_FILE = backend/urls.py
-
 EB_DATABASE_URL = $(shell eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; \
 	    env | grep DATABASE_URL" | awk -F= '{print $$2}')
 EB_DIR_NAME := .elasticbeanstalk
@@ -55,7 +53,6 @@ EC2_INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
 EC2_INSTANCE_TYPE ?= t4g.small
 EC2_LB_TYPE ?= application
 EDITOR_REVIEW = subl
-
 GIT_ADD := git add
 GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
@@ -65,7 +62,6 @@ GIT_PUSH = git push
 GIT_PUSH_FORCE = $(GIT_PUSH) --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
 GIT_STATUS = git status
-
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 PAGER ?= less
 PIP_DEPS = python -m pipdeptree
@@ -74,11 +70,9 @@ PIP_FREEZE = python -m pip freeze
 PIP_INSTALL = python -m pip install
 PIP_UNINSTALL = python -m pip uninstall -y
 PLONE_VERSION_FILE = https://dist.plone.org/release/6.0.11.1/constraints.txt
-
 PROJECT_CUSTOM_FILE := project.mk
 PROJECT_EMAIL := aclark@aclark.net
 PROJECT_NAME = project-makefile
-
 PYTHON_HTTP_SERVER = python -m http.server
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
