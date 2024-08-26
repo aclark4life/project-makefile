@@ -2556,10 +2556,6 @@ define PROJECT_CUSTOM
 # PROJECT_NAME := my-new-project
 endef
 
-define PYTHON_CI_YAML
-name: Build Wheels
-endef
-
 define PYTHON_LICENSE_TXT
 MIT License
 
@@ -3287,7 +3283,6 @@ export DJANGO_API_SERIALIZERS \
         PROJECT_CUSTOM \
         PIP_INSTALL_REQUIREMENTS_TEST \
         PROGRAMMING_INTERVIEW \
-        PYTHON_CI_YAML \
         PYTHON_LICENSE_TXT \
         PYTHON_PROJECT_TOML \
         SEPARATOR \
@@ -4353,12 +4348,6 @@ python-sdist-default: pip-ensure
 .PHONY: python-webpack-init-default
 python-webpack-init-default:
 	python manage.py webpack_init --no-input
-
-.PHONY: python-ci-default
-python-ci-default:
-	$(ADD_DIR) .github/workflows
-	@echo "$(PYTHON_CI_YAML)" > .github/workflows/build_wheels.yml
-	-$(GIT_ADD) .github/workflows/build_wheels.yml
 
 .PHONY: rand-default
 rand-default:
