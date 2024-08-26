@@ -2075,6 +2075,20 @@ pipeline {
 }
 endef
 
+define PIP_INSTALL_REQUIREMENTS_TEST
+pytest
+pytest-runner
+coverage
+pytest-mock
+pytest-cov
+hypothesis
+selenium
+pytest-django
+factory-boy
+flake8
+tox
+endef
+
 define PROGRAMMING_INTERVIEW
 from rich import print as rprint
 from rich.console import Console
@@ -2540,20 +2554,6 @@ define PROJECT_CUSTOM
 # Add your custom makefile commands here
 #
 # PROJECT_NAME := my-new-project
-endef
-
-define PIP_INSTALL_REQUIREMENTS_TEST
-pytest
-pytest-runner
-coverage
-pytest-mock
-pytest-cov
-hypothesis
-selenium
-pytest-django
-factory-boy
-flake8
-tox
 endef
 
 define PYTHON_CI_YAML
