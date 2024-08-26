@@ -254,7 +254,7 @@ export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
 endef
 
-define DJANGO_FRONTEND_COMPONENT_CLOCK
+define DJANGO_FRONTEND_CLOCK
 // Via ChatGPT
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
@@ -302,7 +302,7 @@ Clock.propTypes = {
 export default Clock;
 endef
 
-define DJANGO_FRONTEND_COMPONENT_ERROR
+define DJANGO_FRONTEND_ERROR
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -338,7 +338,7 @@ ErrorBoundary.propTypes = {
 export default ErrorBoundary;
 endef
 
-define DJANGO_FRONTEND_COMPONENT_USER_MENU
+define DJANGO_FRONTEND_USER_MENU
 // UserMenu.js
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -3190,9 +3190,9 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_FRONTEND_CONFIG \
         DJANGO_FRONTEND_BABELRC \
         DJANGO_FRONTEND_COMPONENTS \
-        DJANGO_FRONTEND_COMPONENT_CLOCK \
-        DJANGO_FRONTEND_COMPONENT_ERROR \
-        DJANGO_FRONTEND_COMPONENT_USER_MENU \
+        DJANGO_FRONTEND_CLOCK \
+        DJANGO_FRONTEND_ERROR \
+        DJANGO_FRONTEND_USER_MENU \
         DJANGO_FRONTEND_CONTEXT_INDEX \
         DJANGO_FRONTEND_CONTEXT_USER_PROVIDER \
         DJANGO_FRONTEND_ESLINTRC \
@@ -3432,11 +3432,11 @@ django-frontend-default: python-webpack-init
 	@echo "$$DJANGO_FRONTEND" > frontend/src/application/app.js
 	@echo "$$DJANGO_FRONTEND_CONFIG" > frontend/src/application/config.js
 	@echo "$$DJANGO_FRONTEND_BABELRC" > frontend/.babelrc
-	@echo "$$DJANGO_FRONTEND_COMPONENT_CLOCK" > frontend/src/components/Clock.js
-	@echo "$$DJANGO_FRONTEND_COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
+	@echo "$$DJANGO_FRONTEND_CLOCK" > frontend/src/components/Clock.js
+	@echo "$$DJANGO_FRONTEND_ERROR" > frontend/src/components/ErrorBoundary.js
 	@echo "$$DJANGO_FRONTEND_CONTEXT_INDEX" > frontend/src/context/index.js
 	@echo "$$DJANGO_FRONTEND_CONTEXT_USER_PROVIDER" > frontend/src/context/UserContextProvider.js
-	@echo "$$DJANGO_FRONTEND_COMPONENT_USER_MENU" > frontend/src/components/UserMenu.js
+	@echo "$$DJANGO_FRONTEND_USER_MENU" > frontend/src/components/UserMenu.js
 	@echo "$$DJANGO_FRONTEND_COMPONENTS" > frontend/src/components/index.js
 	@echo "$$DJANGO_FRONTEND_ESLINTRC" > frontend/.eslintrc
 	@echo "$$DJANGO_FRONTEND_PORTAL" > frontend/src/dataComponents.js
