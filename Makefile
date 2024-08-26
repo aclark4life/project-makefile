@@ -1467,15 +1467,15 @@ INSTALLED_APPS.append("siteuser")  # noqa
 AUTH_USER_MODEL = "siteuser.User"
 endef
 
-define DJANGO_SETTINGS_UNIT_TEST_DEMO
-INSTALLED_APPS.append("unit_test_demo")  # noqa
-endef
-
 define DJANGO_SETTINGS_THEMES
 THEMES = [
     ("light", "Light Theme"),
     ("dark", "Dark Theme"),
 ]
+endef
+
+define DJANGO_SETTINGS_UNIT_TEST_DEMO
+INSTALLED_APPS.append("unit_test_demo")  # noqa
 endef
 
 define DJANGO_SITEUSER_ADMIN
