@@ -4019,10 +4019,18 @@ favicon-default:
 	@$(DEL_FILE) favicon.png
 	-$(GIT_ADD) favicon.ico
 
+.PHONY: gh-run-delete-default
+gh-run-delete-default:
+	@for run_id in $(shell gh run list --limit 100 --json databaseId --jq '.[].databaseId'); do \
+          echo $$run_id; \
+          gh run delete $$run_id; \
+        done
+
 .PHONY: git-checkout-branches-default
 git-checkout-branches-default:
-	-for i in $(GIT_BRANCHES) ; do \
-        -@$(GIT_CHECKOUT) -t $$i ; done
+	@for i in $(GIT_BRANCHES); do \
+          $(GIT_CHECKOUT) -t $$i; \
+        done
 
 .PHONY: git-commit-default
 git-commit-default:
