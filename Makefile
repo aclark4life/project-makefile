@@ -21,8 +21,15 @@ COPY_DIR := cp -rv
 COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
+
 DJANGO_BACKEND_APPS_FILE := backend/apps.py
 DJANGO_BACKEND_ADMIN_FILE := backend/admin.py
+DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
+		     node_modules payments privacy search sitepage siteuser unit_test_demo
+DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
+		      .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py \
+		      package-lock.json package.json postcss.config.js requirements-test.txt \
+		      requirements.txt
 DJANGO_DATABASE_HOST = $(call DJANGO_DATABASE,HOST)
 DJANGO_DATABASE_NAME = $(call DJANGO_DATABASE,NAME)
 DJANGO_DATABASE_PASS = $(call DJANGO_DATABASE,PASSWORD)
@@ -36,6 +43,7 @@ DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
 DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
 DJANGO_SETTINGS_SECRET_KEY = $(shell openssl rand -base64 48)
 DJANGO_URLS_FILE = backend/urls.py
+
 EB_DB_URL = $(shell eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; \
 	    env | grep DATABASE_URL" | awk -F= '{print $$2}')
 EB_DIR_NAME := .elasticbeanstalk
@@ -47,6 +55,7 @@ EC2_INSTANCE_PROFILE ?= aws-elasticbeanstalk-ec2-role
 EC2_INSTANCE_TYPE ?= t4g.small
 EC2_LB_TYPE ?= application
 EDITOR_REVIEW = subl
+
 GIT_ADD := git add
 GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
@@ -56,7 +65,7 @@ GIT_PUSH = git push
 GIT_PUSH_FORCE = $(GIT_PUSH) --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
 GIT_STATUS = git status
-MAKEFILE_CUSTOM_FILE := project.mk
+
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 PAGER ?= less
 PIP_DEPS = python -m pipdeptree
@@ -65,26 +74,22 @@ PIP_FREEZE = python -m pip freeze
 PIP_INSTALL = python -m pip install
 PIP_UNINSTALL = python -m pip uninstall -y
 PLONE_VERSION_FILE = https://dist.plone.org/release/6.0.11.1/constraints.txt
-PROJECT_DIRS = backend contactpage home privacy siteuser
+
+PROJECT_CUSTOM_FILE := project.mk
 PROJECT_EMAIL := aclark@aclark.net
 PROJECT_NAME = project-makefile
-PYTHON_HTTP = python -m http.server
+
+PYTHON_HTTP_SERVER = python -m http.server
 RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
-DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
-		     node_modules payments privacy search sitepage siteuser unit_test_demo
-DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
-		      .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py \
-		      package-lock.json package.json postcss.config.js requirements-test.txt \
-		      requirements.txt
 
 # --------------------------------------------------------------------------------
-# Include $(MAKEFILE_CUSTOM_FILE) if it exists
+# Include $(PROJECT_CUSTOM_FILE) if it exists
 # --------------------------------------------------------------------------------
 
-ifneq ($(wildcard $(MAKEFILE_CUSTOM_FILE)),)
-    include $(MAKEFILE_CUSTOM_FILE)
+ifneq ($(wildcard $(PROJECT_CUSTOM_FILE)),)
+    include $(PROJECT_CUSTOM_FILE)
 endif
 
 # --------------------------------------------------------------------------------
@@ -2076,7 +2081,7 @@ pipeline {
 }
 endef
 
-define MAKEFILE_CUSTOM
+define PROJECT_CUSTOM
 # Custom Makefile
 # Add your custom makefile commands here
 #
@@ -3285,7 +3290,7 @@ export DJANGO_API_SERIALIZERS \
         GIT_COMMIT_MESSAGE \
         GIT_IGNORE \
         JENKINS_FILE \
-        MAKEFILE_CUSTOM \
+        PROJECT_CUSTOM \
         PIP_INSTALL_REQUIREMENTS_TEST \
         PROGRAMMING_INTERVIEW \
         PYTHON_CI_YAML \
@@ -4077,7 +4082,7 @@ git-commit-message-lint-default:
 
 .PHONY: git-commit-message-mk-default
 git-commit-message-mk-default:
-	-@$(GIT_COMMIT) project.mk -m $(call GIT_COMMIT_MESSAGE,"Add/update $(MAKEFILE_CUSTOM_FILE)")
+	-@$(GIT_COMMIT) project.mk -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_CUSTOM_FILE)")
 
 .PHONY: git-commit-message-rename-default
 git-commit-message-rename-default:
@@ -4331,9 +4336,9 @@ programming-interview-default:
 	-$(GIT_ADD) interview.py > /dev/null 2>&1
 
 # .NOT_PHONY!
-$(MAKEFILE_CUSTOM_FILE):
-	@echo "$$MAKEFILE_CUSTOM" > $(MAKEFILE_CUSTOM_FILE)
-	-$(GIT_ADD) $(MAKEFILE_CUSTOM_FILE)
+$(PROJECT_CUSTOM_FILE):
+	@echo "$$PROJECT_CUSTOM" > $(PROJECT_CUSTOM_FILE)
+	-$(GIT_ADD) $(PROJECT_CUSTOM_FILE)
 
 .PHONY: python-license-default
 python-license-default:
@@ -4394,7 +4399,7 @@ reveal-init-default: webpack-init-reveal
 .PHONY: reveal-serve-default
 reveal-serve-default:
 	npm run watch &
-	$(PYTHON_HTTP)
+	$(PYTHON_HTTP_SERVER)
 
 .PHONY: review-default
 review-default:
@@ -4747,7 +4752,7 @@ wagtail-init-default: django-init-wagtail
 
 # --------------------------------------------------------------------------------
 # Allow customizing rules defined in this Makefile with rules defined in
-# $(MAKEFILE_CUSTOM_FILE)
+# $(PROJECT_CUSTOM_FILE)
 # --------------------------------------------------------------------------------
 
 %: %-default  # https://stackoverflow.com/a/49804748
