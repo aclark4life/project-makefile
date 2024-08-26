@@ -4393,6 +4393,11 @@ endif
 separator-default:
 	@echo "$$SEPARATOR"
 
+.PHONY: sphinx-build-default
+sphinx-build-default:
+	@sphinx-build -b html -d _build/doctrees . _build/html
+	@sphinx-build -b rinoh . _build/rinoh
+
 .PHONY: sphinx-init-default
 sphinx-init-default: sphinx-install
 	sphinx-quickstart -q -p $(PROJECT_NAME) -a $(USER) -v 0.0.1 $(RANDIR)
@@ -4403,8 +4408,18 @@ sphinx-init-default: sphinx-install
 	$(DEL_FILE) make.bat
 	-@$(GIT_CHECKOUT) Makefile
 
-.PHONY: sphinx-theme-init-default
-sphinx-theme-init-default:
+.PHONY: sphinx-install-default
+sphinx-install-default:
+	$(PIP_INSTALL) Sphinx
+	$(PIP_FREEZE) | sort > requirements.txt
+	-$(GIT_ADD) requirements.txt
+
+.PHONY: sphinx-serve-default
+sphinx-serve-default:
+	cd _build/html;python3 -m http.server
+
+.PHONY: sphinx-theme-default
+sphinx-theme-default:
 	export DJANGO_FRONTEND_THEME_NAME=$(PROJECT_NAME)_theme; \
 	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME ; \
 	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/__init__.py ; \
@@ -4418,21 +4433,6 @@ sphinx-theme-init-default:
 	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME/static/js ; \
 	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/static/js/script.js ; \
 	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/static
-
-.PHONY: sphinx-install-default
-sphinx-install-default:
-	$(PIP_INSTALL) Sphinx
-	$(PIP_FREEZE) | sort > requirements.txt
-	-$(GIT_ADD) requirements.txt
-
-.PHONY: sphinx-build-default
-sphinx-build-default:
-	sphinx-build -b html -d _build/doctrees . _build/html
-	sphinx-build -b rinoh . _build/rinoh
-
-.PHONY: sphinx-serve-default
-sphinx-serve-default:
-	cd _build/html;python3 -m http.server
 
 .PHONY: wagtail-base-template-default
 wagtail-base-template-default:
