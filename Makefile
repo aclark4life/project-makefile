@@ -44,7 +44,7 @@ DJANGO_SETTINGS_PROD_FILE = $(DJANGO_SETTINGS_DIR)/production.py
 DJANGO_SETTINGS_SECRET_KEY = $(shell openssl rand -base64 48)
 DJANGO_URLS_FILE = backend/urls.py
 
-EB_DB_URL = $(shell eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; \
+EB_DATABASE_URL = $(shell eb ssh -c "source /opt/elasticbeanstalk/deployment/custom_env_var; \
 	    env | grep DATABASE_URL" | awk -F= '{print $$2}')
 EB_DIR_NAME := .elasticbeanstalk
 EB_ENV_NAME ?= $(PROJECT_NAME)-$(GIT_BRANCH)-$(GIT_REV)
@@ -148,7 +148,7 @@ custom_admin_site = CustomAdminSite(name="custom_admin")
 endef
 
 define DJANGO_DATABASE
-$(shell echo $(EB_DB_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
+$(shell echo $(EB_DATABASE_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
 endef
 
 define DJANGO_DOCKERCOMPOSE
