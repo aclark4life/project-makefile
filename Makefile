@@ -3396,6 +3396,16 @@ django-allauth-default:
 	@echo "$$DJANGO_URLS_ALLAUTH" >> $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
 
+.PHONY: django-api-serializers-default
+django-api-serializers-default:
+	@echo "$$DJANGO_API_SERIALIZERS" > backend/serializers.py
+	-$(GIT_ADD) backend/serializers.py
+
+.PHONY: django-api-views-default
+django-api-views-default:
+	@echo "$$DJANGO_API_VIEWS" > backend/api.py
+	-$(GIT_ADD) backend/api.py
+
 .PHONY: django-clean-default
 django-clean-default:
 	-@for dir in $(shell echo "$(DJANGO_CLEAN_DIRS)"); do \
@@ -3731,16 +3741,6 @@ django-payments-demo-default:
 django-project-default:
 	django-admin startproject backend .
 	-$(GIT_ADD) backend/*.py
-
-.PHONY: django-api-views-default
-django-api-views-default:
-	@echo "$$DJANGO_API_VIEWS" > backend/api.py
-	-$(GIT_ADD) backend/api.py
-
-.PHONY: django-api-serializers-default
-django-api-serializers-default:
-	@echo "$$DJANGO_API_SERIALIZERS" > backend/serializers.py
-	-$(GIT_ADD) backend/serializers.py
 
 .PHONY: django-search-default
 django-search-default:
