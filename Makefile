@@ -21,8 +21,8 @@ COPY_DIR := cp -rv
 COPY_FILE := cp -v
 DEL_DIR := rm -rv
 DEL_FILE := rm -v
-DJANGO_BACKEND_APPS_FILE := backend/apps.py
-DJANGO_BACKEND_ADMIN_FILE := backend/admin.py
+DJANGO_ADMIN_CUSTOM_APPS_FILE := backend/apps.py
+DJANGO_ADMIN_CUSTOM_ADMIN_FILE := backend/admin.py
 DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
 		     node_modules payments privacy search sitepage siteuser unit_test_demo
 DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
@@ -120,15 +120,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 endef
 
-define DJANGO_BACKEND_APPS
-from django.contrib.admin.apps import AdminConfig
-
-
-class CustomAdminConfig(AdminConfig):
-    default_site = "backend.admin.CustomAdminSite"
-endef
-
-define DJANGO_BACKEND_ADMIN
+define DJANGO_ADMIN_CUSTOM_ADMIN
 from django.contrib.admin import AdminSite
 
 
@@ -139,6 +131,14 @@ class CustomAdminSite(AdminSite):
 
 
 custom_admin_site = CustomAdminSite(name="custom_admin")
+endef
+
+define DJANGO_ADMIN_CUSTOM_APPS
+from django.contrib.admin.apps import AdminConfig
+
+
+class CustomAdminConfig(AdminConfig):
+    default_site = "backend.admin.CustomAdminSite"
 endef
 
 define DJANGO_DATABASE
@@ -3182,8 +3182,8 @@ endef
 
 export DJANGO_API_SERIALIZERS \
         DJANGO_API_VIEWS \
-        DJANGO_BACKEND_APPS \
-        DJANGO_BACKEND_ADMIN \
+        DJANGO_ADMIN_CUSTOM_APPS \
+        DJANGO_ADMIN_CUSTOM_ADMIN \
         DJANGO_DOCKER_COMPOSE \
         DJANGO_DOCKER_FILE \
         DJANGO_FRONTEND \
@@ -3383,18 +3383,18 @@ db-init-test-default:
 	-dropdb test_$(PROJECT_NAME)
 	-createdb test_$(PROJECT_NAME)
 
+.PHONY: django-admin-custom-default
+django-admin-custom-default:
+	@echo "$$DJANGO_ADMIN_CUSTOM_ADMIN" > $(DJANGO_ADMIN_CUSTOM_ADMIN_FILE)
+	@echo "$$DJANGO_ADMIN_CUSTOM_APPS" > $(DJANGO_ADMIN_CUSTOM_APPS_FILE)
+	-$(GIT_ADD) backend/*.py
+
 .PHONY: django-allauth-default
 django-allauth-default:
 	$(ADD_DIR) backend/templates/allauth/layouts
 	@echo "$$DJANGO_TEMPLATE_ALLAUTH" > backend/templates/allauth/layouts/base.html
 	@echo "$$DJANGO_URLS_ALLAUTH" >> $(DJANGO_URLS_FILE)
 	-$(GIT_ADD) backend/templates/allauth/layouts/base.html
-
-.PHONY: django-template-base-default
-django-template-base-default:
-	@$(ADD_DIR) backend/templates
-	@echo "$$DJANGO_TEMPLATE_BASE" > backend/templates/base.html
-	-$(GIT_ADD) backend/templates/base.html
 
 .PHONY: django-clean-default
 django-clean-default:
@@ -3406,12 +3406,6 @@ django-clean-default:
 		echo "Cleaning $$file"; \
 		$(DEL_FILE) $$file >/dev/null 2>&1; \
 	done
-
-.PHONY: django-admin-default
-django-admin-default:
-	@echo "$$DJANGO_BACKEND_ADMIN" > $(DJANGO_BACKEND_ADMIN_FILE)
-	@echo "$$DJANGO_BACKEND_APPS" > $(DJANGO_BACKEND_APPS_FILE)
-	-$(GIT_ADD) backend/*.py
 
 .PHONY: django-db-shell-default
 django-db-shell-default:
@@ -3473,7 +3467,7 @@ django-init-default: separator \
 	pip-freeze \
 	pip-init-test \
 	django-settings-directory \
-	django-admin \
+	django-admin-custom \
 	django-dockerfile \
 	django-template-base \
 	django-template-header \
@@ -3510,7 +3504,7 @@ django-init-minimal-default: separator \
 	django-settings-dev \
 	pip-freeze \
 	pip-init-test \
-	django-admin \
+	django-admin-custom \
 	django-dockerfile \
 	django-template-header \
 	django-template-favicon \
@@ -3540,7 +3534,7 @@ django-init-wagtail-default: separator \
 	django-utils \
 	pip-freeze \
 	pip-init-test \
-        django-admin \
+        django-admin-custom \
         django-dockerfile \
 	wagtail-header-prefix-template \
 	wagtail-base-template \
@@ -3835,6 +3829,12 @@ django-static-default:
 .PHONY: django-su-default
 django-su-default:
 	DJANGO_SUPERUSER_PASSWORD=admin python manage.py createsuperuser --noinput --username=admin --email=$(PROJECT_EMAIL)
+
+.PHONY: django-template-base-default
+django-template-base-default:
+	@$(ADD_DIR) backend/templates
+	@echo "$$DJANGO_TEMPLATE_BASE" > backend/templates/base.html
+	-$(GIT_ADD) backend/templates/base.html
 
 .PHONY: django-template-favicon-default
 django-template-favicon-default:
