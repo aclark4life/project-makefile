@@ -1437,6 +1437,21 @@ INSTALLED_APPS.append("payments")  # noqa
 INSTALLED_APPS.append("djstripe")  # noqa
 endef
 
+define DJANGO_SETTINGS_PROD
+from .base import *  # noqa
+from backend.utils import get_ec2_metadata
+
+DEBUG = False
+
+try:
+    from .local import *  # noqa
+except ImportError:
+    pass
+
+LOCAL_IPV4 = get_ec2_metadata()
+ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
+endef
+
 define DJANGO_SETTINGS_REST_FRAMEWORK
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -1454,21 +1469,6 @@ endef
 
 define DJANGO_SETTINGS_UNIT_TEST_DEMO
 INSTALLED_APPS.append("unit_test_demo")  # noqa
-endef
-
-define DJANGO_SETTINGS_PROD
-from .base import *  # noqa
-from backend.utils import get_ec2_metadata
-
-DEBUG = False
-
-try:
-    from .local import *  # noqa
-except ImportError:
-    pass
-
-LOCAL_IPV4 = get_ec2_metadata()
-ALLOWED_HOSTS.append(LOCAL_IPV4)  # noqa
 endef
 
 define DJANGO_SETTINGS_THEMES
@@ -2075,27 +2075,6 @@ pipeline {
 }
 endef
 
-define PROJECT_CUSTOM
-# Custom Makefile
-# Add your custom makefile commands here
-#
-# PROJECT_NAME := my-new-project
-endef
-
-define PIP_INSTALL_REQUIREMENTS_TEST
-pytest
-pytest-runner
-coverage
-pytest-mock
-pytest-cov
-hypothesis
-selenium
-pytest-django
-factory-boy
-flake8
-tox
-endef
-
 define PROGRAMMING_INTERVIEW
 from rich import print as rprint
 from rich.console import Console
@@ -2554,6 +2533,27 @@ def main():
 if __name__ == "__main__":
     main()
 
+endef
+
+define PROJECT_CUSTOM
+# Custom Makefile
+# Add your custom makefile commands here
+#
+# PROJECT_NAME := my-new-project
+endef
+
+define PIP_INSTALL_REQUIREMENTS_TEST
+pytest
+pytest-runner
+coverage
+pytest-mock
+pytest-cov
+hypothesis
+selenium
+pytest-django
+factory-boy
+flake8
+tox
 endef
 
 define PYTHON_CI_YAML
