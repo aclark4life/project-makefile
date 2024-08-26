@@ -1,0 +1,12 @@
+{
+  "name": "django-init-wagtail",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo Test!"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

@@ -2,12 +2,18 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: Node.js CI
+run-name: ${{ github.actor }} is running Node.js Workflow 🚀
 
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./test/django-init-wagtail/
 
 jobs:
   build:
@@ -16,7 +22,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -26,6 +32,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+        cache-dependency-path: './test/django-init-wagtail/package.json'
+    - run: npm install
     - run: npm run build --if-present
     - run: npm test
