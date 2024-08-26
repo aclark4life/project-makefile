@@ -4033,6 +4033,10 @@ git-checkout-branches-default:
 git-commit-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Update $(PROJECT_NAME) files")
 
+.PHONY: git-commit-edit-default
+git-commit-edit-default:
+	-$(GIT_COMMIT) -a
+
 .PHONY: git-commit-empty-default
 git-commit-empty-default:
 	-@$(GIT_COMMIT) --allow-empty -m $(call GIT_COMMIT_MESSAGE,"Empty commit")
@@ -4041,10 +4045,6 @@ git-commit-empty-default:
 git-commit-last-default:
 	@git log -1 --pretty=%B > $(TMPDIR)/commit.txt
 	-@$(GIT_COMMIT) -a -F $(TMPDIR)/commit.txt
-
-.PHONY: git-commit-message-default
-git-commit-message-default:
-	-@$(GIT_COMMIT) -a -m "$(m)"
 
 .PHONY: git-commit-message-actions-default
 git-commit-message-actions-default:
@@ -4057,6 +4057,10 @@ git-commit-message-clean-default:
 .PHONY: git-commit-message-comment-default
 git-commit-message-comment-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add comment")
+
+.PHONY: git-commit-message-default
+git-commit-message-default:
+	-@$(GIT_COMMIT) -a -m "$(m)"
 
 .PHONY: git-commit-message-freeze-default
 git-commit-message-freeze-default:
@@ -4106,10 +4110,6 @@ git-push-default:
 .PHONY: git-push-force-default
 git-push-force-default:
 	-@$(GIT_PUSH_FORCE)
-
-.PHONY: git-commit-edit-default
-git-commit-edit-default:
-	-$(GIT_COMMIT) -a
 
 .PHONY: git-prune-default
 git-prune-default:
