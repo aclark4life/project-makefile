@@ -4285,13 +4285,13 @@ pip-install-upgrade-default: pip-ensure
 	$(PIP_FREEZE) | sort > $(TMPDIR)/requirements.txt
 	$(COPY_FILE) $(TMPDIR)/requirements.txt .
 
-.PHONY: pip-upgrade-default
-pip-upgrade-default: pip-ensure
-	$(PIP_INSTALL) -U pip
-
 .PHONY: pip-uninstall-default
 pip-uninstall-default: pip-ensure
 	$(PIP_FREEZE) | xargs $(PIP_UNINSTALL)
+
+.PHONY: pip-upgrade-default
+pip-upgrade-default: pip-ensure
+	$(PIP_INSTALL) -U pip
 
 .PHONY: plone-clean-default
 plone-clean-default:
@@ -4319,10 +4319,6 @@ plone-instance-default:
 .PHONY: plone-serve-default
 plone-serve-default:
 	runwsgi backend/etc/zope.ini
-
-.PHONY: plone-build-default
-plone-build-default:
-	buildout
 
 .PHONY: programming-interview-default
 programming-interview-default:
