@@ -3483,8 +3483,8 @@ django-init-default: separator \
 	django-settings-prod \
 	django-siteuser \
 	django-home \
-	django-rest-serializers \
-	django-rest-views \
+	django-api-views \
+	django-api-serializers \
 	django-urls-api \
 	django-frontend \
 	npm-install-react \
@@ -3557,8 +3557,8 @@ django-init-wagtail-default: separator \
 	django-unit-test-demo \
 	django-logging-demo \
 	django-payments-demo-default \
-	django-rest-serializers \
-	django-rest-views \
+	django-api-views \
+	django-api-serializers \
 	django-urls-api \
 	wagtail-urls-home \
 	django-frontend \
@@ -3732,15 +3732,15 @@ django-project-default:
 	django-admin startproject backend .
 	-$(GIT_ADD) backend/*.py
 
-.PHONY: django-rest-serializers-default
-django-rest-serializers-default:
-	@echo "$$DJANGO_API_SERIALIZERS" > backend/serializers.py
-	-$(GIT_ADD) backend/serializers.py
-
-.PHONY: django-rest-views-default
-django-rest-views-default:
+.PHONY: django-api-views-default
+django-api-views-default:
 	@echo "$$DJANGO_API_VIEWS" > backend/api.py
 	-$(GIT_ADD) backend/api.py
+
+.PHONY: django-api-serializers-default
+django-api-serializers-default:
+	@echo "$$DJANGO_API_SERIALIZERS" > backend/serializers.py
+	-$(GIT_ADD) backend/serializers.py
 
 .PHONY: django-search-default
 django-search-default:
