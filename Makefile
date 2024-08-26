@@ -1,6 +1,6 @@
 # Project Makefile
 #
-# A Makefile to automate the setup of Django projects and related tasks
+# A Makefile to automate setup of Django projects and related tasks
 #
 # https://github.com/aclark4life/project-makefile
 #
@@ -4089,7 +4089,7 @@ git-commit-message-rename-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Rename")
 
 .PHONY: git-commit-message-reword-default
-git-commit-reword-reword-default:
+git-commit-message-reword-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Reword")
 
 .PHONY: git-commit-message-sort-default
@@ -4710,6 +4710,9 @@ readme-default: readme-init
 
 .PHONY: rename-default
 rename-default: git-commit-message-rename git-push
+
+.PHONY: reword-default
+reword-default: git-commit-message-reword git-push
 
 .PHONY: s-default
 s-default: serve
