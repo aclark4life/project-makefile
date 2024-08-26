@@ -145,7 +145,7 @@ define DJANGO_DATABASE
 $(shell echo $(EB_DATABASE_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
 endef
 
-define DJANGO_DOCKERCOMPOSE
+define DJANGO_DOCKER_COMPOSE
 version: '3'
 
 services:
@@ -174,7 +174,7 @@ volumes:
   postgres_data:
 endef
 
-define DJANGO_DOCKERFILE
+define DJANGO_DOCKER_FILE
 FROM amazonlinux:2023
 RUN dnf install -y shadow-utils python3.11 python3.11-pip make nodejs20-npm nodejs postgresql15 postgresql15-server
 USER postgres
@@ -3184,8 +3184,8 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_API_VIEWS \
         DJANGO_BACKEND_APPS \
         DJANGO_BACKEND_ADMIN \
-        DJANGO_DOCKERCOMPOSE \
-        DJANGO_DOCKERFILE \
+        DJANGO_DOCKER_COMPOSE \
+        DJANGO_DOCKER_FILE \
         DJANGO_FRONTEND_APP \
         DJANGO_FRONTEND_APP_CONFIG \
         DJANGO_FRONTEND_BABELRC \
@@ -3419,10 +3419,10 @@ django-db-shell-default:
 
 .PHONY: django-dockerfile-default
 django-dockerfile-default:
-	@echo "$$DJANGO_DOCKERFILE" > Dockerfile
-	-$(GIT_ADD) Dockerfile
-	@echo "$$DJANGO_DOCKERCOMPOSE" > docker-compose.yml
+	@echo "$$DJANGO_DOCKER_COMPOSE" > docker-compose.yml
 	-$(GIT_ADD) docker-compose.yml
+	@echo "$$DJANGO_DOCKER_FILE" > Dockerfile
+	-$(GIT_ADD) Dockerfile
 
 .PHONY: django-frontend-default
 django-frontend-default: python-webpack-init
