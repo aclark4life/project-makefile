@@ -223,37 +223,6 @@ const App = () => (
 root.render(<App />);
 endef
 
-define DJANGO_FRONTEND_CONFIG
-import '../utils/themeToggler.js';
-// import '../utils/tinymce.js';
-endef
-
-define DJANGO_FRONTEND_BABELRC
-{
-  "presets": [
-    [
-      "@babel/preset-react",
-    ],
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "usage",
-        "corejs": "3.0.0"
-      }
-    ]
-  ],
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-class-properties"
-  ]
-}
-endef
-
-define DJANGO_FRONTEND_COMPONENTS
-export { default as ErrorBoundary } from './ErrorBoundary';
-export { default as UserMenu } from './UserMenu';
-endef
-
 define DJANGO_FRONTEND_CLOCK
 // Via ChatGPT
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -300,6 +269,37 @@ Clock.propTypes = {
 };
 
 export default Clock;
+endef
+
+define DJANGO_FRONTEND_CONFIG
+import '../utils/themeToggler.js';
+// import '../utils/tinymce.js';
+endef
+
+define DJANGO_FRONTEND_BABELRC
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "3.0.0"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-class-properties"
+  ]
+}
+endef
+
+define DJANGO_FRONTEND_COMPONENTS
+export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as UserMenu } from './UserMenu';
 endef
 
 define DJANGO_FRONTEND_ERROR
