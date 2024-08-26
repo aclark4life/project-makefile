@@ -4103,6 +4103,10 @@ git-ignore-default:
 	@echo "$$GIT_IGNORE" > .gitignore
 	-$(GIT_ADD) .gitignore
 
+.PHONY: git-prune-default
+git-prune-default:
+	git remote update origin --prune
+
 .PHONY: git-push-default
 git-push-default:
 	-@$(GIT_PUSH)
@@ -4110,10 +4114,6 @@ git-push-default:
 .PHONY: git-push-force-default
 git-push-force-default:
 	-@$(GIT_PUSH_FORCE)
-
-.PHONY: git-prune-default
-git-prune-default:
-	git remote update origin --prune
 
 .PHONY: git-set-default-default
 git-set-default-default:
@@ -4144,6 +4144,12 @@ help-default:
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
+.PHONY: make-default
+make-default:
+	-$(GIT_ADD) Makefile
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_NAME) files")
+	-$(GIT_PUSH)
+
 .PHONY: makefile-list-commands-default
 makefile-list-commands-default:
 	@for makefile in $(MAKEFILE_LIST); do \
@@ -4165,12 +4171,6 @@ makefile-list-defines-default:
 .PHONY: makefile-list-targets-default
 makefile-list-targets-default:
 	@perl -ne 'print if /^\s*\.PHONY:/ .. /^[a-zA-Z0-9_-]+:/;' Makefile | grep -v .PHONY
-
-.PHONY: make-default
-make-default:
-	-$(GIT_ADD) Makefile
-	-$(GIT_COMMIT) Makefile -m "Add/update project-makefile files"
-	-$(GIT_PUSH)
 
 .PHONY: npm-audit-fix-default
 npm-audit-fix-default:
@@ -4242,8 +4242,13 @@ npm-serve-default:
 npm-test-default:
 	npm run test
 
+.PHONY: pip-deps-default
 pip-deps-default: pip-ensure
 	$(PIP_DEPS)
+
+.PHONY: pip-ensure-default
+pip-ensure-default:
+	$(PIP_ENSURE)
 
 .PHONY: pip-freeze-default
 pip-freeze-default: pip-ensure
@@ -4259,10 +4264,6 @@ pip-init-default:
 pip-init-test-default:
 	@echo "$$PIP_INSTALL_REQUIREMENTS_TEST" > requirements-test.txt
 	-$(GIT_ADD) requirements-test.txt
-
-.PHONY: pip-ensure-default
-pip-ensure-default:
-	$(PIP_ENSURE)
 
 .PHONY: pip-install-default
 pip-install-default: pip-ensure
