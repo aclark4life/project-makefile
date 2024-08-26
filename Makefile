@@ -194,7 +194,7 @@ RUN python3.11 manage.py collectstatic --noinput --clear
 CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
 endef
 
-define DJANGO_FRONTEND_APP
+define DJANGO_FRONTEND
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import 'bootstrap';
@@ -223,7 +223,7 @@ const App = () => (
 root.render(<App />);
 endef
 
-define DJANGO_FRONTEND_APP_CONFIG
+define DJANGO_FRONTEND_CONFIG
 import '../utils/themeToggler.js';
 // import '../utils/tinymce.js';
 endef
@@ -3186,8 +3186,8 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_BACKEND_ADMIN \
         DJANGO_DOCKER_COMPOSE \
         DJANGO_DOCKER_FILE \
-        DJANGO_FRONTEND_APP \
-        DJANGO_FRONTEND_APP_CONFIG \
+        DJANGO_FRONTEND \
+        DJANGO_FRONTEND_CONFIG \
         DJANGO_FRONTEND_BABELRC \
         DJANGO_FRONTEND_COMPONENTS \
         DJANGO_FRONTEND_COMPONENT_CLOCK \
@@ -3429,8 +3429,8 @@ django-frontend-default: python-webpack-init
 	$(ADD_DIR) frontend/src/context
 	$(ADD_DIR) frontend/src/images
 	$(ADD_DIR) frontend/src/utils
-	@echo "$$DJANGO_FRONTEND_APP" > frontend/src/application/app.js
-	@echo "$$DJANGO_FRONTEND_APP_CONFIG" > frontend/src/application/config.js
+	@echo "$$DJANGO_FRONTEND" > frontend/src/application/app.js
+	@echo "$$DJANGO_FRONTEND_CONFIG" > frontend/src/application/config.js
 	@echo "$$DJANGO_FRONTEND_BABELRC" > frontend/.babelrc
 	@echo "$$DJANGO_FRONTEND_COMPONENT_CLOCK" > frontend/src/components/Clock.js
 	@echo "$$DJANGO_FRONTEND_COMPONENT_ERROR" > frontend/src/components/ErrorBoundary.js
