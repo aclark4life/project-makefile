@@ -223,6 +223,27 @@ const App = () => (
 root.render(<App />);
 endef
 
+define DJANGO_FRONTEND_BABELRC
+{
+  "presets": [
+    [
+      "@babel/preset-react",
+    ],
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": "3.0.0"
+      }
+    ]
+  ],
+  "plugins": [
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-transform-class-properties"
+  ]
+}
+endef
+
 define DJANGO_FRONTEND_CLOCK
 // Via ChatGPT
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -271,35 +292,14 @@ Clock.propTypes = {
 export default Clock;
 endef
 
-define DJANGO_FRONTEND_CONFIG
-import '../utils/themeToggler.js';
-// import '../utils/tinymce.js';
-endef
-
-define DJANGO_FRONTEND_BABELRC
-{
-  "presets": [
-    [
-      "@babel/preset-react",
-    ],
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "usage",
-        "corejs": "3.0.0"
-      }
-    ]
-  ],
-  "plugins": [
-    "@babel/plugin-syntax-dynamic-import",
-    "@babel/plugin-transform-class-properties"
-  ]
-}
-endef
-
 define DJANGO_FRONTEND_COMPONENTS
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as UserMenu } from './UserMenu';
+endef
+
+define DJANGO_FRONTEND_CONFIG
+import '../utils/themeToggler.js';
+// import '../utils/tinymce.js';
 endef
 
 define DJANGO_FRONTEND_ERROR
@@ -3187,20 +3187,20 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_DOCKER_COMPOSE \
         DJANGO_DOCKER_FILE \
         DJANGO_FRONTEND \
-        DJANGO_FRONTEND_CONFIG \
         DJANGO_FRONTEND_BABELRC \
-        DJANGO_FRONTEND_COMPONENTS \
         DJANGO_FRONTEND_CLOCK \
-        DJANGO_FRONTEND_ERROR \
-        DJANGO_FRONTEND_USER_MENU \
+        DJANGO_FRONTEND_COMPONENTS \
+        DJANGO_FRONTEND_CONFIG \
         DJANGO_FRONTEND_CONTEXT_INDEX \
         DJANGO_FRONTEND_CONTEXT_USER_PROVIDER \
+        DJANGO_FRONTEND_ERROR \
         DJANGO_FRONTEND_ESLINTRC \
         DJANGO_FRONTEND_PORTAL \
         DJANGO_FRONTEND_STYLES \
         DJANGO_FRONTEND_THEME_BLUE \
         DJANGO_FRONTEND_THEME_TOGGLER \
         DJANGO_FRONTEND_TINYMCE_JS \
+        DJANGO_FRONTEND_USER_MENU \
         DJANGO_HOME_PAGE_ADMIN \
         DJANGO_HOME_PAGE_MODELS \
         DJANGO_HOME_PAGE_TEMPLATE \
