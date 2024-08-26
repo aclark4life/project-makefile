@@ -90,6 +90,27 @@ endif
 # Multi-line variables to be used by phony target rules
 # --------------------------------------------------------------------------------
 
+define DJANGO_ADMIN_CUSTOM_ADMIN
+from django.contrib.admin import AdminSite
+
+
+class CustomAdminSite(AdminSite):
+    site_header = "Project Makefile"
+    site_title = "Project Makefile"
+    index_title = "Project Makefile"
+
+
+custom_admin_site = CustomAdminSite(name="custom_admin")
+endef
+
+define DJANGO_ADMIN_CUSTOM_APPS
+from django.contrib.admin.apps import AdminConfig
+
+
+class CustomAdminConfig(AdminConfig):
+    default_site = "backend.admin.CustomAdminSite"
+endef
+
 define DJANGO_API_SERIALIZERS
 from rest_framework import serializers
 from siteuser.models import User
@@ -118,27 +139,6 @@ def hello(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-endef
-
-define DJANGO_ADMIN_CUSTOM_ADMIN
-from django.contrib.admin import AdminSite
-
-
-class CustomAdminSite(AdminSite):
-    site_header = "Project Makefile"
-    site_title = "Project Makefile"
-    index_title = "Project Makefile"
-
-
-custom_admin_site = CustomAdminSite(name="custom_admin")
-endef
-
-define DJANGO_ADMIN_CUSTOM_APPS
-from django.contrib.admin.apps import AdminConfig
-
-
-class CustomAdminConfig(AdminConfig):
-    default_site = "backend.admin.CustomAdminSite"
 endef
 
 define DJANGO_DATABASE
@@ -336,59 +336,6 @@ ErrorBoundary.propTypes = {
 };
 
 export default ErrorBoundary;
-endef
-
-define DJANGO_FRONTEND_USER_MENU
-// UserMenu.js
-import React from 'react';
-import PropTypes from 'prop-types';
-
-function handleLogout() {
-    window.location.href = '/accounts/logout';
-}
-
-const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
-  return (
-    <div> 
-      {isAuthenticated ? (
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i className="fa-solid fa-circle-user"></i>
-          </a>
-          <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
-            <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
-            <li><a className="dropdown-item" href="/logging-demo/">Logging Demo</a></li>
-            <li><a className="dropdown-item" href="/payments/">Payments Demo</a></li>
-            {isSuperuser ? (
-              <>
-                <li><hr className="dropdown-divider"></hr></li>
-                <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
-                <li><a className="dropdown-item" href="/api" target="_blank">Django API</a></li>
-                <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
-                <li><a className="dropdown-item" href="/explorer" target="_blank">SQL Explorer</a></li>
-              </>
-            ) : null}
-            <li><hr className="dropdown-divider"></hr></li>
-            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
-          </ul>
-        </li>
-      ) : (
-        <li className="nav-item">
-          <a className={`nav-link text-$${textColor}`} href="/accounts/login"><i className="fa-solid fa-circle-user"></i></a>
-        </li>
-      )}
-    </div>
-  );
-};
-
-UserMenu.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired,
-  isSuperuser: PropTypes.bool.isRequired,
-  textColor: PropTypes.string,
-};
-
-export default UserMenu;
 endef
 
 define DJANGO_FRONTEND_CONTEXT_INDEX
@@ -673,6 +620,59 @@ tinymce.init({
   skin: false,
   content_css: false,
 });
+endef
+
+define DJANGO_FRONTEND_USER_MENU
+// UserMenu.js
+import React from 'react';
+import PropTypes from 'prop-types';
+
+function handleLogout() {
+    window.location.href = '/accounts/logout';
+}
+
+const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
+  return (
+    <div> 
+      {isAuthenticated ? (
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i className="fa-solid fa-circle-user"></i>
+          </a>
+          <ul className="dropdown-menu">
+            <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
+            <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
+            <li><a className="dropdown-item" href="/logging-demo/">Logging Demo</a></li>
+            <li><a className="dropdown-item" href="/payments/">Payments Demo</a></li>
+            {isSuperuser ? (
+              <>
+                <li><hr className="dropdown-divider"></hr></li>
+                <li><a className="dropdown-item" href="/django" target="_blank">Django admin</a></li>
+                <li><a className="dropdown-item" href="/api" target="_blank">Django API</a></li>
+                <li><a className="dropdown-item" href="/wagtail" target="_blank">Wagtail admin</a></li>
+                <li><a className="dropdown-item" href="/explorer" target="_blank">SQL Explorer</a></li>
+              </>
+            ) : null}
+            <li><hr className="dropdown-divider"></hr></li>
+            <li><a className="dropdown-item" href="/accounts/logout">Logout</a></li>
+          </ul>
+        </li>
+      ) : (
+        <li className="nav-item">
+          <a className={`nav-link text-$${textColor}`} href="/accounts/login"><i className="fa-solid fa-circle-user"></i></a>
+        </li>
+      )}
+    </div>
+  );
+};
+
+UserMenu.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  isSuperuser: PropTypes.bool.isRequired,
+  textColor: PropTypes.string,
+};
+
+export default UserMenu;
 endef
 
 define DJANGO_HOME_PAGE_ADMIN
