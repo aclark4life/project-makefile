@@ -4336,14 +4336,14 @@ python-project-default:
 	@echo "$(PYTHON_PROJECT_TOML)" > pyproject.toml
 	-$(GIT_ADD) pyproject.toml
 
-.PHONY: python-serve-default
-python-serve-default:
-	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
-	python3 -m http.server
-
 .PHONY: python-sdist-default
 python-sdist-default: pip-ensure
 	python setup.py sdist --format=zip
+
+.PHONY: python-serve-default
+python-serve-default:
+	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
+	$(PYTHON_HTTP_SERVER)
 
 .PHONY: python-webpack-init-default
 python-webpack-init-default:
@@ -4353,8 +4353,8 @@ python-webpack-init-default:
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
 
-.PHONY: readme-init-default
-readme-init-default:
+.PHONY: readme-default
+readme-default:
 	@echo "# $(PROJECT_NAME)" > README.md
 	-$(GIT_ADD) README.md
 
@@ -4684,9 +4684,6 @@ open-default: open
 
 .PHONY: r-default
 r-default: review
-
-.PHONY: readme-default
-readme-default: readme-init
 
 .PHONY: rename-default
 rename-default: git-commit-message-rename git-push
