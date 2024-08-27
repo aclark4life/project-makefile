@@ -4429,8 +4429,7 @@ sphinx-serve-default:
 
 .PHONY: sphinx-theme-default
 sphinx-theme-default:
-	@export \
-            SPHINX_THEME=$(PACKAGE_NAME)_theme; \
+	@export SPHINX_THEME=$(PACKAGE_NAME)_theme; \
 	    $(ADD_DIR) $$SPHINX_THEME; \
 	    $(ADD_FILE) $$SPHINX_THEME/__init__.py; \
 	    $(GIT_ADD) $$SPHINX_THEME/__init__.py; \
