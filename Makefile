@@ -3511,11 +3511,11 @@ django-init-minimal-default: separator \
 	pip-init-test \
 	django-admin-custom \
 	django-dockerfile \
+	django-template-base \
 	django-template-header \
 	django-template-favicon \
 	django-template-footer \
 	django-template-offcanvas \
-	django-base-template \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
@@ -3843,6 +3843,7 @@ django-template-footer-default:
 
 .PHONY: django-template-header-default
 django-template-header-default:
+	@$(ADD_DIR) backend/templates
 	@echo "$$DJANGO_TEMPLATE_HEADER" > backend/templates/header.html
 	-$(GIT_ADD) backend/templates/header.html
 

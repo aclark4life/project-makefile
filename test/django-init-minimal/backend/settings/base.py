@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-r_mvyb&vuxnzuk1se_5cm%xk!r=7914p7zj4i%jj2&yri-hkj="
+SECRET_KEY = "django-insecure-y616bp-z^ahz75qc%3**8nin=*ecgpa41w9p*5#^9%1m_qbspz"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -135,4 +135,3 @@ TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
 WEBPACK_LOADER = {
     "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
 }
-INSTALLED_APPS.append("home")
