@@ -2820,7 +2820,7 @@ class HomePage(Page):
         verbose_name = "Home Page"
 endef
 
-define WAGTAIL_HOME_PAGE_TEMPLATE
+define WAGTAIL_TEMPLATE_HOME_PAGE
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
 {% block content %}
@@ -3295,7 +3295,6 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_CONTACT_PAGE_MODEL \
         WAGTAIL_CONTACT_PAGE_TESTS \
         WAGTAIL_HOME_PAGE_MODEL \
-        WAGTAIL_HOME_PAGE_TEMPLATE \
         WAGTAIL_HOME_PAGE_URLS \
         WAGTAIL_HOME_PAGE_VIEWS \
         WAGTAIL_PRIVACY_PAGE_MODEL \
@@ -3317,7 +3316,8 @@ export DJANGO_API_SERIALIZERS \
         WEBPACK_REVEAL_INDEX_JS \
         WAGTAIL_TEMPLATE_BASE \
         WAGTAIL_TEMPLATE_CONTACT_PAGE \
-        WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING
+        WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING \
+        WAGTAIL_TEMPLATE_HOME_PAGE
 
 # ------------------------------------------------------------------------------
 # Multi-line phony target rules
@@ -4474,13 +4474,13 @@ wagtail-header-prefix-template-default:
 .PHONY: wagtail-home-default
 wagtail-home-default:
 	@echo "$$WAGTAIL_HOME_PAGE_MODEL" > home/models.py
-	@echo "$$WAGTAIL_HOME_PAGE_TEMPLATE" > home/templates/home/home_page.html
+	@echo "$$WAGTAIL_TEMPLATE_HOME_PAGE" > home/templates/home/home_page.html
 	$(ADD_DIR) home/templates/blocks
 	@echo "$$WAGTAIL_BLOCK_MARKETING" > home/templates/blocks/marketing_block.html
 	@echo "$$WAGTAIL_BLOCK_CAROUSEL" > home/templates/blocks/carousel_block.html
 	-$(GIT_ADD) home/templates
-	-$(GIT_ADD) home/*.py
 	python manage.py makemigrations home
+	-$(GIT_ADD) home/*.py
 	-$(GIT_ADD) home/migrations/*.py
 
 .PHONY: wagtail-install-default
