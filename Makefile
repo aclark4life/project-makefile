@@ -1479,15 +1479,6 @@ from .models import User
 admin.site.register(User, UserAdmin)
 endef
 
-define DJANGO_SITEUSER_EDIT_TEMPLATE
-{% extends 'base.html' %}
-{% load crispy_forms_tags %}
-{% block content %}
-    <h2>Edit User</h2>
-    {% crispy form %}
-{% endblock %}
-endef
-
 define DJANGO_SITEUSER_FORM
 from django import forms
 from django.contrib.auth.forms import UserChangeForm
@@ -1604,21 +1595,6 @@ class UserEditView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         # return reverse_lazy("user-profile", kwargs={"pk": self.object.pk})
         return reverse_lazy("user-profile")
-endef
-
-define DJANGO_SITEUSER_VIEW_TEMPLATE
-{% extends 'base.html' %}
-{% block content %}
-    <h2>User Profile</h2>
-    <div class="d-flex justify-content-end">
-        <a class="btn btn-outline-secondary"
-           href="{% url 'user-edit' pk=user.id %}">Edit</a>
-    </div>
-    <p>Username: {{ user.username }}</p>
-    <p>Theme: {{ user.user_theme_preference }}</p>
-    <p>Bio: {{ user.bio|default:""|safe }}</p>
-    <p>Rate: {{ user.rate|default:"" }}</p>
-{% endblock %}
 endef
 
 define DJANGO_TEMPLATE_ALLAUTH
@@ -1830,6 +1806,30 @@ define DJANGO_TEMPLATE_OFFCANVAS
         </ul>
     </div>
 </div>
+endef
+
+define DJANGO_TEMPLATE_SITEUSER_EDIT
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <h2>Edit User</h2>
+    {% crispy form %}
+{% endblock %}
+endef
+
+define DJANGO_TEMPLATE_SITEUSER_VIEW
+{% extends 'base.html' %}
+{% block content %}
+    <h2>User Profile</h2>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-outline-secondary"
+           href="{% url 'user-edit' pk=user.id %}">Edit</a>
+    </div>
+    <p>Username: {{ user.username }}</p>
+    <p>Theme: {{ user.user_theme_preference }}</p>
+    <p>Bio: {{ user.bio|default:""|safe }}</p>
+    <p>Rate: {{ user.rate|default:"" }}</p>
+{% endblock %}
 endef
 
 define DJANGO_UNIT_TEST_DEMO_FORMS
@@ -3254,12 +3254,10 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SETTINGS_THEMES \
         DJANGO_SETTINGS_UNIT_TEST_DEMO \
         DJANGO_SITEUSER_ADMIN \
-        DJANGO_SITEUSER_EDIT_TEMPLATE \
         DJANGO_SITEUSER_FORM \
         DJANGO_SITEUSER_MODEL \
         DJANGO_SITEUSER_URLS \
         DJANGO_SITEUSER_VIEW \
-        DJANGO_SITEUSER_VIEW_TEMPLATE \
         DJANGO_TEMPLATE_ALLAUTH \
         DJANGO_TEMPLATE_BASE \
         DJANGO_TEMPLATE_FAVICON \
@@ -3267,6 +3265,8 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_TEMPLATE_HEADER \
         DJANGO_TEMPLATE_HOME_PAGE \
         DJANGO_TEMPLATE_OFFCANVAS \
+        DJANGO_TEMPLATE_SITEUSER_EDIT \
+        DJANGO_TEMPLATE_SITEUSER_VIEW \
         DJANGO_UNIT_TEST_DEMO_FORMS \
         DJANGO_UNIT_TEST_DEMO_MODELS \
         DJANGO_UNIT_TEST_DEMO_TESTS \
@@ -3814,10 +3814,10 @@ django-siteuser-default:
 	@echo "$$DJANGO_SITEUSER_VIEW" > siteuser/views.py
 	@echo "$$DJANGO_SITEUSER_URLS" > siteuser/urls.py
 	@echo "$$DJANGO_SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
-	@echo "$$DJANGO_SITEUSER_TEMPLATE" > siteuser/templates/user.html
-	@echo "$$DJANGO_SITEUSER_EDIT_TEMPLATE" > siteuser/templates/user_edit.html
 	@echo "$$DJANGO_URLS_SITEUSER" >> $(DJANGO_URLS_FILE)
 	@echo "$$DJANGO_SETTINGS_SITEUSER" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_TEMPLATE_SITEUSER_EDIT" > siteuser/templates/user_edit.html
+	@echo "$$DJANGO_TEMPLATE_SITEUSER_VIEW" > siteuser/templates/user.html
 	-$(GIT_ADD) siteuser/templates
 	-$(GIT_ADD) siteuser/*.py
 	python manage.py makemigrations siteuser
