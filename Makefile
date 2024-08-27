@@ -2820,18 +2820,6 @@ class HomePage(Page):
         verbose_name = "Home Page"
 endef
 
-define WAGTAIL_TEMPLATE_HOME_PAGE
-{% extends "base.html" %}
-{% load wagtailcore_tags %}
-{% block content %}
-    <main class="{% block main_class %}{% endblock %}">
-        {% for block in page.marketing_blocks %}
-            {% include_block block %}
-        {% endfor %}
-    </main>
-{% endblock %}
-endef
-
 define WAGTAIL_PRIVACY_PAGE_MODEL
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel
@@ -3046,6 +3034,18 @@ endef
 define WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING
 {% extends 'base.html' %}
 {% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
+endef
+
+define WAGTAIL_TEMPLATE_HOME_PAGE
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+        {% for block in page.marketing_blocks %}
+            {% include_block block %}
+        {% endfor %}
+    </main>
+{% endblock %}
 endef
 
 define WAGTAIL_URLS
