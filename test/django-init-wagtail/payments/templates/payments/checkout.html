@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% block title %}Checkout{% endblock %}
-{% block content %}
-    <h1>Checkout</h1>
-    <form action="{% url 'checkout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Pay</button>
-    </form>
-{% endblock %}

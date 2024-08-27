@@ -3018,13 +3018,16 @@ INSTALLED_APPS.append("wagtail.contrib.settings")
 INSTALLED_APPS.append("wagtailmarkdown")
 INSTALLED_APPS.append("wagtailmenus")
 INSTALLED_APPS.append("wagtailseo")
-INSTALLED_APPS.append("contactpage")
 TEMPLATES[0]["OPTIONS"]["context_processors"].append(
     "wagtail.contrib.settings.context_processors.settings"
 )
 TEMPLATES[0]["OPTIONS"]["context_processors"].append(
     "wagtailmenus.context_processors.wagtailmenus"
 )
+endef
+
+define WAGTAIL_SETTINGS_CONTACT_PAGE
+INSTALLED_APPS.append("contactpage")  # noqa
 endef
 
 define WAGTAIL_SITEPAGE_MODEL
@@ -3304,6 +3307,7 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_SEARCH_TEMPLATE \
         WAGTAIL_SEARCH_URLS \
         WAGTAIL_SETTINGS \
+        WAGTAIL_SETTINGS_CONTACT_PAGE \
         WAGTAIL_SITEPAGE_MODEL \
         WAGTAIL_SITEPAGE_TEMPLATE \
         WAGTAIL_URLS \
@@ -4458,6 +4462,7 @@ wagtail-contact-page-default:
 	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
 	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
 	-$(GIT_ADD) contactpage/templates/
+	@echo "$$WAGTAIL_SETTINGS_CONTACT_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations contactpage
 	-$(GIT_ADD) contactpage/*.py
 	-$(GIT_ADD) contactpage/migrations/*.py
