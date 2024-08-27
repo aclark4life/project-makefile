@@ -2597,92 +2597,6 @@ define SEPARATOR
 `=========================================================================================================================================='
 endef
 
-define WAGTAIL_BASE_TEMPLATE
-{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
-<!DOCTYPE html>
-<html lang="en"
-      class="h-100"
-      data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
-    <head>
-        <meta charset="utf-8" />
-        <title>
-            {% block title %}
-                {% if page.seo_title %}
-                    {{ page.seo_title }}
-                {% else %}
-                    {{ page.title }}
-                {% endif %}
-            {% endblock %}
-            {% block title_suffix %}
-                {% wagtail_site as current_site %}
-                {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
-            {% endblock %}
-        </title>
-        {% if page.search_description %}<meta name="description" content="{{ page.search_description }}" />{% endif %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {# Force all links in the live preview panel to be opened in a new tab #}
-        {% if request.in_preview_panel %}<base target="_blank">{% endif %}
-        {% stylesheet_pack 'app' %}
-        {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
-        <style>
-            .success {
-                background-color: #d4edda;
-                border-color: #c3e6cb;
-                color: #155724;
-            }
-
-            .info {
-                background-color: #d1ecf1;
-                border-color: #bee5eb;
-                color: #0c5460;
-            }
-
-            .warning {
-                background-color: #fff3cd;
-                border-color: #ffeeba;
-                color: #856404;
-            }
-
-            .danger {
-                background-color: #f8d7da;
-                border-color: #f5c6cb;
-                color: #721c24;
-            }
-        </style>
-        {% include 'favicon.html' %}
-        {% csrf_token %}
-    </head>
-    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
-        <main class="flex-shrink-0">
-            {% wagtailuserbar %}
-            <div id="app"></div>
-            {% include 'header.html' %}
-            {% if messages %}
-                <div class="messages container">
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show"
-                             role="alert">
-                            {{ message }}
-                            <button type="button"
-                                    class="btn-close"
-                                    data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            <div class="container">
-                {% block content %}{% endblock %}
-            </div>
-        </main>
-        {% include 'footer.html' %}
-        {% include 'offcanvas.html' %}
-        {% javascript_pack 'app' %}
-        {% block extra_js %}{# Override this in templates to add extra javascript #}{% endblock %}
-    </body>
-</html>
-endef
-
 define WAGTAIL_BLOCK_CAROUSEL
 <div id="carouselExampleCaptions" class="carousel slide">
     <div class="carousel-indicators">
@@ -2733,11 +2647,6 @@ define WAGTAIL_BLOCK_MARKETING
 </div>
 endef
 
-define WAGTAIL_CONTACT_PAGE_TEMPLATE_LANDING
-{% extends 'base.html' %}
-{% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
-endef
-
 define WAGTAIL_CONTACT_PAGE_MODEL
 from django.db import models
 from modelcluster.fields import ParentalKey
@@ -2772,20 +2681,6 @@ class ContactPage(AbstractEmailForm):
 
     class Meta:
         verbose_name = "Contact Page"
-endef
-
-define WAGTAIL_CONTACT_PAGE_TEMPLATE
-{% extends 'base.html' %}
-{% load crispy_forms_tags static wagtailcore_tags %}
-{% block content %}
-        <h1>{{ page.title }}</h1>
-        {{ page.intro|richtext }}
-        <form action="{% pageurl page %}" method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit">
-        </form>
-{% endblock %}
 endef
 
 define WAGTAIL_CONTACT_PAGE_TESTS
@@ -3048,6 +2943,111 @@ define WAGTAIL_SITEPAGE_TEMPLATE
 {% endblock %}
 endef
 
+define WAGTAIL_TEMPLATE_BASE
+{% load static wagtailcore_tags wagtailuserbar webpack_loader %}
+<!DOCTYPE html>
+<html lang="en"
+      class="h-100"
+      data-bs-theme="{{ request.user.user_theme_preference|default:'light' }}">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+                {% if page.seo_title %}
+                    {{ page.seo_title }}
+                {% else %}
+                    {{ page.title }}
+                {% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+                {% wagtail_site as current_site %}
+                {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        {% if page.search_description %}<meta name="description" content="{{ page.search_description }}" />{% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}<base target="_blank">{% endif %}
+        {% stylesheet_pack 'app' %}
+        {% block extra_css %}{# Override this in templates to add extra stylesheets #}{% endblock %}
+        <style>
+            .success {
+                background-color: #d4edda;
+                border-color: #c3e6cb;
+                color: #155724;
+            }
+
+            .info {
+                background-color: #d1ecf1;
+                border-color: #bee5eb;
+                color: #0c5460;
+            }
+
+            .warning {
+                background-color: #fff3cd;
+                border-color: #ffeeba;
+                color: #856404;
+            }
+
+            .danger {
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+                color: #721c24;
+            }
+        </style>
+        {% include 'favicon.html' %}
+        {% csrf_token %}
+    </head>
+    <body class="{% block body_class %}{% endblock %} d-flex flex-column h-100">
+        <main class="flex-shrink-0">
+            {% wagtailuserbar %}
+            <div id="app"></div>
+            {% include 'header.html' %}
+            {% if messages %}
+                <div class="messages container">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show"
+                             role="alert">
+                            {{ message }}
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="container">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+        {% include 'footer.html' %}
+        {% include 'offcanvas.html' %}
+        {% javascript_pack 'app' %}
+        {% block extra_js %}{# Override this in templates to add extra javascript #}{% endblock %}
+    </body>
+</html>
+endef
+
+define WAGTAIL_TEMPLATE_CONTACT_PAGE
+{% extends 'base.html' %}
+{% load crispy_forms_tags static wagtailcore_tags %}
+{% block content %}
+        <h1>{{ page.title }}</h1>
+        {{ page.intro|richtext }}
+        <form action="{% pageurl page %}" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit">
+        </form>
+{% endblock %}
+endef
+
+define WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING
+{% extends 'base.html' %}
+{% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
+endef
+
 define WAGTAIL_URLS
 from django.conf import settings
 from django.urls import include, path
@@ -3290,12 +3290,9 @@ export DJANGO_API_SERIALIZERS \
         PYTHON_LICENSE_TXT \
         PYTHON_PROJECT_TOML \
         SEPARATOR \
-        WAGTAIL_BASE_TEMPLATE \
         WAGTAIL_BLOCK_CAROUSEL \
         WAGTAIL_BLOCK_MARKETING \
         WAGTAIL_CONTACT_PAGE_MODEL \
-        WAGTAIL_CONTACT_PAGE_TEMPLATE \
-        WAGTAIL_CONTACT_PAGE_TEMPLATE_LANDING \
         WAGTAIL_CONTACT_PAGE_TESTS \
         WAGTAIL_HOME_PAGE_MODEL \
         WAGTAIL_HOME_PAGE_TEMPLATE \
@@ -3317,7 +3314,10 @@ export DJANGO_API_SERIALIZERS \
         WEBPACK_INDEX_JS \
         WEBPACK_REVEAL_CONFIG_JS \
         WEBPACK_REVEAL_INDEX_HTML \
-        WEBPACK_REVEAL_INDEX_JS
+        WEBPACK_REVEAL_INDEX_JS \
+        WAGTAIL_TEMPLATE_BASE \
+        WAGTAIL_TEMPLATE_CONTACT_PAGE \
+        WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING
 
 # ------------------------------------------------------------------------------
 # Multi-line phony target rules
@@ -4451,7 +4451,7 @@ sphinx-theme-default:
 
 .PHONY: wagtail-base-template-default
 wagtail-base-template-default:
-	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
+	@echo "$$WAGTAIL_TEMPLATE_BASE" > backend/templates/base.html
 
 .PHONY: wagtail-contact-page-default
 wagtail-contact-page-default:
@@ -4459,8 +4459,8 @@ wagtail-contact-page-default:
 	@echo "$$WAGTAIL_CONTACT_PAGE_MODEL" > contactpage/models.py
 	@echo "$$WAGTAIL_CONTACT_PAGE_TESTS" > contactpage/tests.py
 	$(ADD_DIR) contactpage/templates/contactpage/
-	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
-	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
+	@echo "$$WAGTAIL_TEMPLATE_CONTACT_PAGE" > contactpage/templates/contactpage/contact_page.html
+	@echo "$$WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
 	-$(GIT_ADD) contactpage/templates/
 	@echo "$$WAGTAIL_SETTINGS_CONTACT_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations contactpage
