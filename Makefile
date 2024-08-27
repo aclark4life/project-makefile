@@ -4429,19 +4429,20 @@ sphinx-serve-default:
 
 .PHONY: sphinx-theme-default
 sphinx-theme-default:
-	export DJANGO_FRONTEND_THEME_NAME=$(PROJECT_NAME)_theme; \
-	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME ; \
-	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/__init__.py ; \
-	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/__init__.py ; \
-	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/theme.conf ; \
-	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/theme.conf ; \
-	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/layout.html ; \
-	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/layout.html ; \
-	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME/static/css ; \
-	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/static/css/style.css ; \
-	$(ADD_DIR) $$DJANGO_FRONTEND_THEME_NAME/static/js ; \
-	$(ADD_FILE) $$DJANGO_FRONTEND_THEME_NAME/static/js/script.js ; \
-	-$(GIT_ADD) $$DJANGO_FRONTEND_THEME_NAME/static
+	@export \
+            SPHINX_THEME=$(PACKAGE_NAME)_theme; \
+	    $(ADD_DIR) $$SPHINX_THEME; \
+	    $(ADD_FILE) $$SPHINX_THEME/__init__.py; \
+	    $(GIT_ADD) $$SPHINX_THEME/__init__.py; \
+	    $(ADD_FILE) $$SPHINX_THEME/theme.conf; \
+	    $(GIT_ADD) $$SPHINX_THEME/theme.conf; \
+	    $(ADD_FILE) $$SPHINX_THEME/layout.html; \
+	    $(GIT_ADD) $$SPHINX_THEME/layout.html; \
+	    $(ADD_DIR) $$SPHINX_THEME/static/css; \
+	    $(ADD_FILE) $$SPHINX_THEME/static/css/style.css; \
+	    $(ADD_DIR) $$SPHINX_THEME/static/js; \
+	    $(ADD_FILE) $$SPHINX_THEME/static/js/script.js; \
+	    $(GIT_ADD) $$SPHINX_THEME/static
 
 .PHONY: wagtail-base-template-default
 wagtail-base-template-default:
