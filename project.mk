@@ -5,8 +5,5 @@
 edit:
 	nvim Makefile
 
-logo:
-	python project_makefile/logo.py
-
 review:
 	$(EDITOR_REVIEW) Makefile
