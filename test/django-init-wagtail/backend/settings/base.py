@@ -248,10 +248,22 @@ INSTALLED_APPS.append("wagtail.contrib.settings")
 INSTALLED_APPS.append("wagtailmarkdown")
 INSTALLED_APPS.append("wagtailmenus")
 INSTALLED_APPS.append("wagtailseo")
-INSTALLED_APPS.append("contactpage")
 TEMPLATES[0]["OPTIONS"]["context_processors"].append(
     "wagtail.contrib.settings.context_processors.settings"
 )
 TEMPLATES[0]["OPTIONS"]["context_processors"].append(
     "wagtailmenus.context_processors.wagtailmenus"
 )
+INSTALLED_APPS.append("siteuser")  # noqa
+AUTH_USER_MODEL = "siteuser.User"
+INSTALLED_APPS.append("model_form_demo")  # noqa
+INSTALLED_APPS.append("unit_test_demo")  # noqa
+INSTALLED_APPS.append("logging_demo")  # noqa
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+DJSTRIPE_WEBHOOK_VALIDATION = "retrieve_event"
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
+STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
+INSTALLED_APPS.append("payments")  # noqa
+INSTALLED_APPS.append("djstripe")  # noqa
+INSTALLED_APPS.append("contactpage")  # noqa
