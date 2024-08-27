@@ -687,14 +687,6 @@ from django.db import models  # noqa
 # Create your models here.
 endef
 
-define DJANGO_HOME_PAGE_TEMPLATE
-{% extends "base.html" %}
-{% block content %}
-    <main class="{% block main_class %}{% endblock %}">
-    </main>
-{% endblock %}
-endef
-
 define DJANGO_HOME_PAGE_URLS
 from django.urls import path
 from .views import HomeView
@@ -1790,6 +1782,14 @@ define DJANGO_TEMPLATE_HEADER
     </div>
 </div>
 endef 
+
+define DJANGO_TEMPLATE_HOME_PAGE
+{% extends "base.html" %}
+{% block content %}
+    <main class="{% block main_class %}{% endblock %}">
+    </main>
+{% endblock %}
+endef
 
 define DJANGO_TEMPLATE_OFFCANVAS
 <div class="offcanvas offcanvas-start bg-dark"
@@ -3203,7 +3203,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_FRONTEND_USER_MENU \
         DJANGO_HOME_PAGE_ADMIN \
         DJANGO_HOME_PAGE_MODELS \
-        DJANGO_HOME_PAGE_TEMPLATE \
         DJANGO_HOME_PAGE_URLS \
         DJANGO_HOME_PAGE_VIEWS \
         DJANGO_LOGGING_DEMO_ADMIN \
@@ -3266,6 +3265,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_TEMPLATE_FAVICON \
         DJANGO_TEMPLATE_FOOTER \
         DJANGO_TEMPLATE_HEADER \
+        DJANGO_TEMPLATE_HOME_PAGE \
         DJANGO_TEMPLATE_OFFCANVAS \
         DJANGO_UNIT_TEST_DEMO_FORMS \
         DJANGO_UNIT_TEST_DEMO_MODELS \
@@ -3453,20 +3453,20 @@ django-frontend-default: python-webpack-init
 django-graph-default:
 	python manage.py graph_models -a -o $(PROJECT_NAME).png
 
-.PHONY: django-home-default
-django-home-default:
+.PHONY: django-home-page-default
+django-home-page-default:
 	python manage.py startapp home
 	$(ADD_DIR) home/templates
 	@echo "$$DJANGO_HOME_PAGE_ADMIN" > home/admin.py
 	@echo "$$DJANGO_HOME_PAGE_MODELS" > home/models.py
-	@echo "$$DJANGO_HOME_PAGE_TEMPLATE" > home/templates/home.html
 	@echo "$$DJANGO_HOME_PAGE_VIEWS" > home/views.py
 	@echo "$$DJANGO_HOME_PAGE_URLS" > home/urls.py
 	@echo "$$DJANGO_URLS_HOME_PAGE" >> $(DJANGO_URLS_FILE)
 	@echo "$$DJANGO_SETTINGS_HOME_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_TEMPLATE_HOME_PAGE" > home/templates/home.html
 	-$(GIT_ADD) home/*.py
 	-$(GIT_ADD) home/migrations/*.py
-	-$(GIT_ADD) home/templates
+	-$(GIT_ADD) home/templates/
 
 .PHONY: django-init-default
 django-init-default: separator \
@@ -3492,7 +3492,7 @@ django-init-default: separator \
 	django-settings-dev \
 	django-settings-prod \
 	django-siteuser \
-	django-home \
+	django-home-page \
 	django-api-views \
 	django-api-serializers \
 	django-urls-api \
@@ -3525,7 +3525,7 @@ django-init-minimal-default: separator \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-settings-prod \
-	django-home \
+	django-home-page \
 	django-utils \
 	django-frontend \
 	npm-install-react \
