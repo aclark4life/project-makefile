@@ -2733,7 +2733,7 @@ define WAGTAIL_BLOCK_MARKETING
 </div>
 endef
 
-define WAGTAIL_CONTACT_PAGE_LANDING
+define WAGTAIL_CONTACT_PAGE_TEMPLATE_LANDING
 {% extends 'base.html' %}
 {% block content %}<div class="container"><h1>Thank you!</h1></div>{% endblock %}
 endef
@@ -2788,7 +2788,7 @@ define WAGTAIL_CONTACT_PAGE_TEMPLATE
 {% endblock %}
 endef
 
-define WAGTAIL_CONTACT_PAGE_TEST
+define WAGTAIL_CONTACT_PAGE_TESTS
 from django.test import TestCase
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail.models import Page
@@ -3018,6 +3018,7 @@ INSTALLED_APPS.append("wagtail.contrib.settings")
 INSTALLED_APPS.append("wagtailmarkdown")
 INSTALLED_APPS.append("wagtailmenus")
 INSTALLED_APPS.append("wagtailseo")
+INSTALLED_APPS.append("contactpage")
 TEMPLATES[0]["OPTIONS"]["context_processors"].append(
     "wagtail.contrib.settings.context_processors.settings"
 )
@@ -3289,10 +3290,10 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_BASE_TEMPLATE \
         WAGTAIL_BLOCK_CAROUSEL \
         WAGTAIL_BLOCK_MARKETING \
-        WAGTAIL_CONTACT_PAGE_LANDING \
         WAGTAIL_CONTACT_PAGE_MODEL \
         WAGTAIL_CONTACT_PAGE_TEMPLATE \
-        WAGTAIL_CONTACT_PAGE_TEST \
+        WAGTAIL_CONTACT_PAGE_TEMPLATE_LANDING \
+        WAGTAIL_CONTACT_PAGE_TESTS \
         WAGTAIL_HOME_PAGE_MODEL \
         WAGTAIL_HOME_PAGE_TEMPLATE \
         WAGTAIL_HOME_PAGE_URLS \
@@ -3561,7 +3562,8 @@ django-init-wagtail-default: separator \
 	django-model-form-demo \
 	django-unit-test-demo \
 	django-logging-demo \
-	django-payments-demo-default \
+	django-payments-demo \
+	wagtail-contact-page \
 	django-api-views \
 	django-api-serializers \
 	django-urls-api \
@@ -4447,17 +4449,16 @@ sphinx-theme-default:
 wagtail-base-template-default:
 	@echo "$$WAGTAIL_BASE_TEMPLATE" > backend/templates/base.html
 
-.PHONY: wagtail-contactpage-default
-wagtail-contactpage-default:
+.PHONY: wagtail-contact-page-default
+wagtail-contact-page-default:
 	python manage.py startapp contactpage
 	@echo "$$WAGTAIL_CONTACT_PAGE_MODEL" > contactpage/models.py
-	@echo "$$WAGTAIL_CONTACT_PAGE_TEST" > contactpage/tests.py
+	@echo "$$WAGTAIL_CONTACT_PAGE_TESTS" > contactpage/tests.py
 	$(ADD_DIR) contactpage/templates/contactpage/
 	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE" > contactpage/templates/contactpage/contact_page.html
-	@echo "$$WAGTAIL_CONTACT_PAGE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
-	@echo "INSTALLED_APPS.append('contactpage')" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$WAGTAIL_CONTACT_PAGE_TEMPLATE_LANDING" > contactpage/templates/contactpage/contact_page_landing.html
+	-$(GIT_ADD) contactpage/templates/
 	python manage.py makemigrations contactpage
-	-$(GIT_ADD) contactpage/templates
 	-$(GIT_ADD) contactpage/*.py
 	-$(GIT_ADD) contactpage/migrations/*.py
 
