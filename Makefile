@@ -3366,12 +3366,12 @@ aws-vpc-default: aws-check-env
 
 .PHONY: db-import-default
 db-import-default:
-	@psql $(DJANGO_DATABASE_NAME) < $(DJANGO_DATABASE_NAME).sql
+	@psql $(PACKAGE_NAME) < $(DJANGO_DATABASE_NAME).sql
 
 .PHONY: db-init-default
 db-init-default:
-	-dropdb $(PROJECT_NAME)
-	-createdb $(PROJECT_NAME)
+	-dropdb $(PACKAGE_NAME)
+	-createdb $(PACKAGE_NAME)
 
 .PHONY: db-init-mysql-default
 db-init-mysql-default:
@@ -3380,8 +3380,8 @@ db-init-mysql-default:
 
 .PHONY: db-init-test-default
 db-init-test-default:
-	-dropdb test_$(PROJECT_NAME)
-	-createdb test_$(PROJECT_NAME)
+	-dropdb test_$(PACKAGE_NAME)
+	-createdb test_$(PACKAGE_NAME)
 
 .PHONY: django-admin-custom-default
 django-admin-custom-default:
@@ -4615,6 +4615,9 @@ cp-default: git-commit-message git-push
 
 .PHONY: db-dump-default
 db-dump-default: eb-export
+
+.PHONY: db-export-default
+db-export-default: eb-export
 
 .PHONY: dbshell-default
 dbshell-default: django-db-shell
