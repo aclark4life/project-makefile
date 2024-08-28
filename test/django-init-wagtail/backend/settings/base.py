@@ -267,3 +267,5 @@ STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY")
 INSTALLED_APPS.append("payments")  # noqa
 INSTALLED_APPS.append("djstripe")  # noqa
 INSTALLED_APPS.append("contactpage")  # noqa
+INSTALLED_APPS.append("privacypage")  # noqa
+INSTALLED_APPS.append("sitepage")  # noqa

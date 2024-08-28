@@ -24,7 +24,7 @@ DEL_FILE := rm -v
 DJANGO_ADMIN_CUSTOM_APPS_FILE := backend/apps.py
 DJANGO_ADMIN_CUSTOM_ADMIN_FILE := backend/admin.py
 DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
-		     node_modules payments privacy search sitepage siteuser unit_test_demo
+		     node_modules payments privacypage search sitepage siteuser unit_test_demo
 DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
 		      .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py \
 		      package-lock.json package.json postcss.config.js requirements-test.txt \
@@ -2854,7 +2854,7 @@ define WAGTAIL_SETTINGS_SITE_PAGE
 INSTALLED_APPS.append("sitepage")  # noqa
 endef
 
-define WAGTAIL_SITEPAGE_MODEL
+define WAGTAIL_SITE_PAGE_MODEL
 from wagtail.models import Page
 
 
@@ -3026,7 +3026,7 @@ define WAGTAIL_TEMPLATE_SEARCH
 {% endblock %}
 endef
 
-define WAGTAIL_TEMPLATE_SITEPAGE
+define WAGTAIL_TEMPLATE_SITE_PAGE
 {% extends 'base.html' %}
 {% block content %}
     <h1>{{ page.title }}</h1>
@@ -3289,7 +3289,7 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_SETTINGS_CONTACT_PAGE \
         WAGTAIL_SETTINGS_PRIVACY_PAGE \
         WAGTAIL_SETTINGS_SITE_PAGE \
-        WAGTAIL_SITEPAGE_MODEL \
+        WAGTAIL_SITE_PAGE_MODEL \
         WAGTAIL_URLS \
         WAGTAIL_URLS_HOME \
         WEBPACK_CONFIG_JS \
@@ -3304,7 +3304,7 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_TEMPLATE_HOME_PAGE \
         WAGTAIL_TEMPLATE_PRIVACY_PAGE \
         WAGTAIL_TEMPLATE_SEARCH \
-        WAGTAIL_TEMPLATE_SITEPAGE
+        WAGTAIL_TEMPLATE_SITE_PAGE
 
 # ------------------------------------------------------------------------------
 # Multi-line phony target rules
@@ -3567,8 +3567,7 @@ django-init-wagtail-default: separator \
 	npm-install-react-dev \
 	npm-audit-fix \
 	django-migrate \
-	git-ignore \
-	django-su
+	git-ignore
 
 .PHONY: django-install-default
 django-install-default: pip-ensure
@@ -4486,15 +4485,15 @@ wagtail-install-default: pip-ensure
 
 .PHONY: wagtail-private-default
 wagtail-privacy-page-default:
-	python manage.py startapp privacy
-	@echo "$$WAGTAIL_PRIVACY_PAGE_MODEL" > privacy/models.py
-	$(ADD_DIR) privacy/templates
-	@echo "$$WAGTAIL_TEMPLATE_PRIVACY_PAGE" > privacy/templates/privacy_page.html
-	-$(GIT_ADD) privacy/templates
+	python manage.py startapp privacypage
+	@echo "$$WAGTAIL_PRIVACY_PAGE_MODEL" > privacypage/models.py
+	$(ADD_DIR) privacypage/templates
+	@echo "$$WAGTAIL_TEMPLATE_PRIVACY_PAGE" > privacypage/templates/privacy_page.html
+	-$(GIT_ADD) privacypage/templates
 	@echo "$$WAGTAIL_SETTINGS_PRIVACY_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
-	python manage.py makemigrations privacy
-	-$(GIT_ADD) privacy/*.py
-	-$(GIT_ADD) privacy/migrations/*.py
+	python manage.py makemigrations privacypage
+	-$(GIT_ADD) privacypage/*.py
+	-$(GIT_ADD) privacypage/migrations/*.py
 
 .PHONY: wagtail-project-default
 wagtail-project-default:
@@ -4522,10 +4521,11 @@ wagtail-settings-default:
 .PHONY: wagtail-site-page-default
 wagtail-site-page-default:
 	python manage.py startapp sitepage
-	@echo "$$WAGTAIL_SITEPAGE_MODEL" > sitepage/models.py
+	@echo "$$WAGTAIL_SITE_PAGE_MODEL" > sitepage/models.py
 	$(ADD_DIR) sitepage/templates/sitepage/
-	@echo "$$WAGTAIL_TEMPLATE_SITEPAGE" > sitepage/templates/sitepage/site_page.html
+	@echo "$$WAGTAIL_TEMPLATE_SITE_PAGE" > sitepage/templates/sitepage/site_page.html
 	-$(GIT_ADD) sitepage/templates
+	@echo "$$WAGTAIL_SETTINGS_SITE_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations sitepage
 	-$(GIT_ADD) sitepage/*.py
 	-$(GIT_ADD) sitepage/migrations/*.py

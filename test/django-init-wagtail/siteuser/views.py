@@ -15,7 +15,7 @@ from .forms import SiteUserForm
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     model = User
-    template_name = "profile.html"
+    template_name = "user.html"
 
     def get_object(self, queryset=None):
         return self.request.user
