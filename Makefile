@@ -2988,14 +2988,7 @@ define WAGTAIL_TEMPLATE_PRIVACY_PAGE
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
 endef
 
-define WAGTAIL_TEMPLATE_SITEPAGE
-{% extends 'base.html' %}
-{% block content %}
-    <h1>{{ page.title }}</h1>
-{% endblock %}
-endef
-
-define WAGTAIL_SEARCH_TEMPLATE
+define WAGTAIL_TEMPLATE_SEARCH
 {% extends "base.html" %}
 {% load static wagtailcore_tags %}
 {% block body_class %}template-searchresults{% endblock %}
@@ -3030,6 +3023,13 @@ define WAGTAIL_SEARCH_TEMPLATE
     {% else %}
         No results found. Try a <a href="?query=test">test query</a>?
     {% endif %}
+{% endblock %}
+endef
+
+define WAGTAIL_TEMPLATE_SITEPAGE
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ page.title }}</h1>
 {% endblock %}
 endef
 
@@ -3284,7 +3284,6 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_HOME_PAGE_VIEWS \
         WAGTAIL_PRIVACY_PAGE_MODEL \
         WAGTAIL_PRIVACY_PAGE_MODEL \
-        WAGTAIL_SEARCH_TEMPLATE \
         WAGTAIL_SEARCH_URLS \
         WAGTAIL_SETTINGS \
         WAGTAIL_SETTINGS_CONTACT_PAGE \
@@ -3304,6 +3303,7 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING \
         WAGTAIL_TEMPLATE_HOME_PAGE \
         WAGTAIL_TEMPLATE_PRIVACY_PAGE \
+        WAGTAIL_TEMPLATE_SEARCH \
         WAGTAIL_TEMPLATE_SITEPAGE
 
 # ------------------------------------------------------------------------------
@@ -4511,10 +4511,10 @@ wagtail-project-default:
 
 .PHONY: wagtail-search-default
 wagtail-search-default:
-	@echo "$$WAGTAIL_SEARCH_TEMPLATE" > search/templates/search/search.html
+	@echo "$$WAGTAIL_TEMPLATE_SEARCH" > search/templates/search/search.html
+	-$(GIT_ADD) search/templates
 	@echo "$$WAGTAIL_SEARCH_URLS" > search/urls.py
 	-$(GIT_ADD) search/*.py
-	-$(GIT_ADD) search/templates
 
 .PHONY: wagtail-settings-default
 wagtail-settings-default:
