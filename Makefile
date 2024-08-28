@@ -2873,6 +2873,10 @@ define WAGTAIL_SETTINGS_PRIVACY_PAGE
 INSTALLED_APPS.append("privacypage")  # noqa
 endef
 
+define WAGTAIL_SETTINGS_SITE_PAGE
+INSTALLED_APPS.append("sitepage")  # noqa
+endef
+
 define WAGTAIL_SITEPAGE_MODEL
 from wagtail.models import Page
 
@@ -2882,13 +2886,6 @@ class SitePage(Page):
 
     class Meta:
         verbose_name = "Site Page"
-endef
-
-define WAGTAIL_SITEPAGE_TEMPLATE
-{% extends 'base.html' %}
-{% block content %}
-    <h1>{{ page.title }}</h1>
-{% endblock %}
 endef
 
 define WAGTAIL_TEMPLATE_BASE
@@ -3012,6 +3009,13 @@ define WAGTAIL_TEMPLATE_PRIVACY_PAGE
 {% extends 'base.html' %}
 {% load wagtailmarkdown %}
 {% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
+endef
+
+define WAGTAIL_TEMPLATE_SITEPAGE
+{% extends 'base.html' %}
+{% block content %}
+    <h1>{{ page.title }}</h1>
+{% endblock %}
 endef
 
 define WAGTAIL_SEARCH_TEMPLATE
@@ -3308,8 +3312,8 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_SETTINGS \
         WAGTAIL_SETTINGS_CONTACT_PAGE \
         WAGTAIL_SETTINGS_PRIVACY_PAGE \
+        WAGTAIL_SETTINGS_SITE_PAGE \
         WAGTAIL_SITEPAGE_MODEL \
-        WAGTAIL_SITEPAGE_TEMPLATE \
         WAGTAIL_URLS \
         WAGTAIL_URLS_HOME \
         WEBPACK_CONFIG_JS \
@@ -3323,6 +3327,7 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING \
         WAGTAIL_TEMPLATE_HOME_PAGE \
         WAGTAIL_TEMPLATE_PRIVACY_PAGE \
+        WAGTAIL_TEMPLATE_SITEPAGE
 
 # ------------------------------------------------------------------------------
 # Multi-line phony target rules
@@ -3574,6 +3579,7 @@ django-init-wagtail-default: separator \
 	django-payments-demo \
 	wagtail-contact-page \
 	wagtail-privacy-page \
+	wagtail-site-page \
 	django-api-views \
 	django-api-serializers \
 	django-urls-api \
@@ -4538,16 +4544,15 @@ wagtail-search-default:
 wagtail-settings-default:
 	@echo "$$WAGTAIL_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
-.PHONY: wagtail-sitepage-default
-wagtail-sitepage-default:
+.PHONY: wagtail-site-page-default
+wagtail-site-page-default:
 	python manage.py startapp sitepage
 	@echo "$$WAGTAIL_SITEPAGE_MODEL" > sitepage/models.py
-	-$(GIT_ADD) sitepage/*.py
 	$(ADD_DIR) sitepage/templates/sitepage/
-	@echo "$$WAGTAIL_SITEPAGE_TEMPLATE" > sitepage/templates/sitepage/site_page.html
+	@echo "$$WAGTAIL_TEMPLATE_SITEPAGE" > sitepage/templates/sitepage/site_page.html
 	-$(GIT_ADD) sitepage/templates
-	@echo "INSTALLED_APPS.append('sitepage')" >> $(DJANGO_SETTINGS_BASE_FILE)
 	python manage.py makemigrations sitepage
+	-$(GIT_ADD) sitepage/*.py
 	-$(GIT_ADD) sitepage/migrations/*.py
 
 .PHONY: wagtail-urls-default
