@@ -1524,7 +1524,7 @@ from .forms import SiteUserForm
 
 class UserProfileView(LoginRequiredMixin, DetailView):
     model = User
-    template_name = "profile.html"
+    template_name = "user.html"
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -3801,7 +3801,6 @@ django-siteuser-default:
 	@echo "$$DJANGO_SITEUSER_ADMIN" > siteuser/admin.py
 	@echo "$$DJANGO_SITEUSER_VIEW" > siteuser/views.py
 	@echo "$$DJANGO_SITEUSER_URLS" > siteuser/urls.py
-	@echo "$$DJANGO_SITEUSER_VIEW_TEMPLATE" > siteuser/templates/profile.html
 	@echo "$$DJANGO_URLS_SITEUSER" >> $(DJANGO_URLS_FILE)
 	@echo "$$DJANGO_SETTINGS_SITEUSER" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_TEMPLATE_SITEUSER_EDIT" > siteuser/templates/user_edit.html
