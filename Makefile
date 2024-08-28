@@ -1172,49 +1172,6 @@ class SearchForm(forms.Form):
 
 endef
 
-define DJANGO_SEARCH_SETTINGS
-SEARCH_MODELS = [
-    # Add search models here.
-]
-endef
-
-define DJANGO_SEARCH_TEMPLATE
-{% extends "base.html" %}
-{% block body_class %}template-searchresults{% endblock %}
-{% block title %}Search{% endblock %}
-{% block content %}
-    <h1>Search</h1>
-    <form action="{% url 'search' %}" method="get">
-        <input type="text"
-               name="query"
-               {% if search_query %}value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search" class="button">
-    </form>
-    {% if search_results %}
-        <ul>
-            {% for result in search_results %}
-                <li>
-                    <h4>
-                        <a href="{% pageurl result %}">{{ result }}</a>
-                    </h4>
-                    {% if result.search_description %}{{ result.search_description }}{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% if search_results.has_previous %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-        {% endif %}
-        {% if search_results.has_next %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-        {% endif %}
-    {% elif search_query %}
-        No results found
-	{% else %}
-		No results found. Try a <a href="?query=test">test query</a>?
-    {% endif %}
-{% endblock %}
-endef
-
 define DJANGO_SEARCH_URLS
 from django.urls import path
 from .views import SearchView
@@ -1452,6 +1409,10 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ]
 }
+endef
+
+define DJANGO_SETTINGS_SEARCH
+INSTALLED_APPS.append("search")  # noqa
 endef
 
 define DJANGO_SETTINGS_SITEUSER
@@ -1806,6 +1767,22 @@ define DJANGO_TEMPLATE_OFFCANVAS
         </ul>
     </div>
 </div>
+endef
+
+define DJANGO_TEMPLATE_SEARCH
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Search Results</h1>
+    <form method="get">
+	{{ form.as_p }}
+	<button type="submit">Search</button>
+    </form>
+    <ul>
+	{% for result in results %}
+	    <li>{{ result }}</li>
+	{% endfor %}
+    </ul>
+{% endblock %}
 endef
 
 define DJANGO_TEMPLATE_SITEUSER_EDIT
@@ -3240,8 +3217,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_PAYMENTS_URLS \
         DJANGO_PAYMENTS_VIEW \
         DJANGO_SEARCH_FORMS \
-        DJANGO_SEARCH_SETTINGS \
-        DJANGO_SEARCH_TEMPLATE \
         DJANGO_SEARCH_URLS \
         DJANGO_SEARCH_UTILS \
         DJANGO_SEARCH_VIEWS \
@@ -3258,6 +3233,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SETTINGS_PAYMENTS \
         DJANGO_SETTINGS_PROD \
         DJANGO_SETTINGS_REST_FRAMEWORK \
+        DJANGO_SETTINGS_SEARCH \
         DJANGO_SETTINGS_SITEUSER \
         DJANGO_SETTINGS_THEMES \
         DJANGO_SETTINGS_UNIT_TEST_DEMO \
@@ -3273,6 +3249,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_TEMPLATE_HEADER \
         DJANGO_TEMPLATE_HOME_PAGE \
         DJANGO_TEMPLATE_OFFCANVAS \
+        DJANGO_TEMPLATE_SEARCH \
         DJANGO_TEMPLATE_SITEUSER_EDIT \
         DJANGO_TEMPLATE_SITEUSER_VIEW \
         DJANGO_UNIT_TEST_DEMO_FORMS \
@@ -3498,6 +3475,7 @@ django-init-default: separator \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-allauth \
+	django-search \
 	django-settings-base \
 	django-settings-dev \
 	django-settings-prod \
@@ -3759,16 +3737,14 @@ django-project-default:
 django-search-default:
 	python manage.py startapp search
 	$(ADD_DIR) search/templates
-	@echo "$$DJANGO_SEARCH_TEMPLATE" > search/templates/search.html
+	@echo "$$DJANGO_TEMPLATE_SEARCH" > search/templates/search.html
 	-$(GIT_ADD) search/templates
 	@echo "$$DJANGO_SEARCH_FORMS" > search/forms.py
 	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
 	@echo "$$DJANGO_SEARCH_UTILS" > search/utils.py
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
 	-$(GIT_ADD) search/*.py
-	@echo "$$DJANGO_SEARCH_SETTINGS" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "INSTALLED_APPS.append('search')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "urlpatterns += [path('search/', include('search.urls'))]" >> $(DJANGO_URLS_FILE)
+	@echo "$$DJANGO_SETTINGS_SEARCH" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-secret-key-default
 django-secret-key-default:
