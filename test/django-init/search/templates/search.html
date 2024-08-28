@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Search Results</h1>
+    <form method="get">
+	{{ form.as_p }}
+	<button type="submit">Search</button>
+    </form>
+    <ul>
+	{% for result in results %}
+	    <li>{{ result }}</li>
+	{% endfor %}
+    </ul>
+{% endblock %}

@@ -1289,7 +1289,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 endef
 
 define DJANGO_SETTINGS_DATABASE
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/$(PROJECT_NAME)")
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/$(PACKAGE_NAME)")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
 endef
 
@@ -3567,7 +3567,8 @@ django-init-wagtail-default: separator \
 	npm-install-react-dev \
 	npm-audit-fix \
 	django-migrate \
-	git-ignore
+	git-ignore \
+	django-su
 
 .PHONY: django-install-default
 django-install-default: pip-ensure

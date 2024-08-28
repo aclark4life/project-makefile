@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-2kbbc$eug+2007k5*o2_wtb9ba7f9bb2#xc&59(0cen!a3)_*!"
+SECRET_KEY = "django-insecure-g+)a+v-)e0%t8sxn@i-tvz2sjwi+)#$3@5#6q4udrb#a&4d0*@"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -121,6 +121,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+INSTALLED_APPS.append("search")  # noqa
 # project-makefile
 #
 # Uncomment next two lines to enable custom admin
