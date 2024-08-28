@@ -4192,15 +4192,16 @@ npm-install-default:
 	npm install
 	-$(GIT_ADD) package-lock.json
 
+# Skip these for now due to GitHub Actions authentication issues
+# @fortawesome/fontawesome-svg-core \
+# @fortawesome/react-fontawesome \
 .PHONY: npm-install-react-default
 npm-install-react-default:
 	npm install \
         @fortawesome/fontawesome-free \
-        @fortawesome/fontawesome-svg-core \
         @fortawesome/free-brands-svg-icons \
         @fortawesome/free-solid-svg-icons \
-        @fortawesome/react-fontawesome \
-        	bootstrap \
+        bootstrap \
         camelize \
         date-fns \
         history \
