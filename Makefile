@@ -198,10 +198,10 @@ define DJANGO_FRONTEND
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import 'bootstrap';
-import '@fortawesome/fontawesome-free/js/fontawesome';
-import '@fortawesome/fontawesome-free/js/solid';
-import '@fortawesome/fontawesome-free/js/regular';
-import '@fortawesome/fontawesome-free/js/brands';
+// import '@fortawesome/fontawesome-free/js/fontawesome';
+// import '@fortawesome/fontawesome-free/js/solid';
+// import '@fortawesome/fontawesome-free/js/regular';
+// import '@fortawesome/fontawesome-free/js/brands';
 import getDataComponents from '../dataComponents';
 import UserContextProvider from '../context';
 import * as components from '../components';
@@ -4195,12 +4195,12 @@ npm-install-default:
 # Skip these for now due to GitHub Actions authentication issues
 # @fortawesome/fontawesome-svg-core \
 # @fortawesome/react-fontawesome \
+# @fortawesome/fontawesome-free \
+# @fortawesome/free-brands-svg-icons \
+# @fortawesome/free-solid-svg-icons \
 .PHONY: npm-install-react-default
 npm-install-react-default:
 	npm install \
-        @fortawesome/fontawesome-free \
-        @fortawesome/free-brands-svg-icons \
-        @fortawesome/free-solid-svg-icons \
         bootstrap \
         camelize \
         date-fns \
