@@ -3458,6 +3458,7 @@ django-home-page-default:
 .PHONY: django-init-default
 django-init-default: separator \
 	db-init \
+	django-clean \
 	django-install \
 	django-project \
 	django-utils \
@@ -3495,6 +3496,7 @@ django-init-default: separator \
 .PHONY: django-init-minimal-default
 django-init-minimal-default: separator \
 	db-init \
+	django-clean \
 	django-install-minimal \
 	django-project \
 	django-settings-directory \
@@ -3526,6 +3528,7 @@ django-init-minimal-default: separator \
 .PHONY: django-init-wagtail-default
 django-init-wagtail-default: separator \
 	db-init \
+	django-clean \
 	django-install \
 	wagtail-install \
 	wagtail-project \
@@ -3743,8 +3746,9 @@ django-search-default:
 	@echo "$$DJANGO_SEARCH_URLS" > search/urls.py
 	@echo "$$DJANGO_SEARCH_UTILS" > search/utils.py
 	@echo "$$DJANGO_SEARCH_VIEWS" > search/views.py
-	-$(GIT_ADD) search/*.py
 	@echo "$$DJANGO_SETTINGS_SEARCH" >> $(DJANGO_SETTINGS_BASE_FILE)
+	-$(GIT_ADD) search/*.py
+	-$(GIT_ADD) search/migrations/*.py
 
 .PHONY: django-secret-key-default
 django-secret-key-default:

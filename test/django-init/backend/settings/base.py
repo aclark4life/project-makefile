@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-g+)a+v-)e0%t8sxn@i-tvz2sjwi+)#$3@5#6q4udrb#a&4d0*@"
+SECRET_KEY = "django-insecure-f0+l8c(37yddj5u1i61fynm5ocgmrweo*z&q!if2t$zw5x7!h("
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -158,7 +158,7 @@ THEMES = [
     ("light", "Light Theme"),
     ("dark", "Dark Theme"),
 ]
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/project-makefile")
+DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/project_makefile")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
 INSTALLED_APPS.append("allauth")
 INSTALLED_APPS.append("allauth.account")
