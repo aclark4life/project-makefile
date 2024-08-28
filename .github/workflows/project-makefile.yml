@@ -1,8 +1,5 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
-run-name: ${{ github.actor }} is running Node.js Workflow 🚀
+name: Project Makefile
+run-name: ${{ github.actor }} is Testing Project Makefile 🚀
 
 on:
   push:
@@ -21,9 +18,10 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      max-parallel: 4
       matrix:
         node-version: [22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        python-version: [3.12]
 
     steps:
     - uses: actions/checkout@v4
@@ -35,3 +33,11 @@ jobs:
         cache-dependency-path: './test/django-init-wagtail/package.json'
     - run: npm install
     - run: npm run build --if-present
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Dependencies
+      run: |
+        make -f ../../Makefile pip-install
