@@ -2843,50 +2843,6 @@ class PrivacyPage(Page):
         verbose_name = "Privacy Page"
 endef
 
-define WAGTAIL_PRIVACY_PAGE_TEMPLATE
-{% extends 'base.html' %}
-{% load wagtailmarkdown %}
-{% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
-endef
-
-define WAGTAIL_SEARCH_TEMPLATE
-{% extends "base.html" %}
-{% load static wagtailcore_tags %}
-{% block body_class %}template-searchresults{% endblock %}
-{% block title %}Search{% endblock %}
-{% block content %}
-    <h1>Search</h1>
-    <form action="{% url 'search' %}" method="get">
-        <input type="text"
-               name="query"
-               {% if search_query %}value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search" class="button">
-    </form>
-    {% if search_results %}
-        <ul>
-            {% for result in search_results %}
-                <li>
-                    <h4>
-                        <a href="{% pageurl result %}">{{ result }}</a>
-                    </h4>
-                    {% if result.search_description %}{{ result.search_description }}{% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% if search_results.has_previous %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
-        {% endif %}
-        {% if search_results.has_next %}
-            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
-        {% endif %}
-    {% elif search_query %}
-        No results found
-    {% else %}
-        No results found. Try a <a href="?query=test">test query</a>?
-    {% endif %}
-{% endblock %}
-endef
-
 define WAGTAIL_SEARCH_URLS
 from django.urls import path
 from .views import search
@@ -2911,6 +2867,10 @@ endef
 
 define WAGTAIL_SETTINGS_CONTACT_PAGE
 INSTALLED_APPS.append("contactpage")  # noqa
+endef
+
+define WAGTAIL_SETTINGS_PRIVACY_PAGE
+INSTALLED_APPS.append("privacypage")  # noqa
 endef
 
 define WAGTAIL_SITEPAGE_MODEL
@@ -3045,6 +3005,50 @@ define WAGTAIL_TEMPLATE_HOME_PAGE
             {% include_block block %}
         {% endfor %}
     </main>
+{% endblock %}
+endef
+
+define WAGTAIL_TEMPLATE_PRIVACY_PAGE
+{% extends 'base.html' %}
+{% load wagtailmarkdown %}
+{% block content %}<div class="container">{{ page.body|markdown }}</div>{% endblock %}
+endef
+
+define WAGTAIL_SEARCH_TEMPLATE
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+{% block body_class %}template-searchresults{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+    <h1>Search</h1>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text"
+               name="query"
+               {% if search_query %}value="{{ search_query }}"{% endif %}>
+        <input type="submit" value="Search" class="button">
+    </form>
+    {% if search_results %}
+        <ul>
+            {% for result in search_results %}
+                <li>
+                    <h4>
+                        <a href="{% pageurl result %}">{{ result }}</a>
+                    </h4>
+                    {% if result.search_description %}{{ result.search_description }}{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        No results found
+    {% else %}
+        No results found. Try a <a href="?query=test">test query</a>?
+    {% endif %}
 {% endblock %}
 endef
 
@@ -3299,11 +3303,11 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_HOME_PAGE_VIEWS \
         WAGTAIL_PRIVACY_PAGE_MODEL \
         WAGTAIL_PRIVACY_PAGE_MODEL \
-        WAGTAIL_PRIVACY_PAGE_TEMPLATE \
         WAGTAIL_SEARCH_TEMPLATE \
         WAGTAIL_SEARCH_URLS \
         WAGTAIL_SETTINGS \
         WAGTAIL_SETTINGS_CONTACT_PAGE \
+        WAGTAIL_SETTINGS_PRIVACY_PAGE \
         WAGTAIL_SITEPAGE_MODEL \
         WAGTAIL_SITEPAGE_TEMPLATE \
         WAGTAIL_URLS \
@@ -3317,7 +3321,8 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_TEMPLATE_BASE \
         WAGTAIL_TEMPLATE_CONTACT_PAGE \
         WAGTAIL_TEMPLATE_CONTACT_PAGE_LANDING \
-        WAGTAIL_TEMPLATE_HOME_PAGE
+        WAGTAIL_TEMPLATE_HOME_PAGE \
+        WAGTAIL_TEMPLATE_PRIVACY_PAGE \
 
 # ------------------------------------------------------------------------------
 # Multi-line phony target rules
@@ -3568,6 +3573,7 @@ django-init-wagtail-default: separator \
 	django-logging-demo \
 	django-payments-demo \
 	wagtail-contact-page \
+	wagtail-privacy-page \
 	django-api-views \
 	django-api-serializers \
 	django-urls-api \
@@ -4498,14 +4504,14 @@ wagtail-install-default: pip-ensure
         xhtml2pdf
 
 .PHONY: wagtail-private-default
-wagtail-privacy-default:
+wagtail-privacy-page-default:
 	python manage.py startapp privacy
 	@echo "$$WAGTAIL_PRIVACY_PAGE_MODEL" > privacy/models.py
 	$(ADD_DIR) privacy/templates
-	@echo "$$WAGTAIL_PRIVACY_PAGE_TEMPLATE" > privacy/templates/privacy_page.html
-	@echo "INSTALLED_APPS.append('privacy')" >> $(DJANGO_SETTINGS_BASE_FILE)
-	python manage.py makemigrations privacy
+	@echo "$$WAGTAIL_TEMPLATE_PRIVACY_PAGE" > privacy/templates/privacy_page.html
 	-$(GIT_ADD) privacy/templates
+	@echo "$$WAGTAIL_SETTINGS_PRIVACY_PAGE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	python manage.py makemigrations privacy
 	-$(GIT_ADD) privacy/*.py
 	-$(GIT_ADD) privacy/migrations/*.py
 
