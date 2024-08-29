@@ -38,8 +38,4 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
 
-    - run: make -f ../../Makefile npm-install
-
-    - name: Install Dependencies
-      run: |
-        make -f ../../Makefile pip-install
+    - run: make -f ../../Makefile wagtail-init
