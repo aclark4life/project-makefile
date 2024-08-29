@@ -14,30 +14,26 @@ defaults:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       max-parallel: 4
       matrix:
         node-version: [22.x]
         python-version: [3.12]
-
     steps:
+    - name: Install Dependencies
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+      run: |
+        make -f ../../Makefile pip-install
     - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
-    - run: npm install
-    - run: npm run build --if-present
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        make -f ../../Makefile pip-install
+    - run: |
+        make -f ../../Makefile npm-install
