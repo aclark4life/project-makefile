@@ -1,6 +1,6 @@
 # Project Makefile
 
-[![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/makefile.yml) [![Project Makefile](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml/badge.svg)](https://github.com/project-makefile/project-makefile/actions/workflows/django.yml)
+[![Project Makefile](https://github.com/aclark4life/project-makefile/actions/workflows/project-makefile.yml/badge.svg)](https://github.com/aclark4life/project-makefile/actions/workflows/project-makefile.yml)
 
 ![Logo](logo.png)
 
