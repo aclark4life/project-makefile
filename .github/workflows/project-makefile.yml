@@ -31,6 +31,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
+
     - run: npm install
     - run: npm run build --if-present
 
@@ -38,6 +39,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install Dependencies
       run: |
         make -f ../../Makefile pip-install
