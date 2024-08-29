@@ -30,6 +30,8 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+      run: |
+        make -f ../../Makefile pip-install
 
     - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -40,7 +42,3 @@ jobs:
 
     - run: make -f ../../Makefile npm-install
     - run: npm run build --if-present
-
-    - name: Install Dependencies
-      run: |
-        make -f ../../Makefile pip-install
