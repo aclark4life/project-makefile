@@ -32,7 +32,7 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
 
-    - run: npm install
+    - run: make -f ../../Makefile npm-install
     - run: npm run build --if-present
 
     - name: Set up Python ${{ matrix.python-version }}
