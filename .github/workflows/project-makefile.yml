@@ -53,4 +53,11 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
 
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        echo "Waiting for PostgreSQL to be ready..."
+        until pg_isready -h localhost -p 5432; do
+          sleep 1
+        done
+
     - run: make -f ../../Makefile wagtail-init
