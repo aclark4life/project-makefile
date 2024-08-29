@@ -23,6 +23,7 @@ jobs:
         node-version: [22.x]
         python-version: [3.12]
 
+
   steps:
     - uses: actions/checkout@v4
   
@@ -42,5 +43,8 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
   
-    - run: make -f ../../Makefile npm-install
-    - run: npm run build --if-present
+    - name: Install NPM Dependencies
+      run: make -f ../../Makefile npm-install
+  
+    - name: Build NPM Project
+      run: npm run build --if-present
