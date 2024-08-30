@@ -4158,7 +4158,7 @@ jenkins-init-default:
 .PHONY: make-default
 make-default:
 	-$(GIT_ADD) Makefile
-	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_NAME) files")
+	-@$(GIT_COMMIT) Makefile -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_NAME) Makefile")
 	-$(GIT_PUSH)
 
 .PHONY: makefile-list-commands-default
