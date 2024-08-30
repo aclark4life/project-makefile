@@ -17,21 +17,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_DB: test_db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd="pg_isready -U postgres"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
-
     strategy:
       max-parallel: 4
       matrix:
@@ -53,11 +38,5 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
 
-    - name: Wait for PostgreSQL to be ready
-      run: |
-        echo "Waiting for PostgreSQL to be ready..."
-        until pg_isready -h localhost -p 5432; do
-          sleep 1
-        done
-
-    - run: make -f ../../Makefile wagtail-init
+    - run: make -f ../../Makefile pip-install
+    - run: make -f ../../Makefile npm-install
