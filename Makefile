@@ -3466,7 +3466,8 @@ django-home-page-default:
 	-$(GIT_ADD) home/templates/
 
 .PHONY: django-init-default
-django-init-default: separator \
+django-init-default: python-venv-check \
+	separator \
 	db-init \
 	django-clean \
 	django-install \
@@ -3504,7 +3505,8 @@ django-init-default: separator \
 	django-su
 
 .PHONY: django-init-minimal-default
-django-init-minimal-default: separator \
+django-init-minimal-default: python-venv-check \
+	separator \
 	db-init \
 	django-clean \
 	django-install-minimal \
@@ -3536,7 +3538,8 @@ django-init-minimal-default: separator \
 	django-su
 
 .PHONY: django-init-wagtail-default
-django-init-wagtail-default: separator \
+django-init-wagtail-default: python-venv-check \
+	separator \
 	db-init \
 	django-clean \
 	django-install \
@@ -4361,6 +4364,13 @@ python-sdist-default: pip-ensure
 python-serve-default:
 	@echo "\n\tServing HTTP on http://0.0.0.0:8000\n"
 	$(PYTHON_HTTP_SERVER)
+
+
+.PHONY: python-venv-check-default
+python-venv-check-default:
+ifndef VIRTUAL_ENV
+	$(error VIRTUAL_ENV is not set)
+endif
 
 .PHONY: python-webpack-init-default
 python-webpack-init-default:
