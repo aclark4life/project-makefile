@@ -3466,8 +3466,7 @@ django-home-page-default:
 	-$(GIT_ADD) home/templates/
 
 .PHONY: django-init-default
-django-init-default: python-venv-check \
-	separator \
+django-init-default: separator \
 	db-init \
 	django-clean \
 	django-install \
@@ -3505,8 +3504,7 @@ django-init-default: python-venv-check \
 	django-su
 
 .PHONY: django-init-minimal-default
-django-init-minimal-default: python-venv-check \
-	separator \
+django-init-minimal-default: separator \
 	db-init \
 	django-clean \
 	django-install-minimal \
@@ -3538,8 +3536,7 @@ django-init-minimal-default: python-venv-check \
 	django-su
 
 .PHONY: django-init-wagtail-default
-django-init-wagtail-default: python-venv-check \
-	separator \
+django-init-wagtail-default: separator \
 	db-init \
 	django-clean \
 	django-install \
@@ -4671,7 +4668,7 @@ h-default: help
 ignore-default: git-commit-message-ignore git-push
 
 .PHONY: init-default
-init-default: django-init-wagtail django-serve
+init-default: python-venv-check django-init-wagtail django-serve
 
 .PHONY: install-default
 install-default: pip-install
