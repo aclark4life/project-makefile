@@ -59,7 +59,7 @@ jobs:
 
     - run: make -f ../../Makefile pip-install
     - run: make -f ../../Makefile npm-install
-    - run: make -f ../../Makefile django-test
+    - run: make -f ../../Makefile -f ../../project.mk django-test
       env:
         POSTGRES_HOST: postgres
         POSTGRES_PORT: 5432
