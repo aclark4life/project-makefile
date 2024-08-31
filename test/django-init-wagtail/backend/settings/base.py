@@ -225,7 +225,10 @@ THEMES = [
     ("light", "Light Theme"),
     ("dark", "Dark Theme"),
 ]
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@localhost:/project_makefile")
+
+
+POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "localhost")
+DATABASE_URL = os.environ.get("DATABASE_URL", f"postgres://:@{POSTGRES_HOST}:/project_makefile")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
 INSTALLED_APPS.append("allauth")
 INSTALLED_APPS.append("allauth.account")
