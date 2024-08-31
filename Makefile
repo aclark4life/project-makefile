@@ -3861,7 +3861,7 @@ django-template-offcanvas-default:
 	-$(GIT_ADD) backend/templates/offcanvas.html
 
 .PHONY: django-test-default
-django-test-default: npm-install django-static pip-install-test
+django-test-default:
 	python manage.py test
 
 .PHONY: django-unit-test-demo-default
@@ -4733,7 +4733,7 @@ static-default: django-static
 su-default: django-su
 
 .PHONY: test-default
-test-default: django-test
+test-default: npm-install django-static pip-install-test
 
 .PHONY: t-default
 t-default: test
