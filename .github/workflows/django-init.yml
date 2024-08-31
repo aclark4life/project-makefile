@@ -1,5 +1,5 @@
 name: Project Makefile
-run-name: ${{ github.actor }} is testing `make django-init-wagtail` 🚀
+run-name: ${{ github.actor }} is testing `make django-init` 🚀
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: ./test/django-init-wagtail/
+    working-directory: ./test/django-init/
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: './test/django-init-wagtail/package.json'
+        cache-dependency-path: './test/django-init/package.json'
 
     - run: make -f ../../Makefile pip-install
     - run: make -f ../../Makefile npm-install
