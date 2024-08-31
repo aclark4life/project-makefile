@@ -3,7 +3,7 @@
 #
 # PROJECT_NAME := my-new-project
 edit:
-	nvim Makefile
+	$(EDITOR) Makefile
 
 review:
 	$(EDITOR_REVIEW) Makefile
