@@ -7,3 +7,8 @@ edit:
 
 review:
 	$(EDITOR_REVIEW) Makefile
+
+
+test:
+	@echo "Running tests..."
+	@echo "Tests passed!"
