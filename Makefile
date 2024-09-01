@@ -4158,6 +4158,9 @@ help-default:
 	@echo "Examples:"
 	@echo "   make help                   Print this message"
 	@echo "   make list-targets           List all targets"
+	@echo "   make django-init            Install Django"
+	@echo "   make django-init-minimal    Install Django with minimal dependencies"
+	@echo "   make django-init-wagtail    Install Wagtail"
 
 .PHONY: jenkins-init-default
 jenkins-init-default:
