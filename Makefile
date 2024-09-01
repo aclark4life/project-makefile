@@ -4154,11 +4154,10 @@ git-status-default:
 .PHONY: help-default
 help-default:
 	@echo "Project Makefile 🤷"
-	@echo "Usage: make [options] [target] ..."
+	@echo "Usage: make <target> ..."
 	@echo "Examples:"
 	@echo "   make help                   Print this message"
-	@echo "   make list-defines  list all defines in the Makefile"
-	@echo "   make list-commands  list all targets in the Makefile"
+	@echo "   make list-targets           List all targets"
 
 .PHONY: jenkins-init-default
 jenkins-init-default:
@@ -4170,10 +4169,10 @@ make-default:
 	-@$(GIT_COMMIT) Makefile -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_NAME) Makefile")
 	-$(GIT_PUSH)
 
-.PHONY: makefile-list-commands-default
-makefile-list-commands-default:
+.PHONY: makefile-list-targets-default
+makefile-list-targets-default:
 	@for makefile in $(MAKEFILE_LIST); do \
-        echo "Commands from $$makefile:"; \
+        echo "-- $$makefile --"; \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null | \
         awk -v RS= -F: '/^# File/,/^# Finished Make data base/ { \
             if ($$1 !~ "^[#.]") { sub(/-default$$/, "", $$1); print $$1 } }' | \
@@ -4188,8 +4187,8 @@ makefile-list-commands-default:
 makefile-list-defines-default:
 	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
 
-.PHONY: makefile-list-targets-default
-makefile-list-targets-default:
+.PHONY: makefile-list-targets-with-dependencies-default
+makefile-list-targets-with-dependencies-default:
 	@perl -ne 'print if /^\s*\.PHONY:/ .. /^[a-zA-Z0-9_-]+:/;' Makefile | grep -v .PHONY
 
 .PHONY: npm-audit-fix-default
@@ -4685,7 +4684,7 @@ install-default: pip-install
 i-default: install
 
 .PHONY: l-default
-l-default: makefile-list-commands
+l-default: makefile-list-targets
 
 .PHONY: last-default
 last-default: git-commit-last git-push
@@ -4693,14 +4692,14 @@ last-default: git-commit-last git-push
 .PHONY: lint-default
 lint-default: django-lint
 
-.PHONY: list-commands-default
-list-commands-default: makefile-list-commands
+.PHONY: list-targets-default
+list-targets-default: makefile-list-targets
 
 .PHONY: list-defines-default
 list-defines-default: makefile-list-defines
 
-.PHONY: list-targets-default
-list-targets-default: makefile-list-targets
+.PHONY: list-targets-with-dependencies-default
+list-targets-with-dependencies-default: makefile-list-targets-with-dependencies
 
 .PHONY: migrate-default
 migrate-default: django-migrate
