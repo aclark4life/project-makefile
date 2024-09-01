@@ -196,6 +196,8 @@ endef
 
 # ----------------------------------------------------------------
 #  Django Frontend
+#
+#  For use with python-webpack-boilerplate
 # ----------------------------------------------------------------
 
 define DJANGO_FRONTEND
@@ -1261,6 +1263,10 @@ class SearchView(ListView):
         return context
 endef
 
+# ----------------------------------------------------------------
+#  Django Settings
+# ----------------------------------------------------------------
+
 define DJANGO_SETTINGS_AUTHENTICATION_BACKENDS
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
@@ -1437,6 +1443,14 @@ define DJANGO_SETTINGS_UNIT_TEST_DEMO
 INSTALLED_APPS.append("unit_test_demo")  # noqa
 endef
 
+# ----------------------------------------------------------------
+#  Django SiteUser
+#
+#  A custom user model for Django
+#
+#  https://docs.djangoproject.com/en/5.1/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
+# ----------------------------------------------------------------
+
 define DJANGO_SITEUSER_ADMIN
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
@@ -1563,6 +1577,10 @@ class UserEditView(LoginRequiredMixin, UpdateView):
         # return reverse_lazy("user-profile", kwargs={"pk": self.object.pk})
         return reverse_lazy("user-profile")
 endef
+
+# ----------------------------------------------------------------
+#  Django Templates
+# ----------------------------------------------------------------
 
 define DJANGO_TEMPLATE_ALLAUTH
 {% extends 'base.html' %}
@@ -1815,6 +1833,10 @@ define DJANGO_TEMPLATE_SITEUSER_VIEW
 {% endblock %}
 endef
 
+# ----------------------------------------------------------------
+#  Django Unit Test Demo
+# ----------------------------------------------------------------
+
 define DJANGO_UNIT_TEST_DEMO_FORMS
 from django import forms
 from .models import UnitTestDemoModel
@@ -1897,6 +1919,10 @@ class UnitTestDemoFormTest(TestCase):
              self.assertEqual(instance.field1, "value1")
              self.assertEqual(instance.field2, "value2")
 endef
+
+# ----------------------------------------------------------------
+#  Django URLs
+# ----------------------------------------------------------------
 
 define DJANGO_URLS
 from django.contrib import admin
