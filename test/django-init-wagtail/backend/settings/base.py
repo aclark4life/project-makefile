@@ -210,6 +210,10 @@ WEBPACK_LOADER = {
 }
 STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
 TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
+THEMES = [
+    ("light", "Light Theme"),
+    ("dark", "Dark Theme"),
+]
 AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
@@ -221,10 +225,6 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
     ]
 }
-THEMES = [
-    ("light", "Light Theme"),
-    ("dark", "Dark Theme"),
-]
 DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://:@:/project_makefile")
 DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
 INSTALLED_APPS.append("allauth")
