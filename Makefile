@@ -3203,9 +3203,9 @@ import RevealNotes from 'reveal.js/plugin/notes/notes.js';
 Reveal.initialize({ slideNumber: true, plugins: [ RevealNotes ]});
 endef
 
-# ------------------------------------------------------------------------------  
+# ==============================================================================
 # Export variables used by phony target rules
-# ------------------------------------------------------------------------------  
+# ==============================================================================
 
 export DJANGO_API_SERIALIZERS \
         DJANGO_API_VIEWS \
@@ -3346,9 +3346,9 @@ export DJANGO_API_SERIALIZERS \
         WAGTAIL_TEMPLATE_SEARCH \
         WAGTAIL_TEMPLATE_SITE_PAGE
 
-# ------------------------------------------------------------------------------
+# ==============================================================================
 # Multi-line phony target rules
-# ------------------------------------------------------------------------------
+# ==============================================================================
 
 .PHONY: aws-check-env-profile-default
 aws-check-env-profile-default:
@@ -4670,6 +4670,9 @@ ce-default: git-commit-edit git-push
 
 .PHONY: clean-default
 clean-default: django-clean
+
+.PHONY: comment-default
+comment-default: git-commit-message-comment git-push
 
 .PHONY: cp-default
 cp-default: git-commit-message git-push
