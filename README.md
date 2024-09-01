@@ -6,6 +6,18 @@
 
 I like to type `make <target>` to perform tasks 🤷
 
+## Installation
+
+```bash
+curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/main/Makefile
+```
+
+## Usage
+
+```bash
+make help
+```
+
 ## Slides
 
 - https://slides.com/aclark/project-makefile
