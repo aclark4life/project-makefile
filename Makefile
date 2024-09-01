@@ -3492,11 +3492,9 @@ django-init-minimal-default: separator \
 	django-clean \
 	django-install-minimal \
 	django-project \
-	django-settings-directory \
-	django-settings-base \
-	django-settings-dev \
 	pip-freeze \
 	pip-init-test \
+	django-settings-directory \
 	django-admin-custom \
 	django-dockerfile \
 	django-template-base \
@@ -3507,6 +3505,9 @@ django-init-minimal-default: separator \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
+	django-allauth \
+	django-settings-base \
+	django-settings-dev \
 	django-settings-prod \
 	django-siteuser \
 	django-home-page \
