@@ -54,8 +54,7 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './test/django-init-wagtail/package.json'
 
-    - run: make -f ../../Makefile wagtail-init
-    - run: make -f ../../Makefile -f ../../project.mk test
+    - run: make -f ../../Makefile -f ../../project.mk django-init-wagtail
       env:
         POSTGRES_HOST: postgres
         POSTGRES_PORT: 5432
