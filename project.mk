@@ -9,8 +9,9 @@ review:
 	$(EDITOR_REVIEW) Makefile
 
 define DJANGO_SETTINGS_DATABASE_GITHUB_ACTIONS
-DATABASE_URL = os.environ.get("DATABASE_URL", "postgres://postgres:postgres@postgres:/postgres")
-DATABASES["default"] = dj_database_url.parse(DATABASE_URL)
+POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "localhost")
+POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "postgres")
+DATABASE_URL = os.environ.get("DATABASE_URL", f"postgres://postgres:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:/$$(PACKAGE_NAME)")
 endef
 
 export DJANGO_SETTINGS_DATABASE_GITHUB_ACTIONS
