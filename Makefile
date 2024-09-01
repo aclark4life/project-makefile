@@ -90,6 +90,12 @@ endif
 # Multi-line variables to be used by phony target rules
 # ================================================================================
 
+# ----------------------------------------------------------------
+#  Django Custom Admin Demo
+#
+#  https://docs.djangoproject.com/en/5.1/ref/contrib/admin/#overriding-the-default-admin-site
+# ----------------------------------------------------------------
+
 define DJANGO_ADMIN_CUSTOM_ADMIN
 from django.contrib.admin import AdminSite
 
