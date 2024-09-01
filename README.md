@@ -23,6 +23,9 @@ Usage: make <target> ...
 Examples:
    make help                   Print this message
    make list-targets           List all targets
+   make django-init            Install Django
+   make django-init-minimal    Install Django with minimal dependencies
+   make django-init-wagtail    Install Wagtail
 ```
 
 ## Slides

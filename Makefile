@@ -4102,6 +4102,10 @@ git-commit-message-lint-default:
 git-commit-message-mk-default:
 	-@$(GIT_COMMIT) project.mk -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_CUSTOM_FILE)")
 
+.PHONY: git-commit-message-readme-default
+git-commit-message-readme-default:
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Update readme")
+
 .PHONY: git-commit-message-rename-default
 git-commit-message-rename-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Rename")
@@ -4388,8 +4392,8 @@ python-webpack-init-default:
 rand-default:
 	@openssl rand -base64 12 | sed 's/\///g'
 
-.PHONY: readme-default
-readme-default:
+.PHONY: readme-init-default
+readme-init-default:
 	@echo "# $(PROJECT_NAME)" > README.md
 	-$(GIT_ADD) README.md
 
@@ -4724,6 +4728,9 @@ open-default: open
 
 .PHONY: r-default
 r-default: review
+
+.PHONY: readme-default
+readme-default: git-commit-message-readme git-push
 
 .PHONY: rename-default
 rename-default: git-commit-message-rename git-push
