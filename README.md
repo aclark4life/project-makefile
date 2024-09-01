@@ -2,6 +2,8 @@
 
 [![Project Makefile](https://github.com/aclark4life/project-makefile/actions/workflows/project-makefile.yml/badge.svg)](https://github.com/aclark4life/project-makefile/actions/workflows/project-makefile.yml)
 
+> "I like to type make <target> to perform tasks 🤷" —Alex Clark
+
 ## Installation
 
 ```bash
@@ -24,7 +26,3 @@ Examples:
    make django-init-minimal    Install Django with minimal dependencies
    make django-init-wagtail    Install Wagtail
 ```
-
-## Slides
-
-- https://slides.com/aclark/project-makefile

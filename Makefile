@@ -4159,7 +4159,7 @@ git-status-default:
 help-default:
 	@echo "Project Makefile"
 	@echo ""
-	@echo "'I like to type make <target> to perform tasks 🤷' —Alex Clark"
+	@echo "'I like to type make <target> to perform tasks 🤷' —Alex"
 	@echo ""
 	@echo "Usage: make <target1> [target2 ...]"
 	@echo "Examples:"
