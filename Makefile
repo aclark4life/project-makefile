@@ -2907,6 +2907,10 @@ class SitePage(Page):
         verbose_name = "Site Page"
 endef
 
+# ------------------------------------------------------------------------------
+#  Wagtail Templates
+# ------------------------------------------------------------------------------
+
 define WAGTAIL_TEMPLATE_BASE
 {% load static wagtailcore_tags wagtailuserbar webpack_loader %}
 <!DOCTYPE html>
@@ -3075,6 +3079,10 @@ define WAGTAIL_TEMPLATE_SITE_PAGE
 {% endblock %}
 endef
 
+# ------------------------------------------------------------------------------
+#  Wagtail URLs
+# ------------------------------------------------------------------------------
+
 define WAGTAIL_URLS
 from django.conf import settings
 from django.urls import include, path
@@ -3112,6 +3120,12 @@ urlpatterns += [
     #    path("pages/", include("wagtail.urls"),
 ]
 endef
+
+# ------------------------------------------------------------------------------
+#  Webpack Configuration
+#
+#  For use with python-webpack-boilerplate
+# ------------------------------------------------------------------------------
 
 define WEBPACK_CONFIG_JS
 const path = require('path');
