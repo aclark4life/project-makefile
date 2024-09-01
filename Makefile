@@ -3633,7 +3633,15 @@ django-install-minimal-default: pip-ensure
 	Django \
 	dj-database-url \
 	django-debug-toolbar \
-	python-webpack-boilerplate
+	python-webpack-boilerplate \
+	django-allauth \
+	django-crispy-forms \
+	crispy-bootstrap5 \
+	django-extensions \
+	django-recaptcha \
+	djangorestframework \
+	django-sql-explorer \
+	psycopg2-binary
 
 .PHONY: django-lint-default
 django-lint-default:
