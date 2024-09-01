@@ -4157,8 +4157,11 @@ git-status-default:
 
 .PHONY: help-default
 help-default:
-	@echo "Project Makefile 🤷"
-	@echo "Usage: make <target> ..."
+	@echo "Project Makefile"
+	@echo ""
+	@echo "'I like to type make <target> to perform tasks 🤷' —Alex Clark"
+	@echo ""
+	@echo "Usage: make <target1> [target2 ...]"
 	@echo "Examples:"
 	@echo "   make help                   Print this message"
 	@echo "   make list-targets           List all targets"
