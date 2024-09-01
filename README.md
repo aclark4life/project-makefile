@@ -26,3 +26,10 @@ Examples:
    make django-init-minimal    Install Django with minimal dependencies
    make django-init-wagtail    Install Wagtail
 ```
+
+## Screenshots
+
+![Screenshot](screenshots/screenshot01.png)
+![Screenshot](screenshots/screenshot02.png)
+![Screenshot](screenshots/screenshot03.png)
+![Screenshot](screenshots/screenshot04.png)
