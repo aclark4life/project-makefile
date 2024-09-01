@@ -657,7 +657,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
         </li>
       ) : (
         <li className="nav-item">
-          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" href="/accounts/login/"></a>
+          <a className="nav-link dropdown-toggle" type="button" aria-expanded="false" href="/accounts/login/"></a>
         </li>
       )}
     </div>
