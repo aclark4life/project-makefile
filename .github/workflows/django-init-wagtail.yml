@@ -1,5 +1,5 @@
 name: Project Makefile
-run-name: ${{ github.actor }} is testing `make django-init-wagtail` 🚀
+run-name: ${{ github.actor }} is testing `make django-init`, `make django-init-minimal`, and `make django-init-wagtail` 🚀
 
 on:
   push:
@@ -10,7 +10,6 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: ./test/django-init-wagtail/
 
 jobs:
   build:
@@ -30,7 +29,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          # Maps tcp port 5432 on service container to the host
           - 5432:5432
 
     strategy:
@@ -38,6 +36,7 @@ jobs:
       matrix:
         node-version: [22.x]
         python-version: [3.12]
+        dir: ['./test/django-init-wagtail/', './test/django-init/', './test/django-init-minimal/']
 
     steps:
     - uses: actions/checkout@v4
@@ -52,9 +51,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-        cache-dependency-path: './test/django-init-wagtail/package.json'
+        cache-dependency-path: '${{ matrix.dir }}/package.json'
 
-    - run: make -f ../../Makefile -f ../../project.mk django-init-wagtail
+    - run: make -f ../../Makefile -f ../../project.mk $(basename ${{ matrix.dir }})
       env:
         POSTGRES_HOST: postgres
         POSTGRES_PORT: 5432
+      working-directory: ${{ matrix.dir }}
