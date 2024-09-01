@@ -55,11 +55,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.6.0",
-    "@fortawesome/fontawesome-svg-core": "^6.6.0",
-    "@fortawesome/free-brands-svg-icons": "^6.6.0",
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
     "bootstrap": "^5.3.3",
     "camelize": "^1.0.1",
     "core-js": "^3.37.0",

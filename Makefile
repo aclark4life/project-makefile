@@ -1264,23 +1264,10 @@ WEBPACK_LOADER = {
 }
 STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
 TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
-endef
-
-define DJANGO_SETTINGS_BASE_MINIMAL
-# $(PROJECT_NAME)
-import os  # noqa
-import dj_database_url  # noqa
-
-INSTALLED_APPS.append("debug_toolbar")
-INSTALLED_APPS.append("webpack_boilerplate")
-PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-BASE_DIR = os.path.dirname(PROJECT_DIR)
-STATICFILES_DIRS = []
-STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
-TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
-WEBPACK_LOADER = {
-    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
-}
+THEMES = [
+    ("light", "Light Theme"),
+    ("dark", "Dark Theme"),
+]
 endef
 
 define DJANGO_SETTINGS_CRISPY_FORMS
@@ -1418,13 +1405,6 @@ endef
 define DJANGO_SETTINGS_SITEUSER
 INSTALLED_APPS.append("siteuser")  # noqa
 AUTH_USER_MODEL = "siteuser.User"
-endef
-
-define DJANGO_SETTINGS_THEMES
-THEMES = [
-    ("light", "Light Theme"),
-    ("dark", "Dark Theme"),
-]
 endef
 
 define DJANGO_SETTINGS_UNIT_TEST_DEMO
@@ -3232,7 +3212,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SEARCH_VIEWS \
         DJANGO_SETTINGS_AUTHENTICATION_BACKENDS \
         DJANGO_SETTINGS_BASE \
-        DJANGO_SETTINGS_BASE_MINIMAL \
         DJANGO_SETTINGS_CRISPY_FORMS \
         DJANGO_SETTINGS_DATABASE \
         DJANGO_SETTINGS_DEV \
@@ -3245,7 +3224,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SETTINGS_REST_FRAMEWORK \
         DJANGO_SETTINGS_SEARCH \
         DJANGO_SETTINGS_SITEUSER \
-        DJANGO_SETTINGS_THEMES \
         DJANGO_SETTINGS_UNIT_TEST_DEMO \
         DJANGO_SITEUSER_ADMIN \
         DJANGO_SITEUSER_FORM \
@@ -3516,7 +3494,7 @@ django-init-minimal-default: separator \
 	django-install-minimal \
 	django-project \
 	django-settings-directory \
-	django-settings-base-minimal \
+	django-settings-base \
 	django-settings-dev \
 	pip-freeze \
 	pip-init-test \
@@ -3531,6 +3509,7 @@ django-init-minimal-default: separator \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-settings-prod \
+	django-siteuser \
 	django-home-page \
 	django-utils \
 	django-frontend \
@@ -3783,15 +3762,10 @@ django-settings-base-default:
 	@echo "$$DJANGO_SETTINGS_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_SETTINGS_THEMES" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_DATABASE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
-
-.PHONY: django-settings-base-minimal-default
-django-settings-base-minimal-default:
-	@echo "$$DJANGO_SETTINGS_BASE_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-dev-default
 django-settings-dev-default:
