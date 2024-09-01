@@ -4,15 +4,15 @@
 #
 # https://github.com/aclark4life/project-makefile
 #
-# --------------------------------------------------------------------------------
+# ================================================================================
 # Set the default goal to be `git commit -a -m $(GIT_COMMIT_MESSAGE)` and `git push`
-# --------------------------------------------------------------------------------
+# ================================================================================
 
 .DEFAULT_GOAL := git-commit-push
 
-# --------------------------------------------------------------------------------
+# ================================================================================
 # Single line variables to be used by phony target rules
-# --------------------------------------------------------------------------------
+# ================================================================================
 
 ADD_DIR := mkdir -pv
 ADD_FILE := touch
@@ -78,17 +78,17 @@ RANDIR := $(shell openssl rand -base64 12 | sed 's/\///g')
 TMPDIR := $(shell mktemp -d)
 UNAME := $(shell uname)
 
-# --------------------------------------------------------------------------------
+# ================================================================================
 # Include $(PROJECT_CUSTOM_FILE) if it exists
-# --------------------------------------------------------------------------------
+# ================================================================================
 
 ifneq ($(wildcard $(PROJECT_CUSTOM_FILE)),)
     include $(PROJECT_CUSTOM_FILE)
 endif
 
-# --------------------------------------------------------------------------------
+# ================================================================================
 # Multi-line variables to be used by phony target rules
-# --------------------------------------------------------------------------------
+# ================================================================================
 
 define DJANGO_ADMIN_CUSTOM_ADMIN
 from django.contrib.admin import AdminSite
@@ -193,6 +193,10 @@ RUN npm-20 install; npm-20 run build
 RUN python3.11 manage.py collectstatic --noinput --clear
 CMD set -xe; pg_ctl -D /var/lib/pgsql/data -l /tmp/logfile start; python3.11 manage.py migrate --noinput; gunicorn backend.wsgi:application
 endef
+
+# ----------------------------------------------------------------
+#  Django Frontend
+# ----------------------------------------------------------------
 
 define DJANGO_FRONTEND
 import React from 'react';
@@ -673,6 +677,12 @@ UserMenu.propTypes = {
 export default UserMenu;
 endef
 
+# ----------------------------------------------------------------
+#  Django Home Page for Django Minimal
+#
+#  Wagtail projects includes a home page model, Django does not.
+# ----------------------------------------------------------------
+
 define DJANGO_HOME_PAGE_ADMIN
 from django.contrib import admin  # noqa
 
@@ -699,6 +709,10 @@ from django.views.generic import TemplateView
 class HomeView(TemplateView):
     template_name = "home.html"
 endef
+
+# ----------------------------------------------------------------
+#  Django Logging Demo
+# ----------------------------------------------------------------
 
 define DJANGO_LOGGING_DEMO_ADMIN
 # Register your models here.
@@ -760,6 +774,10 @@ def main():
 if __name__ == "__main__":
     main()
 endef
+
+# ----------------------------------------------------------------
+#  Django Model Form Demo
+# ----------------------------------------------------------------
 
 define DJANGO_MODEL_FORM_DEMO_ADMIN
 from django.contrib import admin
@@ -901,6 +919,10 @@ class ModelFormDemoDetailView(DetailView):
     template_name = "model_form_demo_detail.html"
     context_object_name = "model_form_demo"
 endef
+
+# ----------------------------------------------------------------
+#  Django Payments Demo
+# ----------------------------------------------------------------
 
 define DJANGO_PAYMENTS_ADMIN
 from django.contrib import admin
@@ -1160,6 +1182,12 @@ class CancelView(TemplateView):
 
     template_name = "payments/cancel.html"
 endef
+
+# ----------------------------------------------------------------
+#  Django Search for Django Minimal
+#
+#  Wagtail projects includes a search view, Django does not.
+# ----------------------------------------------------------------
 
 define DJANGO_SEARCH_FORMS
 from django import forms
