@@ -1,6 +1,6 @@
 # Project Makefile
 
-[![Project Makefile](https://github.com/aclark4life/project-makefile/actions/workflows/django-init-wagtail.yml/badge.svg)](https://github.com/aclark4life/project-makefile/actions/workflows/django-init-wagtail.yml) [![Project Makefile](https://github.com/aclark4life/project-makefile/actions/workflows/django-init.yml/badge.svg)](https://github.com/aclark4life/project-makefile/actions/workflows/django-init.yml)
+[![Project Makefile](https://github.com/aclark4life/project-makefile/actions/workflows/project-makefile.yml/badge.svg)](https://github.com/aclark4life/project-makefile/actions/workflows/project-makefile.yml)
 
 ![Logo](logo.png)
 
