@@ -29,7 +29,14 @@ Examples:
 
 ## Screenshots
 
+### Home Page
 ![Screenshot](screenshots/screenshot01.png)
+
+### Login Page
 ![Screenshot](screenshots/screenshot02.png)
+
+### Logged In
 ![Screenshot](screenshots/screenshot03.png)
+
+### Dropdown Menu
 ![Screenshot](screenshots/screenshot04.png)
