@@ -16,7 +16,7 @@ curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/main/Make
 $ make help
 Project Makefile
 
-'I like to type make <target> to perform tasks. 🤷' —Alex
+"I like to type make <target> to perform tasks. 🤷" —Alex
 
 Usage: make <target1> [target2 ...]
 Examples:
