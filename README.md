@@ -19,7 +19,7 @@ curl -O https://raw.githubusercontent.com/aclark4life/project-makefile/main/Make
 ```bash
 $ make help
 Project Makefile 🤷
-Usage: make <target> ...
+Usage: make <target1> [target2 ...]
 Examples:
    make help                   Print this message
    make list-targets           List all targets
