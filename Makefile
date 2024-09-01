@@ -3465,6 +3465,9 @@ django-home-page-default:
 	-$(GIT_ADD) home/migrations/*.py
 	-$(GIT_ADD) home/templates/
 
+# --------------------------------------------------------------------------------
+#  Install Django
+# --------------------------------------------------------------------------------
 .PHONY: django-init-default
 django-init-default: separator \
 	db-init \
@@ -3503,6 +3506,9 @@ django-init-default: separator \
 	git-ignore \
 	django-su
 
+# --------------------------------------------------------------------------------
+#  Install Django with minimal dependencies
+# --------------------------------------------------------------------------------
 .PHONY: django-init-minimal-default
 django-init-minimal-default: separator \
 	db-init \
@@ -3535,6 +3541,9 @@ django-init-minimal-default: separator \
 	git-ignore \
 	django-su
 
+# --------------------------------------------------------------------------------
+#  Install Wagtail
+# --------------------------------------------------------------------------------
 .PHONY: django-init-wagtail-default
 django-init-wagtail-default: separator \
 	db-init \
@@ -3545,8 +3554,8 @@ django-init-wagtail-default: separator \
 	django-utils \
 	pip-freeze \
 	pip-init-test \
-        django-admin-custom \
-        django-dockerfile \
+	django-admin-custom \
+	django-dockerfile \
 	wagtail-header-prefix-template \
 	wagtail-base-template \
 	django-template-favicon \
@@ -3587,56 +3596,56 @@ django-init-wagtail-default: separator \
 django-install-default: pip-ensure
 	$(PIP_INSTALL) \
 	Django \
-        Faker \
-        boto3 \
+	Faker \
+	boto3 \
 	build \
-        crispy-bootstrap5 \
-        djangorestframework \
-        django-allauth \
-        django-after-response \
-        django-ckeditor \
-        django-colorful \
-        django-cors-headers \
-        django-countries \
-        django-crispy-forms \
-        django-debug-toolbar \
-        django-extensions \
-        django-hijack \
-        django-honeypot \
-        django-imagekit \
-        django-import-export \
-        django-ipware \
-        django-multiselectfield \
-        django-ninja \
-        django-phonenumber-field \
-        django-recurrence \
-        django-recaptcha \
-        django-registration \
-        django-richtextfield \
-        django-sendgrid-v5 \
-        django-social-share \
-        django-sql-explorer \
-        django-storages \
-        django-tables2 \
-        django-timezone-field \
+	crispy-bootstrap5 \
+	djangorestframework \
+	django-allauth \
+	django-after-response \
+	django-ckeditor \
+	django-colorful \
+	django-cors-headers \
+	django-countries \
+	django-crispy-forms \
+	django-debug-toolbar \
+	django-extensions \
+	django-hijack \
+	django-honeypot \
+	django-imagekit \
+	django-import-export \
+	django-ipware \
+	django-multiselectfield \
+	django-ninja \
+	django-phonenumber-field \
+	django-recurrence \
+	django-recaptcha \
+	django-registration \
+	django-richtextfield \
+	django-sendgrid-v5 \
+	django-social-share \
+	django-sql-explorer \
+	django-storages \
+	django-tables2 \
+	django-timezone-field \
 	django-widget-tweaks \
-        dj-database-url \
-        dj-rest-auth \
-        dj-stripe \
-        docutils \
-        enmerkar \
-        gunicorn \
-        html2docx \
-        icalendar \
-        mailchimp-marketing \
-        mailchimp-transactional \
-        phonenumbers \
-        psycopg2-binary \
-        pydotplus \
-        python-webpack-boilerplate \
-        python-docx \
-        reportlab \
-        texttable \
+	dj-database-url \
+	dj-rest-auth \
+	dj-stripe \
+	docutils \
+	enmerkar \
+	gunicorn \
+	html2docx \
+	icalendar \
+	mailchimp-marketing \
+	mailchimp-transactional \
+	phonenumbers \
+	psycopg2-binary \
+	pydotplus \
+	python-webpack-boilerplate \
+	python-docx \
+	reportlab \
+	texttable \
 	wheel
 
 .PHONY: django-install-minimal-default
@@ -4585,11 +4594,10 @@ webpack-init-reveal-default: npm-init
 
 # --------------------------------------------------------------------------------
 # Title-case single-line phony target rules
+#
+# Use Title case for some phony targets E.g. `make lint` performs linting and
+# can't be used to commit & push the results. Use Lint instead for such cases.
 # --------------------------------------------------------------------------------
-# Use Title case for some phony targets
-#    
-# E.g. `make lint` performs linting and can't be used to commit & push the
-# results. Use Lint instead for such cases.
 
 .PHONY: Clean-default
 Clean-default: git-commit-message-clean git-push
