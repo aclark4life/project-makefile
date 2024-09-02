@@ -5,7 +5,3 @@ from django.conf import settings
 urlpatterns = [
     path("django/", admin.site.urls),
 ]
-if settings.DEBUG:
-    urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
-urlpatterns += [path("user/", include("siteuser.urls"))]
-urlpatterns += [path("", include("home.urls"))]
