@@ -1,0 +1,66 @@
+name: Daily Makefile Run
+run-name: ${{ github.actor }} is testing `make django-init`, `make django-init-minimal`, and `make django-init-wagtail` 🚀
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container: node:bookworm
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    strategy:
+      max-parallel: 4
+      matrix:
+        node-version: [22.x]
+        python-version: [3.12]
+        dir: ['./test/django-init-wagtail/', './test/django-init/', './test/django-init-minimal/']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: '${{ matrix.dir }}/package.json'
+
+    - run: make -f ../../Makefile -f ../../project.mk $(basename ${{ matrix.dir }})
+      env:
+        POSTGRES_HOST: postgres
+        POSTGRES_PORT: 5432
+      working-directory: ${{ matrix.dir }}
+
+    - name: Commit results
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        git commit -m "Daily commit of test results"
+        git push
+      if: success()  # Only commit if the tests succeed
