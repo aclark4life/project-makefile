@@ -2,7 +2,11 @@
 # Add your custom makefile commands here
 #
 # PROJECT_NAME := my-new-project
-#
+
+# -----------------------------------------------------------------------------
+# For GitHub Actions
+# -----------------------------------------------------------------------------
+
 define DJANGO_SETTINGS_DATABASE
 POSTGRES_HOST = os.environ.get("POSTGRES_HOST", "postgres")
 POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD", "postgres")
@@ -12,16 +16,18 @@ endef
 
 export DJANGO_SETTINGS_DATABASE
 
-edit:
-	$(EDITOR) Makefile
-
-
 django-settings-base: django-settings-base-default
 	@echo "$$DJANGO_SETTINGS_DATABASE" >> $(DJANGO_SETTINGS_BASE_FILE)
-
-test:
+django-test:
 	@echo "Running tests..."
 	@echo "Tests passed!"
+
+# -----------------------------------------------------------------------------
+#  For development
+# -----------------------------------------------------------------------------
+
+edit:
+	$(EDITOR) Makefile
 
 review:
 	$(EDITOR_REVIEW) Makefile
