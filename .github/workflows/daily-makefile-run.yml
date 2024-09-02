@@ -64,7 +64,6 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add .
         git commit -m "Daily commit of test results"
         git push
       if: success()  # Only commit if the tests succeed
