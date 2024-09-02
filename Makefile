@@ -3699,6 +3699,7 @@ django-install-default: pip-ensure
 	python-docx \
 	reportlab \
 	texttable \
+	python-dotenv \
 	wheel
 
 .PHONY: django-install-minimal-default
@@ -3715,7 +3716,8 @@ django-install-minimal-default: pip-ensure
 	django-recaptcha \
 	djangorestframework \
 	django-sql-explorer \
-	psycopg2-binary
+	psycopg2-binary \
+	python-dotenv
 
 .PHONY: django-lint-default
 django-lint-default:
