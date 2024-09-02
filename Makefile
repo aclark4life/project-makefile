@@ -3560,7 +3560,7 @@ django-init-default: separator \
 	npm-install-react-dev \
 	npm-audit-fix \
 	django-migrate \
-	.gitignore \	
+	.gitignore \
 	django-su
 
 # --------------------------------------------------------------------------------
