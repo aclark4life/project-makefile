@@ -4741,6 +4741,9 @@ freeze-default: pip-freeze git-push
 .PHONY: git-commit-push-default
 git-commit-push-default: git-commit git-push
 
+.PHONY: git-up-default
+git-up-default: git-set-upstream
+
 .PHONY: gitignore-default
 gitignore-default: git-ignore
 
@@ -4836,9 +4839,6 @@ typo-default: git-commit-message-typo git-push
 
 .PHONY: u-default
 u-default: help
-
-.PHONY: upstream-default
-upstream-default: git-set-upstream
 
 .PHONY: urls-default
 urls-default: django-urls-show
