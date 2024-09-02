@@ -7,6 +7,5 @@ urlpatterns = [
 ]
 if settings.DEBUG:
     urlpatterns += [path("__debug__/", include("debug_toolbar.urls"))]
-urlpatterns += [path("accounts/", include("allauth.urls"))]
 urlpatterns += [path("user/", include("siteuser.urls"))]
 urlpatterns += [path("", include("home.urls"))]

@@ -1,1 +1,10 @@
-
+__pycache__
+*.pyc
+dist/
+node_modules/
+_build/
+.elasticbeanstalk/
+db.sqlite3
+static/
+backend/inituser
+backend/var
