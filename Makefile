@@ -148,10 +148,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 endef
 
-define EB_DJANGO_DATABASE
-$(shell echo $(EB_DJANGO_DATABASE_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
-endef
-
 define DJANGO_DOCKER_COMPOSE
 version: '3'
 
@@ -2066,8 +2062,8 @@ EOF
 rm -f /opt/elasticbeanstalk/deployment/*.bak
 endef
 
-define GIT_COMMIT_MESSAGE
-$(1)
+define EB_DJANGO_DATABASE
+$(shell echo $(EB_DJANGO_DATABASE_URL) | python -c 'import dj_database_url; url = input(); url = dj_database_url.parse(url); print(url["$1"])')
 endef
 
 define GIT_COMMIT_IGNORE
@@ -2081,6 +2077,10 @@ db.sqlite3
 static/
 backend/inituser
 backend/var
+endef
+
+define GIT_COMMIT_MESSAGE
+$(1)
 endef
 
 define JENKINS_FILE
