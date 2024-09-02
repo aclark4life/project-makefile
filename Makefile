@@ -58,7 +58,7 @@ GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
 GIT_CHECKOUT = git checkout
 GIT_COMMIT = git commit
-GIT_IGNORE_FILE = .gitignore
+GIT_COMMIT_IGNORE_FILE = .gitignore
 GIT_PUSH = git push
 GIT_PUSH_FORCE = $(GIT_PUSH) --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
@@ -2070,7 +2070,7 @@ define GIT_COMMIT_MESSAGE
 $(1)
 endef
 
-define GIT_IGNORE
+define GIT_COMMIT_IGNORE
 __pycache__
 *.pyc
 dist/
@@ -3333,8 +3333,8 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_UTILS \
         EB_CUSTOM_ENV_EC2_USER \
         EB_CUSTOM_ENV_VAR_FILE \
+        GIT_COMMIT_IGNORE \
         GIT_COMMIT_MESSAGE \
-        GIT_IGNORE \
         JENKINS_FILE \
         PROJECT_CUSTOM \
         PIP_INSTALL_REQUIREMENTS_TEST \
@@ -4869,7 +4869,7 @@ $(PROJECT_CUSTOM_FILE):
 	@echo "$$PROJECT_CUSTOM" > $@
 	-$(GIT_ADD) $@
 
-$(GIT_IGNORE_FILE):
+$(GIT_COMMIT_IGNORE_FILE):
 	@echo "$$GIT_IGNORE" > $@
 	-$(GIT_ADD) $@
 
