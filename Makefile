@@ -764,6 +764,11 @@ define DJANGO_MANAGE_PY
 import os
 import sys
 
+from dotenv import load_dotenv
+
+
+load_dotenv()
+
 
 def main():
     """Run administrative tasks."""
