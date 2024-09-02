@@ -4,6 +4,7 @@ run-name: ${{ github.actor }} is testing `make django-init`, `make django-init-m
 on:
   schedule:
     - cron: '0 0 * * *'  # Runs daily at midnight UTC
+  workflow_dispatch:  # Allows manual triggering
 
 defaults:
   run:
