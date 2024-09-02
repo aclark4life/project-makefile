@@ -4801,9 +4801,6 @@ list-targets-deps-default: make-list-targets-deps
 .PHONY: list-defines-default
 list-defines-default: make-list-defines
 
-.PHONY: list-targets-with-dependencies-default
-list-targets-with-dependencies-default: makefile-list-targets-with-dependencies
-
 .PHONY: migrate-default
 migrate-default: django-migrate
 
