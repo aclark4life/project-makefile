@@ -58,6 +58,7 @@ GIT_BRANCH = $(shell git branch --show-current)
 GIT_BRANCHES = $(shell git branch -a) 
 GIT_CHECKOUT = git checkout
 GIT_COMMIT = git commit
+GIT_IGNORE_FILE = .gitignore
 GIT_PUSH = git push
 GIT_PUSH_FORCE = $(GIT_PUSH) --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
@@ -3602,6 +3603,7 @@ django-init-minimal-default: separator \
 # --------------------------------------------------------------------------------
 #  Install Wagtail
 # --------------------------------------------------------------------------------
+
 .PHONY: django-init-wagtail-default
 django-init-wagtail-default: separator \
 	db-init \
@@ -4161,8 +4163,8 @@ git-commit-message-init-default:
 git-commit-message-lint-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Lint")
 
-.PHONY: git-commit-message-mk-default
-git-commit-message-mk-default:
+.PHONY: git-commit-message-project-custom-default
+git-commit-message-project-custom-default:
 	-@$(GIT_COMMIT) project.mk -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_CUSTOM_FILE)")
 
 .PHONY: git-commit-message-readme-default
@@ -4184,11 +4186,6 @@ git-commit-message-sort-default:
 .PHONY: git-commit-message-typo-default
 git-commit-message-typo-default:
 	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Fix typo")
-
-.PHONY: git-ignore-default
-git-ignore-default:
-	@echo "$$GIT_IGNORE" > .gitignore
-	-$(GIT_ADD) .gitignore
 
 .PHONY: git-prune-default
 git-prune-default:
@@ -4236,14 +4233,18 @@ help-default:
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
+# --------------------------------------------------------------------------------
+# Makefile-specific targets
+# --------------------------------------------------------------------------------
+
 .PHONY: make-default
 make-default:
 	-$(GIT_ADD) Makefile
 	-@$(GIT_COMMIT) Makefile -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_NAME) Makefile")
 	-$(GIT_PUSH)
 
-.PHONY: makefile-list-targets-default
-makefile-list-targets-default:
+.PHONY: make-list-targets-default
+make-list-targets-default:
 	@for makefile in $(MAKEFILE_LIST); do \
         echo "-- $$makefile --"; \
         $(MAKE) -pRrq -f $$makefile : 2>/dev/null | \
@@ -4256,13 +4257,17 @@ makefile-list-targets-default:
         echo; \
     	done | $(PAGER)
 
-.PHONY: makefile-list-defines-default
-makefile-list-defines-default:
+.PHONY: make-list-defines-default
+make-list-defines-default:
 	@grep '^define [A-Za-z_][A-Za-z0-9_]*' Makefile
 
-.PHONY: makefile-list-targets-with-dependencies-default
-makefile-list-targets-with-dependencies-default:
+.PHONY: make-list-targets-deps-default
+make-list-targets-deps-default:
 	@perl -ne 'print if /^\s*\.PHONY:/ .. /^[a-zA-Z0-9_-]+:/;' Makefile | grep -v .PHONY
+
+# --------------------------------------------------------------------------------
+#  npm targets
+# --------------------------------------------------------------------------------
 
 .PHONY: npm-audit-fix-default
 npm-audit-fix-default:
@@ -4335,6 +4340,10 @@ npm-serve-default:
 npm-test-default:
 	npm run test
 
+# --------------------------------------------------------------------------------
+#  pip targets
+# --------------------------------------------------------------------------------
+
 .PHONY: pip-deps-default
 pip-deps-default: pip-ensure
 	$(PIP_DEPS)
@@ -4386,6 +4395,10 @@ pip-uninstall-default: pip-ensure
 pip-upgrade-default: pip-ensure
 	$(PIP_INSTALL) -U pip
 
+# --------------------------------------------------------------------------------
+#  Plone targets
+# --------------------------------------------------------------------------------
+
 .PHONY: plone-clean-default
 plone-clean-default:
 	$(DEL_DIR) $(PROJECT_NAME)
@@ -4419,10 +4432,9 @@ programming-interview-default:
 	@echo "Created interview.py!"
 	-$(GIT_ADD) interview.py > /dev/null 2>&1
 
-# .NOT_PHONY!
-$(PROJECT_CUSTOM_FILE):
-	@echo "$$PROJECT_CUSTOM" > $(PROJECT_CUSTOM_FILE)
-	-$(GIT_ADD) $(PROJECT_CUSTOM_FILE)
+# --------------------------------------------------------------------------------
+#  python targets
+# --------------------------------------------------------------------------------
 
 .PHONY: python-license-default
 python-license-default:
@@ -4498,6 +4510,10 @@ endif
 separator-default:
 	@echo "$$SEPARATOR"
 
+# --------------------------------------------------------------------------------
+#  Sphinx targets
+# --------------------------------------------------------------------------------
+
 .PHONY: sphinx-build-default
 sphinx-build-default:
 	@sphinx-build -b html -d _build/doctrees . _build/html
@@ -4538,6 +4554,10 @@ sphinx-theme-default:
 	    $(ADD_DIR) $$SPHINX_THEME/static/js; \
 	    $(ADD_FILE) $$SPHINX_THEME/static/js/script.js; \
 	    $(GIT_ADD) $$SPHINX_THEME/static
+
+# --------------------------------------------------------------------------------
+#  Wagtail targets
+# --------------------------------------------------------------------------------
 
 .PHONY: wagtail-base-template-default
 wagtail-base-template-default:
@@ -4642,6 +4662,10 @@ wagtail-urls-default:
 wagtail-urls-home-default:
 	@echo "$$WAGTAIL_URLS_HOME" >> $(DJANGO_URLS_FILE)
 
+# --------------------------------------------------------------------------------
+#  Webpack targets
+# --------------------------------------------------------------------------------
+
 .PHONY: webpack-init-default
 webpack-init-default: npm-init
 	@echo "$$WEBPACK_CONFIG_JS" > webpack.config.js
@@ -4664,12 +4688,12 @@ webpack-init-reveal-default: npm-init
 	@echo "$$WEBPACK_REVEAL_INDEX_HTML" > index.html
 	-$(GIT_ADD) index.html
 
-# --------------------------------------------------------------------------------
+# =================================================================================
 # Title-case single-line phony target rules
 #
 # Use Title case for some phony targets E.g. `make lint` performs linting and
 # can't be used to commit & push the results. Use Lint instead for such cases.
-# --------------------------------------------------------------------------------
+# =================================================================================
 
 .PHONY: Clean-default
 Clean-default: git-commit-message-clean git-push
@@ -4680,10 +4704,10 @@ Init-default: git-commit-message-init git-push
 .PHONY: Lint-default
 Lint-default: git-commit-message-lint git-push
 
-# --------------------------------------------------------------------------------
+# =================================================================================
 # Single-line phony target rules
-# --------------------------------------------------------------------------------
-#
+# =================================================================================
+
 .PHONY: actions-default
 actions-default: git-commit-message-actions git-push
 
@@ -4763,7 +4787,7 @@ install-default: pip-install
 i-default: install
 
 .PHONY: l-default
-l-default: makefile-list-targets
+l-default: make-list-targets
 
 .PHONY: last-default
 last-default: git-commit-last git-push
@@ -4772,10 +4796,13 @@ last-default: git-commit-last git-push
 lint-default: django-lint
 
 .PHONY: list-targets-default
-list-targets-default: makefile-list-targets
+list-targets-default: make-list-targets
+
+.PHONY: list-targets-deps-default
+list-targets-deps-default: make-list-targets-deps
 
 .PHONY: list-defines-default
-list-defines-default: makefile-list-defines
+list-defines-default: make-list-defines
 
 .PHONY: list-targets-with-dependencies-default
 list-targets-with-dependencies-default: makefile-list-targets-with-dependencies
@@ -4790,16 +4817,13 @@ migrations-default: django-migrations-make
 migrations-show-default: django-migrations-show
 
 .PHONY: mk-default
-mk-default: git-commit-message-mk git-push
-
-.PHONY: o-default
-o-default: django-open
+mk-default: git-commit-message-project-custom git-push
 
 .PHONY: open-default
 open-default: open
 
-.PHONY: r-default
-r-default: review
+.PHONY: o-default
+o-default: django-open
 
 .PHONY: readme-default
 readme-default: git-commit-message-readme git-push
@@ -4829,7 +4853,7 @@ static-default: django-static
 su-default: django-su
 
 .PHONY: test-default
-test-default: npm-install django-static pip-install-test
+test-default: npm-install django-static pip-install-test django-test
 
 .PHONY: t-default
 t-default: test
@@ -4837,19 +4861,25 @@ t-default: test
 .PHONY: typo-default
 typo-default: git-commit-message-typo git-push
 
-.PHONY: u-default
-u-default: help
-
 .PHONY: urls-default
 urls-default: django-urls-show
 
-.PHONY: wagtail-init-default
-wagtail-init-default: django-init-wagtail
+# =================================================================================
+# .NOT_PHONY!
+# =================================================================================
 
-# --------------------------------------------------------------------------------
+$(PROJECT_CUSTOM_FILE):
+	@echo "$$PROJECT_CUSTOM" > $@
+	-$(GIT_ADD) $@
+
+$(GIT_IGNORE_FILE):
+	@echo "$$GIT_IGNORE" > $@
+	-$(GIT_ADD) $@
+
+# =================================================================================
 # Allow customizing rules defined in this Makefile with rules defined in
 # $(PROJECT_CUSTOM_FILE)
-# --------------------------------------------------------------------------------
+# =================================================================================
 
 %: %-default  # https://stackoverflow.com/a/49804748
 	@ true
