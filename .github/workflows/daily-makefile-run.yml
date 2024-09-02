@@ -57,6 +57,9 @@ jobs:
         POSTGRES_PORT: 5432
       working-directory: ${{ matrix.dir }}
 
+    - name: Set Git safe directory
+      run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
     - name: Commit results
       run: |
         git config --global user.name "GitHub Actions"
