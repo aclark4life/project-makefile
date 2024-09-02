@@ -39,6 +39,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Set Git safe directory
+      run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
     - name: Pull latest changes
       run: git pull origin main
       working-directory: ${{ matrix.dir }}
@@ -60,9 +63,6 @@ jobs:
         POSTGRES_HOST: postgres
         POSTGRES_PORT: 5432
       working-directory: ${{ matrix.dir }}
-
-    - name: Set Git safe directory
-      run: git config --global --add safe.directory $GITHUB_WORKSPACE
 
     - name: Commit results
       run: |
