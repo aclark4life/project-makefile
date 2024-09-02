@@ -1,0 +1,60 @@
+name: Automated Testing
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  checks: write
+  pull-requests: write
+  contents: write
+
+jobs:
+  code-hygiene:
+    name: Code Hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: npm ci
+      - run: npm run lint
+        if: success() || failure()
+      - run: npm run typecheck
+        if: success() || failure()
+  unit-and-integration-tests:
+    name: Unit and Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: npm ci
+      - run: npm run jest-ci -- --coverage --coverageDirectory=coverage-unit --coverageReporters json --selectProjects unit
+      - run: npm run jest-ci -- --coverage --coverageDirectory=coverage-integration --coverageReporters json --selectProjects integration
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ${{ github.workspace }}/coverage-unit/coverage-final.json, ${{ github.workspace }}/coverage-integration/coverage-final.json
+          verbose: true
+  packaging-tests:
+    name: Packaging and Build tests
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - run: npm ci
+      - run: npm run generate-style-spec
+      - run: npm run generate-typings
+      - run: npm run build
+      - run: npm run jest-ci -- --selectProjects build
+        if: success() || failure()
