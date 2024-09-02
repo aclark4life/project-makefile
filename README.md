@@ -31,6 +31,11 @@ Examples:
 
 ```bash
 $ make project.mk
+$ cat project.mk
+# Custom Makefile
+# Add your custom makefile commands here
+#
+# PROJECT_NAME := my-new-project
 ```
 
 ## Screenshots
