@@ -27,7 +27,7 @@ urlpatterns += [path("accounts/", include("allauth.urls"))]
 urlpatterns += [path("user/", include("siteuser.urls"))]
 urlpatterns += [path("model-form-demo/", include("model_form_demo.urls"))]
 urlpatterns += [path("logging-demo/", include("logging_demo.urls"))]
-
+urlpatterns += [path("payments/", include("payments.urls"))]
 from rest_framework import routers  # noqa
 from .api import UserViewSet, api  # noqa
 
@@ -35,12 +35,3 @@ router = routers.DefaultRouter()
 router.register(r"users", UserViewSet)
 # urlpatterns += [path("api/", include(router.urls))]
 urlpatterns += [path("api/", api.urls)]
-urlpatterns += [
-    # For anything not caught by a more specific rule above, hand over to
-    # Wagtail's page serving mechanism. This should be the last pattern in
-    # the list:
-    path("", include("wagtail.urls")),
-    # Alternatively, if you want Wagtail pages to be served from a subpath
-    # of your site, rather than the site root:
-    #    path("pages/", include("wagtail.urls"),
-]
