@@ -40,6 +40,11 @@ $ cat project.mk
 
 ## Screenshots
 
+### Initial Setup
+![Screenshot](screenshots/screenshot05.png)
+![Screenshot](screenshots/screenshot07.png)
+![Screenshot](screenshots/screenshot06.png)
+
 ### Home Page
 ![Screenshot](screenshots/screenshot01.png)
 
