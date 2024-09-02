@@ -11,7 +11,8 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
     <div> 
       {isAuthenticated ? (
         <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+          <a className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          </a>
           <ul className="dropdown-menu">
             <li><a className="dropdown-item" href="/user/profile/">Profile</a></li>
             <li><a className="dropdown-item" href="/model-form-demo/">Model Form Demo</a></li>
@@ -32,7 +33,7 @@ const UserMenu = ({ isAuthenticated, isSuperuser, textColor }) => {
         </li>
       ) : (
         <li className="nav-item">
-          <a className="nav-link dropdown-toggle" type="button" aria-expanded="false" href="/accounts/login/"></a>
+          <a className={`nav-link text-${textColor}`} href="/accounts/login"><i className="fa-solid fa-circle-user"></i></a>
         </li>
       )}
     </div>
