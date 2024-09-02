@@ -3560,7 +3560,7 @@ django-init-default: separator \
 	npm-install-react-dev \
 	npm-audit-fix \
 	django-migrate \
-	git-ignore \
+	.gitignore \	
 	django-su
 
 # --------------------------------------------------------------------------------
@@ -3597,7 +3597,7 @@ django-init-minimal-default: separator \
 	npm-install-react-dev \
 	npm-audit-fix \
 	django-migrate \
-	git-ignore \
+	.gitignore \
 	django-su
 
 # --------------------------------------------------------------------------------
@@ -3649,7 +3649,7 @@ django-init-wagtail-default: separator \
 	npm-install-react-dev \
 	npm-audit-fix \
 	django-migrate \
-	git-ignore \
+	.gitignore \
 	django-su
 
 .PHONY: django-install-default
@@ -4767,9 +4767,6 @@ git-commit-push-default: git-commit git-push
 
 .PHONY: git-up-default
 git-up-default: git-set-upstream
-
-.PHONY: gitignore-default
-gitignore-default: git-ignore
 
 .PHONY: h-default
 h-default: help
