@@ -39,6 +39,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Pull latest changes
+      run: git pull origin main
+      working-directory: ${{ matrix.dir }}
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
@@ -64,6 +68,7 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
+        git add .
         git commit -m "Daily commit of test results"
         git push
       if: success()  # Only commit if the tests succeed
