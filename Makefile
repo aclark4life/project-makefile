@@ -4867,7 +4867,7 @@ $(PROJECT_CUSTOM_FILE):
 	-$(GIT_ADD) $@
 
 $(GIT_COMMIT_IGNORE_FILE):
-	@echo "$$GIT_IGNORE" > $@
+	@echo "$$GIT_COMMIT_IGNORE" > $@
 	-$(GIT_ADD) $@
 
 # =================================================================================
