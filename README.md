@@ -27,6 +27,12 @@ Examples:
    make django-init-wagtail    Install Wagtail
 ```
 
+## Customization
+
+```bash
+$ make project.mk
+```
+
 ## Screenshots
 
 ### Home Page
