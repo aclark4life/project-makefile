@@ -1,6 +1,6 @@
 Brotli==1.1.0
 Django==5.1.1
-Faker==28.1.0
+Faker==28.4.1
 Jinja2==3.1.4
 Markdown==3.7
 MarkupSafe==2.1.5
@@ -17,11 +17,11 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.11
-botocore==1.35.11
+boto3==1.35.12
+botocore==1.35.12
 build==1.2.1
 certifi==2024.8.30
-cffi==1.17.0
+cffi==1.17.1
 chardet==5.2.0
 charset-normalizer==3.3.2
 click==8.1.7
