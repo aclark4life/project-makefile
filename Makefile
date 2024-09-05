@@ -2077,6 +2077,7 @@ db.sqlite3
 static/
 backend/inituser
 backend/var
+.venv/
 endef
 
 define GIT_COMMIT_MESSAGE
