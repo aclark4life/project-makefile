@@ -2578,7 +2578,7 @@ define PROJECT_CUSTOM
 # PROJECT_NAME := my-new-project
 endef
 
-define PYTHON_LICENSE_TXT
+define LICENSE_TXT
 MIT License
 
 Copyright (c) [YEAR] [OWNER NAME]
@@ -3337,10 +3337,10 @@ export DJANGO_API_SERIALIZERS \
         GIT_COMMIT_IGNORE \
         GIT_COMMIT_MESSAGE \
         JENKINS_FILE \
+        LICENSE_TXT \
         PROJECT_CUSTOM \
         PIP_INSTALL_REQUIREMENTS_TEST \
         PROGRAMMING_INTERVIEW \
-        PYTHON_LICENSE_TXT \
         PYTHON_PROJECT_TOML \
         SEPARATOR \
         WAGTAIL_BLOCK_CAROUSEL \
@@ -4234,6 +4234,11 @@ help-default:
 jenkins-init-default:
 	@echo "$$JENKINS_FILE" > Jenkinsfile
 
+.PHONY: license-default
+license-default:
+	@echo "$$LICENSE_TXT" > LICENSE.txt
+	-$(GIT_ADD) LICENSE.txt
+
 # --------------------------------------------------------------------------------
 # Makefile-specific targets
 # --------------------------------------------------------------------------------
@@ -4436,11 +4441,6 @@ programming-interview-default:
 # --------------------------------------------------------------------------------
 #  python targets
 # --------------------------------------------------------------------------------
-
-.PHONY: python-license-default
-python-license-default:
-	@echo "$(PYTHON_LICENSE_TXT)" > LICENSE.txt
-	-$(GIT_ADD) LICENSE.txt
 
 .PHONY: python-project-default
 python-project-default:
