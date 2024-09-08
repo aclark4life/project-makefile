@@ -4832,6 +4832,9 @@ reword-default: git-commit-message-reword git-push
 .PHONY: s-default
 s-default: serve
 
+.PHONY: sdist-default
+sdist-default: python-sdist
+
 .PHONY: serve-default
 serve-default: django-serve
 
