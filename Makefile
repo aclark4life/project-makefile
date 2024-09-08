@@ -4751,11 +4751,14 @@ deps-default: pip-deps
 .PHONY: dump-default
 dump-default: db-dump
 
+.PHONY: e-default
+e-default: edit
+
 .PHONY: edit-default
 edit-default: readme-edit
 
-.PHONY: e-default
-e-default: edit
+.PHONY: empty-default
+empty-default: git-commit-empty git-push
 
 .PHONY: fp-default
 fp-default: git-push-force
