@@ -4279,7 +4279,7 @@ make-list-targets-deps-default:
 
 .PHONY: npm-audit-fix-default
 npm-audit-fix-default:
-	npm audit fix
+	npm audit fix --force
 
 .PHONY: npm-build-default
 npm-build-default:
