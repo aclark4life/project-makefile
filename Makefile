@@ -3658,6 +3658,7 @@ django-install-default: pip-ensure
 	$(PIP_INSTALL) \
 	Django \
 	Faker \
+	PyMongo \
 	boto3 \
 	build \
 	crispy-bootstrap5 \
@@ -3693,6 +3694,7 @@ django-install-default: pip-ensure
 	dj-database-url \
 	dj-rest-auth \
 	dj-stripe \
+	dnspython \
 	docutils \
 	enmerkar \
 	gunicorn \
