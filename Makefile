@@ -3559,7 +3559,6 @@ django-init-default: separator \
 	django-frontend \
 	npm-install-react \
 	npm-install-react-dev \
-	npm-audit-fix \
 	django-migrate \
 	.gitignore \
 	django-su
@@ -3596,7 +3595,6 @@ django-init-minimal-default: separator \
 	django-frontend \
 	npm-install-react \
 	npm-install-react-dev \
-	npm-audit-fix \
 	django-migrate \
 	.gitignore \
 	django-su
@@ -3648,7 +3646,6 @@ django-init-wagtail-default: separator \
 	django-frontend \
 	npm-install-react \
 	npm-install-react-dev \
-	npm-audit-fix \
 	django-migrate \
 	.gitignore \
 	django-su
@@ -4304,6 +4301,7 @@ npm-install-default:
 # @fortawesome/free-solid-svg-icons \
 .PHONY: npm-install-react-default
 npm-install-react-default:
+	$(DEL_FILE) package-lock.json
 	npm install \
         bootstrap \
         camelize \
