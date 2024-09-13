@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.17
-botocore==1.35.17
+boto3==1.35.18
+botocore==1.35.18
 build==1.2.2
 certifi==2024.8.30
 cffi==1.17.1
@@ -144,7 +144,7 @@ types-python-dateutil==2.9.0.20240906
 typing_extensions==4.12.2
 tzlocal==5.2
 uritools==4.0.3
-urllib3==2.2.2
+urllib3==2.2.3
 wagtail-color-panel==1.5.0
 wagtail-django-recaptcha==2.1.1
 wagtail-markdown==0.12.1
