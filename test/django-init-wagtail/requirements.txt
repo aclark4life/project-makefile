@@ -84,7 +84,7 @@ gunicorn==23.0.0
 html2docx==1.6.0
 html5lib==1.1
 icalendar==5.0.13
-idna==3.8
+idna==3.9
 jmespath==1.0.1
 l18n==2021.3
 laces==0.1.1
