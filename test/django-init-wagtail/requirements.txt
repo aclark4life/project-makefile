@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.25
-botocore==1.35.25
+boto3==1.35.26
+botocore==1.35.26
 build==1.2.2
 certifi==2024.8.30
 cffi==1.17.1
@@ -65,7 +65,7 @@ django-registration==3.4
 django-richtextfield==1.6.2
 django-sendgrid-v5==1.2.3
 django-social-share==2.3.0
-django-sql-explorer==5.2
+django-sql-explorer==5.3
 django-storages==1.14.4
 django-tables2==2.7.0
 django-taggit==5.0.1
@@ -79,7 +79,7 @@ draftjs-exporter==5.0.0
 enmerkar==0.7.1
 et-xmlfile==1.1.0
 filetype==1.2.0
-fonttools==4.54.0
+fonttools==4.54.1
 gunicorn==23.0.0
 html2docx==1.6.0
 html5lib==1.1
@@ -150,7 +150,7 @@ wagtail-django-recaptcha==2.1.1
 wagtail-markdown==0.12.1
 wagtail-modeladmin==2.0.0
 wagtail-seo==2.5.0
-wagtail==6.2.1
+wagtail==6.2.2
 wagtailmenus==4.0.1
 weasyprint==62.3
 webencodings==0.5.1
