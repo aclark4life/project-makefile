@@ -63,6 +63,7 @@ GIT_PUSH = git push
 GIT_PUSH_FORCE = $(GIT_PUSH) --force-with-lease
 GIT_REV = $(shell git rev-parse --short HEAD)
 GIT_STATUS = git status
+MONGODB_MIGRATIONS_DIR := backend/migrations
 PACKAGE_NAME = $(shell echo $(PROJECT_NAME) | sed 's/-/_/g')
 PAGER ?= less
 PIP_DEPS = python -m pipdeptree
@@ -922,6 +923,54 @@ class ModelFormDemoDetailView(DetailView):
     model = ModelFormDemo
     template_name = "model_form_demo_detail.html"
     context_object_name = "model_form_demo"
+endef
+
+define DJANGO_MONGODB_APPS
+from django.contrib.admin.apps import AdminConfig
+from django.contrib.auth.apps import AuthConfig
+from django.contrib.contenttypes.apps import ContentTypesConfig
+from allauth.account.apps import AccountConfig
+
+
+class MongoAdminConfig(AdminConfig):
+    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
+
+
+class MongoAuthConfig(AuthConfig):
+    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
+
+
+class MongoContentTypesConfig(ContentTypesConfig):
+    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
+
+
+class MongoAccountConfig(AccountConfig):
+    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
+endef
+
+define DJANGO_MONGODB_SETTINGS
+DATABASES = {
+    'default': {
+	'ENGINE': 'django_mongodb',
+	'NAME': 'test',
+    }
+}
+DJANGO_COMPAT_CHECK_DISABLED = True
+DEFAULT_AUTO_FIELD = "django_mongodb.fields.ObjectIdAutoField"
+MIGRATION_MODULES = {
+    "account": "backend.migrations.account",
+    "admin": "backend.migrations.admin",
+    "auth": "backend.migrations.auth",
+    "contenttypes": "backend.migrations.contenttypes",
+}
+INSTALLED_APPS.remove("allauth.account")
+INSTALLED_APPS.remove("django.contrib.admin")
+INSTALLED_APPS.remove("django.contrib.auth")
+INSTALLED_APPS.remove("django.contrib.contenttypes")
+INSTALLED_APPS.append("backend.apps.MongoAccountConfig")
+INSTALLED_APPS.append("backend.apps.MongoAdminConfig")
+INSTALLED_APPS.append("backend.apps.MongoAuthConfig")
+INSTALLED_APPS.append("backend.apps.MongoContentTypesConfig")
 endef
 
 # ----------------------------------------------------------------
@@ -2807,6 +2856,8 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST \
         DJANGO_MODEL_FORM_DEMO_URLS \
         DJANGO_MODEL_FORM_DEMO_VIEWS \
+	DJANGO_MONGODB_APPS \
+	DJANGO_MONGODB_SETTINGS \
         DJANGO_PAYMENTS_ADMIN \
         DJANGO_PAYMENTS_FORM \
         DJANGO_PAYMENTS_MIGRATION_0002 \
@@ -2953,19 +3004,26 @@ aws-vol-default: aws-check-env
 aws-vpc-default: aws-check-env
 	aws ec2 describe-vpcs $(AWS_OPTS)
 
-.PHONY: db-import-default
-db-import-default:
+django-admin-custom: django-admin-custom-default
+	@echo "$$DJANGO_MONGODB_APPS" >> $(DJANGO_ADMIN_CUSTOM_APPS_FILE)
+
+.PHONY: django-db-import-default
+django-db-import-default:
 	@psql $(PACKAGE_NAME) < $(EB_DJANGO_DATABASE_NAME).sql
 
-.PHONY: db-init-default
-db-init-default:
+.PHONY: django-db-init-default
+django-db-init-postgres-default:
 	-dropdb $(PACKAGE_NAME)
 	-createdb $(PACKAGE_NAME)
 
-.PHONY: db-init-mysql-default
-db-init-mysql-default:
+.PHONY: django-db-init-mysql-default
+django-db-init-mysql-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
+
+.PHONY: django-db-init-mongodb-default
+django-db-init-mongodb-default:
+	-mongosh --eval "db.dropDatabase()"
 
 .PHONY: db-init-test-default
 db-init-test-default:
@@ -3062,7 +3120,7 @@ django-home-page-default:
 # --------------------------------------------------------------------------------
 .PHONY: django-init-default
 django-init-default: separator \
-	db-init \
+	django-db-init \
 	django-clean \
 	django-install \
 	django-project \
@@ -3102,7 +3160,7 @@ django-init-default: separator \
 # --------------------------------------------------------------------------------
 .PHONY: django-init-minimal-default
 django-init-minimal-default: separator \
-	db-init \
+	django-db-init \
 	django-clean \
 	django-install-minimal \
 	django-project \
@@ -3139,7 +3197,7 @@ django-init-minimal-default: separator \
 
 .PHONY: django-init-wagtail-default
 django-init-wagtail-default: separator \
-	db-init \
+	django-db-init \
 	django-clean \
 	django-install \
 	wagtail-install \
@@ -3288,6 +3346,12 @@ django-manage-py-default:
 .PHONY: django-migrate-default
 django-migrate-default:
 	python manage.py migrate
+
+.PHONY: django-migrate-mongodb-default
+django-migrate-mongodb-default:
+	$(ADD_DIR) backend/migrations
+	python manage.py makemigrations account auth admin contenttypes
+	-$(GIT_ADD) $(MONGODB_MIGRATIONS_DIR)/*.py
 
 .PHONY: django-migrations-make-default
 django-migrations-make-default:
@@ -4271,6 +4335,9 @@ db-dump-default: eb-export
 
 .PHONY: db-export-default
 db-export-default: eb-export
+
+.PHONY: db-init-default
+db-init-default: db-init-postgres
 
 .PHONY: dbshell-default
 dbshell-default: django-db-shell
