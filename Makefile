@@ -3440,7 +3440,7 @@ django-siteuser-default:
 
 .PHONY: django-sqlmigrate-default
 django-sqlmigrate-default:
-	python manage.py sqlmigrate
+	python manage.py sqlmigrate $(app_label) $(migration_name)
 
 .PHONY: django-static-default
 django-static-default:
