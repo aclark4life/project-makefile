@@ -3377,6 +3377,11 @@ django-model-form-demo-default:
 	-$(GIT_ADD) model_form_demo/*.py
 	-$(GIT_ADD) model_form_demo/migrations/*.py
 
+.PHONY: django-mongodb-apps-default
+django-mongodb-apps-default:
+	@echo "$$DJANGO_MONGODB_APPS" > $(DJANGO_ADMIN_CUSTOM_APPS_FILE)
+	-$(GIT_ADD) backend/*.py
+
 .PHONY: django-open-default
 django-open-default:
 ifeq ($(UNAME), Linux)
