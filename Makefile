@@ -3438,6 +3438,10 @@ django-siteuser-default:
 	python manage.py makemigrations siteuser
 	-$(GIT_ADD) siteuser/migrations/*.py
 
+.PHONY: django-sqlmigrate-default
+django-sqlmigrate-default:
+	python manage.py sqlmigrate
+
 .PHONY: django-static-default
 django-static-default:
 	python manage.py collectstatic --noinput
