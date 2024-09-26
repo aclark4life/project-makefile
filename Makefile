@@ -4391,6 +4391,9 @@ shell-default: django-shell
 .PHONY: sort-default
 sort-default: git-commit-message-sort git-push
 
+.PHONY: sqlmigrate
+sqlmigrate: django-sqlmigrate
+
 .PHONY: static-default
 static-default: django-static
 
