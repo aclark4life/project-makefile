@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.28
-botocore==1.35.28
+boto3==1.35.29
+botocore==1.35.29
 build==1.2.2
 certifi==2024.8.30
 cffi==1.17.1
@@ -36,7 +36,7 @@ dj-database-url==2.2.0
 dj-rest-auth==6.0.0
 dj-stripe==2.8.4
 django-after-response==0.2.2
-django-allauth==65.0.1
+django-allauth==65.0.2
 django-appconf==1.0.6
 django-ckeditor==6.7.1
 django-cogwheels==0.3
@@ -123,7 +123,7 @@ python-slugify==8.0.4
 python-webpack-boilerplate==1.0.3
 pytz==2024.2
 qrcode==7.4.2
-reportlab==4.2.2
+reportlab==4.2.4
 requests==2.32.3
 rich==13.8.1
 s3transfer==0.10.2
