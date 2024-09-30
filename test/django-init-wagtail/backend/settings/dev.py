@@ -50,4 +50,4 @@ INTERNAL_IPS = [
 MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa
 MIDDLEWARE.append("hijack.middleware.HijackUserMiddleware")  # noqa
 INSTALLED_APPS.append("django.contrib.admindocs")  # noqa
-SECRET_KEY = "8kmUd7cBtfQsZiAVuKKUMvefeMzacOOzvdnLz4Uoqju2P3HM+UM4Scfnt42LaVqE"
+SECRET_KEY = "u/cdPH+e4s2RXa/iBDn6SHHFkkJLcanm1R7TVU1Qdt/VPzg524vt54OEZPvlf4ny"
