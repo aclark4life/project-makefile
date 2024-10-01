@@ -1,5 +1,5 @@
 name: Project Makefile
-run-name: ${{ github.actor }} is testing `make django-init`, `make django-init-minimal`, and `make django-init-wagtail` 🚀
+run-name: ${{ github.actor }} is testing project-makefile 🚀
 
 on:
   push:
