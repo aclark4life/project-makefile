@@ -1,6 +1,6 @@
 Brotli==1.1.0
 Django==5.1.1
-Faker==30.0.0
+Faker==30.1.0
 Jinja2==3.1.4
 Markdown==3.7
 MarkupSafe==2.1.5
@@ -48,7 +48,7 @@ django-cryptography-django5==2.2
 django-debug-toolbar==4.4.6
 django-extensions==3.2.3
 django-filter==24.3
-django-hijack==3.6.0
+django-hijack==3.6.1
 django-honeypot==1.2.1
 django-imagekit==5.0.0
 django-import-export==4.1.1
