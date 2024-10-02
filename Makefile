@@ -3263,7 +3263,7 @@ django-install-default: pip-ensure
 	django-imagekit \
 	django-import-export \
 	django-ipware \
-	-e git+ssh://git@github.com/mongodb-labs/django-mongodb#egg=django-mongodb \
+	-e git+https://github.com/mongodb-labs/django-mongodb#egg=django-mongodb \
 	django-multiselectfield \
 	django-ninja \
 	django-phonenumber-field \
