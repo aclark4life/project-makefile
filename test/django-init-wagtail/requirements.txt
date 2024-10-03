@@ -1,4 +1,4 @@
--e git+https://github.com/mongodb-labs/django-mongodb@a904789f2312ceb235f20bfc968e9a2e752af242#egg=django_mongodb
+-e git+https://github.com/mongodb-labs/django-mongodb@fba889204de5338b41cd7e00ee04181051a1b0fb#egg=django_mongodb
 Brotli==1.1.0
 Django==5.0.9
 Faker==30.1.0
@@ -18,8 +18,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.31
-botocore==1.35.31
+boto3==1.35.32
+botocore==1.35.32
 build==1.2.2
 certifi==2024.8.30
 cffi==1.17.1
