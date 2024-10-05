@@ -4343,6 +4343,9 @@ db-dump-default: eb-export
 .PHONY: db-export-default
 db-export-default: eb-export
 
+.PHONY: db-import-default
+db-import-default: django-db-import
+
 .PHONY: db-init-default
 db-init-default: django-db-init-postgres
 
