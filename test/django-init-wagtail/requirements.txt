@@ -28,7 +28,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 confusable-homoglyphs==3.3.1
 cookiecutter==2.6.0
-crispy-bootstrap5==2024.2
+crispy-bootstrap5==2024.10
 cryptography==43.0.1
 cssselect2==0.7.0
 defusedxml==0.7.1
@@ -74,7 +74,7 @@ django-timezone-field==7.0
 django-treebeard==4.7.1
 django-widget-tweaks==1.5.0
 djangorestframework==3.15.2
-dnspython==2.6.1
+dnspython==2.7.0
 docutils==0.21.2
 draftjs-exporter==5.0.0
 enmerkar==0.7.1
