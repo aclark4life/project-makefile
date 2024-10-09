@@ -3723,7 +3723,7 @@ git-checkout-branches-default:
 
 .PHONY: git-commit-default
 git-commit-default:
-	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Update $(PROJECT_NAME) files")
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add/update $(PROJECT_NAME) files")
 
 .PHONY: git-commit-edit-default
 git-commit-edit-default:
@@ -3740,7 +3740,7 @@ git-commit-last-default:
 
 .PHONY: git-commit-message-actions-default
 git-commit-message-actions-default:
-	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Update actions")
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add/update actions")
 
 .PHONY: git-commit-message-clean-default
 git-commit-message-clean-default:
@@ -3776,7 +3776,7 @@ git-commit-message-project-custom-default:
 
 .PHONY: git-commit-message-readme-default
 git-commit-message-readme-default:
-	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Update readme")
+	-@$(GIT_COMMIT) -a -m $(call GIT_COMMIT_MESSAGE,"Add/update readme")
 
 .PHONY: git-commit-message-rename-default
 git-commit-message-rename-default:
