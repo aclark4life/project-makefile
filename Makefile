@@ -1306,6 +1306,27 @@ THEMES = [
 ]
 endef
 
+define DJANGO_SETTINGS_MONGO
+# $(PROJECT_NAME)
+
+import os
+
+LOGIN_REDIRECT_URL = "/"
+PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SILENCED_SYSTEM_CHECKS = ["django_recaptcha.recaptcha_test_key_error"]
+BASE_DIR = os.path.dirname(PROJECT_DIR)
+STATICFILES_DIRS = []
+WEBPACK_LOADER = {
+    "MANIFEST_FILE": os.path.join(BASE_DIR, "frontend/build/manifest.json"),
+}
+STATICFILES_DIRS.append(os.path.join(BASE_DIR, "frontend/build"))
+TEMPLATES[0]["DIRS"].append(os.path.join(PROJECT_DIR, "templates"))
+THEMES = [
+    ("light", "Light Theme"),
+    ("dark", "Dark Theme"),
+]
+endef
+
 define DJANGO_SETTINGS_CRISPY_FORMS
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -1392,8 +1413,6 @@ INSTALLED_APPS.append("explorer")
 endef
 
 define DJANGO_SETTINGS_INSTALLED_APPS_MONGO
-INSTALLED_APPS.append("allauth")
-INSTALLED_APPS.append("allauth.account")
 INSTALLED_APPS.append("crispy_bootstrap5")
 INSTALLED_APPS.append("crispy_forms")
 INSTALLED_APPS.append("debug_toolbar")
@@ -2848,7 +2867,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SETTINGS_INSTALLED_APPS_MONGO \
         DJANGO_SETTINGS_MIDDLEWARE \
         DJANGO_SETTINGS_MODEL_FORM_DEMO \
-	DJANGO_SETTINGS_MONGODB \
+	DJANGO_SETTINGS_MONGO \
         DJANGO_SETTINGS_PAYMENTS \
         DJANGO_SETTINGS_PROD \
         DJANGO_SETTINGS_REST_FRAMEWORK \
@@ -3175,7 +3194,6 @@ django-init-mongo-default: separator \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
-	django-allauth \
 	django-settings-mongo \
 	django-settings-dev \
 	django-settings-prod \
@@ -3247,7 +3265,6 @@ django-install-mongo-default: pip-ensure
 	-e git+https://github.com/mongodb-forks/django@mongodb-5.0.x#egg=django \
 	-e git+https://github.com/mongodb-labs/django-mongodb#egg=django-mongodb \
 	dj-database-url \
-	django-allauth \
 	crispy-bootstrap5 \
 	django-crispy-forms \
 	django-debug-toolbar \
@@ -3483,8 +3500,7 @@ django-settings-directory-default:
 
 .PHONY: django-settings-mongo-default
 django-settings-mongo-default:
-	@echo "$$DJANGO_SETTINGS_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_SETTINGS_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_MONGO" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS_MONGO" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
