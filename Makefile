@@ -3261,7 +3261,7 @@ django-init-wagtail-default: separator \
 .PHONY: django-install-mongo-default
 django-install-mongo-default: pip-ensure
 	$(PIP_INSTALL) \
-	-e git+https://github.com/aclark4life/mongo-python-driver#egg=mongo-python-driver \
+	-e git+https://github.com/aclark4life/mongo-python-driver#egg=pymongo \
 	-e git+https://github.com/mongodb-forks/django@mongodb-5.0.x#egg=django \
 	-e git+https://github.com/aclark4life/django-mongodb#egg=django-mongodb \
 	dj-database-url \
