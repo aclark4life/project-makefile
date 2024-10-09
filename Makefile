@@ -3197,7 +3197,6 @@ django-init-mongo-default: separator \
 	django-settings-mongo \
 	django-settings-dev \
 	django-settings-prod \
-	django-siteuser \
 	django-home-page \
 	django-utils \
 	django-frontend \
@@ -3503,7 +3502,6 @@ django-settings-mongo-default:
 	@echo "$$DJANGO_SETTINGS_MONGO" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS_MONGO" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-prod-default
