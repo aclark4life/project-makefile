@@ -925,29 +925,6 @@ class ModelFormDemoDetailView(DetailView):
     context_object_name = "model_form_demo"
 endef
 
-define DJANGO_MONGODB_APPS
-from django.contrib.admin.apps import AdminConfig
-from django.contrib.auth.apps import AuthConfig
-from django.contrib.contenttypes.apps import ContentTypesConfig
-from allauth.account.apps import AccountConfig
-
-
-class MongoAdminConfig(AdminConfig):
-    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
-
-
-class MongoAuthConfig(AuthConfig):
-    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
-
-
-class MongoContentTypesConfig(ContentTypesConfig):
-    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
-
-
-class MongoAccountConfig(AccountConfig):
-    default_auto_field = "django_mongodb.fields.ObjectIdAutoField"
-endef
-
 # ----------------------------------------------------------------
 #  Django Payments Demo
 # ----------------------------------------------------------------
@@ -1419,31 +1396,6 @@ endef
 
 define DJANGO_SETTINGS_MODEL_FORM_DEMO
 INSTALLED_APPS.append("model_form_demo")  # noqa
-endef
-
-define DJANGO_SETTINGS_MONGODB
-DATABASES = {
-    'default': {
-	'ENGINE': 'django_mongodb',
-	'NAME': 'test',
-    }
-}
-DJANGO_COMPAT_CHECK_DISABLED = True
-DEFAULT_AUTO_FIELD = "django_mongodb.fields.ObjectIdAutoField"
-MIGRATION_MODULES = {
-    "account": "backend.migrations.account",
-    "admin": "backend.migrations.admin",
-    "auth": "backend.migrations.auth",
-    "contenttypes": "backend.migrations.contenttypes",
-}
-INSTALLED_APPS.remove("allauth.account")
-INSTALLED_APPS.remove("django.contrib.admin")
-INSTALLED_APPS.remove("django.contrib.auth")
-INSTALLED_APPS.remove("django.contrib.contenttypes")
-INSTALLED_APPS.append("backend.apps.MongoAccountConfig")
-INSTALLED_APPS.append("backend.apps.MongoAdminConfig")
-INSTALLED_APPS.append("backend.apps.MongoAuthConfig")
-INSTALLED_APPS.append("backend.apps.MongoContentTypesConfig")
 endef
 
 define DJANGO_SETTINGS_PAYMENTS
@@ -2856,7 +2808,6 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_MODEL_FORM_DEMO_TEMPLATE_LIST \
         DJANGO_MODEL_FORM_DEMO_URLS \
         DJANGO_MODEL_FORM_DEMO_VIEWS \
-	DJANGO_MONGODB_APPS \
         DJANGO_PAYMENTS_ADMIN \
         DJANGO_PAYMENTS_FORM \
         DJANGO_PAYMENTS_MIGRATION_0002 \
@@ -3345,12 +3296,6 @@ django-manage-py-default:
 django-migrate-default:
 	python manage.py migrate
 
-.PHONY: django-migrate-mongodb-default
-django-migrate-mongodb-default:
-	$(ADD_DIR) backend/migrations
-	python manage.py makemigrations account auth admin contenttypes
-	-$(GIT_ADD) $(MONGODB_MIGRATIONS_DIR)/*.py
-
 .PHONY: django-migrations-make-default
 django-migrations-make-default:
 	python manage.py makemigrations
@@ -3377,11 +3322,6 @@ django-model-form-demo-default:
 	python manage.py makemigrations
 	-$(GIT_ADD) model_form_demo/*.py
 	-$(GIT_ADD) model_form_demo/migrations/*.py
-
-.PHONY: django-mongodb-apps-default
-django-mongodb-apps-default:
-	@echo "$$DJANGO_MONGODB_APPS" > $(DJANGO_ADMIN_CUSTOM_APPS_FILE)
-	-$(GIT_ADD) backend/*.py
 
 .PHONY: django-open-default
 django-open-default:
@@ -3469,10 +3409,6 @@ django-settings-directory-default:
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	-$(GIT_ADD) backend/settings/*.py
-
-.PHONY: django-settings-mongodb-default
-django-settings-mongodb-default:
-	@echo "$$DJANGO_SETTINGS_MONGODB" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-prod-default
 django-settings-prod-default:
