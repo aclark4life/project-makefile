@@ -4365,6 +4365,9 @@ db-import-default: django-db-import
 .PHONY: db-init-default
 db-init-default: django-db-init-postgres
 
+.PHONY: db-init-mongo-default
+db-init-mongo-default: django-db-init-mongodb
+
 .PHONY: dbshell-default
 dbshell-default: django-db-shell
 
