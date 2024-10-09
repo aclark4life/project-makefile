@@ -23,7 +23,7 @@ DEL_DIR := rm -rv
 DEL_FILE := rm -v
 DJANGO_ADMIN_CUSTOM_APPS_FILE := backend/apps.py
 DJANGO_ADMIN_CUSTOM_ADMIN_FILE := backend/admin.py
-DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
+DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo mongo_migrations \
 		     node_modules payments privacypage search sitepage siteuser unit_test_demo
 DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
 		      .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py \
@@ -1389,6 +1389,19 @@ INSTALLED_APPS.append("rest_framework")
 INSTALLED_APPS.append("rest_framework.authtoken")
 INSTALLED_APPS.append("webpack_boilerplate")
 INSTALLED_APPS.append("explorer")
+endef
+
+define DJANGO_SETTINGS_INSTALLED_APPS_MONGO
+INSTALLED_APPS.append("allauth")
+INSTALLED_APPS.append("allauth.account")
+INSTALLED_APPS.append("crispy_bootstrap5")
+INSTALLED_APPS.append("crispy_forms")
+INSTALLED_APPS.append("debug_toolbar")
+INSTALLED_APPS.append("django_extensions")
+INSTALLED_APPS.append("django_recaptcha")
+INSTALLED_APPS.append("rest_framework")
+INSTALLED_APPS.append("rest_framework.authtoken")
+INSTALLED_APPS.append("webpack_boilerplate")
 endef
 
 define DJANGO_SETTINGS_MIDDLEWARE
@@ -2832,6 +2845,7 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SETTINGS_DEV \
         DJANGO_SETTINGS_HOME_PAGE \
         DJANGO_SETTINGS_INSTALLED_APPS \
+        DJANGO_SETTINGS_INSTALLED_APPS_MONGO \
         DJANGO_SETTINGS_MIDDLEWARE \
         DJANGO_SETTINGS_MODEL_FORM_DEMO \
 	DJANGO_SETTINGS_MONGODB \
@@ -3152,7 +3166,6 @@ django-init-mongo-default: separator \
 	pip-freeze \
 	pip-init-test \
 	django-settings-directory \
-	django-admin-custom \
 	django-dockerfile \
 	django-template-base \
 	django-template-header \
@@ -3163,7 +3176,7 @@ django-init-mongo-default: separator \
 	django-urls \
 	django-urls-debug-toolbar \
 	django-allauth \
-	django-settings-base \
+	django-settings-mongo \
 	django-settings-dev \
 	django-settings-prod \
 	django-siteuser \
@@ -3232,7 +3245,17 @@ django-init-wagtail-default: separator \
 django-install-mongo-default: pip-ensure
 	$(PIP_INSTALL) \
 	-e git+https://github.com/mongodb-forks/django@mongodb-5.0.x#egg=django \
-	-e git+https://github.com/mongodb-labs/django-mongodb#egg=django-mongodb
+	-e git+https://github.com/mongodb-labs/django-mongodb#egg=django-mongodb \
+	dj-database-url \
+	django-allauth \
+	crispy-bootstrap5 \
+	django-crispy-forms \
+	django-debug-toolbar \
+	django-extensions \
+	django-recaptcha \
+	djangorestframework \
+	python-webpack-boilerplate \
+	django-hijack
 
 .PHONY: django-install-default
 django-install-default: pip-ensure
@@ -3457,6 +3480,15 @@ django-settings-directory-default:
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	-$(GIT_ADD) backend/settings/*.py
+
+.PHONY: django-settings-mongo-default
+django-settings-mongo-default:
+	@echo "$$DJANGO_SETTINGS_BASE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_AUTHENTICATION_BACKENDS" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS_MONGO" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_MIDDLEWARE" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-prod-default
 django-settings-prod-default:
