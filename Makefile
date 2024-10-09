@@ -3198,6 +3198,7 @@ django-init-mongo-default: separator \
 	django-settings-dev \
 	django-settings-prod \
 	django-home-page \
+	django-unit-test-demo \
 	django-utils \
 	django-frontend \
 	npm-install-react \
