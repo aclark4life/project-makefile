@@ -1,10 +1,10 @@
--e git+https://github.com/mongodb-labs/django-mongodb@5c296844433895ab78c950d5ffa397123272e2d9#egg=django_mongodb
+-e git+https://github.com/mongodb-labs/django-mongodb@821ae792b4ddd4ee08f4c2bdd013b07e00e561c0#egg=django_mongodb
 Brotli==1.1.0
 Django==5.0.9
 Faker==30.3.0
 Jinja2==3.1.4
 Markdown==3.7
-MarkupSafe==3.0.0
+MarkupSafe==3.0.1
 PyYAML==6.0.2
 Pygments==2.18.0
 Willow==1.8.0
@@ -18,8 +18,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.35
-botocore==1.35.35
+boto3==1.35.36
+botocore==1.35.36
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
@@ -126,7 +126,7 @@ qrcode==8.0
 reportlab==4.2.5
 requests==2.32.3
 rich==13.9.2
-s3transfer==0.10.2
+s3transfer==0.10.3
 sendgrid==6.11.0
 six==1.16.0
 soupsieve==2.6
