@@ -32,6 +32,7 @@ DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore
 DJANGO_FRONTEND_FILES = .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json \
 			frontend package-lock.json \
 			package.json postcss.config.js
+DJANGO_PROJECT_TEMPLATE = https://github.com/aclark4life/django-mongodb-project/archive/refs/heads/main.zip
 DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
@@ -3140,6 +3141,42 @@ django-init-minimal-default: separator \
 	django-su
 
 # --------------------------------------------------------------------------------
+#  Install Django with django-mongodb
+# --------------------------------------------------------------------------------
+.PHONY: django-init-mongo-default
+django-init-mongo-default: separator \
+	django-db-init \
+	django-clean \
+	django-install-mongo \
+	django-project-mongo \
+	pip-freeze \
+	pip-init-test \
+	django-settings-directory \
+	django-admin-custom \
+	django-dockerfile \
+	django-template-base \
+	django-template-header \
+	django-template-favicon \
+	django-template-footer \
+	django-template-offcanvas \
+	django-manage-py \
+	django-urls \
+	django-urls-debug-toolbar \
+	django-allauth \
+	django-settings-base \
+	django-settings-dev \
+	django-settings-prod \
+	django-siteuser \
+	django-home-page \
+	django-utils \
+	django-frontend \
+	npm-install-react \
+	npm-install-react-dev \
+	django-migrate \
+	.gitignore \
+	django-su
+
+# --------------------------------------------------------------------------------
 #  Install Wagtail
 # --------------------------------------------------------------------------------
 
@@ -3190,6 +3227,13 @@ django-init-wagtail-default: separator \
 	.gitignore \
 	django-su
 
+
+.PHONY: django-install-mongo-default
+django-install-mongo-default: pip-ensure
+	$(PIP_INSTALL) \
+	-e git+https://github.com/mongodb-forks/django@mongodb-5.0.x#egg=django \
+	-e git+https://github.com/mongodb-labs/django-mongodb#egg=django-mongodb
+
 .PHONY: django-install-default
 django-install-default: pip-ensure
 	$(PIP_INSTALL) \
@@ -3214,7 +3258,6 @@ django-install-default: pip-ensure
 	django-imagekit \
 	django-import-export \
 	django-ipware \
-	-e git+https://github.com/mongodb-labs/django-mongodb#egg=django-mongodb \
 	django-multiselectfield \
 	django-ninja \
 	django-phonenumber-field \
@@ -3362,6 +3405,11 @@ django-payments-demo-default:
 .PHONY: django-project-default
 django-project-default:
 	django-admin startproject backend .
+	-$(GIT_ADD) backend/*.py
+
+.PHONY: django-project-mongo-default
+django-project-mongo-default:
+	django-admin startproject backend . --template $(DJANGO_PROJECT_TEMPLATE)
 	-$(GIT_ADD) backend/*.py
 
 .PHONY: django-search-default
