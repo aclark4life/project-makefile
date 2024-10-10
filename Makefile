@@ -32,7 +32,8 @@ DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore
 DJANGO_FRONTEND_FILES = .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json \
 			frontend package-lock.json \
 			package.json postcss.config.js
-DJANGO_PROJECT_TEMPLATE = https://github.com/aclark4life/django-mongodb-project/archive/refs/heads/main.zip
+DJANGO_PROJECT_TEMPLATE_MONGO = https://github.com/aclark4life/django-mongodb-project/archive/refs/heads/main.zip
+DJANGO_PROJECT_TEMPLATE_ZODB = https://github.com/aclark4life/django-zodb-project/archive/refs/heads/main.zip
 DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
@@ -1306,7 +1307,7 @@ THEMES = [
 ]
 endef
 
-define DJANGO_SETTINGS_MONGO
+define DJANGO_SETTINGS_MINIMAL
 # $(PROJECT_NAME)
 
 import os
@@ -1412,7 +1413,7 @@ INSTALLED_APPS.append("webpack_boilerplate")
 INSTALLED_APPS.append("explorer")
 endef
 
-define DJANGO_SETTINGS_INSTALLED_APPS_MONGO
+define DJANGO_SETTINGS_INSTALLED_APPS_MINIMAL
 INSTALLED_APPS.append("crispy_bootstrap5")
 INSTALLED_APPS.append("crispy_forms")
 INSTALLED_APPS.append("debug_toolbar")
@@ -2864,10 +2865,10 @@ export DJANGO_API_SERIALIZERS \
         DJANGO_SETTINGS_DEV \
         DJANGO_SETTINGS_HOME_PAGE \
         DJANGO_SETTINGS_INSTALLED_APPS \
-        DJANGO_SETTINGS_INSTALLED_APPS_MONGO \
+        DJANGO_SETTINGS_INSTALLED_APPS_MINIMAL \
         DJANGO_SETTINGS_MIDDLEWARE \
+	DJANGO_SETTINGS_MINIMAL \
         DJANGO_SETTINGS_MODEL_FORM_DEMO \
-	DJANGO_SETTINGS_MONGO \
         DJANGO_SETTINGS_PAYMENTS \
         DJANGO_SETTINGS_PROD \
         DJANGO_SETTINGS_REST_FRAMEWORK \
@@ -3159,8 +3160,7 @@ django-init-minimal-default: separator \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
-	django-allauth \
-	django-settings-base \
+	django-settings-minimal \
 	django-settings-dev \
 	django-settings-prod \
 	django-siteuser \
@@ -3194,7 +3194,41 @@ django-init-mongo-default: separator \
 	django-manage-py \
 	django-urls \
 	django-urls-debug-toolbar \
-	django-settings-mongo \
+	django-settings-minimal \
+	django-settings-dev \
+	django-settings-prod \
+	django-home-page \
+	django-unit-test-demo \
+	django-utils \
+	django-frontend \
+	npm-install-react \
+	npm-install-react-dev \
+	django-migrate \
+	.gitignore \
+	django-su
+
+# --------------------------------------------------------------------------------
+#  Install Django with django-zodb
+# --------------------------------------------------------------------------------
+.PHONY: django-init-zodb-default
+django-init-zodb-default: separator \
+	django-db-init \
+	django-clean \
+	django-install-zodb \
+	django-project-zodb \
+	pip-freeze \
+	pip-init-test \
+	django-settings-directory \
+	django-dockerfile \
+	django-template-base \
+	django-template-header \
+	django-template-favicon \
+	django-template-footer \
+	django-template-offcanvas \
+	django-manage-py \
+	django-urls \
+	django-urls-debug-toolbar \
+	django-settings-minimal \
 	django-settings-dev \
 	django-settings-prod \
 	django-home-page \
@@ -3265,6 +3299,20 @@ django-install-mongo-default: pip-ensure
 	-e git+https://github.com/aclark4life/mongo-python-driver#egg=pymongo \
 	-e git+https://github.com/mongodb-forks/django@mongodb-5.0.x#egg=django \
 	-e git+https://github.com/aclark4life/django-mongodb#egg=django-mongodb \
+	dj-database-url \
+	crispy-bootstrap5 \
+	django-crispy-forms \
+	django-debug-toolbar \
+	django-extensions \
+	django-recaptcha \
+	djangorestframework \
+	python-webpack-boilerplate \
+	django-hijack
+
+.PHONY: django-install-zodb-default
+django-install-zodb-default: pip-ensure
+	$(PIP_INSTALL) \
+	-e git+https://github.com/aclark4life/django-zodb#egg=django-zodb \
 	dj-database-url \
 	crispy-bootstrap5 \
 	django-crispy-forms \
@@ -3450,7 +3498,12 @@ django-project-default:
 
 .PHONY: django-project-mongo-default
 django-project-mongo-default:
-	django-admin startproject backend . --template $(DJANGO_PROJECT_TEMPLATE)
+	django-admin startproject backend . --template $(DJANGO_PROJECT_TEMPLATE_MONGO)
+	-$(GIT_ADD) backend/*.py
+
+.PHONY: django-project-zodb-default
+django-project-zodb-default:
+	django-admin startproject backend . --template $(DJANGO_PROJECT_TEMPLATE_ZODB)
 	-$(GIT_ADD) backend/*.py
 
 .PHONY: django-search-default
@@ -3500,10 +3553,10 @@ django-settings-directory-default:
 	-$(GIT_ADD) backend/settings/*.py
 
 .PHONY: django-settings-mongo-default
-django-settings-mongo-default:
-	@echo "$$DJANGO_SETTINGS_MONGO" >> $(DJANGO_SETTINGS_BASE_FILE)
+django-settings-minimal-default:
+	@echo "$$DJANGO_SETTINGS_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS_MONGO" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
 	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-prod-default
