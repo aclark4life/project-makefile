@@ -3373,7 +3373,7 @@ django-install-default: pip-ensure
 	mailchimp-marketing \
 	mailchimp-transactional \
 	phonenumbers \
-	psycopg2-binary \
+	psycopg2 \
 	pydotplus \
 	python-webpack-boilerplate \
 	python-docx \
