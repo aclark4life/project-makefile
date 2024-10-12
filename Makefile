@@ -3713,7 +3713,7 @@ ifndef VPC_SUBNET_ELB
 endif
 
 .PHONY: eb-create-default
-eb-create-default: aws-check-env eb-check-env
+eb-create-default: aws-check-env-region eb-check-env
 	eb create $(EB_ENV_NAME) \
          -im $(EC2_INSTANCE_MIN) \
          -ix $(EC2_INSTANCE_MAX) \
