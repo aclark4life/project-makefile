@@ -3,7 +3,7 @@ Django==5.1.2
 Faker==30.6.0
 Jinja2==3.1.4
 Markdown==3.7
-MarkupSafe==3.0.1
+MarkupSafe==3.0.2
 PyYAML==6.0.2
 Pygments==2.18.0
 Willow==1.8.0
@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.43
-botocore==1.35.43
+boto3==1.35.44
+botocore==1.35.44
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
@@ -28,7 +28,7 @@ click==8.1.7
 confusable-homoglyphs==3.3.1
 cookiecutter==2.6.0
 crispy-bootstrap5==2024.10
-cryptography==43.0.1
+cryptography==43.0.3
 cssselect2==0.7.0
 defusedxml==0.7.1
 diff-match-patch==20230430
@@ -48,7 +48,7 @@ django-cryptography-django5==2.2
 django-debug-toolbar==4.4.6
 django-extensions==3.2.3
 django-filter==24.3
-django-hijack==3.6.1
+django-hijack==3.6.2
 django-honeypot==1.2.1
 django-imagekit==5.0.0
 django-import-export==4.1.1
@@ -99,7 +99,7 @@ packaging==24.1
 phonenumbers==8.13.47
 pilkit==3.0
 pillow==10.4.0
-pillow_heif==0.18.0
+pillow_heif==0.20.0
 psycopg2==2.9.10
 pyHanko==0.25.1
 pycparser==2.22
@@ -156,4 +156,4 @@ webencodings==0.5.1
 wheel==0.44.0
 whitenoise==6.7.0
 xhtml2pdf==0.2.16
-zopfli==0.2.3
+zopfli==0.2.3.post1
