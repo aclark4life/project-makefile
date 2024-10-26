@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.48
-botocore==1.35.48
+boto3==1.35.49
+botocore==1.35.49
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
@@ -77,7 +77,7 @@ dnspython==2.7.0
 docutils==0.21.2
 draftjs-exporter==5.0.0
 enmerkar==0.7.1
-et-xmlfile==1.1.0
+et_xmlfile==2.0.0
 filetype==1.2.0
 fonttools==4.54.1
 gunicorn==23.0.0
