@@ -6,7 +6,7 @@ Markdown==3.7
 MarkupSafe==3.0.2
 PyYAML==6.0.2
 Pygments==2.18.0
-Willow==1.8.0
+Willow==1.9.0
 annotated-types==0.7.0
 anyascii==0.3.2
 arabic-reshaper==3.0.0
@@ -48,7 +48,7 @@ django-cryptography-django5==2.2
 django-debug-toolbar==4.4.6
 django-extensions==3.2.3
 django-filter==24.3
-django-hijack==3.6.2
+django-hijack==3.7.0
 django-honeypot==1.2.1
 django-imagekit==5.0.0
 django-import-export==4.2.0
