@@ -110,7 +110,7 @@ pydyf==0.11.0
 pyhanko-certvalidator==0.26.3
 pymongo==4.10.1
 pyparsing==3.2.0
-pypdf==5.0.1
+pypdf==5.1.0
 pyphen==0.16.0
 pyproject_hooks==1.2.0
 python-bidi==0.6.3
