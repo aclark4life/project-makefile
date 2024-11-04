@@ -33,7 +33,7 @@ cssselect2==0.7.0
 defusedxml==0.7.1
 diff-match-patch==20241021
 dj-database-url==2.3.0
-dj-rest-auth==6.0.0
+dj-rest-auth==7.0.0
 dj-stripe==2.8.4
 django-after-response==0.2.2
 django-allauth==65.1.0
