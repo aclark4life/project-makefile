@@ -3438,6 +3438,13 @@ django-settings-directory-default:
 	@$(DEL_FILE) backend/settings.py
 	-$(GIT_ADD) backend/settings/*.py
 
+.PHONY: django-settings-minimal-default
+django-settings-minimal-default:
+	@echo "$$DJANGO_SETTINGS_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
+	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
+
 .PHONY: django-settings-prod-default
 django-settings-prod-default:
 	@echo "$$DJANGO_SETTINGS_PROD" > $(DJANGO_SETTINGS_PROD_FILE)
