@@ -3234,7 +3234,6 @@ django-install-default: pip-ensure
 	django-colorful \
 	django-cors-headers \
 	django-countries \
-	django-configurations \
 	django-crispy-forms \
 	django-debug-toolbar \
 	django-extensions \
