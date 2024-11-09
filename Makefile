@@ -23,7 +23,7 @@ DEL_DIR := rm -rv
 DEL_FILE := rm -v
 DJANGO_ADMIN_CUSTOM_APPS_FILE := backend/apps.py
 DJANGO_ADMIN_CUSTOM_ADMIN_FILE := backend/admin.py
-DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo mongo_migrations \
+DJANGO_CLEAN_DIRS = backend contactpage dist frontend home logging_demo model_form_demo \
 		     node_modules payments privacypage search sitepage siteuser unit_test_demo
 DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore .nvmrc \
 		      .stylelintrc.json Dockerfile db.sqlite3 docker-compose.yml manage.py \
@@ -32,8 +32,6 @@ DJANGO_CLEAN_FILES = .babelrc .browserslistrc .dockerignore .eslintrc .gitignore
 DJANGO_FRONTEND_FILES = .babelrc .browserslistrc .eslintrc .nvmrc .stylelintrc.json \
 			frontend package-lock.json \
 			package.json postcss.config.js
-DJANGO_PROJECT_TEMPLATE_MONGO = https://github.com/aclark4life/django-mongodb-project/archive/refs/heads/main.zip
-DJANGO_PROJECT_TEMPLATE_ZODB = https://github.com/aclark4life/django-zodb-project/archive/refs/heads/main.zip
 DJANGO_SETTINGS_DIR = backend/settings
 DJANGO_SETTINGS_BASE_FILE = $(DJANGO_SETTINGS_DIR)/base.py
 DJANGO_SETTINGS_DEV_FILE = $(DJANGO_SETTINGS_DIR)/dev.py
@@ -3004,10 +3002,6 @@ django-db-init-mysql-default:
 	-mysqladmin -u root drop $(PROJECT_NAME)
 	-mysqladmin -u root create $(PROJECT_NAME)
 
-.PHONY: django-db-init-mongodb-default
-django-db-init-mongodb-default:
-	-mongosh --eval "db.dropDatabase()"
-
 .PHONY: db-init-test-default
 db-init-test-default:
 	-dropdb test_$(PACKAGE_NAME)
@@ -3174,74 +3168,6 @@ django-init-minimal-default: separator \
 	django-su
 
 # --------------------------------------------------------------------------------
-#  Install Django with django-mongodb
-# --------------------------------------------------------------------------------
-.PHONY: django-init-mongo-default
-django-init-mongo-default: separator \
-	django-db-init \
-	django-clean \
-	django-install-mongo \
-	django-project-mongo \
-	pip-freeze \
-	pip-init-test \
-	django-settings-directory \
-	django-dockerfile \
-	django-template-base \
-	django-template-header \
-	django-template-favicon \
-	django-template-footer \
-	django-template-offcanvas \
-	django-manage-py \
-	django-urls \
-	django-urls-debug-toolbar \
-	django-settings-minimal \
-	django-settings-dev \
-	django-settings-prod \
-	django-home-page \
-	django-unit-test-demo \
-	django-utils \
-	django-frontend \
-	npm-install-react \
-	npm-install-react-dev \
-	django-migrate \
-	.gitignore \
-	django-su
-
-# --------------------------------------------------------------------------------
-#  Install Django with django-zodb
-# --------------------------------------------------------------------------------
-.PHONY: django-init-zodb-default
-django-init-zodb-default: separator \
-	django-db-init \
-	django-clean \
-	django-install-zodb \
-	django-project-zodb \
-	pip-freeze \
-	pip-init-test \
-	django-settings-directory \
-	django-dockerfile \
-	django-template-base \
-	django-template-header \
-	django-template-favicon \
-	django-template-footer \
-	django-template-offcanvas \
-	django-manage-py \
-	django-urls \
-	django-urls-debug-toolbar \
-	django-settings-minimal \
-	django-settings-dev \
-	django-settings-prod \
-	django-home-page \
-	django-unit-test-demo \
-	django-utils \
-	django-frontend \
-	npm-install-react \
-	npm-install-react-dev \
-	django-migrate \
-	.gitignore \
-	django-su
-
-# --------------------------------------------------------------------------------
 #  Install Wagtail
 # --------------------------------------------------------------------------------
 
@@ -3291,37 +3217,6 @@ django-init-wagtail-default: separator \
 	django-migrate \
 	.gitignore \
 	django-su
-
-
-.PHONY: django-install-mongo-default
-django-install-mongo-default: pip-ensure
-	$(PIP_INSTALL) \
-	-e git+https://github.com/aclark4life/mongo-python-driver#egg=pymongo \
-	-e git+https://github.com/mongodb-forks/django@mongodb-5.0.x#egg=django \
-	-e git+https://github.com/aclark4life/django-mongodb#egg=django-mongodb \
-	dj-database-url \
-	crispy-bootstrap5 \
-	django-crispy-forms \
-	django-debug-toolbar \
-	django-extensions \
-	django-recaptcha \
-	djangorestframework \
-	python-webpack-boilerplate \
-	django-hijack
-
-.PHONY: django-install-zodb-default
-django-install-zodb-default: pip-ensure
-	$(PIP_INSTALL) \
-	-e git+https://github.com/aclark4life/django-zodb#egg=django-zodb \
-	dj-database-url \
-	crispy-bootstrap5 \
-	django-crispy-forms \
-	django-debug-toolbar \
-	django-extensions \
-	django-recaptcha \
-	djangorestframework \
-	python-webpack-boilerplate \
-	django-hijack
 
 .PHONY: django-install-default
 django-install-default: pip-ensure
@@ -3496,16 +3391,6 @@ django-project-default:
 	django-admin startproject backend .
 	-$(GIT_ADD) backend/*.py
 
-.PHONY: django-project-mongo-default
-django-project-mongo-default:
-	django-admin startproject backend . --template $(DJANGO_PROJECT_TEMPLATE_MONGO)
-	-$(GIT_ADD) backend/*.py
-
-.PHONY: django-project-zodb-default
-django-project-zodb-default:
-	django-admin startproject backend . --template $(DJANGO_PROJECT_TEMPLATE_ZODB)
-	-$(GIT_ADD) backend/*.py
-
 .PHONY: django-search-default
 django-search-default:
 	python manage.py startapp search
@@ -3551,13 +3436,6 @@ django-settings-directory-default:
 	@$(COPY_FILE) backend/settings.py backend/settings/base.py
 	@$(DEL_FILE) backend/settings.py
 	-$(GIT_ADD) backend/settings/*.py
-
-.PHONY: django-settings-mongo-default
-django-settings-minimal-default:
-	@echo "$$DJANGO_SETTINGS_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_SETTINGS_REST_FRAMEWORK" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_SETTINGS_INSTALLED_APPS_MINIMAL" >> $(DJANGO_SETTINGS_BASE_FILE)
-	@echo "$$DJANGO_SETTINGS_CRISPY_FORMS" >> $(DJANGO_SETTINGS_BASE_FILE)
 
 .PHONY: django-settings-prod-default
 django-settings-prod-default:
@@ -4433,9 +4311,6 @@ db-import-default: django-db-import
 
 .PHONY: db-init-default
 db-init-default: django-db-init-postgres
-
-.PHONY: db-init-mongo-default
-db-init-mongo-default: django-db-init-mongodb
 
 .PHONY: dbshell-default
 dbshell-default: django-db-shell
