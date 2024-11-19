@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.63
-botocore==1.35.63
+boto3==1.35.64
+botocore==1.35.64
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
