@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.64
-botocore==1.35.64
+boto3==1.35.65
+botocore==1.35.65
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
@@ -51,7 +51,7 @@ django-filter==24.3
 django-hijack==3.7.0
 django-honeypot==1.2.1
 django-imagekit==5.0.0
-django-import-export==4.2.1
+django-import-export==4.3.1
 django-ipware==7.0.1
 django-js-asset==2.2.0
 django-modelcluster==6.3
@@ -150,7 +150,7 @@ wagtail-django-recaptcha==2.1.1
 wagtail-markdown==0.12.1
 wagtail-modeladmin==2.1.0
 wagtail-seo==2.5.0
-wagtail==6.3
+wagtail==6.3.1
 wagtailmenus==4.0.1
 weasyprint==63.0
 webencodings==0.5.1
