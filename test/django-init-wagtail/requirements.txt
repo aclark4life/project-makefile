@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.66
-botocore==1.35.66
+boto3==1.35.68
+botocore==1.35.68
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
@@ -83,7 +83,7 @@ fonttools==4.55.0
 gunicorn==23.0.0
 html2docx==1.6.0
 html5lib==1.1
-icalendar==6.0.1
+icalendar==6.1.0
 idna==3.10
 jmespath==1.0.1
 l18n==2021.3
@@ -103,8 +103,8 @@ pillow_heif==0.20.0
 psycopg2==2.9.10
 pyHanko==0.25.3
 pycparser==2.22
-pydantic==2.10.0
-pydantic_core==2.27.0
+pydantic==2.10.1
+pydantic_core==2.27.1
 pydotplus==2.0.2
 pydyf==0.11.0
 pyhanko-certvalidator==0.26.5
@@ -154,7 +154,7 @@ wagtail==6.3.1
 wagtailmenus==4.0.1
 weasyprint==63.0
 webencodings==0.5.1
-wheel==0.45.0
+wheel==0.45.1
 whitenoise==6.8.2
 xhtml2pdf==0.2.16
 zopfli==0.2.3.post1
