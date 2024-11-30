@@ -99,7 +99,7 @@ packaging==24.2
 phonenumbers==8.13.50
 pilkit==3.0
 pillow==10.4.0
-pillow_heif==0.20.0
+pillow_heif==0.21.0
 psycopg2==2.9.10
 pyHanko==0.25.3
 pycparser==2.22
