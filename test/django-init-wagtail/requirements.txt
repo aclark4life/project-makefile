@@ -36,7 +36,7 @@ dj-database-url==2.3.0
 dj-rest-auth==7.0.0
 dj-stripe==2.8.4
 django-after-response==0.2.2
-django-allauth==65.2.0
+django-allauth==65.3.0
 django-appconf==1.0.6
 django-ckeditor==6.7.1
 django-cogwheels==0.3
