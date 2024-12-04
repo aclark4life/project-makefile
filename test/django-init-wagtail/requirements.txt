@@ -17,8 +17,8 @@ babel==2.16.0
 beautifulsoup4==4.12.3
 binaryornot==0.4.4
 bleach==4.1.0
-boto3==1.35.72
-botocore==1.35.72
+boto3==1.35.74
+botocore==1.35.74
 build==1.2.2.post1
 certifi==2024.8.30
 cffi==1.17.1
@@ -79,7 +79,7 @@ draftjs-exporter==5.0.0
 enmerkar==0.7.1
 et_xmlfile==2.0.0
 filetype==1.2.0
-fonttools==4.55.0
+fonttools==4.55.1
 gunicorn==23.0.0
 html2docx==1.6.0
 html5lib==1.1
@@ -103,7 +103,7 @@ pillow_heif==0.21.0
 psycopg2==2.9.10
 pyHanko==0.25.3
 pycparser==2.22
-pydantic==2.10.2
+pydantic==2.10.3
 pydantic_core==2.27.1
 pydotplus==2.0.2
 pydyf==0.11.0
