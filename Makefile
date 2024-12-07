@@ -3412,6 +3412,7 @@ django-secret-key-default:
 .PHONY: django-serve-default
 django-serve-default:
 	npm run watch &
+	/opt/homebrew/opt/postgresql@14/bin/postgres -D /opt/homebrew/var/postgresql@14 &
 	python manage.py runserver 0.0.0.0:8000
 
 .PHONY: django-settings-base-default
