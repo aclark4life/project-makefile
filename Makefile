@@ -3886,7 +3886,6 @@ npm-install-react-default:
         history \
         mapbox-gl \
         query-string \
-        react-copy-to-clipboard \
         react-date-range \
         react-dom \
         react-dropzone \
