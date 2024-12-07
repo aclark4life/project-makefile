@@ -3886,7 +3886,6 @@ npm-install-react-default:
         history \
         mapbox-gl \
         query-string \
-        react-animate-height \
         react-copy-to-clipboard \
         react-date-range \
         react-dom \
