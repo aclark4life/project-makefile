@@ -13,9 +13,7 @@ defaults:
 jobs:
   build:
 
-    runs-on: ubuntu-24.04
-    container: node:bookworm
-
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres
