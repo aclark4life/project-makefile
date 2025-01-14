@@ -1,5 +1,5 @@
 Brotli==1.1.0
-Django==5.1.4
+Django==5.1.5
 Faker==33.1.0
 Jinja2==3.1.5
 Markdown==3.7
