@@ -141,7 +141,7 @@ types-python-dateutil==2.9.0.20240821
 typing_extensions==4.12.2
 tzlocal==5.2
 uritools==4.0.3
-urllib3==2.2.2
+urllib3==2.5.0
 wagtail-color-panel==1.5.0
 wagtail-django-recaptcha==2.1.1
 wagtail-markdown==0.12.1
